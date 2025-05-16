@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>TIC TAC TOE</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@600&display=swap');
+  * {
+    box-sizing: border-box;
+  }
+  body {
+    margin: 0; padding: 0;
+    font-family: 'Poppins', sans-serif;
+    background: linear-gradient(135deg, #dbe9f4, #f0f4f8);
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    user-select: none;
+    color: #1e40af;
+    padding: 30px 0 50px;
+  }
+  h1 {
+    font-size: 3.5rem;
+    margin: 0 0 20px 0;
+    letter-spacing: 0.3em;
+    font-weight: 900;
+    color: #1e3a8a;
+    text-align: center;
+    width: 100%;
+    text-shadow: 0 0 8px #3b82f6;
+  }
+  #status {
+    font-size: 1.4rem;
+    font-weight: 600;
+    margin-bottom: 30px;
+    min-height: 1.4em;
+    color: #2563eb;
+    text-align: center;
+  }
+  .board {
+    display: grid;
+    grid-template-columns: repeat(3, 110px);
+    grid-gap: 16px;
+    background: #e0e7ff;
+    padding: 28px;
+    border-radius: 24px;
+    box-shadow: 0 20px 45px rgba(59, 130, 246, 0.25);
+    user-select: none;
+  }
+  .cell {
+    width: 110px;
+    height: 110px;
+    background: #fef3c7;
+    border-radius: 26px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 5rem;
+    font-weight: 900;
+    cursor: pointer;
+    color: #1e40af;
+    box-shadow: inset 0 0 18px rgba(30, 64, 175, 0.25);
+    transition: background-color 0.4s ease, transform 0.25s ease;
+  }
+  .cell:hover:not(.disabled) {
+    transform: scale(1.1);
+    filter: brightness(1.12);
+  }
+  .disabled {
+    cursor: default;
+    pointer-events: none;
+    filter: brightness(0.85);
+  }
+  .controls {
+    margin-top: 38px;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    gap: 32px;
+    user-select: none;
+  }
+  button {
+    padding: 14px 48px;
+    font-size: 1.3rem;
+    border-radius: 20px;
+    border: none;
+    font-weight: 700;
+    cursor: pointer;
+    box-shadow: 0 9px 28px rgba(37, 99, 235, 0.38);
+    transition: transform 0.22s ease, box-shadow 0.35s ease;
+    user-select: none;
+    color: white;
+    letter-spacing: 0.1em;
+    text-shadow: 0 0 5px rgba(0,0,0,0.2);
+  }
+  button:focus {
+    outline: none;
+  }
+  button:hover:not(:disabled) {
+    transform: scale(1.12);
+    box-shadow: 0 12px 36px rgba(37, 99, 235, 0.55);
+  }
+  .green-btn {
+    background-color: #16a34a;
+    box-shadow: 0 10px 28px rgba(22, 163, 74, 0.55);
+  }
+  .red-btn {
+    background-color: #dc2626;
+    box-shadow: 0 10px 28px rgba(220, 38, 38, 0.55);
+  }
+
+  /* Stars container */
+  .stars-container {
+    position: fixed;
+    top: 25%;
+    left: 50%;
+    transform: translateX(-50%);
+    display: none;
+    gap: 28px;
+    z-index: 1000;
+    pointer-events: none;
+  }
+  .star {
+    font-size: 6rem;
+    color: gold;
+    text-shadow: 2px 2px 12px rgba(0,0,0,0.4);
+    opacity: 0;
+    transform: scale(0) rotate(0deg);
+    animation-fill-mode: forwards;
+    user-select: none;
+  }
+  .pop {
+    animation-name: popStar;
+    animation-duration: 600ms;
+    animation-timing-function: cubic-bezier(0.68, -0.55, 0.27, 1.55);
+  }
+  @keyframes popStar {
+    0% {
+      opacity: 0;
+      transform: scale(0) rotate(0deg);
+    }
+    50% {
+      opacity: 1;
+      transform: scale(1.5) rotate(20deg);
+    }
+    100% {
+      opacity: 1;
+      transform: scale(1) rotate(0deg);
+    }
+  }
+
+  /* Celebration confetti */
+  .confetti {
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    pointer-events: none;
+    z-index: 900;
+  }
+  .confetti-piece {
+    position: absolute;
+    width: 8px;
+    height: 16px;
+    background-color: gold;
+    opacity: 0.9;
+    transform-origin: center;
+    animation-name: confettiFall;
+    animation-timing-function: ease-out;
+    animation-iteration-count: 1;
+    border-radius: 3px;
+  }
+  @keyframes confettiFall {
+    0% {
+      opacity: 1;
+      transform: translateY(0) rotate(0deg);
+    }
+    100% {
+      opacity: 0;
+      transform: translateY(600px) rotate(360deg);
+    }
+  }
+</style>
+</head>
+<body>
+
+  <h1>TIC TAC TOE</h1>
+  <div id="status" aria-live="polite" aria-atomic="true">Your turn (X)</div>
+
+  <div class="board" id="board" role="grid" aria-label="Tic Tac Toe Board"></div>
+
+  <div class="controls">
+    <button class="green-btn" id="newGameBtn" aria-label="Start a new game" style="display:none;">New Game</button>
+    <button class="red-btn" id="exitBtn" aria-label="Exit the game">Exit</button>
+  </div>
+
+  <div class="stars-container" id="starsContainer" aria-hidden="true">
+    <span class="star">&#9733;</span>
+    <span class="star">&#9733;</span>
+    <span class="star">&#9733;</span>
+  </div>
+
+  <div class="confetti" id="confettiContainer" aria-hidden="true"></div>
+
+  <!-- Sounds -->
+  <audio id="tingSound" src="https://www.soundjay.com/button/sounds/button-16.mp3" preload="auto"></audio>
+  <audio id="tongSound" src="https://www.soundjay.com/button/sounds/button-09.mp3" preload="auto"></audio>
+  <audio id="winSound" src="https://www.soundjay.com/misc/sounds/bell-ringing-01.mp3" preload="auto"></audio>
+
+<script>
+  const board = document.getElementById('board');
+  const status = document.getElementById('status');
+  const starsContainer = document.getElementById('starsContainer');
+  const confettiContainer = document.getElementById('confettiContainer');
+  const tingSound = document.getElementById('tingSound');
+  const tongSound = document.getElementById('tongSound');
+  const winSound = document.getElementById('winSound');
+  const newGameBtn = document.getElementById('newGameBtn');
+  const exitBtn = document.getElementById('exitBtn');
+
+  let cells = [];
+  let boardState = Array(9).fill('');
+  let gameOver = false;
+
+  const user = 'X';
+  const computer = 'O';
+
+  const bgColors = ['#FFDEE9', '#B5FFFC', '#C8FFD4', '#E4C1F9', '#FFB1B1', '#A7FF83', '#FFD6E8', '#AFF8DB', '#FFC6FF'];
+  let colorIndex = 0;
+
+  // Create cells
+  function createBoard() {
+    board.innerHTML = '';
+    cells = [];
+    for(let i=0; i<9; i++) {
+      const cell = document.createElement('div');
+      cell.classList.add('cell');
+      cell.setAttribute('role', 'button');
+      cell.setAttribute('tabindex', '0');
+      cell.dataset.index = i;
+      cell.addEventListener('click', onCellClick);
+      cell.addEventListener('keydown', e => {
+        if(e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          onCellClick.call(cell);
+        }
+      });
+      board.appendChild(cell);
+      cells.push(cell);
+    }
+  }
+
+  // Handle user click
+  function onCellClick() {
+    const idx = this.dataset.index;
+    if(gameOver || boardState[idx] !== '') return;
+    makeMove(idx, user);
+    if(!gameOver) {
+      status.textContent = "Computer's turn (O)";
+      setTimeout(() => {
+        computerMove();
+      }, 600);
+    }
+  }
+
+  // Make move for a player
+  function makeMove(index, player) {
+    boardState[index] = player;
+    cells[index].textContent = player;
+    cells[index].classList.add('disabled');
+    changeBackgroundColor();
+    if(player === user) tingSound.play();
+    else tongSound.play();
+
+    if(checkWin(player)) {
+      gameOver = true;
+      status.textContent = player === user ? "You Win! 🎉" : "Computer Wins! 💻";
+      celebrate();
+      newGameBtn.style.display = 'inline-block';
+      disableBoard();
+    } else if(isBoardFull()) {
+      gameOver = true;
+      status.textContent = "It's a Draw!";
+      newGameBtn.style.display = 'inline-block';
+      disableBoard();
+    } else {
+      status.textContent = player === user ? "Computer's turn (O)" : "Your turn (X)";
+    }
+  }
+
+  // Computer move - simple AI: random available cell
+  function computerMove() {
+    if(gameOver) return;
+    let available = boardState
+      .map((v,i) => v === '' ? i : null)
+      .filter(v => v !== null);
+
+    // Try winning move first
+    for(let i of available) {
+      boardState[i] = computer;
+      if(checkWin(computer)) {
+        boardState[i] = '';
+        makeMove(i, computer);
+        return;
+      }
+      boardState[i] = '';
+    }
+    // Try blocking user's win
+    for(let i of available) {
+      boardState[i] = user;
+      if(checkWin(user)) {
+        boardState[i] = '';
+        makeMove(i, computer);
+        return;
+      }
+      boardState[i] = '';
+    }
+
+    // Else random
+    let randIndex = available[Math.floor(Math.random() * available.length)];
+    makeMove(randIndex, computer);
+  }
+
+  // Check winning combos
+  function checkWin(player) {
+    const wins = [
+      [0,1,2],[3,4,5],[6,7,8],  // rows
+      [0,3,6],[1,4,7],[2,5,8],  // cols
+      [0,4,8],[2,4,6]           // diagonals
+    ];
+    return wins.some(combo => 
+      combo.every(i => boardState[i] === player)
+    );
+  }
+
+  // Check if board full
+  function isBoardFull() {
+    return boardState.every(cell => cell !== '');
+  }
+
+  // Disable board
+  function disableBoard() {
+    cells.forEach(c => c.classList.add('disabled'));
+  }
+
+  // Change background color cyclically
+  function changeBackgroundColor() {
+    document.body.style.background = bgColors[colorIndex];
+    colorIndex = (colorIndex + 1) % bgColors.length;
+  }
+
+  // Celebration animation with stars & confetti
+  function celebrate() {
+    winSound.play();
+
+    // Show stars with pop animation
+    starsContainer.style.display = 'flex';
+    const stars = starsContainer.querySelectorAll('.star');
+    stars.forEach((star, i) => {
+      star.classList.remove('pop');
+      setTimeout(() => {
+        star.classList.add('pop');
+      }, i * 200);
+    });
+
+    // Create confetti
+    createConfetti();
+
+    // Hide stars after 3 seconds
+    setTimeout(() => {
+      starsContainer.style.display = 'none';
+      confettiContainer.innerHTML = '';
+    }, 3000);
+  }
+
+  // Confetti pieces creation
+  function createConfetti() {
+    confettiContainer.innerHTML = '';
+    const confettiCount = 60;
+    for(let i=0; i<confettiCount; i++) {
+      const confetti = document.createElement('div');
+      confetti.classList.add('confetti-piece');
+      confetti.style.left = Math.random() * window.innerWidth + 'px';
+      confetti.style.backgroundColor = `hsl(${Math.random()*360}, 90%, 60%)`;
+      confetti.style.animationDuration = (Math.random() * 1 + 1.5) + 's';
+      confetti.style.animationDelay = (Math.random() * 0.5) + 's';
+      confetti.style.transform = `rotate(${Math.random()*360}deg)`;
+      confettiContainer.appendChild(confetti);
+    }
+  }
+
+  // Reset game
+  function resetGame() {
+    boardState.fill('');
+    gameOver = false;
+    colorIndex = 0;
+    status.textContent = "Your turn (X)";
+    starsContainer.style.display = 'none';
+    confettiContainer.innerHTML = '';
+    newGameBtn.style.display = 'none';
+    createBoard();
+    document.body.style.background = bgColors[0];
+  }
+
+  // Exit game - simply closes window/tab (if possible)
+  function exitGame() {
+    if(confirm("Are you sure you want to exit the game?")) {
+      window.close();
+    }
+  }
+
+  // Initialize
+  createBoard();
+  document.body.style.background = bgColors[0];
+
+  newGameBtn.addEventListener('click', resetGame);
+  exitBtn.addEventListener('click', exitGame);
+
+</script>
+
+</body>
+</html>
