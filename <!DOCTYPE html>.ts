@@ -124,46 +124,44 @@
                 <!-- Content rendered by JavaScript after processing --></div>
         </main>
 
-        <!-- ============================================== --><!-- Channel Promotion (Glass Card) --><!-- UPDATED: Glow color to match background purple --><!-- ============================================== --><div class="mt-12 w-full px-0 sm:px-4">
-            <div class="glass-card p-4 sm:p-6 max-w-4xl mx-auto transition-all duration-500 hover:shadow-2xl hover:shadow-purple-900/40">
-                <div class="p-1">
-                    <div class="flex flex-col items-center">
-                        <!-- FanPlusFollow Logo SVG --><div class="w-16 h-16 mb-2 sm:mb-4">
-                            <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
-                              <defs><linearGradient id="logoGradient2" x1="0%" y1="0%" x2="100%" y2="100%">
-                                  <stop offset="0%" style="stop-color:#f97316; stop-opacity:1" />
-                                  <stop offset="40%" style="stop-color:#ef4444; stop-opacity:1" />
-                                  <stop offset="70%" style="stop-color:#c084fc; stop-opacity:1" />
-                                  <stop offset="100%" style="stop-color:#818cf8; stop-opacity:1" />
-                                </linearGradient></defs>
-                              <circle cx="32" cy="32" r="31" fill="url(#logoGradient2)" fill-opacity="0.9" stroke="#ffffff" stroke-opacity="0.4" stroke-width="1" />
-                              <path d="M20 23 L35 32 L20 41 Z" fill="#ffffff" />
-                              <rect x="40" y="27" width="4" height="10" fill="#ffffff" rx="1" />
-                              <rect x="37" y="30" width="10" height="4" fill="#ffffff" rx="1" />
-                            </svg>
-                        </div>
-                        <h3 class="text-xl sm:text-2xl font-bold bg-clip-text text-transparent text-center" style="background-image: linear-gradient(to right, #ec4899, #c084fc)">
-                          Boost Your Reach With FanPlusFollow
-                        </h3>
-                        <p class="text-indigo-300 mt-1 sm:mt-2 text-center max-w-md text-sm sm:text-base">
-                          Join the community for exclusive growth insights and advanced content tools.
-                        </p>
-                        <div class="mt-3 sm:mt-4 flex flex-wrap justify-center gap-4">
-                          <button 
-                            class="cta-button px-6 py-3 rounded-full font-medium transition-all duration-300 ease-in-out shadow-xl transform active:scale-[0.98] active:shadow-none bg-gradient-to-r from-[#f97316]/50 via-[#ef4444]/50 to-[#c084fc]/50 hover:from-[#f97316] hover:via-[#ef4444] hover:to-[#818cf8] backdrop-blur-3xl text-white border border-white/50"
-                            onclick="window.open('https://www.youtube.com/@fanplusfollow', '_blank')"
-                          >
-                            <!-- Users Icon (Lucide) --><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2 h-4 w-4"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
-                            Subscribe Now
-                          </button>
-                          <button 
-                            class="cta-button px-6 py-3 rounded-full font-medium transition-all duration-300 ease-in-out shadow-xl transform active:scale-[0.98] active:shadow-none bg-gradient-to-r from-[#f97316]/50 via-[#ef4444]/50 to-[#c084fc]/50 hover:from-[#f97316] hover:via-[#ef4444] hover:to-[#818cf8] backdrop-blur-3xl text-white border border-white/50"
-                            onclick="window.open('https://www.instagram.com/_manmohit_singh_/', '_blank')"
-                          >
-                            <!-- Star Icon (Lucide) - CHANGED to outlined style --><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2 h-4 w-4"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-                            Follow Now
-                          </button>
-                        </div>
+        <!-- ============================================== --><!-- Channel Promotion (Glass Card) --><!-- CHANGED: Removed outer wrapper and set padding/radius to p-6 rounded-[32px] for consistency --><!-- ============================================== --><div class="glass-card p-6 rounded-[32px] mt-12 transition-all duration-500 hover:shadow-2xl hover:shadow-purple-900/40">
+            <div class="p-1">
+                <div class="flex flex-col items-center">
+                    <!-- FanPlusFollow Logo SVG --><div class="w-16 h-16 mb-2 sm:mb-4">
+                        <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+                          <defs><linearGradient id="logoGradient2" x1="0%" y1="0%" x2="100%" y2="100%">
+                              <stop offset="0%" style="stop-color:#f97316; stop-opacity:1" />
+                              <stop offset="40%" style="stop-color:#ef4444; stop-opacity:1" />
+                              <stop offset="70%" style="stop-color:#c084fc; stop-opacity:1" />
+                              <stop offset="100%" style="stop-color:#818cf8; stop-opacity:1" />
+                            </linearGradient></defs>
+                          <circle cx="32" cy="32" r="31" fill="url(#logoGradient2)" fill-opacity="0.9" stroke="#ffffff" stroke-opacity="0.4" stroke-width="1" />
+                          <path d="M20 23 L35 32 L20 41 Z" fill="#ffffff" />
+                          <rect x="40" y="27" width="4" height="10" fill="#ffffff" rx="1" />
+                          <rect x="37" y="30" width="10" height="4" fill="#ffffff" rx="1" />
+                        </svg>
+                    </div>
+                    <h3 class="text-xl sm:text-2xl font-bold bg-clip-text text-transparent text-center" style="background-image: linear-gradient(to right, #ec4899, #c084fc)">
+                      Boost Your Reach With FanPlusFollow
+                    </h3>
+                    <p class="text-indigo-300 mt-1 sm:mt-2 text-center max-w-md text-sm sm:text-base">
+                      Join the community for exclusive growth insights and advanced content tools.
+                    </p>
+                    <div class="mt-3 sm:mt-4 flex flex-wrap justify-center gap-4">
+                      <button 
+                        class="cta-button px-6 py-3 rounded-full font-medium transition-all duration-300 ease-in-out shadow-xl transform active:scale-[0.98] active:shadow-none bg-gradient-to-r from-[#f97316]/50 via-[#ef4444]/50 to-[#c084fc]/50 hover:from-[#f97316] hover:via-[#ef4444] hover:to-[#818cf8] backdrop-blur-3xl text-white border border-white/50"
+                        onclick="window.open('https://www.youtube.com/@fanplusfollow', '_blank')"
+                      >
+                        <!-- Users Icon (Lucide) --><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2 h-4 w-4"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                        Subscribe Now
+                      </button>
+                      <button 
+                        class="cta-button px-6 py-3 rounded-full font-medium transition-all duration-300 ease-in-out shadow-xl transform active:scale-[0.98] active:shadow-none bg-gradient-to-r from-[#f97316]/50 via-[#ef4444]/50 to-[#c084fc]/50 hover:from-[#f97316] hover:via-[#ef4444] hover:to-[#818cf8] backdrop-blur-3xl text-white border border-white/50"
+                        onclick="window.open('https://www.instagram.com/_manmohit_singh_/', '_blank')"
+                      >
+                        <!-- Star Icon (Lucide) - CHANGED to outlined style --><svg xmlns="http://www.w3.org/2003/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2 h-4 w-4"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                        Follow Now
+                      </button>
                     </div>
                 </div>
             </div>
