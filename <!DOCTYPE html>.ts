@@ -1,426 +1,635 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta name="google-site-verification" content="XLkOkWp4iXW0SG4PQrkIzRScDYNml_dgC_rQeq_Cg2A" />
-<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9928101532688314"
-     crossorigin="anonymous"></script>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>TIC TAC TOE</title>
-<style>
-  @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@600&display=swap');
-  * {
-    box-sizing: border-box;
-  }
-  body {
-    margin: 0; padding: 0;
-    font-family: 'Poppins', sans-serif;
-    background: linear-gradient(135deg, #dbe9f4, #f0f4f8);
-    height: 100vh;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: flex-start;
-    user-select: none;
-    color: #1e40af;
-    padding: 30px 0 50px;
-  }
-  h1 {
-    font-size: 3.5rem;
-    margin: 0 0 20px 0;
-    letter-spacing: 0.3em;
-    font-weight: 900;
-    color: #1e3a8a;
-    text-align: center;
-    width: 100%;
-    text-shadow: 0 0 8px #3b82f6;
-  }
-  #status {
-    font-size: 1.4rem;
-    font-weight: 600;
-    margin-bottom: 30px;
-    min-height: 1.4em;
-    color: #2563eb;
-    text-align: center;
-  }
-  .board {
-    display: grid;
-    grid-template-columns: repeat(3, 110px);
-    grid-gap: 16px;
-    background: #e0e7ff;
-    padding: 28px;
-    border-radius: 24px;
-    box-shadow: 0 20px 45px rgba(59, 130, 246, 0.25);
-    user-select: none;
-  }
-  .cell {
-    width: 110px;
-    height: 110px;
-    background: #fef3c7;
-    border-radius: 26px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 5rem;
-    font-weight: 900;
-    cursor: pointer;
-    color: #1e40af;
-    box-shadow: inset 0 0 18px rgba(30, 64, 175, 0.25);
-    transition: background-color 0.4s ease, transform 0.25s ease;
-  }
-  .cell:hover:not(.disabled) {
-    transform: scale(1.1);
-    filter: brightness(1.12);
-  }
-  .disabled {
-    cursor: default;
-    pointer-events: none;
-    filter: brightness(0.85);
-  }
-  .controls {
-    margin-top: 38px;
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    gap: 32px;
-    user-select: none;
-  }
-  button {
-    padding: 14px 48px;
-    font-size: 1.3rem;
-    border-radius: 20px;
-    border: none;
-    font-weight: 700;
-    cursor: pointer;
-    box-shadow: 0 9px 28px rgba(37, 99, 235, 0.38);
-    transition: transform 0.22s ease, box-shadow 0.35s ease;
-    user-select: none;
-    color: white;
-    letter-spacing: 0.1em;
-    text-shadow: 0 0 5px rgba(0,0,0,0.2);
-  }
-  button:focus {
-    outline: none;
-  }
-  button:hover:not(:disabled) {
-    transform: scale(1.12);
-    box-shadow: 0 12px 36px rgba(37, 99, 235, 0.55);
-  }
-  .green-btn {
-    background-color: #16a34a;
-    box-shadow: 0 10px 28px rgba(22, 163, 74, 0.55);
-  }
-  .red-btn {
-    background-color: #dc2626;
-    box-shadow: 0 10px 28px rgba(220, 38, 38, 0.55);
-  }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FanPlusFollow Viral Content Generator</title>
+    <!-- Load Tailwind CSS from CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Import Inter Font */
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
+        :root { font-family: 'Inter', sans-serif; }
 
-  /* Stars container */
-  .stars-container {
-    position: fixed;
-    top: 25%;
-    left: 50%;
-    transform: translateX(-50%);
-    display: none;
-    gap: 28px;
-    z-index: 1000;
-    pointer-events: none;
-  }
-  .star {
-    font-size: 6rem;
-    color: gold;
-    text-shadow: 2px 2px 12px rgba(0,0,0,0.4);
-    opacity: 0;
-    transform: scale(0) rotate(0deg);
-    animation-fill-mode: forwards;
-    user-select: none;
-  }
-  .pop {
-    animation-name: popStar;
-    animation-duration: 600ms;
-    animation-timing-function: cubic-bezier(0.68, -0.55, 0.27, 1.55);
-  }
-  @keyframes popStar {
-    0% {
-      opacity: 0;
-      transform: scale(0) rotate(0deg);
-    }
-    50% {
-      opacity: 1;
-      transform: scale(1.5) rotate(20deg);
-    }
-    100% {
-      opacity: 1;
-      transform: scale(1) rotate(0deg);
-    }
-  }
-
-  /* Celebration confetti */
-  .confetti {
-    position: fixed;
-    top: 0; left: 0; width: 100%; height: 100%;
-    pointer-events: none;
-    z-index: 900;
-  }
-  .confetti-piece {
-    position: absolute;
-    width: 8px;
-    height: 16px;
-    background-color: gold;
-    opacity: 0.9;
-    transform-origin: center;
-    animation-name: confettiFall;
-    animation-timing-function: ease-out;
-    animation-iteration-count: 1;
-    border-radius: 3px;
-  }
-  @keyframes confettiFall {
-    0% {
-      opacity: 1;
-      transform: translateY(0) rotate(0deg);
-    }
-    100% {
-      opacity: 0;
-      transform: translateY(600px) rotate(360deg);
-    }
-  }
-</style>
-</head>
-<body>
-
-  <h1>TIC TAC TOE</h1>
-  <div id="status" aria-live="polite" aria-atomic="true">Your turn (X)</div>
-
-  <div class="board" id="board" role="grid" aria-label="Tic Tac Toe Board"></div>
-
-  <div class="controls">
-    <button class="green-btn" id="newGameBtn" aria-label="Start a new game" style="display:none;">New Game</button>
-    <button class="red-btn" id="exitBtn" aria-label="Exit the game">Exit</button>
-  </div>
-
-  <div class="stars-container" id="starsContainer" aria-hidden="true">
-    <span class="star">&#9733;</span>
-    <span class="star">&#9733;</span>
-    <span class="star">&#9733;</span>
-  </div>
-
-  <div class="confetti" id="confettiContainer" aria-hidden="true"></div>
-
-  <!-- Sounds -->
-  <audio id="tingSound" src="https://www.soundjay.com/button/sounds/button-16.mp3" preload="auto"></audio>
-  <audio id="tongSound" src="https://www.soundjay.com/button/sounds/button-09.mp3" preload="auto"></audio>
-  <audio id="winSound" src="https://www.soundjay.com/misc/sounds/bell-ringing-01.mp3" preload="auto"></audio>
-
-<script>
-  const board = document.getElementById('board');
-  const status = document.getElementById('status');
-  const starsContainer = document.getElementById('starsContainer');
-  const confettiContainer = document.getElementById('confettiContainer');
-  const tingSound = document.getElementById('tingSound');
-  const tongSound = document.getElementById('tongSound');
-  const winSound = document.getElementById('winSound');
-  const newGameBtn = document.getElementById('newGameBtn');
-  const exitBtn = document.getElementById('exitBtn');
-
-  let cells = [];
-  let boardState = Array(9).fill('');
-  let gameOver = false;
-
-  const user = 'X';
-  const computer = 'O';
-
-  const bgColors = ['#FFDEE9', '#B5FFFC', '#C8FFD4', '#E4C1F9', '#FFB1B1', '#A7FF83', '#FFD6E8', '#AFF8DB', '#FFC6FF'];
-  let colorIndex = 0;
-
-  // Create cells
-  function createBoard() {
-    board.innerHTML = '';
-    cells = [];
-    for(let i=0; i<9; i++) {
-      const cell = document.createElement('div');
-      cell.classList.add('cell');
-      cell.setAttribute('role', 'button');
-      cell.setAttribute('tabindex', '0');
-      cell.dataset.index = i;
-      cell.addEventListener('click', onCellClick);
-      cell.addEventListener('keydown', e => {
-        if(e.key === 'Enter' || e.key === ' ') {
-          e.preventDefault();
-          onCellClick.call(cell);
+        /* Custom Styles for Glassmorphism */
+        .glass-card {
+            background-color: rgba(255, 255, 255, 0.02); /* bg-white/2 */
+            backdrop-filter: blur(24px); /* backdrop-blur-3xl */
+            border: 1px solid rgba(255, 255, 255, 0.1); /* border border-white/10 */
+            border-radius: 32px;
+            box-shadow: 0 10px 15px rgba(0, 0, 0, 0.5);
+            transition: all 300ms ease-in-out;
         }
-      });
-      board.appendChild(cell);
-      cells.push(cell);
-    }
-  }
 
-  // Handle user click
-  function onCellClick() {
-    const idx = this.dataset.index;
-    if(gameOver || boardState[idx] !== '') return;
-    makeMove(idx, user);
-    if(!gameOver) {
-      status.textContent = "Computer's turn (O)";
-      setTimeout(() => {
-        computerMove();
-      }, 600);
-    }
-  }
+        /* Custom Styles for CTA Buttons */
+        .cta-button {
+            transition: all 300ms ease-in-out;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+        .cta-button:active {
+            transform: scale(0.98);
+            box-shadow: none;
+        }
 
-  // Make move for a player
-  function makeMove(index, player) {
-    boardState[index] = player;
-    cells[index].textContent = player;
-    cells[index].classList.add('disabled');
-    changeBackgroundColor();
-    if(player === user) tingSound.play();
-    else tongSound.play();
+        /* Radial gradient for iOS Dark Mode Background */
+        body {
+            background-color: #0A0D14;
+            background-image: radial-gradient(circle at center, #1b0e2d 0%, #0A0D14 70%);
+            min-height: 100vh;
+        }
+        
+        /* Utility for score animation (replicates React's transition) */
+        .viral-score-text {
+            transition: color 500ms, text-shadow 500ms;
+        }
+    </style>
+</head>
+<body class="text-white p-4 md:p-8" onload="initApp()">
 
-    if(checkWin(player)) {
-      gameOver = true;
-      status.textContent = player === user ? "You Win! 🎉" : "Computer Wins! 💻";
-      celebrate();
-      newGameBtn.style.display = 'inline-block';
-      disableBoard();
-    } else if(isBoardFull()) {
-      gameOver = true;
-      status.textContent = "It's a Draw!";
-      newGameBtn.style.display = 'inline-block';
-      disableBoard();
-    } else {
-      status.textContent = player === user ? "Computer's turn (O)" : "Your turn (X)";
-    }
-  }
+    <div class="max-w-4xl mx-auto">
+        
+        <!-- ============================================== -->
+        <!-- HEADER - Sticky Glass Bar -->
+        <!-- ============================================== -->
+        <header id="app-header" class="sticky top-0 z-20 glass-card p-4 mb-8 flex flex-col md:flex-row items-center justify-between">
+            <div class="flex items-center space-x-4 mb-4 md:mb-0">
+                <!-- FanPlusFollow Logo SVG (Replicates FanPlusFollowLogo Component) -->
+                <div class="w-12 h-12">
+                    <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <defs>
+                        <linearGradient id="logoGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                          <stop offset="0%" style="stop-color:#f97316; stop-opacity:1" />
+                          <stop offset="40%" style="stop-color:#ef4444; stop-opacity:1" />
+                          <stop offset="70%" style="stop-color:#c084fc; stop-opacity:1" />
+                          <stop offset="100%" style="stop-color:#818cf8; stop-opacity:1" />
+                        </linearGradient>
+                      </defs>
+                      <circle cx="32" cy="32" r="31" fill="url(#logoGradient)" fill-opacity="0.9" stroke="#ffffff" stroke-opacity="0.4" stroke-width="1" />
+                      <path d="M20 23 L35 32 L20 41 Z" fill="#ffffff" />
+                      <rect x="40" y="27" width="4" height="10" fill="#ffffff" rx="1" />
+                      <rect x="37" y="30" width="10" height="4" fill="#ffffff" rx="1" />
+                    </svg>
+                </div>
+                <div class="text-left">
+                    <h1 class="text-xl font-bold bg-clip-text text-transparent" style="background-image: linear-gradient(to right, #ec4899, #c084fc, #6366f1)">
+                      FanPlusFollow
+                    </h1>
+                    <p class="text-indigo-300 text-sm flex items-center">
+                        <!-- Users Icon (Lucide) -->
+                        <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-1 h-3 w-3"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                        Growth AI
+                    </p>
+                </div>
+            </div>
+            
+            <!-- Viral Mode Toggle (Replicates IosToggleSwitch Component) -->
+            <div class="flex flex-col sm:flex-row items-center gap-3">
+                <div class="flex items-center space-x-3">
+                    <!-- Zap Icon (Lucide) -->
+                    <svg id="viral-toggle-zap" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5 transition-colors duration-300 text-green-400"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+                    <span id="viral-toggle-text" class="text-sm font-medium transition-colors duration-300 text-white">
+                        Viral Mode
+                    </span>
+                    <div
+                      id="viral-toggle-track"
+                      class="w-14 h-8 flex items-center rounded-full p-1 cursor-pointer transition-all duration-300 backdrop-blur-3xl border bg-green-500/70 border-green-400/50"
+                      onclick="toggleViralBoost()"
+                      style="box-shadow: inset 0 0 10px rgba(0, 255, 0, 0.4), 0 4px 10px rgba(0, 0, 0, 0.6);"
+                    >
+                      <div
+                        id="viral-toggle-knob"
+                        class="bg-white w-6 h-6 rounded-full transform transition-transform duration-300"
+                        style="transform: translateX(24px); box-shadow: 0 1px 3px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(255, 255, 255, 0.3) inset, 0 0 0 4px rgba(0, 0, 0, 0.05);"
+                      />
+                    </div>
+                </div>
+            </div>
+        </header>
 
-  // Computer move - simple AI: random available cell
-  function computerMove() {
-    if(gameOver) return;
-    let available = boardState
-      .map((v,i) => v === '' ? i : null)
-      .filter(v => v !== null);
+        <main>
+            <!-- Main CTAs Section -->
+            <div class="flex flex-wrap justify-center gap-4 mb-10">
+                <button 
+                  class="cta-button px-6 py-3 rounded-full font-medium transition-all duration-300 ease-in-out shadow-xl transform active:scale-[0.98] active:shadow-none bg-gradient-to-r from-[#f97316]/50 via-[#ef4444]/50 to-[#c084fc]/50 hover:from-[#f97316] hover:via-[#ef4444] hover:to-[#818cf8] backdrop-blur-3xl text-white border border-white/50"
+                  onclick="window.open('https://www.youtube.com/@fanplusfollow', '_blank')"
+                >
+                    <!-- Heart Icon (Lucide) -->
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" stroke="none" class="mr-2 h-4 w-4 fill-white"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5L12 22l7-8z"/></svg>
+                    Subscribe Now
+                </button>
+                <button 
+                  class="cta-button px-6 py-3 rounded-full font-medium transition-all duration-300 ease-in-out shadow-xl transform active:scale-[0.98] active:shadow-none bg-gradient-to-r from-[#f97316]/50 via-[#ef4444]/50 to-[#c084fc]/50 hover:from-[#f97316] hover:via-[#ef4444] hover:to-[#818cf8] backdrop-blur-3xl text-white border border-white/50"
+                  onclick="window.open('https://www.instagram.com/_manmohit_singh_/', '_blank')"
+                >
+                    <!-- Star Icon (Lucide) -->
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" stroke="none" class="mr-2 h-4 w-4 fill-white"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                    Follow Now
+                </button>
+            </div>
 
-    // Try winning move first
-    for(let i of available) {
-      boardState[i] = computer;
-      if(checkWin(computer)) {
-        boardState[i] = '';
-        makeMove(i, computer);
-        return;
-      }
-      boardState[i] = '';
-    }
-    // Try blocking user's win
-    for(let i of available) {
-      boardState[i] = user;
-      if(checkWin(user)) {
-        boardState[i] = '';
-        makeMove(i, computer);
-        return;
-      }
-      boardState[i] = '';
-    }
+            <!-- ============================================== -->
+            <!-- Upload Section (Glass Card) -->
+            <!-- ============================================== -->
+            <div class="glass-card p-6 rounded-[32px] mb-12">
+                <div class="mb-4">
+                    <h2 class="text-2xl font-semibold flex items-center gap-2">
+                        <!-- Upload Icon (Lucide) -->
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-indigo-400"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" x2="12" y1="3" y2="15"/></svg>
+                        Upload Your Video
+                    </h2>
+                </div>
+                <div class="p-1" id="upload-section-content">
+                    <!-- Content rendered by JavaScript -->
+                </div>
+            </div>
 
-    // Else random
-    let randIndex = available[Math.floor(Math.random() * available.length)];
-    makeMove(randIndex, computer);
-  }
+            <!-- ============================================== -->
+            <!-- Results Section (Hidden until processed) -->
+            <!-- ============================================== -->
+            <div id="results-section" style="display: none;">
+                <!-- Content rendered by JavaScript after processing -->
+            </div>
+        </main>
 
-  // Check winning combos
-  function checkWin(player) {
-    const wins = [
-      [0,1,2],[3,4,5],[6,7,8],  // rows
-      [0,3,6],[1,4,7],[2,5,8],  // cols
-      [0,4,8],[2,4,6]           // diagonals
-    ];
-    return wins.some(combo => 
-      combo.every(i => boardState[i] === player)
-    );
-  }
+        <!-- ============================================== -->
+        <!-- Channel Promotion (Glass Card) -->
+        <!-- ============================================== -->
+        <div class="mt-12 w-full px-0 sm:px-4">
+            <div class="glass-card p-4 sm:p-6 max-w-4xl mx-auto">
+                <div class="p-1">
+                    <div class="flex flex-col items-center">
+                        <!-- FanPlusFollow Logo SVG -->
+                        <div class="w-16 h-16 mb-2 sm:mb-4">
+                            <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+                              <defs><linearGradient id="logoGradient2" x1="0%" y1="0%" x2="100%" y2="100%">
+                                  <stop offset="0%" style="stop-color:#f97316; stop-opacity:1" />
+                                  <stop offset="40%" style="stop-color:#ef4444; stop-opacity:1" />
+                                  <stop offset="70%" style="stop-color:#c084fc; stop-opacity:1" />
+                                  <stop offset="100%" style="stop-color:#818cf8; stop-opacity:1" />
+                                </linearGradient></defs>
+                              <circle cx="32" cy="32" r="31" fill="url(#logoGradient2)" fill-opacity="0.9" stroke="#ffffff" stroke-opacity="0.4" stroke-width="1" />
+                              <path d="M20 23 L35 32 L20 41 Z" fill="#ffffff" />
+                              <rect x="40" y="27" width="4" height="10" fill="#ffffff" rx="1" />
+                              <rect x="37" y="30" width="10" height="4" fill="#ffffff" rx="1" />
+                            </svg>
+                        </div>
+                        <h3 class="text-xl sm:text-2xl font-bold bg-clip-text text-transparent text-center" style="background-image: linear-gradient(to right, #ec4899, #c084fc)">
+                          Boost Your Reach With FanPlusFollow
+                        </h3>
+                        <p class="text-indigo-300 mt-1 sm:mt-2 text-center max-w-md text-sm sm:text-base">
+                          Join the community for exclusive growth insights and advanced content tools.
+                        </p>
+                        <div class="mt-3 sm:mt-4 flex flex-wrap justify-center gap-4">
+                          <button 
+                            class="cta-button px-6 py-3 rounded-full font-medium transition-all duration-300 ease-in-out shadow-xl transform active:scale-[0.98] active:shadow-none bg-gradient-to-r from-[#f97316]/50 via-[#ef4444]/50 to-[#c084fc]/50 hover:from-[#f97316] hover:via-[#ef4444] hover:to-[#818cf8] backdrop-blur-3xl text-white border border-white/50"
+                            onclick="window.open('https://www.youtube.com/@fanplusfollow', '_blank')"
+                          >
+                            <!-- Users Icon (Lucide) -->
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2 h-4 w-4"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                            Subscribe Now
+                          </button>
+                          <button 
+                            class="cta-button px-6 py-3 rounded-full font-medium transition-all duration-300 ease-in-out shadow-xl transform active:scale-[0.98] active:shadow-none bg-gradient-to-r from-[#f97316]/50 via-[#ef4444]/50 to-[#c084fc]/50 hover:from-[#f97316] hover:via-[#ef4444] hover:to-[#818cf8] backdrop-blur-3xl text-white border border-white/50"
+                            onclick="window.open('https://www.instagram.com/_manmohit_singh_/', '_blank')"
+                          >
+                            <!-- Star Icon (Lucide) -->
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" stroke="none" class="mr-2 h-4 w-4"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                            Follow Now
+                          </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Footer -->
+        <footer class="text-center text-indigo-400/70 text-xs mt-12 py-6 border-t border-white/5">
+          <p>© 2026 FanPlusFollow AI Growth Tools. All rights reserved.</p>
+        </footer>
+    </div>
 
-  // Check if board full
-  function isBoardFull() {
-    return boardState.every(cell => cell !== '');
-  }
+    <!-- ============================================== -->
+    <!-- JAVASCRIPT LOGIC -->
+    <!-- ============================================== -->
+    <script>
+        // --- GLOBAL STATE ---
+        let file = null;
+        let isProcessing = false;
+        let isProcessed = false;
+        let viralScore = 0;
+        let titles = [];
+        let description = "";
+        let copiedIndex = null;
+        let isViralBoostEnabled = true; // Default to true
+        let progressValue = 0;
+        let progressInterval = null;
 
-  // Disable board
-  function disableBoard() {
-    cells.forEach(c => c.classList.add('disabled'));
-  }
+        // --- CONSTANTS ---
+        const YOUTUBE_CHANNEL_LINK = "https://www.youtube.com/@fanplusfollow";
+        const INSTAGRAM_LINK = "https://www.instagram.com/_manmohit_singh_/";
 
-  // Change background color cyclically
-  function changeBackgroundColor() {
-    document.body.style.background = bgColors[colorIndex];
-    colorIndex = (colorIndex + 1) % bgColors.length;
-  }
+        // --- ICON HELPER (Replaces Lucide-react) ---
+        const icon = (name, classes) => {
+            const iconMap = {
+                'Upload': `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="${classes}"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" x2="12" y1="3" y2="15"/></svg>`,
+                'Play': `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="${classes}"><polygon points="5 3 19 12 5 21 5 3"/></svg>`,
+                'Copy': `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="${classes}"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>`,
+                'Check': `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="${classes}"><polyline points="20 6 9 17 4 12"/></svg>`,
+                'RotateCcw': `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="${classes}"><path d="M3 2v6h6"/><path d="M3 13a9 9 0 1 0 3-7.7L3 8"/></svg>`,
+            };
+            return iconMap[name] || '';
+        };
+        
+        // --- PROGRESS & TOGGLE LOGIC ---
 
-  // Celebration animation with stars & confetti
-  function celebrate() {
-    winSound.play();
+        const setProgress = (value) => {
+            progressValue = value;
+            const indicator = document.getElementById('progress-indicator');
+            const label = document.getElementById('progress-label');
+            
+            if (indicator && label) {
+                indicator.style.width = `${progressValue}%`;
+                label.innerHTML = `${progressValue}%`;
+                
+                // Update indicator class based on state
+                indicator.className = `h-2.5 rounded-full transition-all duration-1000 ${
+                    progressValue < 100 ? "bg-yellow-400" : "bg-green-500 shadow-md shadow-green-500/50"
+                }`;
+                
+                const statusText = document.getElementById('processing-status');
+                if (statusText) {
+                    statusText.textContent = isProcessed ? "Processing Complete!" : "Analyzing content and generating titles...";
+                }
+            }
+        };
 
-    // Show stars with pop animation
-    starsContainer.style.display = 'flex';
-    const stars = starsContainer.querySelectorAll('.star');
-    stars.forEach((star, i) => {
-      star.classList.remove('pop');
-      setTimeout(() => {
-        star.classList.add('pop');
-      }, i * 200);
-    });
+        const startProgressSimulation = () => {
+            if (progressInterval) clearInterval(progressInterval);
+            
+            progressInterval = setInterval(() => {
+                if (progressValue >= 95) {
+                    clearInterval(progressInterval);
+                    progressInterval = null;
+                    setProgress(95); // Stop just before 100
+                } else {
+                    setProgress(progressValue + Math.floor(Math.random() * 10) + 1);
+                }
+            }, 500);
+        };
 
-    // Create confetti
-    createConfetti();
+        const stopProgressSimulation = () => {
+            if (progressInterval) clearInterval(progressInterval);
+            progressInterval = null;
+            setProgress(100);
+        };
 
-    // Hide stars after 3 seconds
-    setTimeout(() => {
-      starsContainer.style.display = 'none';
-      confettiContainer.innerHTML = '';
-    }, 3000);
-  }
+        const updateToggleUI = () => {
+            const toggleTrack = document.getElementById('viral-toggle-track');
+            const toggleKnob = document.getElementById('viral-toggle-knob');
+            const toggleZap = document.getElementById('viral-toggle-zap');
+            const toggleText = document.getElementById('viral-toggle-text');
 
-  // Confetti pieces creation
-  function createConfetti() {
-    confettiContainer.innerHTML = '';
-    const confettiCount = 60;
-    for(let i=0; i<confettiCount; i++) {
-      const confetti = document.createElement('div');
-      confetti.classList.add('confetti-piece');
-      confetti.style.left = Math.random() * window.innerWidth + 'px';
-      confetti.style.backgroundColor = `hsl(${Math.random()*360}, 90%, 60%)`;
-      confetti.style.animationDuration = (Math.random() * 1 + 1.5) + 's';
-      confetti.style.animationDelay = (Math.random() * 0.5) + 's';
-      confetti.style.transform = `rotate(${Math.random()*360}deg)`;
-      confettiContainer.appendChild(confetti);
-    }
-  }
+            if (toggleTrack && toggleKnob && toggleZap && toggleText) {
+                // Track
+                toggleTrack.className = `w-14 h-8 flex items-center rounded-full p-1 cursor-pointer transition-all duration-300 backdrop-blur-3xl border ${
+                    isViralBoostEnabled 
+                        ? "bg-green-500/70 border-green-400/50" 
+                        : "bg-white/10 border-white/20"
+                }`;
+                toggleTrack.style.boxShadow = isViralBoostEnabled 
+                    ? 'inset 0 0 10px rgba(0, 255, 0, 0.4), 0 4px 10px rgba(0, 0, 0, 0.6)' 
+                    : 'inset 0 0 5px rgba(255, 255, 255, 0.1), 0 4px 10px rgba(0, 0, 0, 0.6)';
 
-  // Reset game
-  function resetGame() {
-    boardState.fill('');
-    gameOver = false;
-    colorIndex = 0;
-    status.textContent = "Your turn (X)";
-    starsContainer.style.display = 'none';
-    confettiContainer.innerHTML = '';
-    newGameBtn.style.display = 'none';
-    createBoard();
-    document.body.style.background = bgColors[0];
-  }
+                // Knob
+                toggleKnob.style.transform = isViralBoostEnabled ? 'translateX(24px)' : 'translateX(0)';
 
-  // Exit game - simply closes window/tab (if possible)
-  function exitGame() {
-    if(confirm("Are you sure you want to exit the game?")) {
-      window.close();
-    }
-  }
+                // Zap Icon & Text (Using class for color control)
+                toggleZap.classList.toggle('text-green-400', isViralBoostEnabled);
+                toggleZap.classList.toggle('text-gray-500', !isViralBoostEnabled);
+                toggleText.classList.toggle('text-white', isViralBoostEnabled);
+                toggleText.classList.toggle('text-gray-400', !isViralBoostEnabled);
+            }
+        };
 
-  // Initialize
-  createBoard();
-  document.body.style.background = bgColors[0];
+        const toggleViralBoost = () => {
+            isViralBoostEnabled = !isViralBoostEnabled;
+            updateToggleUI();
+        };
 
-  newGameBtn.addEventListener('click', resetGame);
-  exitBtn.addEventListener('click', exitGame);
+        // --- FILE HANDLING & PROCESSING ---
 
-</script>
+        const handleFileChange = (event) => {
+            const selectedFile = event.target.files?.[0];
+            if (selectedFile && selectedFile.type === "video/mp4") {
+                file = selectedFile;
+                processFile();
+            }
+        };
 
+        const handleDrop = (event) => {
+            event.preventDefault();
+            const droppedFile = event.dataTransfer.files?.[0];
+            if (droppedFile && droppedFile.type === "video/mp4") {
+                file = droppedFile;
+                processFile();
+            }
+        };
+
+        const processFile = () => {
+            isProcessing = true;
+            isProcessed = false;
+            updateUI();
+            startProgressSimulation();
+            
+            // Simulate file processing duration
+            setTimeout(() => {
+                stopProgressSimulation();
+                
+                // Generate viral content after a small delay to show 100%
+                setTimeout(() => {
+                    generateViralContent();
+                    isProcessing = false;
+                    isProcessed = true;
+                    updateUI();
+                }, 500);
+            }, 3000);
+        };
+
+        const generateViralContent = () => {
+            if (!file) return;
+            const fileName = file.name;
+            // Remove file extension
+            const videoName = fileName.replace(/\.[^/.]+$/, "");
+            
+            // Generate viral titles
+            titles = [
+              `🔥 ULTIMATE ${videoName} Guide! (FanPlusFollow Secret)`,
+              `📈 ${videoName}: Watch How We Went VIRAL in 24 Hours!`,
+              `🤯 You Won't BELIEVE This ${videoName} Trick!`,
+            ];
+            
+            // Generate description
+            description = `🎬 ${videoName} - Watch this incredible video to discover amazing insights!\n\n` +
+              `✨ What you'll learn:\n` +
+              `✅ Key techniques from FanPlusFollow's viral success\n` +
+              `✅ Insider tips from YouTube growth experts\n` +
+              `✅ Step-by-step instructions for success\n\n` +
+              `👍 Don't forget to LIKE, COMMENT, and SUBSCRIBE to @FanPlusFollow for more amazing content!\n` +
+              `🔔 Turn on notifications so you never miss an update!\n\n` +
+              `Check out the FanPlusFollow Channel here: ${YOUTUBE_CHANNEL_LINK}\n\n` +
+              `Follow Manmohit Singh on Instagram: ${INSTAGRAM_LINK}\n\n` +
+              `#FanPlusFollow #YouTubeGrowth #ViralVideo #ContentCreation #YouTubeTips`;
+            
+            // Generate viral score (0-100) - Influenced by Viral Mode toggle
+            const scoreBase = isViralBoostEnabled ? 78 : 65;
+            viralScore = Math.floor(Math.random() * 20) + scoreBase; // 65-95 or 78-98
+        };
+
+        const handleRegenerate = () => {
+            if (file) {
+                generateViralContent();
+                updateUI();
+            }
+        };
+
+        const copyToClipboard = (text, index) => {
+            const tempElement = document.createElement('textarea');
+            tempElement.value = text;
+            document.body.appendChild(tempElement);
+            tempElement.select();
+            document.execCommand('copy');
+            document.body.removeChild(tempElement);
+            
+            copiedIndex = index;
+            updateUI(); // Re-render the UI to show the "Copied" checkmark
+            setTimeout(() => {
+                copiedIndex = null;
+                updateUI(); // Re-render to revert to the "Copy" icon
+            }, 2000);
+        };
+
+        const resetApp = () => {
+            file = null;
+            isProcessing = false;
+            isProcessed = false;
+            viralScore = 0;
+            titles = [];
+            description = "";
+            progressValue = 0;
+            if (progressInterval) clearInterval(progressInterval);
+
+            const fileInput = document.getElementById('file-upload-input');
+            if (fileInput) fileInput.value = "";
+            
+            updateUI();
+        };
+
+        // --- UI RENDERING FUNCTIONS (Replaces React JSX rendering) ---
+
+        const renderUploadSection = () => {
+            const uploadContainer = document.getElementById('upload-section-content');
+            if (!uploadContainer) return;
+
+            if (!file) {
+                // Initial state: Show drag & drop area
+                uploadContainer.innerHTML = `
+                    <div
+                        id="file-drop-area"
+                        class="relative p-0.5 rounded-[30px] cursor-pointer transition-all hover:scale-[1.01] overflow-hidden"
+                        style="background: radial-gradient(circle at center, #1b0e2d 0%, #0A0D14 70%); padding: 2px; background-clip: padding-box, border-box; background-origin: padding-box, border-box; border: none;"
+                        ondragover="event.preventDefault()"
+                    >
+                        <div class="absolute inset-0 border-2 border-dashed border-white/40 rounded-[28px] pointer-events-none z-0"></div>
+                        <div class="relative z-10 bg-transparent backdrop-blur-md rounded-[28px] p-8 text-center flex flex-col items-center justify-center gap-4 h-full">
+                            ${icon('Upload', 'h-10 w-10 text-white/80')}
+                            <div>
+                            <p class="font-medium">Drag & drop your MP4 file here</p>
+                            <p class="text-sm text-indigo-300 mt-1">or click to browse (Max 500MB)</p>
+                            </div>
+                            <button id="select-file-btn" class="cta-button px-6 py-3 rounded-full font-medium transition-all duration-300 ease-in-out shadow-xl transform active:scale-[0.98] active:shadow-none bg-gradient-to-r from-[#f97316]/50 via-[#ef4444]/50 to-[#c084fc]/50 hover:from-[#f97316] hover:via-[#ef4444] hover:to-[#818cf8] backdrop-blur-3xl text-white border border-white/50">
+                            Select File
+                            </button>
+                        </div>
+                        <input type="file" id="file-upload-input" class="hidden" accept="video/mp4" onchange="handleFileChange(event)"/>
+                    </div>
+                `;
+                // Must re-attach manual listeners for drop and click after innerHTML update
+                const dropArea = document.getElementById('file-drop-area');
+                if (dropArea) {
+                    dropArea.addEventListener('drop', handleDrop);
+                    dropArea.addEventListener('click', () => document.getElementById('file-upload-input')?.click());
+                }
+            } else {
+                // File selected state
+                const processingArea = isProcessing || isProcessed ? `
+                    <div class="w-full max-w-sm mb-4">
+                        <div class="flex justify-between mb-2">
+                            <span id="processing-status" class="text-yellow-300">
+                                ${isProcessed ? "Processing Complete!" : "Analyzing content and generating titles..."}
+                            </span>
+                            <span id="progress-label" class="text-yellow-300 font-bold">${progressValue}%</span>
+                        </div>
+                        <div class="w-full bg-white/10 rounded-full h-2.5">
+                            <div
+                                id="progress-indicator"
+                                class="h-2.5 rounded-full transition-all duration-1000 ${
+                                    progressValue < 100 ? "bg-yellow-400" : "bg-green-500 shadow-md shadow-green-500/50"
+                                }"
+                                style="width: ${progressValue}%"
+                            ></div>
+                        </div>
+                    </div>
+                    ${isProcessed ? `
+                        <div class="flex gap-4 mt-6">
+                            <button 
+                                onclick="resetApp()"
+                                class="cta-button bg-gray-700/50 hover:bg-gray-600/70 text-white border border-white/10 backdrop-blur-xl shadow-inner shadow-white/5 px-6 py-3 rounded-full font-medium"
+                            >
+                                ${icon('RotateCcw', 'mr-2 h-4 w-4')}
+                                Start New Video
+                            </button>
+                        </div>
+                    ` : ''}
+                ` : '';
+
+                uploadContainer.innerHTML = `
+                    <div class="flex flex-col items-center">
+                        <div class="flex items-center gap-3 mb-4 p-4 rounded-[24px] bg-white/10 backdrop-blur-sm w-full max-w-sm">
+                            ${icon('Play', 'h-6 w-6 text-green-400 flex-shrink-0')}
+                            <div class="text-left overflow-hidden">
+                                <p class="font-medium truncate">${file.name}</p>
+                                <p class="text-xs text-indigo-300">
+                                    ${(file.size / (1024 * 1024)).toFixed(2)} MB
+                                </p>
+                            </div>
+                        </div>
+                        ${processingArea}
+                    </div>
+                `;
+            }
+        };
+
+        const renderResults = () => {
+            const resultsContainer = document.getElementById('results-section');
+            if (!resultsContainer) return;
+
+            if (isProcessed) {
+                // --- Viral Score Section ---
+                const scoreColorClass = viralScore < 75 ? "text-red-400" : viralScore < 90 ? "text-yellow-400" : "text-green-400";
+                const scoreText = viralScore < 75 
+                    ? "Rethink your content hook for better reach." 
+                    : viralScore < 90 
+                        ? "Solid performance. A few tweaks could push it higher." 
+                        : "VIRAL READY! This content is primed for maximum engagement. Post ASAP.";
+                const scoreGlowStyle = viralScore >= 90 ? 'text-shadow: 0 0 15px rgba(0, 255, 0, 0.7);' : 'text-shadow: none;';
+                
+                const viralScoreHTML = `
+                    <div class="glass-card p-6 rounded-[32px] mb-12">
+                        <div class="mb-4"><h2 class="text-2xl font-semibold">Viral Potential Score</h2></div>
+                        <div class="p-1">
+                            <div class="flex items-center justify-between mb-4">
+                                <span class="text-indigo-300 text-lg">Estimated Viral Score</span>
+                                <span class="text-4xl sm:text-5xl font-extrabold transition-colors duration-500 viral-score-text ${scoreColorClass}" style="${scoreGlowStyle}">
+                                    ${viralScore}%
+                                </span>
+                            </div>
+                            <div class="w-full bg-white/10 rounded-full h-3">
+                                <div
+                                    class="h-3 rounded-full transition-all duration-1000 ${
+                                        viralScore < 75 ? "bg-red-500" : viralScore < 90 ? "bg-yellow-500" : "bg-green-500"
+                                    }"
+                                    style="width: ${viralScore}%"
+                                ></div>
+                            </div>
+                            <p class="text-sm text-indigo-300 mt-3">${scoreText}</p>
+                        </div>
+                    </div>
+                `;
+
+                // --- Title Options Section ---
+                const titlesHTML = `
+                    <div class="mb-12">
+                        <div class="flex justify-between items-center mb-6">
+                            <h2 class="text-2xl font-semibold text-white">Suggested Titles</h2>
+                            <button 
+                                onclick="handleRegenerate()"
+                                class="cta-button bg-gray-700/50 hover:bg-gray-600/70 text-white border border-white/10 backdrop-blur-xl text-sm px-4 py-2 shadow-inner shadow-white/5 rounded-full font-medium"
+                            >
+                                ${icon('RotateCcw', 'mr-2 h-3 w-3')}
+                                Regenerate
+                            </button>
+                        </div>
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                            ${titles.map((title, index) => `
+                                <div class="bg-white/5 backdrop-blur-xl border border-white/10 overflow-hidden hover:border-pink-500 transition-all shadow-xl p-4 rounded-[32px]">
+                                    <div class="p-1">
+                                        <div class="flex justify-between items-start mb-2">
+                                            <span class="text-xs font-medium px-2 py-1 rounded-full bg-pink-700/50 text-pink-300 border border-pink-500/30">
+                                                Option ${index + 1}
+                                            </span>
+                                            <button
+                                                onclick="copyToClipboard('${title.replace(/'/g, "\\'")}', ${index})"
+                                                class="h-8 w-8 p-0 bg-transparent hover:bg-white/10 text-indigo-300 hover:text-white shadow-none rounded-full"
+                                            >
+                                                ${copiedIndex === index ? icon('Check', 'h-4 w-4 text-green-400') : icon('Copy', 'h-4 w-4')}
+                                            </button>
+                                        </div>
+                                        <p class="text-base min-h-[50px] flex items-center text-white/90 p-1">${title}</p>
+                                    </div>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                `;
+                
+                // --- Description Section ---
+                // Escape single quotes in description for JavaScript string literal
+                const escapedDescription = description.replace(/'/g, "\\'").replace(/\n/g, '\\n');
+
+                const descriptionHTML = `
+                    <div class="glass-card p-6 rounded-[32px] mb-12">
+                        <div class="mb-4">
+                            <h2 class="flex justify-between items-center text-xl sm:text-2xl font-semibold">
+                                <span>Optimized Description & Hashtags</span>
+                                <button
+                                    onclick="copyToClipboard('${escapedDescription}', 3)"
+                                    class="cta-button bg-gray-700/50 hover:bg-gray-600/70 text-white border border-white/10 backdrop-blur-xl text-sm px-4 py-2 shadow-inner shadow-white/5 rounded-full font-medium"
+                                >
+                                    ${copiedIndex === 3 ? `<span class="flex items-center">${icon('Check', 'mr-2 h-4 w-4 text-green-400')} Copied!</span>` : `<span class="flex items-center">${icon('Copy', 'mr-2 h-4 w-4')} Copy All</span>`}
+                                </button>
+                            </h2>
+                        </div>
+                        <div class="p-1">
+                            <div class="bg-black/40 rounded-[24px] p-4 sm:p-5 min-h-[250px] max-h-96 border border-white/20 overflow-auto">
+                                <pre class="whitespace-pre-wrap text-xs sm:text-sm font-mono text-indigo-100 leading-relaxed">${description}</pre>
+                            </div>
+                        </div>
+                    </div>
+                `;
+
+                resultsContainer.innerHTML = viralScoreHTML + titlesHTML + descriptionHTML;
+                resultsContainer.style.display = 'block';
+            } else {
+                resultsContainer.innerHTML = '';
+                resultsContainer.style.display = 'none';
+            }
+        };
+
+        const updateUI = () => {
+            updateToggleUI();
+            renderUploadSection();
+            renderResults();
+            document.getElementById('results-section').style.display = isProcessed ? 'block' : 'none';
+        };
+
+        const initApp = () => {
+            // Initial UI render
+            updateUI();
+
+            // Attach toggle listener once
+            document.getElementById('viral-toggle-track')?.addEventListener('click', toggleViralBoost);
+        };
+    </script>
 </body>
 </html>
