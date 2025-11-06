@@ -4,8 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>FanPlusFollow Viral Content Generator</title>
-    <!-- Load Tailwind CSS from CDN -->
-    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Load Tailwind CSS from CDN --><script src="https://cdn.tailwindcss.com"></script>
     <style>
         /* Import Inter Font */
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
@@ -17,8 +16,8 @@
             backdrop-filter: blur(24px); /* backdrop-blur-3xl */
             border: 1px solid rgba(255, 255, 255, 0.1); /* border border-white/10 */
             border-radius: 32px;
-            box-shadow: 0 10px 15px rgba(0, 0, 0, 0.5);
             transition: all 300ms ease-in-out;
+            box-shadow: 0 10px 15px rgba(0, 0, 0, 0.5);
         }
 
         /* Custom Styles for CTA Buttons */
@@ -42,19 +41,25 @@
         .viral-score-text {
             transition: color 500ms, text-shadow 500ms;
         }
+
+        /* Glow effect for the file drop area's dashed border */
+        .dashed-border-glow {
+            transition: all 300ms ease-in-out;
+        }
+        /* Using the dark purple glow for the hover effect on the drop area */
+        #file-drop-area:hover .dashed-border-glow {
+            border-color: rgba(27, 14, 45, 0.8); /* dark purple */
+            box-shadow: 0 0 20px rgba(27, 14, 45, 0.5);
+        }
     </style>
 </head>
 <body class="text-white p-4 md:p-8" onload="initApp()">
 
     <div class="max-w-4xl mx-auto">
         
-        <!-- ============================================== -->
-        <!-- HEADER - Sticky Glass Bar -->
-        <!-- ============================================== -->
-        <header id="app-header" class="sticky top-0 z-20 glass-card p-4 mb-8 flex flex-col md:flex-row items-center justify-between">
+        <!-- ============================================== --><!-- HEADER - Glass Bar --><!-- UPDATED: Glow color to match background purple --><!-- ============================================== --><header id="app-header" class="glass-card p-6 mb-8 flex flex-col md:flex-row items-center justify-between transition-all duration-500 hover:shadow-2xl hover:shadow-purple-900/40">
             <div class="flex items-center space-x-4 mb-4 md:mb-0">
-                <!-- FanPlusFollow Logo SVG (Replicates FanPlusFollowLogo Component) -->
-                <div class="w-12 h-12">
+                <!-- FanPlusFollow Logo SVG (Replicates FanPlusFollowLogo Component) --><div class="w-12 h-12">
                     <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
                       <defs>
                         <linearGradient id="logoGradient" x1="0%" y1="0%" x2="100%" y2="100%">
@@ -75,18 +80,15 @@
                       FanPlusFollow
                     </h1>
                     <p class="text-indigo-300 text-sm flex items-center">
-                        <!-- Users Icon (Lucide) -->
-                        <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-1 h-3 w-3"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                        <!-- Users Icon (Lucide) --><svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-1 h-3 w-3"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
                         Growth AI
                     </p>
                 </div>
             </div>
             
-            <!-- Viral Mode Toggle (Replicates IosToggleSwitch Component) -->
-            <div class="flex flex-col sm:flex-row items-center gap-3">
+            <!-- Viral Mode Toggle (Replicates IosToggleSwitch Component) --><div class="flex flex-col sm:flex-row items-center gap-3">
                 <div class="flex items-center space-x-3">
-                    <!-- Zap Icon (Lucide) -->
-                    <svg id="viral-toggle-zap" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5 transition-colors duration-300 text-green-400"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+                    <!-- Zap Icon (Lucide) --><svg id="viral-toggle-zap" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5 transition-colors duration-300 text-green-400"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
                     <span id="viral-toggle-text" class="text-sm font-medium transition-colors duration-300 text-white">
                         Viral Mode
                     </span>
@@ -107,59 +109,26 @@
         </header>
 
         <main>
-            <!-- Main CTAs Section -->
-            <div class="flex flex-wrap justify-center gap-4 mb-10">
-                <button 
-                  class="cta-button px-6 py-3 rounded-full font-medium transition-all duration-300 ease-in-out shadow-xl transform active:scale-[0.98] active:shadow-none bg-gradient-to-r from-[#f97316]/50 via-[#ef4444]/50 to-[#c084fc]/50 hover:from-[#f97316] hover:via-[#ef4444] hover:to-[#818cf8] backdrop-blur-3xl text-white border border-white/50"
-                  onclick="window.open('https://www.youtube.com/@fanplusfollow', '_blank')"
-                >
-                    <!-- Heart Icon (Lucide) -->
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" stroke="none" class="mr-2 h-4 w-4 fill-white"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5L12 22l7-8z"/></svg>
-                    Subscribe Now
-                </button>
-                <button 
-                  class="cta-button px-6 py-3 rounded-full font-medium transition-all duration-300 ease-in-out shadow-xl transform active:scale-[0.98] active:shadow-none bg-gradient-to-r from-[#f97316]/50 via-[#ef4444]/50 to-[#c084fc]/50 hover:from-[#f97316] hover:via-[#ef4444] hover:to-[#818cf8] backdrop-blur-3xl text-white border border-white/50"
-                  onclick="window.open('https://www.instagram.com/_manmohit_singh_/', '_blank')"
-                >
-                    <!-- Star Icon (Lucide) -->
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" stroke="none" class="mr-2 h-4 w-4 fill-white"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-                    Follow Now
-                </button>
-            </div>
-
-            <!-- ============================================== -->
-            <!-- Upload Section (Glass Card) -->
-            <!-- ============================================== -->
-            <div class="glass-card p-6 rounded-[32px] mb-12">
+            <!-- Main CTAs Section REMOVED to avoid redundancy with the footer section --><!-- ============================================== --><!-- Upload Section (Glass Card) --><!-- UPDATED: Glow color to match background purple --><!-- ============================================== --><div class="glass-card p-6 rounded-[32px] mb-12 transition-all duration-500 hover:shadow-2xl hover:shadow-purple-900/40">
                 <div class="mb-4">
                     <h2 class="text-2xl font-semibold flex items-center gap-2">
-                        <!-- Upload Icon (Lucide) -->
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-indigo-400"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" x2="12" y1="3" y2="15"/></svg>
+                        <!-- Upload Icon (Lucide) --><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-indigo-400"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" x2="12" y1="3" y2="15"/></svg>
                         Upload Your Video
                     </h2>
                 </div>
                 <div class="p-1" id="upload-section-content">
-                    <!-- Content rendered by JavaScript -->
-                </div>
+                    <!-- Content rendered by JavaScript --></div>
             </div>
 
-            <!-- ============================================== -->
-            <!-- Results Section (Hidden until processed) -->
-            <!-- ============================================== -->
-            <div id="results-section" style="display: none;">
-                <!-- Content rendered by JavaScript after processing -->
-            </div>
+            <!-- ============================================== --><!-- Results Section (Hidden until processed) --><!-- ============================================== --><div id="results-section" style="display: none;">
+                <!-- Content rendered by JavaScript after processing --></div>
         </main>
 
-        <!-- ============================================== -->
-        <!-- Channel Promotion (Glass Card) -->
-        <!-- ============================================== -->
-        <div class="mt-12 w-full px-0 sm:px-4">
-            <div class="glass-card p-4 sm:p-6 max-w-4xl mx-auto">
+        <!-- ============================================== --><!-- Channel Promotion (Glass Card) --><!-- UPDATED: Glow color to match background purple --><!-- ============================================== --><div class="mt-12 w-full px-0 sm:px-4">
+            <div class="glass-card p-4 sm:p-6 max-w-4xl mx-auto transition-all duration-500 hover:shadow-2xl hover:shadow-purple-900/40">
                 <div class="p-1">
                     <div class="flex flex-col items-center">
-                        <!-- FanPlusFollow Logo SVG -->
-                        <div class="w-16 h-16 mb-2 sm:mb-4">
+                        <!-- FanPlusFollow Logo SVG --><div class="w-16 h-16 mb-2 sm:mb-4">
                             <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
                               <defs><linearGradient id="logoGradient2" x1="0%" y1="0%" x2="100%" y2="100%">
                                   <stop offset="0%" style="stop-color:#f97316; stop-opacity:1" />
@@ -184,16 +153,14 @@
                             class="cta-button px-6 py-3 rounded-full font-medium transition-all duration-300 ease-in-out shadow-xl transform active:scale-[0.98] active:shadow-none bg-gradient-to-r from-[#f97316]/50 via-[#ef4444]/50 to-[#c084fc]/50 hover:from-[#f97316] hover:via-[#ef4444] hover:to-[#818cf8] backdrop-blur-3xl text-white border border-white/50"
                             onclick="window.open('https://www.youtube.com/@fanplusfollow', '_blank')"
                           >
-                            <!-- Users Icon (Lucide) -->
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2 h-4 w-4"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                            <!-- Users Icon (Lucide) --><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2 h-4 w-4"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
                             Subscribe Now
                           </button>
                           <button 
                             class="cta-button px-6 py-3 rounded-full font-medium transition-all duration-300 ease-in-out shadow-xl transform active:scale-[0.98] active:shadow-none bg-gradient-to-r from-[#f97316]/50 via-[#ef4444]/50 to-[#c084fc]/50 hover:from-[#f97316] hover:via-[#ef4444] hover:to-[#818cf8] backdrop-blur-3xl text-white border border-white/50"
                             onclick="window.open('https://www.instagram.com/_manmohit_singh_/', '_blank')"
                           >
-                            <!-- Star Icon (Lucide) -->
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" stroke="none" class="mr-2 h-4 w-4"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                            <!-- Star Icon (Lucide) - CHANGED to outlined style --><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2 h-4 w-4"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
                             Follow Now
                           </button>
                         </div>
@@ -202,16 +169,12 @@
             </div>
         </div>
         
-        <!-- Footer -->
-        <footer class="text-center text-indigo-400/70 text-xs mt-12 py-6 border-t border-white/5">
+        <!-- Footer --><footer class="text-center text-indigo-400/70 text-xs mt-12 py-6 border-t border-white/5">
           <p>© 2026 FanPlusFollow AI Growth Tools. All rights reserved.</p>
         </footer>
     </div>
 
-    <!-- ============================================== -->
-    <!-- JAVASCRIPT LOGIC -->
-    <!-- ============================================== -->
-    <script>
+    <!-- ============================================== --><!-- JAVASCRIPT LOGIC --><!-- ============================================== --><script>
         // --- GLOBAL STATE ---
         let file = null;
         let isProcessing = false;
@@ -313,7 +276,13 @@
 
         const toggleViralBoost = () => {
             isViralBoostEnabled = !isViralBoostEnabled;
-            updateToggleUI();
+            
+            // CRITICAL FIX: If results are visible, regenerate the score/content based on the new toggle state
+            if (isProcessed) {
+                generateViralContent();
+            }
+            // Update the entire UI (including the toggle appearance and results if necessary)
+            updateUI();
         };
 
         // --- FILE HANDLING & PROCESSING ---
@@ -439,7 +408,7 @@
                         style="background: radial-gradient(circle at center, #1b0e2d 0%, #0A0D14 70%); padding: 2px; background-clip: padding-box, border-box; background-origin: padding-box, border-box; border: none;"
                         ondragover="event.preventDefault()"
                     >
-                        <div class="absolute inset-0 border-2 border-dashed border-white/40 rounded-[28px] pointer-events-none z-0"></div>
+                        <div class="absolute inset-0 border-2 border-dashed border-white/40 rounded-[28px] pointer-events-none z-0 dashed-border-glow"></div>
                         <div class="relative z-10 bg-transparent backdrop-blur-md rounded-[28px] p-8 text-center flex flex-col items-center justify-center gap-4 h-full">
                             ${icon('Upload', 'h-10 w-10 text-white/80')}
                             <div>
@@ -523,8 +492,9 @@
                         : "VIRAL READY! This content is primed for maximum engagement. Post ASAP.";
                 const scoreGlowStyle = viralScore >= 90 ? 'text-shadow: 0 0 15px rgba(0, 255, 0, 0.7);' : 'text-shadow: none;';
                 
+                // UPDATED: Glow color to match background purple
                 const viralScoreHTML = `
-                    <div class="glass-card p-6 rounded-[32px] mb-12">
+                    <div class="glass-card p-6 rounded-[32px] mb-12 transition-all duration-500 hover:shadow-2xl hover:shadow-purple-900/40">
                         <div class="mb-4"><h2 class="text-2xl font-semibold">Viral Potential Score</h2></div>
                         <div class="p-1">
                             <div class="flex items-center justify-between mb-4">
@@ -562,7 +532,7 @@
                         
                         <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
                             ${titles.map((title, index) => `
-                                <div class="bg-white/5 backdrop-blur-xl border border-white/10 overflow-hidden hover:border-pink-500 transition-all shadow-xl p-4 rounded-[32px]">
+                                <div class="bg-white/5 backdrop-blur-xl border border-white/10 overflow-hidden hover:border-purple-900 transition-all shadow-xl hover:shadow-purple-900/40 p-4 rounded-[32px]">
                                     <div class="p-1">
                                         <div class="flex justify-between items-start mb-2">
                                             <span class="text-xs font-medium px-2 py-1 rounded-full bg-pink-700/50 text-pink-300 border border-pink-500/30">
@@ -587,8 +557,9 @@
                 // Escape single quotes in description for JavaScript string literal
                 const escapedDescription = description.replace(/'/g, "\\'").replace(/\n/g, '\\n');
 
+                // UPDATED: Glow color to match background purple
                 const descriptionHTML = `
-                    <div class="glass-card p-6 rounded-[32px] mb-12">
+                    <div class="glass-card p-6 rounded-[32px] mb-12 transition-all duration-500 hover:shadow-2xl hover:shadow-purple-900/40">
                         <div class="mb-4">
                             <h2 class="flex justify-between items-center text-xl sm:text-2xl font-semibold">
                                 <span>Optimized Description & Hashtags</span>
@@ -628,7 +599,7 @@
             updateUI();
 
             // Attach toggle listener once
-            document.getElementById('viral-toggle-track')?.addEventListener('click', toggleViralBoost);
+            // The listener is already attached via onclick="toggleViralBoost()" in the HTML, no need to re-attach.
         };
     </script>
 </body>
