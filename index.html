@@ -43,13 +43,23 @@
             border: 1px solid rgba(255, 255, 255, 0.08); /* Minimal border for definition */
         }
 
-        /* ENHANCED HOVER EFFECT for all main glass cards */
+        /* ENHANCED HOVER EFFECT for all main glass cards (Desktop/Mouse) */
         .glass-card:hover {
             transform: translateY(-8px) scale(1.005); /* More noticeable lift */
             box-shadow: 
                 0 30px 60px rgba(0, 0, 0, 0.9), 
                 0 0 0 2px rgba(192, 132, 252, 0.2), /* Subtle border glow on hover */
                 0 5px 15px rgba(0, 0, 0, 0.9); 
+        }
+
+        /* === MOBILE/TOUCH FIX: TAPPED HOVER CLASS === */
+        /* This class mirrors the :hover state and is applied via JavaScript on touchstart */
+        .glass-card.tapped-hover {
+            transform: translateY(-8px) scale(1.005) !important; 
+            box-shadow: 
+                0 30px 60px rgba(0, 0, 0, 0.9), 
+                0 0 0 2px rgba(192, 132, 252, 0.2), 
+                0 5px 15px rgba(0, 0, 0, 0.9) !important; 
         }
 
         /* ============================================== */
@@ -73,6 +83,17 @@
                 0 5px 15px rgba(0, 0, 0, 0.9);
         }
         
+        /* === MOBILE/TOUCH FIX: TAPPED HOVER CLASS === */
+        /* This class mirrors the :hover state and is applied via JavaScript on touchstart */
+        .title-result-card.tapped-hover {
+            transform: translateY(-6px) scale(1.01) !important; 
+            box-shadow:
+                0 25px 50px rgba(0, 0, 0, 0.95), 
+                0 0 0 2px rgba(192, 132, 252, 0.3), 
+                0 5px 15px rgba(0, 0, 0, 0.9) !important;
+        }
+
+
         /* Custom Styles for CTA Buttons - iOS Glass Look */
         .cta-button {
             transition: all 300ms cubic-bezier(0.25, 0.46, 0.45, 0.94);
@@ -188,33 +209,22 @@
         /* MOBILE RESPONSIVE TWEAKS (Touch/Tap Feedback) */
         /* ============================================== */
 
-        /* 1. Reset hover effects on touch devices (max-width: 767px) to prevent unwanted shifts */
+        /* 1. We no longer explicitly disable the :hover styles on mobile, 
+           instead we let JS manage the persistent hover effect (.tapped-hover). 
+           We keep the sharp :active press effect for good touch feedback. */
         @media (max-width: 767px) {
-            /* Main Cards */
-            .glass-card:hover {
-                transform: none !important; /* Disable the lift on mobile hover */
-                /* Revert box shadow to its standard state */
-                box-shadow: 0 15px 30px rgba(0, 0, 0, 0.8), inset 0 0 0 1px rgba(255, 255, 255, 0.05);
+            /* Apply a visual press effect on click/tap (:active) for all cards */
+            .glass-card:active,
+            .title-result-card:active {
+                transform: translateY(0px) scale(0.98) !important; /* Slight inward press effect */
+                box-shadow: 0 5px 10px rgba(0, 0, 0, 0.95), inset 0 0 5px rgba(255, 255, 255, 0.05);
             }
-            /* Result/Title Cards */
-            .title-result-card:hover {
-                transform: none !important; /* Disable the lift on mobile hover */
-                /* Revert box shadow to its standard state */
-                box-shadow: 0 8px 15px rgba(0, 0, 0, 0.7), inset 0 0 0 1px rgba(255, 255, 255, 0.05);
+            
+            /* Apply the press effect to the file drop area as well */
+            #file-drop-area:active {
+                transform: scale(0.98) !important;
+                box-shadow: 0 0 10px rgba(0, 0, 0, 0.8), inset 0 0 5px rgba(255, 255, 255, 0.05);
             }
-        }
-
-        /* 2. Apply a visual press effect on click/tap (:active) for all cards */
-        .glass-card:active,
-        .title-result-card:active {
-            transform: translateY(0px) scale(0.98) !important; /* Slight inward press effect */
-            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.95), inset 0 0 5px rgba(255, 255, 255, 0.05);
-        }
-        
-        /* 3. Apply the press effect to the file drop area as well */
-        #file-drop-area:active {
-            transform: scale(0.98) !important;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.8), inset 0 0 5px rgba(255, 255, 255, 0.05);
         }
 
     </style>
@@ -290,7 +300,8 @@
         </main>
 
         <!-- ============================================== --><!-- Channel Promotion (Glass Card) --><!-- ============================================== --><div class="mt-12 w-full px-0 sm:px-4">
-            <div class="glass-card fluid-transition p-4 sm:p-6 max-w-4xl mx-auto">
+            <!-- Added glass-card class to the wrapper for touch-hover listener -->
+            <div class="glass-card fluid-transition p-4 sm:p-6 max-w-4xl mx-auto"> 
                 <div class="p-1">
                     <div class="flex flex-col items-center">
                         <!-- FanPlusFollow Logo SVG --><div class="w-16 h-16 mb-2 sm:mb-4">
@@ -542,6 +553,7 @@
             if (file) {
                 generateViralContent();
                 updateUI();
+                attachTouchListeners(); // Ensure new result cards get the touch listener
             }
         };
 
@@ -581,7 +593,54 @@
             }
             
             updateUI();
+            attachTouchListeners(); // Ensure static cards still have listeners
         };
+
+        // --- NEW: TOUCH HOVER FIX LOGIC ---
+        
+        /**
+         * Attaches touch listeners to all glass cards to simulate persistent hover effect on mobile.
+         * We use the 'has-touch-listener' class to prevent double-attachment.
+         */
+        const attachTouchListeners = () => {
+            // Select all card elements that need the touch-hover behavior but don't have listeners yet
+            const cards = document.querySelectorAll('.glass-card:not(.has-touch-listener), .title-result-card:not(.has-touch-listener)');
+
+            // Function to handle the persistent hover state
+            const handleTouchHover = function(e) {
+                // Ignore touches inside interactive elements (buttons, inputs) so they can function normally
+                if (e.target.closest('button, input, textarea, a')) return;
+
+                // 1. Check if the element is already "hovered"
+                const isAlreadyHovered = this.classList.contains('tapped-hover');
+                
+                // 2. Remove 'tapped-hover' from ALL other cards
+                document.querySelectorAll('.glass-card, .title-result-card').forEach(el => {
+                    if (el !== this) {
+                        el.classList.remove('tapped-hover');
+                    }
+                });
+
+                // 3. Toggle the hover state on the current element
+                // First tap -> apply hover state. Second tap -> remove hover state (or allow action/navigation if applicable)
+                if (!isAlreadyHovered) {
+                    // Apply the hover style
+                    this.classList.add('tapped-hover');
+                } else {
+                    // Remove the hover style if tapped again
+                    this.classList.remove('tapped-hover');
+                }
+            };
+            
+            cards.forEach(element => {
+                // Attach touchstart listener to apply/toggle the hover class
+                element.addEventListener('touchstart', handleTouchHover, { passive: true });
+                
+                // Mark element so we don't attach listener twice (important for dynamic content)
+                element.classList.add('has-touch-listener'); 
+            });
+        };
+        // --- END TOUCH HOVER FIX LOGIC ---
 
         // --- UI RENDERING FUNCTIONS (Replaces React JSX rendering) ---
 
@@ -788,6 +847,8 @@
                 // NEW: Use a slight delay to ensure content is fully rendered before triggering the transition
                 setTimeout(() => {
                     resultsContainer.classList.add('show-results');
+                    // CRITICAL: Attach listeners to the newly created result cards
+                    attachTouchListeners(); 
                 }, 50);
 
             } else {
@@ -807,13 +868,15 @@
         };
 
         const initApp = () => {
-            // NEW: Ensure results section is hidden initially by removing the class
+            // Ensure results section is hidden initially
             const resultsContainer = document.getElementById('results-section');
             if (resultsContainer) {
                 resultsContainer.classList.remove('show-results');
             }
             // Initial UI render
             updateUI();
+            // Attach listeners to all static cards on load
+            attachTouchListeners();
         };
     </script>
 </body>
