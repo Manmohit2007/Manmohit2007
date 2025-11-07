@@ -18,7 +18,7 @@
 <meta name="twitter:description" content="Growth AI">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FanPlusFollow Viral Content Generator</title>
+    <title>FanPlusFollow</title>
     <!-- Load Tailwind CSS from CDN --><script src="https://cdn.tailwindcss.com"></script>
     <style>
         /* Import Inter Font */
@@ -26,40 +26,48 @@
         
         /* FIX: Robust Font Stack for Cross-Browser Consistency */
         :root { 
+            /* Prioritize Inter, then use a comprehensive list of system fonts */
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif; 
         }
 
         /* Custom Transition: Match glass-card to be used universally */
         .fluid-transition {
             transition: all 400ms cubic-bezier(0.25, 0.46, 0.45, 0.94);
-            will-change: transform, box-shadow;
+            /* CRITICAL FIX: Explicitly set will-change for performance and consistency */
+            will-change: transform, box-shadow, filter, backdrop-filter, -webkit-backdrop-filter; 
         }
 
         /* ============================================== */
-        /* MAIN GLASS CARD STYLES */
+        /* MAIN GLASS CARD STYLES (High Compatibility) */
         /* ============================================== */
         .glass-card {
-            background-color: rgba(255, 255, 255, 0.03); /* Lower opacity for depth */
-            /* CRITICAL FIX: Add -webkit- prefix for Safari/iOS compatibility */
+            /* FALLBACK: Solid dark background if backdrop-filter is not supported 
+               This ensures the card is visible and readable on all platforms. */
+            background-color: rgba(10, 10, 10, 0.7); 
+            
+            /* GLASS STYLES: Applied on top of the fallback if supported */
+            background-color: rgba(255, 255, 255, 0.03); 
+            
+            /* CRITICAL FIX: Add -webkit- prefix for Safari/iOS/Samsung compatibility */
             -webkit-backdrop-filter: blur(40px);
-            backdrop-filter: blur(40px); /* Higher blur for intense glass effect */
-            border-radius: 36px; /* Slightly larger radius */
-            /* Apply custom transition */
+            backdrop-filter: blur(40px); 
+            
+            border-radius: 36px;
             box-shadow: 0 15px 30px rgba(0, 0, 0, 0.8), inset 0 0 0 1px rgba(255, 255, 255, 0.05); 
-            border: 1px solid rgba(255, 255, 255, 0.08); /* Minimal border for definition */
+            border: 1px solid rgba(255, 255, 255, 0.08);
         }
 
         /* ENHANCED HOVER EFFECT for all main glass cards (Desktop/Mouse) */
         .glass-card:hover {
-            transform: translateY(-8px) scale(1.005); /* More noticeable lift */
+            transform: translateY(-8px) scale(1.005);
             box-shadow: 
                 0 30px 60px rgba(0, 0, 0, 0.9), 
-                0 0 0 2px rgba(192, 132, 252, 0.2), /* Subtle border glow on hover */
+                0 0 0 2px rgba(192, 132, 252, 0.2), 
                 0 5px 15px rgba(0, 0, 0, 0.9); 
         }
 
         /* === MOBILE/TOUCH FIX: TAPPED HOVER CLASS === */
-        /* This class mirrors the :hover state and is applied via JavaScript on touchstart */
+        /* Mirrors the :hover state and is applied via JavaScript on touchstart */
         .glass-card.tapped-hover {
             transform: translateY(-8px) scale(1.005) !important; 
             box-shadow: 
@@ -69,30 +77,34 @@
         }
 
         /* ============================================== */
-        /* TITLE RESULT CARD STYLES (FIXED HOVER) */
+        /* TITLE RESULT CARD STYLES (High Compatibility) */
         /* ============================================== */
         .title-result-card {
-            background-color: rgba(255, 255, 255, 0.05); /* Slightly brighter base than main card */
-            /* CRITICAL FIX: Add -webkit- prefix for Safari/iOS compatibility */
+            /* FALLBACK: Solid dark background if backdrop-filter is not supported */
+            background-color: rgba(10, 10, 10, 0.7); 
+            
+            /* GLASS STYLES: Applied on top of the fallback if supported */
+            background-color: rgba(255, 255, 255, 0.05);
+            
+            /* CRITICAL FIX: Add -webkit- prefix for Safari/iOS/Samsung compatibility */
             -webkit-backdrop-filter: blur(20px);
             backdrop-filter: blur(20px);
+            
             border-radius: 32px;
             border: 1px solid rgba(255, 255, 255, 0.1);
             box-shadow: 0 8px 15px rgba(0, 0, 0, 0.7), inset 0 0 0 1px rgba(255, 255, 255, 0.05);
-            /* Apply custom transition */
         }
 
-        /* FIX: Enhanced Hover for Title/Result cards (Mimics main glass card) */
+        /* FIX: Enhanced Hover for Title/Result cards */
         .title-result-card:hover {
-            transform: translateY(-6px) scale(1.01); /* Strong lift, slightly reduced from -8px for smaller element */
+            transform: translateY(-6px) scale(1.01); 
             box-shadow:
-                0 25px 50px rgba(0, 0, 0, 0.95), /* Deep shadow */
-                0 0 0 2px rgba(192, 132, 252, 0.3), /* Border glow (Purple) */
+                0 25px 50px rgba(0, 0, 0, 0.95), 
+                0 0 0 2px rgba(192, 132, 252, 0.3), 
                 0 5px 15px rgba(0, 0, 0, 0.9);
         }
         
         /* === MOBILE/TOUCH FIX: TAPPED HOVER CLASS === */
-        /* This class mirrors the :hover state and is applied via JavaScript on touchstart */
         .title-result-card.tapped-hover {
             transform: translateY(-6px) scale(1.01) !important; 
             box-shadow:
@@ -102,28 +114,29 @@
         }
 
 
-        /* Custom Styles for CTA Buttons - iOS Glass Look */
+        /* Custom Styles for CTA Buttons - iOS Glass Look (High Compatibility) */
         .cta-button {
             transition: all 300ms cubic-bezier(0.25, 0.46, 0.45, 0.94);
-            /* CRITICAL FIX: Add -webkit- prefix for Safari/iOS compatibility */
+            /* CRITICAL FIX: Add -webkit- prefix for Safari/iOS/Samsung compatibility */
             -webkit-backdrop-filter: blur(15px);
             backdrop-filter: blur(15px);
             /* Add subtle inset light shadow for depth */
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+            will-change: transform, box-shadow;
         }
-        /* UPDATED: Added transform and refined box-shadow to match card hover effect */
+        
         .cta-button:hover {
-            /* Adding the lift/scale effect similar to glass cards, but slightly smaller */
-            transform: translateY(-4px) scale(1.02); /* Added lift and scale */
-            /* Refined luminous shadow to match card glow */
+            transform: translateY(-4px) scale(1.02);
             box-shadow: 
                 0 15px 30px rgba(0, 0, 0, 0.8), 
-                0 0 0 2px rgba(192, 132, 252, 0.4), /* Subtle border glow */
+                0 0 0 2px rgba(192, 132, 252, 0.4), 
                 0 5px 15px rgba(0, 0, 0, 0.9); 
         }
+        
+        /* Ensures strong visual feedback on tap */
         .cta-button:active {
-            transform: scale(0.96); /* Deeper press effect */
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.9); /* Flatter shadow on press */
+            transform: scale(0.96); 
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.9);
         }
 
         /* Radial gradient for iOS Dark Mode Background */
@@ -158,8 +171,8 @@
         .viral-toggle-track.on-glow {
             /* Neon outer glow, inner glow, and dark drop shadow combined */
             box-shadow: 
-                0 0 20px rgba(0, 255, 0, 0.7), /* Increased outer glow */
-                inset 0 0 10px rgba(0, 255, 0, 0.5), /* Increased inner glow */
+                0 0 20px rgba(0, 255, 0, 0.7), 
+                inset 0 0 10px rgba(0, 255, 0, 0.5), 
                 0 4px 10px rgba(0, 0, 0, 0.8);
         }
 
@@ -179,8 +192,8 @@
             }
             50% {
                 opacity: 0.8;
-                transform: scale(1.1); /* Subtle "pop" */
-                filter: drop-shadow(0 0 25px rgba(0, 255, 0, 0.9)); /* Intense glow */
+                transform: scale(1.1); 
+                filter: drop-shadow(0 0 25px rgba(0, 255, 0, 0.9));
             }
         }
         
@@ -207,9 +220,7 @@
             opacity: 1;
             transform: translateY(0);
             max-height: 5000px; 
-            /* Fix: Set to visible to allow card hover shadows/lifts to render */
             overflow: visible; 
-            /* Staggered transition: max-height first, then opacity/transform */
             transition: max-height 0.8s ease-in-out, 
                         opacity 1s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.2s, 
                         transform 1s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.2s;
@@ -219,14 +230,11 @@
         /* MOBILE RESPONSIVE TWEAKS (Touch/Tap Feedback) */
         /* ============================================== */
 
-        /* 1. We no longer explicitly disable the :hover styles on mobile, 
-           instead we let JS manage the persistent hover effect (.tapped-hover). 
-           We keep the sharp :active press effect for good touch feedback. */
         @media (max-width: 767px) {
             /* Apply a visual press effect on click/tap (:active) for all cards */
             .glass-card:active,
             .title-result-card:active {
-                transform: translateY(0px) scale(0.98) !important; /* Slight inward press effect */
+                transform: translateY(0px) scale(0.98) !important; 
                 box-shadow: 0 5px 10px rgba(0, 0, 0, 0.95), inset 0 0 5px rgba(255, 255, 255, 0.05);
             }
             
@@ -405,7 +413,6 @@
             
             const isComplete = progressValue >= 100;
             const indicatorColorClass = isComplete ? "bg-green-500 shadow-md shadow-green-500/50" : "bg-yellow-400";
-            // NEW: Use text-green-400 for 100% completion status and label
             const textColorClass = isComplete ? "text-green-400" : "text-yellow-300"; 
 
             if (indicator && label && statusText) {
@@ -471,7 +478,6 @@
                 // 3. Update Zap Icon & Text Color and Pop Animation
                 toggleZap.classList.toggle('text-green-400', isViralBoostEnabled);
                 toggleZap.classList.toggle('text-gray-500', !isViralBoostEnabled);
-                // NEW: Add or remove the pop animation class
                 toggleZap.classList.toggle('icon-pop-on', isViralBoostEnabled);
                 
                 toggleText.classList.toggle('text-white', isViralBoostEnabled);
@@ -482,7 +488,7 @@
         const toggleViralBoost = () => {
             isViralBoostEnabled = !isViralBoostEnabled;
             
-            // CRITICAL FIX: If results are visible, regenerate the score/content based on the new toggle state
+            // If results are visible, regenerate the score/content based on the new toggle state
             if (isProcessed) {
                 generateViralContent();
             }
