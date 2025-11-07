@@ -183,6 +183,40 @@
                         opacity 1s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.2s, 
                         transform 1s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.2s;
         }
+
+        /* ============================================== */
+        /* MOBILE RESPONSIVE TWEAKS (Touch/Tap Feedback) */
+        /* ============================================== */
+
+        /* 1. Reset hover effects on touch devices (max-width: 767px) to prevent unwanted shifts */
+        @media (max-width: 767px) {
+            /* Main Cards */
+            .glass-card:hover {
+                transform: none !important; /* Disable the lift on mobile hover */
+                /* Revert box shadow to its standard state */
+                box-shadow: 0 15px 30px rgba(0, 0, 0, 0.8), inset 0 0 0 1px rgba(255, 255, 255, 0.05);
+            }
+            /* Result/Title Cards */
+            .title-result-card:hover {
+                transform: none !important; /* Disable the lift on mobile hover */
+                /* Revert box shadow to its standard state */
+                box-shadow: 0 8px 15px rgba(0, 0, 0, 0.7), inset 0 0 0 1px rgba(255, 255, 255, 0.05);
+            }
+        }
+
+        /* 2. Apply a visual press effect on click/tap (:active) for all cards */
+        .glass-card:active,
+        .title-result-card:active {
+            transform: translateY(0px) scale(0.98) !important; /* Slight inward press effect */
+            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.95), inset 0 0 5px rgba(255, 255, 255, 0.05);
+        }
+        
+        /* 3. Apply the press effect to the file drop area as well */
+        #file-drop-area:active {
+            transform: scale(0.98) !important;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.8), inset 0 0 5px rgba(255, 255, 255, 0.05);
+        }
+
     </style>
 </head>
 <body class="text-white p-4 md:p-8" onload="initApp()">
