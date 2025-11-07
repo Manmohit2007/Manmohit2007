@@ -18,13 +18,15 @@
 <meta name="twitter:description" content="Growth AI">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FanPlusFollow Viral Content Generator</title>
+    <title>FanPlusFollow</title>
     <!-- Load Tailwind CSS from CDN --><script src="https://cdn.tailwindcss.com"></script>
+    <!-- Load Tone.js for sound effects -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.8.49/Tone.js"></script>
     <style>
         /* Import Inter Font */
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
         
-        /* FIX: Robust Font Stack for Cross-Browser Consistency */
+        /* CRITICAL FIX: Robust Font Stack for Cross-Browser Consistency */
         :root { 
             /* Prioritize Inter, then use a comprehensive list of system fonts */
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif; 
@@ -34,30 +36,71 @@
         .fluid-transition {
             transition: all 400ms cubic-bezier(0.25, 0.46, 0.45, 0.94);
             /* CRITICAL FIX: Explicitly set will-change for performance and consistency */
-            will-change: transform, box-shadow, filter, backdrop-filter, -webkit-backdrop-filter; 
+            will-change: transform, box-shadow, filter, backdrop-filter, -webkit-backdrop-filter, background-color, color; 
         }
+
+        /* ============================================== */
+        /* LAUNCH ANIMATION STYLES */
+        /* ============================================== */
+        @keyframes spiral-entry {
+            0% {
+                opacity: 0;
+                /* Added Webkit Prefix */
+                -webkit-transform: perspective(1000px) scale(0.7) rotateY(90deg) rotateZ(10deg);
+                transform: perspective(1000px) scale(0.7) rotateY(90deg) rotateZ(10deg);
+                -webkit-filter: blur(10px);
+                filter: blur(10px);
+            }
+            100% {
+                opacity: 1;
+                /* Added Webkit Prefix */
+                -webkit-transform: perspective(1000px) scale(1) rotateY(0deg) rotateZ(0deg);
+                transform: perspective(1000px) scale(1) rotateY(0deg) rotateZ(0deg);
+                -webkit-filter: blur(0);
+                filter: blur(0);
+            }
+        }
+        
+        /* Targets the main content cards for the initial animation */
+        .card-animation-target {
+            animation: spiral-entry 1s cubic-bezier(0.68, -0.55, 0.27, 1.55) forwards;
+            opacity: 0; /* Ensures elements are invisible before animation starts */
+        }
+        
+        /* Staggered delays for a sequential entry */
+        #app-header.card-animation-target { animation-delay: 0s; }
+        #upload-card.card-animation-target { animation-delay: 0.2s; } 
+        #promo-card.card-animation-target { animation-delay: 0.4s; }
+
 
         /* ============================================== */
         /* MAIN GLASS CARD STYLES (High Compatibility & Stricter Opacity) */
         /* ============================================== */
         .glass-card {
-            /* 1. STICKY FALLBACK: Use a dark, slightly transparent background. 
-                  This is the base color if backdrop-filter fails. */
+            /* 1. STICKY FALLBACK: Use a dark, slightly transparent background. */
             background-color: rgba(20, 20, 40, 0.75); 
             
-            /* 2. GLASS EFFECT: Apply blur and set a *very* light background on top. 
-                  NOTE: Some browsers only apply the filter if the background has *some* transparency. */
+            /* 2. GLASS EFFECT: Apply blur (CRITICAL: Includes Webkit Prefix for Safari/Mobile) */
             -webkit-backdrop-filter: blur(40px);
             backdrop-filter: blur(40px); 
             
             border-radius: 36px;
+            /* Added Webkit Prefix for Box Shadow */
+            -webkit-box-shadow: 0 15px 30px rgba(0, 0, 0, 0.8), inset 0 0 0 1px rgba(255, 255, 255, 0.05);
             box-shadow: 0 15px 30px rgba(0, 0, 0, 0.8), inset 0 0 0 1px rgba(255, 255, 255, 0.05); 
             border: 1px solid rgba(255, 255, 255, 0.08);
         }
 
         /* ENHANCED HOVER EFFECT for all main glass cards (Desktop/Mouse) */
         .glass-card:hover {
+            /* Added Webkit Prefix for Transform */
+            -webkit-transform: translateY(-8px) scale(1.005);
             transform: translateY(-8px) scale(1.005);
+            /* Added Webkit Prefix for Box Shadow */
+            -webkit-box-shadow: 
+                0 30px 60px rgba(0, 0, 0, 0.9), 
+                0 0 0 2px rgba(192, 132, 252, 0.2), 
+                0 5px 15px rgba(0, 0, 0, 0.9);
             box-shadow: 
                 0 30px 60px rgba(0, 0, 0, 0.9), 
                 0 0 0 2px rgba(192, 132, 252, 0.2), 
@@ -67,7 +110,14 @@
         /* === MOBILE/TOUCH FIX: TAPPED HOVER CLASS === */
         /* Mirrors the :hover state and is applied via JavaScript on touchstart */
         .glass-card.tapped-hover {
+            /* Added Webkit Prefix for Transform */
+            -webkit-transform: translateY(-8px) scale(1.005) !important;
             transform: translateY(-8px) scale(1.005) !important; 
+            /* Added Webkit Prefix for Box Shadow */
+            -webkit-box-shadow: 
+                0 30px 60px rgba(0, 0, 0, 0.9), 
+                0 0 0 2px rgba(192, 132, 252, 0.2), 
+                0 5px 15px rgba(0, 0, 0, 0.9) !important;
             box-shadow: 
                 0 30px 60px rgba(0, 0, 0, 0.9), 
                 0 0 0 2px rgba(192, 132, 252, 0.2), 
@@ -81,27 +131,43 @@
             /* 1. STICKY FALLBACK: Dark, semi-transparent background. */
             background-color: rgba(20, 20, 40, 0.75);
             
-            /* 2. GLASS EFFECT: Apply blur */
+            /* 2. GLASS EFFECT: Apply blur (CRITICAL: Includes Webkit Prefix for Safari/Mobile) */
             -webkit-backdrop-filter: blur(20px);
             backdrop-filter: blur(20px);
             
             border-radius: 32px;
             border: 1px solid rgba(255, 255, 255, 0.1);
+             /* Added Webkit Prefix for Box Shadow */
+            -webkit-box-shadow: 0 8px 15px rgba(0, 0, 0, 0.7), inset 0 0 0 1px rgba(255, 255, 255, 0.05);
             box-shadow: 0 8px 15px rgba(0, 0, 0, 0.7), inset 0 0 0 1px rgba(255, 255, 255, 0.05);
         }
 
         /* FIX: Enhanced Hover for Title/Result cards */
         .title-result-card:hover {
+            /* Added Webkit Prefix for Transform */
+            -webkit-transform: translateY(-6px) scale(1.01);
             transform: translateY(-6px) scale(1.01); 
-            box-shadow:
+            /* Added Webkit Prefix for Box Shadow */
+            -webkit-box-shadow:
                 0 25px 50px rgba(0, 0, 0, 0.95), 
                 0 0 0 2px rgba(192, 132, 252, 0.3), 
                 0 5px 15px rgba(0, 0, 0, 0.9);
+            box-shadow:
+                0 25px 50px rgba(0, 0, 0, 0.95), 
+                0 0 0 2px rgba(192, 132, 252, 0.3), 
+                0 5px 15px rgba(0, 0, 0, 0.9); 
         }
         
         /* === MOBILE/TOUCH FIX: TAPPED HOVER CLASS === */
         .title-result-card.tapped-hover {
+            /* Added Webkit Prefix for Transform */
+            -webkit-transform: translateY(-6px) scale(1.01) !important;
             transform: translateY(-6px) scale(1.01) !important; 
+            /* Added Webkit Prefix for Box Shadow */
+            -webkit-box-shadow:
+                0 25px 50px rgba(0, 0, 0, 0.95), 
+                0 0 0 2px rgba(192, 132, 252, 0.3), 
+                0 5px 15px rgba(0, 0, 0, 0.9) !important;
             box-shadow:
                 0 25px 50px rgba(0, 0, 0, 0.95), 
                 0 0 0 2px rgba(192, 132, 252, 0.3), 
@@ -120,12 +186,20 @@
             backdrop-filter: blur(15px);
             
             /* Add subtle inset light shadow for depth */
+            -webkit-box-shadow: 0 4px 12px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.1);
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.1);
             will-change: transform, box-shadow;
         }
         
         .cta-button:hover {
+            /* Added Webkit Prefix for Transform */
+            -webkit-transform: translateY(-4px) scale(1.02);
             transform: translateY(-4px) scale(1.02);
+            /* Added Webkit Prefix for Box Shadow */
+            -webkit-box-shadow: 
+                0 15px 30px rgba(0, 0, 0, 0.8), 
+                0 0 0 2px rgba(192, 132, 252, 0.4), 
+                0 5px 15px rgba(0, 0, 0, 0.9);
             box-shadow: 
                 0 15px 30px rgba(0, 0, 0, 0.8), 
                 0 0 0 2px rgba(192, 132, 252, 0.4), 
@@ -134,7 +208,11 @@
         
         /* Ensures strong visual feedback on tap */
         .cta-button:active {
+            /* Added Webkit Prefix for Transform */
+            -webkit-transform: scale(0.96);
             transform: scale(0.96); 
+            /* Added Webkit Prefix for Box Shadow */
+            -webkit-box-shadow: 0 2px 5px rgba(0, 0, 0, 0.9);
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.9);
         }
 
@@ -157,18 +235,28 @@
 
         .viral-toggle-track {
             transition: all 300ms cubic-bezier(0.25, 0.46, 0.45, 0.94);
+             /* Added Webkit Prefix for Box Shadow */
+            -webkit-box-shadow: 0 4px 10px rgba(0, 0, 0, 0.6);
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.6);
         }
         
         /* Hover effect for the track */
         .viral-toggle-track:hover {
+            /* Added Webkit Prefix for Transform */
+            -webkit-transform: scale(1.05);
             transform: scale(1.05);
+            /* Added Webkit Prefix for Filter */
+            -webkit-filter: brightness(1.2);
             filter: brightness(1.2);
         }
         
         /* ON state: Intense Glow */
         .viral-toggle-track.on-glow {
             /* Neon outer glow, inner glow, and dark drop shadow combined */
+            -webkit-box-shadow: 
+                0 0 20px rgba(0, 255, 0, 0.7), 
+                inset 0 0 10px rgba(0, 255, 0, 0.5), 
+                0 4px 10px rgba(0, 0, 0, 0.8);
             box-shadow: 
                 0 0 20px rgba(0, 255, 0, 0.7), 
                 inset 0 0 10px rgba(0, 255, 0, 0.5), 
@@ -177,6 +265,8 @@
 
         /* OFF state: Subtle shadow */
         .viral-toggle-track.off-shadow {
+            /* Added Webkit Prefix for Box Shadow */
+            -webkit-box-shadow: inset 0 0 8px rgba(255, 255, 255, 0.15), 0 4px 10px rgba(0, 0, 0, 0.7);
             box-shadow: inset 0 0 8px rgba(255, 255, 255, 0.15), 0 4px 10px rgba(0, 0, 0, 0.7);
         }
         
@@ -186,12 +276,18 @@
         @keyframes zap-glow {
             0%, 100% {
                 opacity: 1;
+                /* Added Webkit Prefix for Transform/Filter */
+                -webkit-transform: scale(1);
                 transform: scale(1);
+                -webkit-filter: drop-shadow(0 0 5px rgba(0, 255, 0, 0.4));
                 filter: drop-shadow(0 0 5px rgba(0, 255, 0, 0.4));
             }
             50% {
                 opacity: 0.8;
+                /* Added Webkit Prefix for Transform/Filter */
+                -webkit-transform: scale(1.1); 
                 transform: scale(1.1); 
+                -webkit-filter: drop-shadow(0 0 25px rgba(0, 255, 0, 0.9));
                 filter: drop-shadow(0 0 25px rgba(0, 255, 0, 0.9));
             }
         }
@@ -206,6 +302,8 @@
         /* ============================================== */
         #results-section {
             opacity: 0;
+            /* Added Webkit Prefix for Transform */
+            -webkit-transform: translateY(20px);
             transform: translateY(20px);
             /* Combined transition for a smooth, cohesive look */
             transition: opacity 1s cubic-bezier(0.25, 0.46, 0.45, 0.94), 
@@ -217,6 +315,8 @@
 
         #results-section.show-results {
             opacity: 1;
+            /* Added Webkit Prefix for Transform */
+            -webkit-transform: translateY(0);
             transform: translateY(0);
             max-height: 5000px; 
             overflow: visible; 
@@ -233,49 +333,159 @@
             /* Apply a visual press effect on click/tap (:active) for all cards */
             .glass-card:active,
             .title-result-card:active {
+                /* Added Webkit Prefix for Transform */
+                -webkit-transform: translateY(0px) scale(0.98) !important;
                 transform: translateY(0px) scale(0.98) !important; 
+                /* Added Webkit Prefix for Box Shadow */
+                -webkit-box-shadow: 0 5px 10px rgba(0, 0, 0, 0.95), inset 0 0 5px rgba(255, 255, 255, 0.05);
                 box-shadow: 0 5px 10px rgba(0, 0, 0, 0.95), inset 0 0 5px rgba(255, 255, 255, 0.05);
             }
             
             /* Apply the press effect to the file drop area as well */
             #file-drop-area:active {
+                /* Added Webkit Prefix for Transform */
+                -webkit-transform: scale(0.98) !important;
                 transform: scale(0.98) !important;
+                /* Added Webkit Prefix for Box Shadow */
+                -webkit-box-shadow: 0 0 10px rgba(0, 0, 0, 0.8), inset 0 0 5px rgba(255, 255, 255, 0.05);
                 box-shadow: 0 0 10px rgba(0, 0, 0, 0.8), inset 0 0 5px rgba(255, 255, 255, 0.05);
             }
+        }
+        
+        /* ============================================== */
+        /* LIGHT MODE STYLES (New) */
+        /* ============================================== */
+        
+        /* LIGHT MODE BASE STYLES */
+        body.light-mode {
+            background-color: #F7F7F9; /* Off-white / light gray background */
+            background-image: radial-gradient(circle at center, #FFFFFF 0%, #E0E0E5 80%);
+            color: #1F2937; /* Dark text */
+        }
+
+        /* Override global text color and ensure Light Mode text looks good */
+        body.light-mode .text-white {
+            color: #1F2937 !important; 
+        }
+        body.light-mode .text-indigo-300,
+        body.light-mode .text-indigo-400,
+        body.light-mode .text-indigo-200 {
+            color: #4F46E5 !important; /* Primary color remains indigo */
+        }
+
+        /* Light Mode Card Styling (Frosted White) */
+        body.light-mode .glass-card,
+        body.light-mode .title-result-card {
+            background-color: rgba(255, 255, 255, 0.8); /* White, transparent */
+            /* CRITICAL: Ensure Webkit Prefix is present in light mode too */
+            -webkit-backdrop-filter: blur(15px); /* Less blur needed */
+            backdrop-filter: blur(15px);
+            /* Added Webkit Prefix for Box Shadow */
+            -webkit-box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1), inset 0 0 0 1px rgba(0, 0, 0, 0.05); 
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1), inset 0 0 0 1px rgba(0, 0, 0, 0.05); /* Lighter shadow */
+            border: 1px solid rgba(0, 0, 0, 0.1);
+        }
+
+        body.light-mode .glass-card:hover,
+        body.light-mode .title-result-card:hover {
+            /* Added Webkit Prefix for Transform */
+            -webkit-transform: translateY(-4px) scale(1.005);
+            transform: translateY(-4px) scale(1.005);
+            /* Added Webkit Prefix for Box Shadow */
+             -webkit-box-shadow: 
+                0 15px 30px rgba(0, 0, 0, 0.15), 
+                0 0 0 2px rgba(99, 102, 241, 0.2), 
+                0 5px 15px rgba(0, 0, 0, 0.1); 
+            box-shadow: 
+                0 15px 30px rgba(0, 0, 0, 0.15), 
+                0 0 0 2px rgba(99, 102, 241, 0.2), 
+                0 5px 15px rgba(0, 0, 0, 0.1); 
+        }
+
+        /* Light Mode CTA Button Adjustments */
+        body.light-mode .cta-button {
+            background-color: rgba(255, 255, 255, 0.6); /* Lighter button base */
+            color: #1F2937; /* Dark text on light button */
+            /* Added Webkit Prefix for Box Shadow */
+            -webkit-box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15), inset 0 1px 0 rgba(255, 255, 255, 0.5);
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15), inset 0 1px 0 rgba(255, 255, 255, 0.5);
+        }
+        
+        /* Light Mode Description Box */
+        body.light-mode .bg-black\/40 {
+            background-color: rgba(240, 240, 245, 0.7) !important; /* Light gray box */
+            border-color: rgba(0, 0, 0, 0.1) !important;
+        }
+
+        body.light-mode .text-indigo-100 {
+            color: #1F2937 !important; /* Dark text for description box */
+        }
+        
+        /* Style for the mute/power buttons to reset opacity transition on their containers */
+        #mode-toggle-button svg, #mute-toggle-button svg {
+            transition: color 300ms, filter 300ms, transform 200ms;
         }
 
     </style>
 </head>
 <body class="text-white p-4 md:p-8" onload="initApp()">
-
+    
     <div class="max-w-4xl mx-auto">
         
-        <!-- ============================================== --><!-- HEADER - Glass Bar --><!-- ============================================== --><header id="app-header" class="glass-card fluid-transition p-6 mb-8 flex flex-col md:flex-row items-center justify-between">
-            <div class="flex items-center space-x-4 mb-4 md:mb-0">
-                <!-- FanPlusFollow Logo SVG --><div class="w-16 h-16">
-                    <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
-                      <defs>
-                        <linearGradient id="logoGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                          <stop offset="0%" style="stop-color:#f97316; stop-opacity:1" />
-                          <stop offset="40%" style="stop-color:#ef4444; stop-opacity:1" />
-                          <stop offset="70%" style="stop-color:#c084fc; stop-opacity:1" />
-                          <stop offset="100%" style="stop-color:#818cf8; stop-opacity:1" />
-                        </linearGradient>
-                      </defs>
-                      <circle cx="32" cy="32" r="31" fill="url(#logoGradient)" fill-opacity="0.9" stroke="#ffffff" stroke-opacity="0.4" stroke-width="1" />
-                      <path d="M20 23 L35 32 L20 41 Z" fill="#ffffff" />
-                      <rect x="40" y="27" width="4" height="10" fill="#ffffff" rx="1" />
-                      <rect x="37" y="30" width="10" height="4" fill="#ffffff" rx="1" />
-                    </svg>
+        <!-- ============================================== --><!-- HEADER - Glass Bar --><!-- ============================================== --><header 
+            id="app-header" 
+            class="glass-card fluid-transition p-6 mb-12 flex flex-col md:flex-row items-center justify-between card-animation-target"
+        >
+            <!-- WRAPPER FOR LOGO/TITLE & NEW POWER/MUTE BUTTONS -->
+            <div class="flex items-center mb-4 md:mb-0">
+                
+                <!-- NEW: Vertical button group for Power and Mute -->
+                <div class="flex flex-col gap-2 mr-4 flex-shrink-0"> 
+                    <!-- 1. MODE TOGGLE BUTTON (POWER) -->
+                    <button id="mode-toggle-button" onclick="toggleDarkMode()" onmouseenter="playHoverSound()"
+                        class="h-10 w-10 flex items-center justify-center rounded-full text-white transition-colors duration-300 hover:bg-white/10 flex-shrink-0 active:scale-95">
+                        <!-- Power Icon (Lucide) - Managed by JS -->
+                        <svg id="power-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-6 w-6 text-white/50 transition-colors duration-300">
+                            <path d="M18.36 6.64a9 9 0 1 1-12.73 0"/><line x1="12" x2="12" y1="2" y2="12"/>
+                        </svg>
+                    </button>
+
+                    <!-- 2. MUTE TOGGLE BUTTON (NEW) -->
+                    <button id="mute-toggle-button" onclick="toggleMute()" 
+                        class="h-10 w-10 flex items-center justify-center rounded-full text-white transition-colors duration-300 hover:bg-white/10 flex-shrink-0 active:scale-95">
+                        <!-- Speaker Icon (Managed by JS) -->
+                        <svg id="speaker-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-6 w-6 text-white/50 transition-colors duration-300">
+                            <!-- Paths are inserted by updateMuteUI() -->
+                        </svg>
+                    </button>
                 </div>
-                <div class="text-left">
-                    <h1 class="text-xl font-bold bg-clip-text text-transparent" style="background-image: linear-gradient(to right, #ec4899, #c084fc, #6366f1)">
-                      FanPlusFollow
-                    </h1>
-                    <p class="text-indigo-300 text-sm flex items-center">
-                        <!-- Users Icon (Lucide) --><svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-1 h-3 w-3"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
-                        Growth AI
-                    </p>
+                
+                <div class="flex items-center space-x-4">
+                    <!-- FanPlusFollow Logo SVG --><div class="w-16 h-16">
+                        <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+                          <defs>
+                            <linearGradient id="logoGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                              <stop offset="0%" style="stop-color:#f97316; stop-opacity:1" />
+                              <stop offset="40%" style="stop-color:#ef4444; stop-opacity:1" />
+                              <stop offset="70%" style="stop-color:#c084fc; stop-opacity:1" />
+                              <stop offset="100%" style="stop-color:#818cf8; stop-opacity:1" />
+                            </linearGradient>
+                          </defs>
+                          <circle cx="32" cy="32" r="31" fill="url(#logoGradient)" fill-opacity="0.9" stroke="#ffffff" stroke-opacity="0.4" stroke-width="1" />
+                          <path d="M20 23 L35 32 L20 41 Z" fill="#ffffff" />
+                          <rect x="40" y="27" width="4" height="10" fill="#ffffff" rx="1" />
+                          <rect x="37" y="30" width="10" height="4" fill="#ffffff" rx="1" />
+                        </svg>
+                    </div>
+                    <div class="text-left">
+                        <h1 class="text-xl font-bold bg-clip-text text-transparent" style="background-image: linear-gradient(to right, #ec4899, #c084fc, #6366f1)">
+                          FanPlusFollow
+                        </h1>
+                        <p class="text-indigo-300 text-sm flex items-center">
+                            <!-- Users Icon (Lucide) --><svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-1 h-3 w-3"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                            Growth AI
+                        </p>
+                    </div>
                 </div>
             </div>
             
@@ -289,6 +499,7 @@
                       id="viral-toggle-track"
                       class="viral-toggle-track w-14 h-8 flex items-center rounded-full p-1 cursor-pointer transition-all duration-300 backdrop-blur-3xl"
                       onclick="toggleViralBoost()"
+                      onmouseenter="playHoverSound()"
                     >
                       <div
                         id="viral-toggle-knob"
@@ -301,7 +512,8 @@
         </header>
 
         <main>
-            <!-- Upload Section (Glass Card) --><div class="glass-card fluid-transition p-6 rounded-[36px] mb-12">
+            <!-- Upload Section (Glass Card) -->
+            <div id="upload-card" class="glass-card fluid-transition p-6 rounded-[36px] mb-12 card-animation-target">
                 <div class="mb-4">
                     <h2 class="text-2xl font-semibold flex items-center gap-2">
                         <!-- Upload Icon (Lucide) --><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-indigo-400"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" x2="12" y1="3" y2="15"/></svg>
@@ -318,7 +530,7 @@
 
         <!-- ============================================== --><!-- Channel Promotion (Glass Card) --><!-- ============================================== --><div class="mt-12 w-full px-0 sm:px-4">
             <!-- Added glass-card class to the wrapper for touch-hover listener -->
-            <div class="glass-card fluid-transition p-4 sm:p-6 max-w-4xl mx-auto"> 
+            <div id="promo-card" class="glass-card fluid-transition p-4 sm:p-6 max-w-4xl mx-auto card-animation-target"> 
                 <div class="p-1">
                     <div class="flex flex-col items-center">
                         <!-- FanPlusFollow Logo SVG --><div class="w-16 h-16 mb-2 sm:mb-4">
@@ -347,7 +559,8 @@
                             class="cta-button px-6 py-3 rounded-full font-medium transition-all duration-300 ease-in-out shadow-xl transform active:scale-[0.96] active:shadow-none 
                                    bg-gradient-to-r from-[#f97316]/20 via-[#ef4444]/20 to-[#c084fc]/20 hover:from-[#f97316]/60 hover:via-[#ef4444]/60 hover:to-[#818cf8]/60 
                                    backdrop-blur-3xl text-white flex items-center"
-                            onclick="window.open('https://www.youtube.com/@fanplusfollow', '_blank')"
+                            onclick="playClickSound(); window.open('https://www.youtube.com/@fanplusfollow', '_blank')"
+                            onmouseenter="playHoverSound()"
                           >
                             <!-- Users Icon (Lucide) --><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2 h-4 w-4"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
                             Subscribe Now
@@ -357,7 +570,8 @@
                             class="cta-button px-6 py-3 rounded-full font-medium transition-all duration-300 ease-in-out shadow-xl transform active:scale-[0.96] active:shadow-none 
                                    bg-gradient-to-r from-[#f97316]/20 via-[#ef4444]/20 to-[#c084fc]/20 hover:from-[#f97316]/60 hover:via-[#ef4444]/60 hover:to-[#818cf8]/60 
                                    backdrop-blur-3xl text-white flex items-center"
-                            onclick="window.open('https://www.instagram.com/_manmohit_singh_/', '_blank')"
+                            onclick="playClickSound(); window.open('https://www.instagram.com/_manmohit_singh_/', '_blank')"
+                            onmouseenter="playHoverSound()"
                           >
                             <!-- Star Icon (Lucide) --><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2 h-4 w-4"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
                             Follow Now
@@ -385,10 +599,215 @@
         let isViralBoostEnabled = true; // Default to true
         let progressValue = 0;
         let progressInterval = null;
+        let isDarkMode = true; // Default to dark mode
+        let isMuted = true; // NEW DEFAULT: Start muted
+        
+        // --- TONE.JS AUDIO SETUP ---
+        let audioContextStarted = false;
+        let synth = null; // For the main toggle sound
+        let hoverSynth = null; // Used for soft hover and soft click
+        let isToneInitialized = false; // Flag for synth creation
 
         // --- CONSTANTS ---
+        const HOVER_SOUND_COOLDOWN = 50; // 50 milliseconds
+        let lastHoverTime = 0;
         const YOUTUBE_CHANNEL_LINK = "https://www.youtube.com/@fanplusfollow";
         const INSTAGRAM_LINK = "https://www.instagram.com/_manmohit_singh_/";
+
+        // --- AUDIO INITIALIZATION / START UP ---
+        
+        /**
+         * Initializes Tone.js synths. This should happen immediately on load.
+         */
+        const initToneJs = () => {
+            if (isToneInitialized) return;
+            
+            // 1. Initialize main toggle synth (for toggleViralBoost)
+            synth = new Tone.PolySynth(Tone.Synth, {
+                volume: -10, // General volume
+                oscillator: { type: 'sine' }, // Soft, clean sine wave
+                envelope: {
+                    attack: 0.01,
+                    decay: 0.15,
+                    sustain: 0.05,
+                    release: 0.3,
+                }
+            }).toDestination();
+
+            // 2. Initialize soft hover/click synth (Used for Clicks and Hover/Navigation)
+            hoverSynth = new Tone.Synth({
+                volume: -16, // Quiet, but effective
+                oscillator: { type: 'triangle' }, // Smoother than sine
+                envelope: {
+                    attack: 0.001,
+                    decay: 0.05,
+                    sustain: 0,
+                    release: 0.05,
+                }
+            }).toDestination();
+            
+            isToneInitialized = true;
+        };
+
+        /**
+         * Starts the AudioContext if it hasn't been started yet and the app is unmuted.
+         * This handles the browser's requirement for user interaction before starting audio.
+         */
+        const startAudioIfUnmuted = () => {
+            // If not muted AND context hasn't been started yet
+            if (!isMuted && !audioContextStarted) {
+                Tone.start().then(() => {
+                    audioContextStarted = true;
+                    console.log("AudioContext started.");
+                }).catch(e => {
+                    console.error("Failed to start Tone.js AudioContext:", e);
+                });
+            }
+        }
+
+        // --- AUDIO FUNCTIONS (Must check audioContextStarted before playing) ---
+
+        const playToggleSound = (isOn) => {
+            initToneJs(); // Ensure synths exist
+            
+            // CRITICAL: Check isMuted and audioContextStarted
+            if (!audioContextStarted || !synth || isMuted) return; 
+            
+            if (isOn) {
+                // ON sound: Higher, pleasant chime
+                synth.triggerAttackRelease(["C5", "G5"], "8n", Tone.now(), 0.5); 
+            } else {
+                // OFF sound: Lower, softer sequence
+                synth.triggerAttackRelease(["G4", "D4"], "8n", Tone.now(), 0.3); 
+            }
+        };
+
+        // Hover/Navigation sound: Very soft C4
+        const playHoverSound = () => {
+            initToneJs(); // Ensure synths exist
+            
+            // CRITICAL: Check isMuted and audioContextStarted
+            if (!audioContextStarted || !hoverSynth || isMuted) return; 
+            
+            // --- FIX: Rate Limiting to prevent rapid triggering ---
+            const now = Date.now();
+            if (now < lastHoverTime + HOVER_SOUND_COOLDOWN) {
+                return; 
+            }
+            lastHoverTime = now;
+            
+            // Play a very quick, subtle C4 note
+            hoverSynth.triggerAttackRelease("C4", "32n");
+        };
+        
+        // Click sound: Very soft D4 (slightly higher than hover for distinction)
+        const playClickSound = () => {
+            initToneJs(); // Ensure synths exist
+            
+            // CRITICAL: Check isMuted and audioContextStarted
+            if (!audioContextStarted || !hoverSynth || isMuted) return; 
+            // Play a very quick, subtle D4 note on click
+            hoverSynth.triggerAttackRelease("D4", "32n");
+        };
+
+        // --- DARK/LIGHT MODE LOGIC ---
+
+        const toggleDarkMode = () => {
+            isDarkMode = !isDarkMode;
+            playClickSound(); 
+            updateModeUI();
+            
+            // Re-render results if already processed to apply new light/dark card styling immediately
+            if (isProcessed) {
+                updateUI();
+            }
+        };
+
+        const updateModeUI = () => {
+            const body = document.body;
+            const powerIcon = document.getElementById('power-icon');
+
+            if (!powerIcon) return;
+
+            if (isDarkMode) {
+                // DARK MODE: Apply dark theme styles
+                body.classList.remove('light-mode');
+                powerIcon.classList.remove('text-red-500');
+                powerIcon.classList.add('text-white/50');
+                powerIcon.style.color = ''; // Reset inline color
+                powerIcon.style.filter = 'none';
+            } else {
+                // LIGHT MODE: Apply light theme styles
+                body.classList.add('light-mode');
+                
+                // Reddish-orange color with a glow for the "on" state
+                powerIcon.classList.remove('text-white/50');
+                powerIcon.classList.add('text-red-500'); 
+                powerIcon.style.color = '#F97316'; // Reddish-orange override
+                // CRITICAL: Added -webkit-filter for Webkit compatibility
+                powerIcon.style.filter = 'drop-shadow(0 0 4px rgba(249, 115, 22, 0.9))'; 
+                powerIcon.style.webkitFilter = 'drop-shadow(0 0 4px rgba(249, 115, 22, 0.9))'; 
+            }
+        };
+
+        // --- MUTE TOGGLE LOGIC (NEW) ---
+
+        // Lucide SVG Paths for Volume
+        const VOLUME_ON_PATH = `<polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/>`;
+        
+        // MODIFIED: Muted state uses the same speaker path, but will be visually dimmed via CSS.
+        const VOLUME_OFF_PATH = VOLUME_ON_PATH;
+
+        const toggleMute = () => {
+            isMuted = !isMuted;
+            
+            if (!isMuted) {
+                // If the user just unmuted, try to start the audio context
+                startAudioIfUnmuted();
+            }
+            
+            // Play a generic click sound (will only play if audioContextStarted is true)
+            playClickSound(); 
+            updateMuteUI();
+        };
+
+        const updateMuteUI = () => {
+            const speakerIcon = document.getElementById('speaker-icon');
+            
+            if (!speakerIcon) return;
+
+            // Clear existing paths and ensure the base color class is removed/added correctly
+            speakerIcon.innerHTML = ''; 
+            // 1. Remove all color classes the JS manages
+            // NOTE: Removed text-white/30 and added text-white/50 for matching power button
+            speakerIcon.classList.remove('text-indigo-400', 'text-white/30', 'text-white/50'); 
+
+            if (isMuted) {
+                // Muted state: Match power button grey (text-white/50)
+                speakerIcon.innerHTML = VOLUME_OFF_PATH;
+                speakerIcon.classList.add('text-white/50'); // Set to match power button grey
+                speakerIcon.style.color = ''; // Reset inline color
+                speakerIcon.style.filter = 'none'; // Remove glow
+                speakerIcon.style.webkitFilter = 'none'; // Remove Webkit glow
+
+            } else {
+                // Sound On state: Speaker icon, bright color with subtle glow
+                speakerIcon.innerHTML = VOLUME_ON_PATH;
+                // Use a strong, transitioning color for "ON" state
+                speakerIcon.classList.add('text-indigo-400'); 
+                speakerIcon.style.color = '#C084FC'; // Purple override
+                // CRITICAL: Added -webkit-filter for Webkit compatibility
+                speakerIcon.style.filter = 'drop-shadow(0 0 4px rgba(192, 132, 252, 0.8))';
+                speakerIcon.style.webkitFilter = 'drop-shadow(0 0 4px rgba(192, 132, 252, 0.8))';
+            }
+            
+            // CRITICAL: Attach hover sound listener here for when the icon becomes visible
+            const muteBtn = document.getElementById('mute-toggle-button');
+            if (muteBtn && !muteBtn.classList.contains('has-hover-listener')) {
+                 muteBtn.addEventListener('mouseenter', playHoverSound);
+                 muteBtn.classList.add('has-hover-listener');
+            }
+        };
 
         // --- ICON HELPER (Replaces Lucide-react) ---
         const icon = (name, classes) => {
@@ -413,21 +832,25 @@
             const isComplete = progressValue >= 100;
             const indicatorColorClass = isComplete ? "bg-green-500 shadow-md shadow-green-500/50" : "bg-yellow-400";
             const textColorClass = isComplete ? "text-green-400" : "text-yellow-300"; 
+            
+            // Adjust colors for light mode
+            const finalTextColorClass = isDarkMode ? textColorClass : (isComplete ? "text-green-600" : "text-yellow-600");
+
 
             if (indicator && label && statusText) {
                 indicator.style.width = `${progressValue}%`;
                 
                 // 1. Update Progress Label (Percentage)
                 label.innerHTML = `${progressValue}%`;
-                label.classList.remove('text-yellow-300', 'text-green-400');
-                label.classList.add(textColorClass);
+                label.classList.remove('text-yellow-300', 'text-green-400', 'text-green-600', 'text-yellow-600');
+                label.classList.add(finalTextColorClass);
                 
                 // 2. Update Indicator Bar
                 indicator.className = `h-2.5 rounded-full transition-all duration-1000 ${indicatorColorClass}`;
                 
                 // 3. Update Status Text (Message)
-                statusText.classList.remove('text-yellow-300', 'text-green-400');
-                statusText.classList.add(textColorClass);
+                statusText.classList.remove('text-yellow-300', 'text-green-400', 'text-green-600', 'text-yellow-600');
+                statusText.classList.add(finalTextColorClass);
                 statusText.textContent = isComplete ? "Processing Complete!" : "Analyzing content and generating titles...";
             }
         };
@@ -461,32 +884,43 @@
             if (toggleTrack && toggleKnob && toggleZap && toggleText) {
                 
                 // 1. Update Track Classes (Color and Glow/Shadow)
-                toggleTrack.classList.remove('bg-green-500/70', 'bg-white/10', 'on-glow', 'off-shadow');
+                toggleTrack.classList.remove('bg-green-500/70', 'bg-white/10', 'on-glow', 'off-shadow', 'bg-gray-300/50');
                 
                 if (isViralBoostEnabled) {
                     // ON state: Green background and glow shadow
                     toggleTrack.classList.add('bg-green-500/70', 'on-glow');
                 } else {
                     // OFF state: White/gray background and subtle shadow
-                    toggleTrack.classList.add('bg-white/10', 'off-shadow');
+                    // In Light Mode, use a darker track for contrast
+                    const offTrackClass = isDarkMode ? 'bg-white/10' : 'bg-gray-300/50'; 
+                    toggleTrack.classList.add(offTrackClass, 'off-shadow');
                 }
                 
                 // 2. Update Knob Position
                 toggleKnob.style.transform = isViralBoostEnabled ? 'translateX(24px)' : 'translateX(0)';
+                // CRITICAL: Added Webkit Prefix for Transform
+                toggleKnob.style.webkitTransform = isViralBoostEnabled ? 'translateX(24px)' : 'translateX(0)';
 
                 // 3. Update Zap Icon & Text Color and Pop Animation
                 toggleZap.classList.toggle('text-green-400', isViralBoostEnabled);
                 toggleZap.classList.toggle('text-gray-500', !isViralBoostEnabled);
                 toggleZap.classList.toggle('icon-pop-on', isViralBoostEnabled);
                 
-                toggleText.classList.toggle('text-white', isViralBoostEnabled);
-                toggleText.classList.toggle('text-gray-400', !isViralBoostEnabled);
+                // Adjust text color based on Dark Mode state
+                const textColor = isDarkMode ? 'text-white' : 'text-gray-700';
+                const offTextColor = isDarkMode ? 'text-gray-400' : 'text-gray-500';
+
+                toggleText.classList.remove('text-white', 'text-gray-400', 'text-gray-700', 'text-gray-500');
+                toggleText.classList.add(isViralBoostEnabled ? textColor : offTextColor);
             }
         };
 
         const toggleViralBoost = () => {
             isViralBoostEnabled = !isViralBoostEnabled;
             
+            // Play sound effect based on new state
+            playToggleSound(isViralBoostEnabled);
+
             // If results are visible, regenerate the score/content based on the new toggle state
             if (isProcessed) {
                 generateViralContent();
@@ -565,14 +999,16 @@
         };
 
         const handleRegenerate = () => {
+            playClickSound(); // Play click sound
             if (file) {
                 generateViralContent();
                 updateUI();
-                attachTouchListeners(); // Ensure new result cards get the touch listener
+                attachStaticListeners(); // Ensure new result cards get the touch/hover listener
             }
         };
 
         const copyToClipboard = (text, index) => {
+            playClickSound(); // Play click sound
             const tempElement = document.createElement('textarea');
             tempElement.value = text;
             document.body.appendChild(tempElement);
@@ -589,6 +1025,7 @@
         };
 
         const resetApp = () => {
+            playClickSound(); // Play click sound
             file = null;
             isProcessing = false;
             isProcessed = false;
@@ -608,55 +1045,80 @@
             }
             
             updateUI();
-            attachTouchListeners(); // Ensure static cards still have listeners
+            attachStaticListeners(); // Ensure static cards still have listeners
         };
 
-        // --- NEW: TOUCH HOVER FIX LOGIC ---
+        // --- TOUCH HOVER & MOUSE HOVER SOUND LOGIC ---
         
         /**
-         * Attaches touch listeners to all glass cards to simulate persistent hover effect on mobile.
-         * We use the 'has-touch-listener' class to prevent double-attachment.
+         * Attaches touch listeners (for mobile hover) and mouse listeners (for desktop hover sound) 
+         * to all glass cards.
          */
-        const attachTouchListeners = () => {
-            // Select all card elements that need the touch-hover behavior but don't have listeners yet
-            const cards = document.querySelectorAll('.glass-card:not(.has-touch-listener), .title-result-card:not(.has-touch-listener)');
+        const attachStaticListeners = () => {
+            // Select all card elements that need the touch-hover and hover-sound behavior but don't have listeners yet
+            const cards = document.querySelectorAll('.glass-card:not(.has-listener), .title-result-card:not(.has-listener)');
 
-            // Function to handle the persistent hover state
+            // Function to handle the persistent hover state (used for touch)
             const handleTouchHover = function(e) {
                 // Ignore touches inside interactive elements (buttons, inputs) so they can function normally
                 if (e.target.closest('button, input, textarea, a')) return;
 
-                // 1. Check if the element is already "hovered"
                 const isAlreadyHovered = this.classList.contains('tapped-hover');
                 
-                // 2. Remove 'tapped-hover' from ALL other cards
+                // Remove 'tapped-hover' from ALL other cards
                 document.querySelectorAll('.glass-card, .title-result-card').forEach(el => {
                     if (el !== this) {
                         el.classList.remove('tapped-hover');
                     }
                 });
 
-                // 3. Toggle the hover state on the current element
-                // First tap -> apply hover state. Second tap -> remove hover state (or allow action/navigation if applicable)
                 if (!isAlreadyHovered) {
-                    // Apply the hover style
                     this.classList.add('tapped-hover');
                 } else {
-                    // Remove the hover style if tapped again
                     this.classList.remove('tapped-hover');
                 }
             };
             
             cards.forEach(element => {
-                // Attach touchstart listener to apply/toggle the hover class
+                // 1. Touch Listener (for mobile hover/tap feedback)
                 element.addEventListener('touchstart', handleTouchHover, { passive: true });
                 
-                // Mark element so we don't attach listener twice (important for dynamic content)
-                element.classList.add('has-touch-listener'); 
+                // 2. Mouse Enter Listener (for desktop hover sound) - Keep this for cards that don't have onmouseenter defined in HTML
+                // Note: The HTML elements already have inline onmouseenter, but this catches new dynamic ones
+                element.addEventListener('mouseenter', playHoverSound);
+
+                // Mark element so we don't attach listener twice
+                element.classList.add('has-listener'); 
+            });
+
+             // Attach mouseenter to the footer text for completeness (it's not a button but an interactive element)
+            const footerLinks = document.querySelectorAll('footer a, footer p'); // Select both the p and any potential links
+            footerLinks.forEach(element => {
+                if (!element.classList.contains('has-listener')) {
+                    element.addEventListener('mouseenter', playHoverSound);
+                    element.classList.add('has-listener');
+                }
             });
         };
-        // --- END TOUCH HOVER FIX LOGIC ---
+        // --- END TOUCH HOVER & MOUSE HOVER SOUND LOGIC ---
 
+        // --- LAUNCH ANIMATION LOGIC ---
+        const startLaunchAnimation = () => {
+            // Select all elements targeted for the initial animation
+            const targets = document.querySelectorAll('.card-animation-target');
+
+            // The longest animation is 0.4s delay + 1s duration = 1.4s. Use 1.5s for safety.
+            setTimeout(() => {
+                targets.forEach(el => {
+                    // Disable the CSS animation property so hover effects work properly
+                    el.style.animation = 'none'; 
+                    // Ensure final opacity is 1 and remove the target class
+                    el.style.opacity = '1';      
+                    el.classList.remove('card-animation-target');
+                });
+            }, 1500);
+        };
+        
         // --- UI RENDERING FUNCTIONS (Replaces React JSX rendering) ---
 
         const renderUploadSection = () => {
@@ -665,40 +1127,70 @@
 
             if (!file) {
                 // Initial state: Show drag & drop area
+                const textColorClass = isDarkMode ? 'text-white/80' : 'text-gray-600';
+                const helperTextColorClass = isDarkMode ? 'text-indigo-300' : 'text-indigo-600';
+                const borderColorClass = isDarkMode ? 'border-indigo-500/30 hover:border-indigo-400/70 hover:shadow-lg hover:shadow-indigo-900/50' : 'border-indigo-300 hover:border-indigo-500 hover:shadow-md hover:shadow-indigo-200/50';
+
                 uploadContainer.innerHTML = `
                     <div
                         id="file-drop-area"
                         class="glass-card fluid-transition p-4 sm:p-6 text-center flex flex-col items-center justify-center gap-4 h-64 cursor-pointer hover:scale-[1.01]"
                         ondragover="event.preventDefault()"
+                        onmouseenter="playHoverSound()"
                     >
-                        <div class="w-full h-full flex flex-col items-center justify-center border-2 border-dashed border-indigo-500/30 rounded-[30px] transition-all duration-300 hover:border-indigo-400/70 hover:shadow-lg hover:shadow-indigo-900/50">
-                            ${icon('Upload', 'h-10 w-10 text-white/80')}
+                        <div id="inner-drop-div" class="w-full h-full flex flex-col items-center justify-center border-2 border-dashed rounded-[30px] transition-all duration-300 ${borderColorClass}">
+                            ${icon('Upload', `h-10 w-10 ${textColorClass}`)}
                             <div>
-                            <p class="font-medium">Drag & drop your MP4 file here</p>
-                            <p class="text-sm text-indigo-300 mt-1">or click to browse (Max 500MB)</p>
+                            <p class="font-medium ${textColorClass}">Drag & drop your MP4 file here</p>
+                            <p class="text-sm mt-1 ${helperTextColorClass}">or click to browse (Max 500MB)</p>
                             </div>
                             <!-- SELECT FILE BUTTON: Luminous Glass Button -->
                             <button id="select-file-btn" class="cta-button mt-4 px-6 py-3 rounded-full font-medium transition-all duration-300 ease-in-out shadow-xl transform active:scale-[0.96] active:shadow-none 
                                    bg-gradient-to-r from-[#f97316]/20 via-[#ef4444]/20 to-[#c084fc]/20 hover:from-[#f97316]/60 hover:via-[#ef4444]/60 hover:to-[#818cf8]/60 
-                                   backdrop-blur-3xl text-white">
+                                   backdrop-blur-3xl text-white"
+                                   onmouseenter="playHoverSound()"
+                            >
                             Select File
                             </button>
                         </div>
                         <input type="file" id="file-upload-input" class="hidden" accept="video/mp4" onchange="handleFileChange(event)"/>
                     </div>
                 `;
+                
                 // Must re-attach manual listeners for drop and click after innerHTML update
                 const dropArea = document.getElementById('file-drop-area');
                 if (dropArea) {
                     dropArea.addEventListener('drop', handleDrop);
-                    // Attach click listener to the inner dashed div for better target
-                    const innerDiv = dropArea.querySelector('div');
-                    if(innerDiv) {
-                        innerDiv.addEventListener('click', () => document.getElementById('file-upload-input')?.click());
+                    
+                    // Attach click listener to the button
+                    const selectFileBtn = document.getElementById('select-file-btn');
+                    const fileInput = document.getElementById('file-upload-input');
+                    if(selectFileBtn && fileInput) {
+                        selectFileBtn.onclick = (e) => {
+                            e.stopPropagation(); // Prevent the card's click from interfering
+                            playClickSound(); 
+                            fileInput.click();
+                        };
+                    }
+                    // Attach click listener to the entire card area to also trigger file input
+                    dropArea.onclick = (e) => {
+                         // Only trigger if clicking on the drop area itself, not the button, as the button has its own click handler
+                        if(e.target === dropArea || e.target.closest('#inner-drop-div')) { 
+                            playClickSound(); 
+                            fileInput.click();
+                        }
                     }
                 }
+
             } else {
                 // File selected state
+                const textColor = isDarkMode ? 'text-white' : 'text-gray-800';
+                const fileIconColor = isDarkMode ? 'text-green-400' : 'text-green-600';
+                const fileDetailColor = isDarkMode ? 'text-indigo-300' : 'text-indigo-600';
+                const fileBg = isDarkMode ? 'bg-white/10' : 'bg-gray-200/50';
+                const fileBorder = isDarkMode ? 'border-white/20' : 'border-gray-400/30';
+
+
                 const processingArea = isProcessing || isProcessed ? `
                     <div class="w-full max-w-sm mb-4">
                         <div class="flex justify-between mb-2">
@@ -723,6 +1215,7 @@
                             <!-- START NEW VIDEO BUTTON: Subtle Glass Button -->
                             <button 
                                 onclick="resetApp()"
+                                onmouseenter="playHoverSound()"
                                 class="cta-button bg-gray-700/50 hover:bg-gray-600/70 text-white backdrop-blur-xl shadow-inner shadow-white/5 px-6 py-3 rounded-full font-medium flex items-center"
                             >
                                 ${icon('RotateCcw', 'mr-2 h-4 w-4')}
@@ -734,11 +1227,11 @@
 
                 uploadContainer.innerHTML = `
                     <div class="flex flex-col items-center">
-                        <div class="flex items-center gap-3 mb-4 p-4 rounded-[24px] bg-white/10 backdrop-blur-sm w-full max-w-sm border border-white/20">
-                            ${icon('Play', 'h-6 w-6 text-green-400 flex-shrink-0')}
+                        <div class="flex items-center gap-3 mb-4 p-4 rounded-[24px] ${fileBg} backdrop-blur-sm w-full max-w-sm border ${fileBorder}">
+                            ${icon('Play', `h-6 w-6 ${fileIconColor} flex-shrink-0`)}
                             <div class="text-left overflow-hidden">
-                                <p class="font-medium truncate">${file.name}</p>
-                                <p class="text-xs text-indigo-300">
+                                <p class="font-medium truncate ${textColor}">${file.name}</p>
+                                <p class="text-xs ${fileDetailColor}">
                                     ${(file.size / (1024 * 1024)).toFixed(2)} MB
                                 </p>
                             </div>
@@ -777,7 +1270,7 @@
                                     ${viralScore}%
                                 </span>
                             </div>
-                            <div class="w-full bg-white/10 rounded-full h-3">
+                            <div class="w-full ${isDarkMode ? 'bg-white/10' : 'bg-gray-300'} rounded-full h-3">
                                 <div
                                     class="h-3 rounded-full transition-all duration-1000 ${
                                         viralScore < 75 ? "bg-red-500 shadow-md shadow-red-500/50" : viralScore < 90 ? "bg-yellow-500 shadow-md shadow-yellow-500/50" : "bg-green-500 shadow-md shadow-green-500/50"
@@ -791,16 +1284,19 @@
                 `;
 
                 // --- Title Options Section ---
+                const titleTextColor = isDarkMode ? 'text-white/90' : 'text-gray-800';
+                
                 const titlesHTML = `
                     <div class="mb-12">
                         <div class="flex justify-between items-center mb-6">
-                            <h2 class="text-2xl font-semibold text-white">Suggested Titles</h2>
+                            <h2 class="text-2xl font-semibold ${isDarkMode ? 'text-white' : 'text-gray-800'}">Suggested Titles</h2>
                             <!-- REGENERATE BUTTON: Subtle Glass Button -->
                             <button 
                                 onclick="handleRegenerate()"
-                                class="cta-button bg-gray-700/50 hover:bg-gray-600/70 text-white backdrop-blur-xl text-sm px-4 py-2 shadow-inner shadow-white/5 rounded-full font-medium flex items-center"
+                                onmouseenter="playHoverSound()"
+                                class="cta-button ${isDarkMode ? 'bg-gray-700/50 hover:bg-gray-600/70 text-white shadow-inner shadow-white/5' : 'bg-gray-100/70 hover:bg-gray-200/90 text-gray-700 shadow-inner shadow-black/5'} backdrop-blur-xl text-sm px-4 py-2 rounded-full font-medium flex items-center"
                             >
-                                ${icon('RotateCcw', 'mr-2 h-3 w-3')}
+                                ${icon('RotateCcw', `mr-2 h-3 w-3 ${isDarkMode ? 'text-white' : 'text-gray-700'}`)}
                                 Regenerate
                             </button>
                         </div>
@@ -817,12 +1313,13 @@
                                             <!-- COPY BUTTON: Clean glass copy button -->
                                             <button
                                                 onclick="copyToClipboard('${title.replace(/'/g, "\\'")}', ${index})"
-                                                class="h-8 w-8 p-0 bg-transparent hover:bg-white/10 text-indigo-300 hover:text-white shadow-none rounded-full flex items-center justify-center"
+                                                onmouseenter="playHoverSound()"
+                                                class="h-8 w-8 p-0 bg-transparent hover:bg-white/10 ${isDarkMode ? 'text-indigo-300 hover:text-white' : 'text-indigo-500 hover:text-indigo-700'} shadow-none rounded-full flex items-center justify-center"
                                             >
                                                 ${copiedIndex === index ? icon('Check', 'h-4 w-4 text-green-400') : icon('Copy', 'h-4 w-4')}
                                             </button>
                                         </div>
-                                        <p class="text-base min-h-[50px] flex items-center text-white/90 p-1">${title}</p>
+                                        <p class="text-base min-h-[50px] flex items-center ${titleTextColor} p-1">${title}</p>
                                     </div>
                                 </div>
                             `).join('')}
@@ -843,15 +1340,16 @@
                                 <!-- COPY ALL BUTTON: Subtle Glass Button -->
                                 <button
                                     onclick="copyToClipboard('${escapedDescription}', 3)"
-                                    class="cta-button bg-gray-700/50 hover:bg-gray-600/70 text-white backdrop-blur-xl text-sm px-4 py-2 shadow-inner shadow-white/5 rounded-full font-medium flex items-center"
+                                    onmouseenter="playHoverSound()"
+                                    class="cta-button ${isDarkMode ? 'bg-gray-700/50 hover:bg-gray-600/70 text-white shadow-inner shadow-white/5' : 'bg-gray-100/70 hover:bg-gray-200/90 text-gray-700 shadow-inner shadow-black/5'} backdrop-blur-xl text-sm px-4 py-2 rounded-full font-medium flex items-center"
                                 >
                                     ${copiedIndex === 3 ? `<span class="flex items-center">${icon('Check', 'mr-2 h-4 w-4 text-green-400')} Copied!</span>` : `<span class="flex items-center">${icon('Copy', 'mr-2 h-4 w-4')} Copy All</span>`}
                                 </button>
-                            </p>
+                            </h2>
                         </div>
                         <div class="p-1">
-                            <div class="bg-black/40 rounded-[24px] p-4 sm:p-5 min-h-[250px] max-h-96 border border-white/20 overflow-auto">
-                                <pre class="whitespace-pre-wrap text-xs sm:text-sm font-mono text-indigo-100 leading-relaxed">${description}</pre>
+                            <div class="${isDarkMode ? 'bg-black/40' : 'bg-gray-200/70'} rounded-[24px] p-4 sm:p-5 min-h-[250px] max-h-96 border border-white/20 overflow-auto">
+                                <pre class="whitespace-pre-wrap text-xs sm:text-sm font-mono ${isDarkMode ? 'text-indigo-100' : 'text-gray-800'} leading-relaxed">${description}</pre>
                             </div>
                         </div>
                     </div>
@@ -863,7 +1361,7 @@
                 setTimeout(() => {
                     resultsContainer.classList.add('show-results');
                     // CRITICAL: Attach listeners to the newly created result cards
-                    attachTouchListeners(); 
+                    attachStaticListeners(); 
                 }, 50);
 
             } else {
@@ -873,6 +1371,8 @@
         };
 
         const updateUI = () => {
+            updateModeUI(); // Ensure mode UI is consistent
+            updateMuteUI(); // NEW: Ensure mute UI is consistent
             updateToggleUI();
             renderUploadSection();
             // We call setProgress here to ensure the status text and percentage immediately take on the correct color/state after a re-render.
@@ -883,15 +1383,24 @@
         };
 
         const initApp = () => {
-            // Ensure results section is hidden initially
+            // 1. Initialize Tone.js synths immediately, but the AudioContext remains suspended.
+            initToneJs();
+
+            // 2. Start the spiral entry animation immediately
+            startLaunchAnimation(); 
+            
+            // 3. Initial check for dark/light mode and update UI
+            updateModeUI();
+            updateMuteUI(); // This will show the muted icon by default
+
+            // 4. Ensure results section is hidden initially
             const resultsContainer = document.getElementById('results-section');
             if (resultsContainer) {
                 resultsContainer.classList.remove('show-results');
             }
-            // Initial UI render
+            // 5. Initial UI render and attach listeners
             updateUI();
-            // Attach listeners to all static cards on load
-            attachTouchListeners();
+            attachStaticListeners();
         };
     </script>
 </body>
