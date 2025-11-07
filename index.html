@@ -18,53 +18,170 @@
 <meta name="twitter:description" content="Growth AI">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FanPlusFollow</title>
+    <title>FanPlusFollow Viral Content Generator</title>
     <!-- Load Tailwind CSS from CDN --><script src="https://cdn.tailwindcss.com"></script>
     <style>
         /* Import Inter Font */
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
         :root { font-family: 'Inter', sans-serif; }
 
-        /* Custom Styles for Glassmorphism */
-        .glass-card {
-            background-color: rgba(255, 255, 255, 0.02); /* bg-white/2 */
-            backdrop-filter: blur(24px); /* backdrop-blur-3xl */
-            border: 1px solid rgba(255, 255, 255, 0.1); /* border border-white/10 */
-            border-radius: 32px;
-            transition: all 300ms ease-in-out;
-            box-shadow: 0 10px 15px rgba(0, 0, 0, 0.5);
+        /* Custom Transition: Match glass-card to be used universally */
+        .fluid-transition {
+            transition: all 400ms cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            will-change: transform, box-shadow;
         }
 
-        /* Custom Styles for CTA Buttons */
+        /* ============================================== */
+        /* MAIN GLASS CARD STYLES */
+        /* ============================================== */
+        .glass-card {
+            background-color: rgba(255, 255, 255, 0.03); /* Lower opacity for depth */
+            backdrop-filter: blur(40px); /* Higher blur for intense glass effect */
+            border-radius: 36px; /* Slightly larger radius */
+            /* Apply custom transition */
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.8), inset 0 0 0 1px rgba(255, 255, 255, 0.05); 
+            border: 1px solid rgba(255, 255, 255, 0.08); /* Minimal border for definition */
+        }
+
+        /* ENHANCED HOVER EFFECT for all main glass cards */
+        .glass-card:hover {
+            transform: translateY(-8px) scale(1.005); /* More noticeable lift */
+            box-shadow: 
+                0 30px 60px rgba(0, 0, 0, 0.9), 
+                0 0 0 2px rgba(192, 132, 252, 0.2), /* Subtle border glow on hover */
+                0 5px 15px rgba(0, 0, 0, 0.9); 
+        }
+
+        /* ============================================== */
+        /* TITLE RESULT CARD STYLES (FIXED HOVER) */
+        /* ============================================== */
+        .title-result-card {
+            background-color: rgba(255, 255, 255, 0.05); /* Slightly brighter base than main card */
+            backdrop-filter: blur(20px);
+            border-radius: 32px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.7), inset 0 0 0 1px rgba(255, 255, 255, 0.05);
+            /* Apply custom transition */
+        }
+
+        /* FIX: Enhanced Hover for Title/Result cards (Mimics main glass card) */
+        .title-result-card:hover {
+            transform: translateY(-6px) scale(1.01); /* Strong lift, slightly reduced from -8px for smaller element */
+            box-shadow:
+                0 25px 50px rgba(0, 0, 0, 0.95), /* Deep shadow */
+                0 0 0 2px rgba(192, 132, 252, 0.3), /* Border glow (Purple) */
+                0 5px 15px rgba(0, 0, 0, 0.9);
+        }
+        
+        /* Custom Styles for CTA Buttons - iOS Glass Look */
         .cta-button {
-            transition: all 300ms ease-in-out;
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            transition: all 300ms cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            backdrop-filter: blur(15px);
+            /* Add subtle inset light shadow for depth */
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+        }
+        /* UPDATED: Added transform and refined box-shadow to match card hover effect */
+        .cta-button:hover {
+            /* Adding the lift/scale effect similar to glass cards, but slightly smaller */
+            transform: translateY(-4px) scale(1.02); /* Added lift and scale */
+            /* Refined luminous shadow to match card glow */
+            box-shadow: 
+                0 15px 30px rgba(0, 0, 0, 0.8), 
+                0 0 0 2px rgba(192, 132, 252, 0.4), /* Subtle border glow */
+                0 5px 15px rgba(0, 0, 0, 0.9); 
         }
         .cta-button:active {
-            transform: scale(0.98);
-            box-shadow: none;
+            transform: scale(0.96); /* Deeper press effect */
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.9); /* Flatter shadow on press */
         }
 
         /* Radial gradient for iOS Dark Mode Background */
         body {
             background-color: #0A0D14;
-            background-image: radial-gradient(circle at center, #1b0e2d 0%, #0A0D14 70%);
+            /* Enhanced dark radial gradient for deeper black and better contrast */
+            background-image: radial-gradient(circle at center, #1b0e2d 0%, #06090f 80%);
             min-height: 100vh;
         }
         
-        /* Utility for score animation (replicates React's transition) */
+        /* Utility for score animation and glow */
         .viral-score-text {
             transition: color 500ms, text-shadow 500ms;
         }
+        
+        /* ============================================== */
+        /* VIRAL TOGGLE STYLES (Glow & Hover) */
+        /* ============================================== */
 
-        /* Glow effect for the file drop area's dashed border */
-        .dashed-border-glow {
-            transition: all 300ms ease-in-out;
+        .viral-toggle-track {
+            transition: all 300ms cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.6);
         }
-        /* Using the dark purple glow for the hover effect on the drop area */
-        #file-drop-area:hover .dashed-border-glow {
-            border-color: rgba(27, 14, 45, 0.8); /* dark purple */
-            box-shadow: 0 0 20px rgba(27, 14, 45, 0.5);
+        
+        /* Hover effect for the track */
+        .viral-toggle-track:hover {
+            transform: scale(1.05);
+            filter: brightness(1.2);
+        }
+        
+        /* ON state: Intense Glow */
+        .viral-toggle-track.on-glow {
+            /* Neon outer glow, inner glow, and dark drop shadow combined */
+            box-shadow: 
+                0 0 20px rgba(0, 255, 0, 0.7), /* Increased outer glow */
+                inset 0 0 10px rgba(0, 255, 0, 0.5), /* Increased inner glow */
+                0 4px 10px rgba(0, 0, 0, 0.8);
+        }
+
+        /* OFF state: Subtle shadow */
+        .viral-toggle-track.off-shadow {
+            box-shadow: inset 0 0 8px rgba(255, 255, 255, 0.15), 0 4px 10px rgba(0, 0, 0, 0.7);
+        }
+        
+        /* ============================================== */
+        /* ICON POP ANIMATION (iOS Charging Style) */
+        /* ============================================== */
+        @keyframes zap-glow {
+            0%, 100% {
+                opacity: 1;
+                transform: scale(1);
+                filter: drop-shadow(0 0 5px rgba(0, 255, 0, 0.4));
+            }
+            50% {
+                opacity: 0.8;
+                transform: scale(1.1); /* Subtle "pop" */
+                filter: drop-shadow(0 0 25px rgba(0, 255, 0, 0.9)); /* Intense glow */
+            }
+        }
+        
+        .icon-pop-on {
+            animation: zap-glow 1.5s infinite ease-in-out;
+            will-change: transform, filter, opacity;
+        }
+        
+        /* ============================================== */
+        /* Results Transition Styles */
+        /* ============================================== */
+        #results-section {
+            opacity: 0;
+            transform: translateY(20px);
+            /* Combined transition for a smooth, cohesive look */
+            transition: opacity 1s cubic-bezier(0.25, 0.46, 0.45, 0.94), 
+                        transform 1s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            max-height: 0;
+            overflow: hidden; 
+            will-change: opacity, transform, max-height, overflow;
+        }
+
+        #results-section.show-results {
+            opacity: 1;
+            transform: translateY(0);
+            max-height: 5000px; 
+            /* Fix: Set to visible to allow card hover shadows/lifts to render */
+            overflow: visible; 
+            /* Staggered transition: max-height first, then opacity/transform */
+            transition: max-height 0.8s ease-in-out, 
+                        opacity 1s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.2s, 
+                        transform 1s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.2s;
         }
     </style>
 </head>
@@ -72,9 +189,9 @@
 
     <div class="max-w-4xl mx-auto">
         
-        <!-- ============================================== --><!-- HEADER - Glass Bar --><!-- UPDATED: Glow color to match background purple --><!-- ============================================== --><header id="app-header" class="glass-card p-6 mb-8 flex flex-col md:flex-row items-center justify-between transition-all duration-500 hover:shadow-2xl hover:shadow-purple-900/40">
+        <!-- ============================================== --><!-- HEADER - Glass Bar --><!-- ============================================== --><header id="app-header" class="glass-card fluid-transition p-6 mb-8 flex flex-col md:flex-row items-center justify-between">
             <div class="flex items-center space-x-4 mb-4 md:mb-0">
-                <!-- FanPlusFollow Logo SVG (Replicates FanPlusFollowLogo Component) --><div class="w-16 h-16">
+                <!-- FanPlusFollow Logo SVG --><div class="w-16 h-16">
                     <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
                       <defs>
                         <linearGradient id="logoGradient" x1="0%" y1="0%" x2="100%" y2="100%">
@@ -101,7 +218,7 @@
                 </div>
             </div>
             
-            <!-- Viral Mode Toggle (Replicates IosToggleSwitch Component) --><div class="flex flex-col sm:flex-row items-center gap-3">
+            <!-- Viral Mode Toggle (Enhanced iOS Switch) --><div class="flex flex-col sm:flex-row items-center gap-3">
                 <div class="flex items-center space-x-3">
                     <!-- Zap Icon (Lucide) --><svg id="viral-toggle-zap" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5 transition-colors duration-300 text-green-400"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
                     <span id="viral-toggle-text" class="text-sm font-medium transition-colors duration-300 text-white">
@@ -109,14 +226,13 @@
                     </span>
                     <div
                       id="viral-toggle-track"
-                      class="w-14 h-8 flex items-center rounded-full p-1 cursor-pointer transition-all duration-300 backdrop-blur-3xl border bg-green-500/70 border-green-400/50"
+                      class="viral-toggle-track w-14 h-8 flex items-center rounded-full p-1 cursor-pointer transition-all duration-300 backdrop-blur-3xl"
                       onclick="toggleViralBoost()"
-                      style="box-shadow: inset 0 0 10px rgba(0, 255, 0, 0.4), 0 4px 10px rgba(0, 0, 0, 0.6);"
                     >
                       <div
                         id="viral-toggle-knob"
                         class="bg-white w-6 h-6 rounded-full transform transition-transform duration-300"
-                        style="transform: translateX(24px); box-shadow: 0 1px 3px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(255, 255, 255, 0.3) inset, 0 0 0 4px rgba(0, 0, 0, 0.05);"
+                        style="box-shadow: 0 1px 3px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(255, 255, 255, 0.3) inset, 0 0 0 4px rgba(0, 0, 0, 0.05);"
                       />
                     </div>
                 </div>
@@ -124,7 +240,7 @@
         </header>
 
         <main>
-            <!-- Main CTAs Section REMOVED to avoid redundancy with the footer section --><!-- ============================================== --><!-- Upload Section (Glass Card) --><!-- UPDATED: Glow color to match background purple --><!-- ============================================== --><div class="glass-card p-6 rounded-[32px] mb-12 transition-all duration-500 hover:shadow-2xl hover:shadow-purple-900/40">
+            <!-- Upload Section (Glass Card) --><div class="glass-card fluid-transition p-6 rounded-[36px] mb-12">
                 <div class="mb-4">
                     <h2 class="text-2xl font-semibold flex items-center gap-2">
                         <!-- Upload Icon (Lucide) --><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-indigo-400"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" x2="12" y1="3" y2="15"/></svg>
@@ -135,12 +251,12 @@
                     <!-- Content rendered by JavaScript --></div>
             </div>
 
-            <!-- ============================================== --><!-- Results Section (Hidden until processed) --><!-- ============================================== --><div id="results-section" style="display: none;">
+            <!-- ============================================== --><!-- Results Section --><!-- ============================================== --><div id="results-section">
                 <!-- Content rendered by JavaScript after processing --></div>
         </main>
 
-        <!-- ============================================== --><!-- Channel Promotion (Glass Card) --><!-- UPDATED: Glow color to match background purple --><!-- ============================================== --><div class="mt-12 w-full px-0 sm:px-4">
-            <div class="glass-card p-4 sm:p-6 max-w-4xl mx-auto transition-all duration-500 hover:shadow-2xl hover:shadow-purple-900/40">
+        <!-- ============================================== --><!-- Channel Promotion (Glass Card) --><!-- ============================================== --><div class="mt-12 w-full px-0 sm:px-4">
+            <div class="glass-card fluid-transition p-4 sm:p-6 max-w-4xl mx-auto">
                 <div class="p-1">
                     <div class="flex flex-col items-center">
                         <!-- FanPlusFollow Logo SVG --><div class="w-16 h-16 mb-2 sm:mb-4">
@@ -164,18 +280,24 @@
                           Join the community for exclusive growth insights and advanced content tools.
                         </p>
                         <div class="mt-3 sm:mt-4 flex flex-wrap justify-center gap-4">
+                          <!-- SUBSCRIBE BUTTON: Luminous Glass Button -->
                           <button 
-                            class="cta-button px-6 py-3 rounded-full font-medium transition-all duration-300 ease-in-out shadow-xl transform active:scale-[0.98] active:shadow-none bg-gradient-to-r from-[#f97316]/50 via-[#ef4444]/50 to-[#c084fc]/50 hover:from-[#f97316] hover:via-[#ef4444] hover:to-[#818cf8] backdrop-blur-3xl text-white border border-white/50"
+                            class="cta-button px-6 py-3 rounded-full font-medium transition-all duration-300 ease-in-out shadow-xl transform active:scale-[0.96] active:shadow-none 
+                                   bg-gradient-to-r from-[#f97316]/20 via-[#ef4444]/20 to-[#c084fc]/20 hover:from-[#f97316]/60 hover:via-[#ef4444]/60 hover:to-[#818cf8]/60 
+                                   backdrop-blur-3xl text-white flex items-center"
                             onclick="window.open('https://www.youtube.com/@fanplusfollow', '_blank')"
                           >
                             <!-- Users Icon (Lucide) --><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2 h-4 w-4"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
                             Subscribe Now
                           </button>
+                          <!-- FOLLOW BUTTON: Luminous Glass Button -->
                           <button 
-                            class="cta-button px-6 py-3 rounded-full font-medium transition-all duration-300 ease-in-out shadow-xl transform active:scale-[0.98] active:shadow-none bg-gradient-to-r from-[#f97316]/50 via-[#ef4444]/50 to-[#c084fc]/50 hover:from-[#f97316] hover:via-[#ef4444] hover:to-[#818cf8] backdrop-blur-3xl text-white border border-white/50"
+                            class="cta-button px-6 py-3 rounded-full font-medium transition-all duration-300 ease-in-out shadow-xl transform active:scale-[0.96] active:shadow-none 
+                                   bg-gradient-to-r from-[#f97316]/20 via-[#ef4444]/20 to-[#c084fc]/20 hover:from-[#f97316]/60 hover:via-[#ef4444]/60 hover:to-[#818cf8]/60 
+                                   backdrop-blur-3xl text-white flex items-center"
                             onclick="window.open('https://www.instagram.com/_manmohit_singh_/', '_blank')"
                           >
-                            <!-- Star Icon (Lucide) - CHANGED to outlined style --><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2 h-4 w-4"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                            <!-- Star Icon (Lucide) --><svg xmlns="http://www.w3.org/2003/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2 h-4 w-4"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
                             Follow Now
                           </button>
                         </div>
@@ -224,20 +346,28 @@
             progressValue = value;
             const indicator = document.getElementById('progress-indicator');
             const label = document.getElementById('progress-label');
+            const statusText = document.getElementById('processing-status');
             
-            if (indicator && label) {
+            const isComplete = progressValue >= 100;
+            const indicatorColorClass = isComplete ? "bg-green-500 shadow-md shadow-green-500/50" : "bg-yellow-400";
+            // NEW: Use text-green-400 for 100% completion status and label
+            const textColorClass = isComplete ? "text-green-400" : "text-yellow-300"; 
+
+            if (indicator && label && statusText) {
                 indicator.style.width = `${progressValue}%`;
+                
+                // 1. Update Progress Label (Percentage)
                 label.innerHTML = `${progressValue}%`;
+                label.classList.remove('text-yellow-300', 'text-green-400');
+                label.classList.add(textColorClass);
                 
-                // Update indicator class based on state
-                indicator.className = `h-2.5 rounded-full transition-all duration-1000 ${
-                    progressValue < 100 ? "bg-yellow-400" : "bg-green-500 shadow-md shadow-green-500/50"
-                }`;
+                // 2. Update Indicator Bar
+                indicator.className = `h-2.5 rounded-full transition-all duration-1000 ${indicatorColorClass}`;
                 
-                const statusText = document.getElementById('processing-status');
-                if (statusText) {
-                    statusText.textContent = isProcessed ? "Processing Complete!" : "Analyzing content and generating titles...";
-                }
+                // 3. Update Status Text (Message)
+                statusText.classList.remove('text-yellow-300', 'text-green-400');
+                statusText.classList.add(textColorClass);
+                statusText.textContent = isComplete ? "Processing Complete!" : "Analyzing content and generating titles...";
             }
         };
 
@@ -268,22 +398,27 @@
             const toggleText = document.getElementById('viral-toggle-text');
 
             if (toggleTrack && toggleKnob && toggleZap && toggleText) {
-                // Track
-                toggleTrack.className = `w-14 h-8 flex items-center rounded-full p-1 cursor-pointer transition-all duration-300 backdrop-blur-3xl border ${
-                    isViralBoostEnabled 
-                        ? "bg-green-500/70 border-green-400/50" 
-                        : "bg-white/10 border-white/20"
-                }`;
-                toggleTrack.style.boxShadow = isViralBoostEnabled 
-                    ? 'inset 0 0 10px rgba(0, 255, 0, 0.4), 0 4px 10px rgba(0, 0, 0, 0.6)' 
-                    : 'inset 0 0 5px rgba(255, 255, 255, 0.1), 0 4px 10px rgba(0, 0, 0, 0.6)';
-
-                // Knob
+                
+                // 1. Update Track Classes (Color and Glow/Shadow)
+                toggleTrack.classList.remove('bg-green-500/70', 'bg-white/10', 'on-glow', 'off-shadow');
+                
+                if (isViralBoostEnabled) {
+                    // ON state: Green background and glow shadow
+                    toggleTrack.classList.add('bg-green-500/70', 'on-glow');
+                } else {
+                    // OFF state: White/gray background and subtle shadow
+                    toggleTrack.classList.add('bg-white/10', 'off-shadow');
+                }
+                
+                // 2. Update Knob Position
                 toggleKnob.style.transform = isViralBoostEnabled ? 'translateX(24px)' : 'translateX(0)';
 
-                // Zap Icon & Text (Using class for color control)
+                // 3. Update Zap Icon & Text Color and Pop Animation
                 toggleZap.classList.toggle('text-green-400', isViralBoostEnabled);
                 toggleZap.classList.toggle('text-gray-500', !isViralBoostEnabled);
+                // NEW: Add or remove the pop animation class
+                toggleZap.classList.toggle('icon-pop-on', isViralBoostEnabled);
+                
                 toggleText.classList.toggle('text-white', isViralBoostEnabled);
                 toggleText.classList.toggle('text-gray-400', !isViralBoostEnabled);
             }
@@ -334,7 +469,7 @@
                     generateViralContent();
                     isProcessing = false;
                     isProcessed = true;
-                    updateUI();
+                    updateUI(); // This call triggers the results render and transition
                 }, 500);
             }, 3000);
         };
@@ -405,6 +540,12 @@
             const fileInput = document.getElementById('file-upload-input');
             if (fileInput) fileInput.value = "";
             
+            // Ensure transition classes are removed on reset
+            const resultsContainer = document.getElementById('results-section');
+            if (resultsContainer) {
+                resultsContainer.classList.remove('show-results');
+            }
+            
             updateUI();
         };
 
@@ -419,18 +560,19 @@
                 uploadContainer.innerHTML = `
                     <div
                         id="file-drop-area"
-                        class="relative p-0.5 rounded-[30px] cursor-pointer transition-all hover:scale-[1.01] overflow-hidden"
-                        style="background: radial-gradient(circle at center, #1b0e2d 0%, #0A0D14 70%); padding: 2px; background-clip: padding-box, border-box; background-origin: padding-box, border-box; border: none;"
+                        class="glass-card fluid-transition p-4 sm:p-6 text-center flex flex-col items-center justify-center gap-4 h-64 cursor-pointer hover:scale-[1.01]"
                         ondragover="event.preventDefault()"
                     >
-                        <div class="absolute inset-0 border-2 border-dashed border-white/40 rounded-[28px] pointer-events-none z-0 dashed-border-glow"></div>
-                        <div class="relative z-10 bg-transparent backdrop-blur-md rounded-[28px] p-8 text-center flex flex-col items-center justify-center gap-4 h-full">
+                        <div class="w-full h-full flex flex-col items-center justify-center border-2 border-dashed border-indigo-500/30 rounded-[30px] transition-all duration-300 hover:border-indigo-400/70 hover:shadow-lg hover:shadow-indigo-900/50">
                             ${icon('Upload', 'h-10 w-10 text-white/80')}
                             <div>
                             <p class="font-medium">Drag & drop your MP4 file here</p>
                             <p class="text-sm text-indigo-300 mt-1">or click to browse (Max 500MB)</p>
                             </div>
-                            <button id="select-file-btn" class="cta-button px-6 py-3 rounded-full font-medium transition-all duration-300 ease-in-out shadow-xl transform active:scale-[0.98] active:shadow-none bg-gradient-to-r from-[#f97316]/50 via-[#ef4444]/50 to-[#c084fc]/50 hover:from-[#f97316] hover:via-[#ef4444] hover:to-[#818cf8] backdrop-blur-3xl text-white border border-white/50">
+                            <!-- SELECT FILE BUTTON: Luminous Glass Button -->
+                            <button id="select-file-btn" class="cta-button mt-4 px-6 py-3 rounded-full font-medium transition-all duration-300 ease-in-out shadow-xl transform active:scale-[0.96] active:shadow-none 
+                                   bg-gradient-to-r from-[#f97316]/20 via-[#ef4444]/20 to-[#c084fc]/20 hover:from-[#f97316]/60 hover:via-[#ef4444]/60 hover:to-[#818cf8]/60 
+                                   backdrop-blur-3xl text-white">
                             Select File
                             </button>
                         </div>
@@ -441,15 +583,20 @@
                 const dropArea = document.getElementById('file-drop-area');
                 if (dropArea) {
                     dropArea.addEventListener('drop', handleDrop);
-                    dropArea.addEventListener('click', () => document.getElementById('file-upload-input')?.click());
+                    // Attach click listener to the inner dashed div for better target
+                    const innerDiv = dropArea.querySelector('div');
+                    if(innerDiv) {
+                        innerDiv.addEventListener('click', () => document.getElementById('file-upload-input')?.click());
+                    }
                 }
             } else {
                 // File selected state
                 const processingArea = isProcessing || isProcessed ? `
                     <div class="w-full max-w-sm mb-4">
                         <div class="flex justify-between mb-2">
+                            <!-- NOTE: Color is initially set, but managed dynamically by setProgress() -->
                             <span id="processing-status" class="text-yellow-300">
-                                ${isProcessed ? "Processing Complete!" : "Analyzing content and generating titles..."}
+                                Analyzing content and generating titles...
                             </span>
                             <span id="progress-label" class="text-yellow-300 font-bold">${progressValue}%</span>
                         </div>
@@ -465,9 +612,10 @@
                     </div>
                     ${isProcessed ? `
                         <div class="flex gap-4 mt-6">
+                            <!-- START NEW VIDEO BUTTON: Subtle Glass Button -->
                             <button 
                                 onclick="resetApp()"
-                                class="cta-button bg-gray-700/50 hover:bg-gray-600/70 text-white border border-white/10 backdrop-blur-xl shadow-inner shadow-white/5 px-6 py-3 rounded-full font-medium"
+                                class="cta-button bg-gray-700/50 hover:bg-gray-600/70 text-white backdrop-blur-xl shadow-inner shadow-white/5 px-6 py-3 rounded-full font-medium flex items-center"
                             >
                                 ${icon('RotateCcw', 'mr-2 h-4 w-4')}
                                 Start New Video
@@ -478,7 +626,7 @@
 
                 uploadContainer.innerHTML = `
                     <div class="flex flex-col items-center">
-                        <div class="flex items-center gap-3 mb-4 p-4 rounded-[24px] bg-white/10 backdrop-blur-sm w-full max-w-sm">
+                        <div class="flex items-center gap-3 mb-4 p-4 rounded-[24px] bg-white/10 backdrop-blur-sm w-full max-w-sm border border-white/20">
                             ${icon('Play', 'h-6 w-6 text-green-400 flex-shrink-0')}
                             <div class="text-left overflow-hidden">
                                 <p class="font-medium truncate">${file.name}</p>
@@ -505,15 +653,18 @@
                     : viralScore < 90 
                         ? "Solid performance. A few tweaks could push it higher." 
                         : "VIRAL READY! This content is primed for maximum engagement. Post ASAP.";
-                const scoreGlowStyle = viralScore >= 90 ? 'text-shadow: 0 0 15px rgba(0, 255, 0, 0.7);' : 'text-shadow: none;';
                 
-                // UPDATED: Glow color to match background purple
+                // Enhanced glow for viral score text
+                const scoreGlowStyle = viralScore >= 90 ? 'text-shadow: 0 0 20px rgba(0, 255, 0, 0.8), 0 0 5px rgba(255, 255, 255, 0.5);' : 
+                                       viralScore >= 75 ? 'text-shadow: 0 0 10px rgba(255, 255, 0, 0.5);' : 'text-shadow: none;';
+                
+                // Uses enhanced glass-card class
                 const viralScoreHTML = `
-                    <div class="glass-card p-6 rounded-[32px] mb-12 transition-all duration-500 hover:shadow-2xl hover:shadow-purple-900/40">
-                        <div class="mb-4"><h2 class="text-2xl font-semibold">Viral Potential Score</h2></div>
+                    <div class="glass-card fluid-transition p-6 rounded-[36px] mb-12">
+                        <div class="mb-4"><h2 class="text-2xl font-semibold text-indigo-200">Viral Potential Score</h2></div>
                         <div class="p-1">
                             <div class="flex items-center justify-between mb-4">
-                                <span class="text-indigo-300 text-lg">Estimated Viral Score</span>
+                                <span class="text-indigo-300 text-lg">Estimated Reach</span>
                                 <span class="text-4xl sm:text-5xl font-extrabold transition-colors duration-500 viral-score-text ${scoreColorClass}" style="${scoreGlowStyle}">
                                     ${viralScore}%
                                 </span>
@@ -521,7 +672,7 @@
                             <div class="w-full bg-white/10 rounded-full h-3">
                                 <div
                                     class="h-3 rounded-full transition-all duration-1000 ${
-                                        viralScore < 75 ? "bg-red-500" : viralScore < 90 ? "bg-yellow-500" : "bg-green-500"
+                                        viralScore < 75 ? "bg-red-500 shadow-md shadow-red-500/50" : viralScore < 90 ? "bg-yellow-500 shadow-md shadow-yellow-500/50" : "bg-green-500 shadow-md shadow-green-500/50"
                                     }"
                                     style="width: ${viralScore}%"
                                 ></div>
@@ -536,26 +687,29 @@
                     <div class="mb-12">
                         <div class="flex justify-between items-center mb-6">
                             <h2 class="text-2xl font-semibold text-white">Suggested Titles</h2>
+                            <!-- REGENERATE BUTTON: Subtle Glass Button -->
                             <button 
                                 onclick="handleRegenerate()"
-                                class="cta-button bg-gray-700/50 hover:bg-gray-600/70 text-white border border-white/10 backdrop-blur-xl text-sm px-4 py-2 shadow-inner shadow-white/5 rounded-full font-medium"
+                                class="cta-button bg-gray-700/50 hover:bg-gray-600/70 text-white backdrop-blur-xl text-sm px-4 py-2 shadow-inner shadow-white/5 rounded-full font-medium flex items-center"
                             >
                                 ${icon('RotateCcw', 'mr-2 h-3 w-3')}
                                 Regenerate
                             </button>
                         </div>
                         
-                        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        <!-- Fixed Title Cards using the new custom class for consistent hover -->
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 overflow-visible">
                             ${titles.map((title, index) => `
-                                <div class="bg-white/5 backdrop-blur-xl border border-white/10 overflow-hidden hover:border-purple-900 transition-all shadow-xl hover:shadow-purple-900/40 p-4 rounded-[32px]">
+                                <div class="title-result-card fluid-transition p-4">
                                     <div class="p-1">
                                         <div class="flex justify-between items-start mb-2">
                                             <span class="text-xs font-medium px-2 py-1 rounded-full bg-pink-700/50 text-pink-300 border border-pink-500/30">
                                                 Option ${index + 1}
                                             </span>
+                                            <!-- COPY BUTTON: Clean glass copy button -->
                                             <button
                                                 onclick="copyToClipboard('${title.replace(/'/g, "\\'")}', ${index})"
-                                                class="h-8 w-8 p-0 bg-transparent hover:bg-white/10 text-indigo-300 hover:text-white shadow-none rounded-full"
+                                                class="h-8 w-8 p-0 bg-transparent hover:bg-white/10 text-indigo-300 hover:text-white shadow-none rounded-full flex items-center justify-center"
                                             >
                                                 ${copiedIndex === index ? icon('Check', 'h-4 w-4 text-green-400') : icon('Copy', 'h-4 w-4')}
                                             </button>
@@ -572,15 +726,16 @@
                 // Escape single quotes in description for JavaScript string literal
                 const escapedDescription = description.replace(/'/g, "\\'").replace(/\n/g, '\\n');
 
-                // UPDATED: Glow color to match background purple
+                // Uses enhanced glass-card class
                 const descriptionHTML = `
-                    <div class="glass-card p-6 rounded-[32px] mb-12 transition-all duration-500 hover:shadow-2xl hover:shadow-purple-900/40">
+                    <div class="glass-card fluid-transition p-6 rounded-[36px] mb-12">
                         <div class="mb-4">
-                            <h2 class="flex justify-between items-center text-xl sm:text-2xl font-semibold">
+                            <h2 class="flex justify-between items-center text-xl sm:text-2xl font-semibold text-indigo-200">
                                 <span>Optimized Description & Hashtags</span>
+                                <!-- COPY ALL BUTTON: Subtle Glass Button -->
                                 <button
                                     onclick="copyToClipboard('${escapedDescription}', 3)"
-                                    class="cta-button bg-gray-700/50 hover:bg-gray-600/70 text-white border border-white/10 backdrop-blur-xl text-sm px-4 py-2 shadow-inner shadow-white/5 rounded-full font-medium"
+                                    class="cta-button bg-gray-700/50 hover:bg-gray-600/70 text-white backdrop-blur-xl text-sm px-4 py-2 shadow-inner shadow-white/5 rounded-full font-medium flex items-center"
                                 >
                                     ${copiedIndex === 3 ? `<span class="flex items-center">${icon('Check', 'mr-2 h-4 w-4 text-green-400')} Copied!</span>` : `<span class="flex items-center">${icon('Copy', 'mr-2 h-4 w-4')} Copy All</span>`}
                                 </button>
@@ -595,26 +750,36 @@
                 `;
 
                 resultsContainer.innerHTML = viralScoreHTML + titlesHTML + descriptionHTML;
-                resultsContainer.style.display = 'block';
+                
+                // NEW: Use a slight delay to ensure content is fully rendered before triggering the transition
+                setTimeout(() => {
+                    resultsContainer.classList.add('show-results');
+                }, 50);
+
             } else {
                 resultsContainer.innerHTML = '';
-                resultsContainer.style.display = 'none';
+                resultsContainer.classList.remove('show-results');
             }
         };
 
         const updateUI = () => {
             updateToggleUI();
             renderUploadSection();
+            // We call setProgress here to ensure the status text and percentage immediately take on the correct color/state after a re-render.
+            if(file && (isProcessing || isProcessed)) {
+                setProgress(progressValue);
+            }
             renderResults();
-            document.getElementById('results-section').style.display = isProcessed ? 'block' : 'none';
         };
 
         const initApp = () => {
+            // NEW: Ensure results section is hidden initially by removing the class
+            const resultsContainer = document.getElementById('results-section');
+            if (resultsContainer) {
+                resultsContainer.classList.remove('show-results');
+            }
             // Initial UI render
             updateUI();
-
-            // Attach toggle listener once
-            // The listener is already attached via onclick="toggleViralBoost()" in the HTML, no need to re-attach.
         };
     </script>
 </body>
