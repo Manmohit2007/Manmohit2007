@@ -18,7 +18,7 @@
 <meta name="twitter:description" content="Growth AI">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FanPlusFollow</title>
+    <title>FanPlusFollow Viral Content Generator</title>
     <!-- Load Tailwind CSS from CDN --><script src="https://cdn.tailwindcss.com"></script>
     <style>
         /* Import Inter Font */
@@ -38,17 +38,15 @@
         }
 
         /* ============================================== */
-        /* MAIN GLASS CARD STYLES (High Compatibility) */
+        /* MAIN GLASS CARD STYLES (High Compatibility & Stricter Opacity) */
         /* ============================================== */
         .glass-card {
-            /* FALLBACK: Solid dark background if backdrop-filter is not supported 
-               This ensures the card is visible and readable on all platforms. */
-            background-color: rgba(10, 10, 10, 0.7); 
+            /* 1. STICKY FALLBACK: Use a dark, slightly transparent background. 
+                  This is the base color if backdrop-filter fails. */
+            background-color: rgba(20, 20, 40, 0.75); 
             
-            /* GLASS STYLES: Applied on top of the fallback if supported */
-            background-color: rgba(255, 255, 255, 0.03); 
-            
-            /* CRITICAL FIX: Add -webkit- prefix for Safari/iOS/Samsung compatibility */
+            /* 2. GLASS EFFECT: Apply blur and set a *very* light background on top. 
+                  NOTE: Some browsers only apply the filter if the background has *some* transparency. */
             -webkit-backdrop-filter: blur(40px);
             backdrop-filter: blur(40px); 
             
@@ -77,16 +75,13 @@
         }
 
         /* ============================================== */
-        /* TITLE RESULT CARD STYLES (High Compatibility) */
+        /* TITLE RESULT CARD STYLES (High Compatibility & Stricter Opacity) */
         /* ============================================== */
         .title-result-card {
-            /* FALLBACK: Solid dark background if backdrop-filter is not supported */
-            background-color: rgba(10, 10, 10, 0.7); 
+            /* 1. STICKY FALLBACK: Dark, semi-transparent background. */
+            background-color: rgba(20, 20, 40, 0.75);
             
-            /* GLASS STYLES: Applied on top of the fallback if supported */
-            background-color: rgba(255, 255, 255, 0.05);
-            
-            /* CRITICAL FIX: Add -webkit- prefix for Safari/iOS/Samsung compatibility */
+            /* 2. GLASS EFFECT: Apply blur */
             -webkit-backdrop-filter: blur(20px);
             backdrop-filter: blur(20px);
             
@@ -117,9 +112,13 @@
         /* Custom Styles for CTA Buttons - iOS Glass Look (High Compatibility) */
         .cta-button {
             transition: all 300ms cubic-bezier(0.25, 0.46, 0.45, 0.94);
+             /* Fallback solid background for better consistency */
+            background-color: rgba(20, 20, 40, 0.6); 
+            
             /* CRITICAL FIX: Add -webkit- prefix for Safari/iOS/Samsung compatibility */
             -webkit-backdrop-filter: blur(15px);
             backdrop-filter: blur(15px);
+            
             /* Add subtle inset light shadow for depth */
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.1);
             will-change: transform, box-shadow;
