@@ -18,30 +18,16 @@
 <meta name="twitter:description" content="Growth AI">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FanPlusFollow Viral Content Generator</title>
-    
-<script src="https://cdn.tailwindcss.com"></script>
-    
-<script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.8.49/Tone.js"></script>
+    <title>FanPlusFollow</title>
+    <!-- Load Tailwind CSS from CDN --><script src="https://cdn.tailwindcss.com"></script>
+    <!-- Load Tone.js for sound effects -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.8.49/Tone.js"></script>
     <style>
         /* Import Inter Font (Apple's San Francisco inspired) */
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
         
         :root { 
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif; 
-        }
-
-        /* Add sr-only for screen readers (Tailwind utility needed for hidden labels) */
-        .sr-only {
-            position: absolute;
-            width: 1px;
-            height: 1px;
-            padding: 0;
-            margin: -1px;
-            overflow: hidden;
-            clip: rect(0, 0, 0, 0);
-            white-space: nowrap;
-            border-width: 0;
         }
 
         /* Fluid Transition (Apple's signature smooth movement) */
@@ -73,9 +59,11 @@
             opacity: 0; 
         }
         
+        /* ADJUSTED DELAYS for new layout: Header (0s), Controls (0.2s) */
         #app-header.card-animation-target { animation-delay: 0s; }
-        #upload-card.card-animation-target { animation-delay: 0.2s; } 
-        #promo-card.card-animation-target { animation-delay: 0.4s; }
+        #controls-card.card-animation-target { animation-delay: 0.2s; }
+        #upload-card.card-animation-target { animation-delay: 0.4s; } 
+        #promo-card.card-animation-target { animation-delay: 0.6s; }
 
 
         /* ============================================== */
@@ -280,6 +268,35 @@
         #mode-toggle-button svg, #mute-toggle-button svg {
             transition: color 300ms, filter 300ms, transform 200ms;
         }
+        
+        /* Custom layout for the top row (Control Card + Header) */
+        @media (min-width: 768px) {
+            #controls-card {
+                /* Make the controls card just wide enough for its contents */
+                width: 130px; 
+            }
+        }
+        
+        #controls-card {
+            /* On mobile, make it a horizontal row */
+            width: 100%;
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            align-items: center;
+            padding: 1rem; /* Adjust padding for compact look */
+        }
+        
+        /* Adjust for desktop layout */
+        @media (min-width: 768px) {
+            #controls-card {
+                flex-direction: column;
+                justify-content: flex-start;
+                align-items: center;
+                width: 130px; /* Fixed width on desktop */
+                padding: 1.5rem;
+            }
+        }
 
     </style>
 </head>
@@ -287,122 +304,125 @@
     
     <div class="max-w-4xl mx-auto">
         
-        
-<header 
-            id="app-header" 
-            class="glass-card fluid-transition p-6 mb-12 flex flex-col md:flex-row items-center justify-between card-animation-target"
-        >
-            <div class="flex items-center mb-4 md:mb-0">
+        <!-- ============================================== -->
+        <!-- TOP BAR WRAPPER: Control Card + Header Card -->
+        <!-- NOTE: Order is reversed on desktop (md:flex-row) using md:order-first/last -->
+        <!-- ============================================== -->
+        <div class="flex flex-col md:flex-row gap-8 mb-12">
+            
+            <!-- 2. MAIN HEADER CARD (Cleaned up - set to order first on desktop) -->
+            <header 
+                id="app-header" 
+                class="glass-card fluid-transition p-6 flex flex-col md:flex-row items-center justify-between flex-1 card-animation-target md:order-first"
+            >
+                <div class="flex items-center mb-4 md:mb-0">
+                    <div class="flex items-center space-x-4">
+                        <!-- FanPlusFollow Logo SVG --><div class="w-16 h-16">
+                            <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+                              <defs>
+                                <linearGradient id="logoGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                                  <stop offset="0%" style="stop-color:#f97316; stop-opacity:1" />
+                                  <stop offset="40%" style="stop-color:#ef4444; stop-opacity:1" />
+                                  <stop offset="70%" style="stop-color:#c084fc; stop-opacity:1" />
+                                  <stop offset="100%" style="stop-color:#818cf8; stop-opacity:1" />
+                                </linearGradient>
+                              </defs>
+                              <circle cx="32" cy="32" r="31" fill="url(#logoGradient)" fill-opacity="0.9" stroke="#ffffff" stroke-opacity="0.4" stroke-width="1" />
+                              <path d="M20 23 L35 32 L20 41 Z" fill="#ffffff" />
+                              <rect x="40" y="27" width="4" height="10" fill="#ffffff" rx="1" />
+                              <rect x="37" y="30" width="10" height="4" fill="#ffffff" rx="1" />
+                            </svg>
+                        </div>
+                        <div class="text-left">
+                            <h1 class="text-2xl font-extrabold bg-clip-text text-transparent" style="background-image: linear-gradient(to right, #ec4899, #c084fc, #6366f1)">
+                              FanPlusFollow
+                            </h1>
+                            <p class="text-indigo-300 text-sm flex items-center font-medium">
+                                <!-- Users Icon (Lucide) --><svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-1 h-3 w-3"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                                Growth AI
+                            </p>
+                        </div>
+                    </div>
+                </div>
                 
-                
-<div class="flex flex-col gap-2 mr-4 flex-shrink-0"> 
-                    
-<button id="mode-toggle-button" onclick="toggleDarkMode()" onmouseenter="playHoverSound()"
-                        class="h-10 w-10 flex items-center justify-center rounded-full text-white transition-colors duration-300 hover:bg-white/10 flex-shrink-0 active:scale-95 cta-button"
+                <!-- Viral Mode Toggle (High-Fidelity iOS Switch) --><div class="flex flex-col sm:flex-row items-center gap-3">
+                    <div class="flex items-center space-x-3">
+                        <!-- Zap Icon (Lucide) - Removed initial color class to be controlled by JS -->
+                        <svg id="viral-toggle-zap" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-6 w-6 transition-colors duration-300"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+                        <span id="viral-toggle-text" class="text-lg font-bold transition-colors duration-300 text-white">
+                            Viral Mode
+                        </span>
+                        <div
+                          id="viral-toggle-track"
+                          class="viral-toggle-track w-16 h-9 flex items-center rounded-full p-1 cursor-pointer transition-all duration-300 backdrop-blur-3xl active:scale-95"
+                          onclick="toggleViralBoost()"
+                          onmouseenter="playHoverSound()"
+                        >
+                          <div
+                            id="viral-toggle-knob"
+                            class="bg-white w-7 h-7 rounded-full transform transition-transform duration-300"
+                            style="box-shadow: 0 1px 3px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(255, 255, 255, 0.3) inset, 0 0 0 4px rgba(0, 0, 0, 0.05);"
+                          />
+                        </div>
+                    </div>
+                </div>
+            </header>
+            
+            <!-- 1. NEW CONTROLS CARD (Set to order last on desktop) -->
+            <div 
+                id="controls-card" 
+                class="glass-card fluid-transition card-animation-target flex-shrink-0 md:order-last"
+            >
+                <h3 class="hidden md:block text-xs font-bold uppercase tracking-widest text-indigo-300/50 mb-4">
+                    Controls
+                </h3>
+                <!-- Power and Mute Toggles (iOS Control Center Style) -->
+                <div class="flex flex-row md:flex-col gap-4 flex-shrink-0"> 
+                    <!-- 1. MODE TOGGLE BUTTON (POWER/LIGHT-DARK) -->
+                    <button id="mode-toggle-button" onclick="toggleDarkMode()" onmouseenter="playHoverSound()"
+                        class="h-12 w-12 flex items-center justify-center rounded-full text-white transition-colors duration-300 hover:bg-white/10 flex-shrink-0 active:scale-95 cta-button"
                         style="box-shadow: none !important;"
                     >
-                        <svg id="power-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-6 w-6 text-white/50 transition-colors duration-300">
+                        <svg id="power-icon" xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-6 w-6 text-white/50 transition-colors duration-300">
                             <path d="M18.36 6.64a9 9 0 1 1-12.73 0"/><line x1="12" x2="12" y1="2" y2="12"/>
                         </svg>
-                        <!-- ADDED VISUALLY HIDDEN LABEL -->
-                        <span class="sr-only">Toggle Dark Mode</span>
                     </button>
 
-                    
-<button id="mute-toggle-button" onclick="toggleMute()" 
-                        class="h-10 w-10 flex items-center justify-center rounded-full text-white transition-colors duration-300 hover:bg-white/10 flex-shrink-0 active:scale-95 cta-button"
+                    <!-- 2. MUTE TOGGLE BUTTON -->
+                    <button id="mute-toggle-button" onclick="toggleMute()" 
+                        class="h-12 w-12 flex items-center justify-center rounded-full text-white transition-colors duration-300 hover:bg-white/10 flex-shrink-0 active:scale-95 cta-button"
                         style="box-shadow: none !important;"
                     >
-                        <svg id="speaker-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-6 w-6 text-white/50 transition-colors duration-300">
+                        <svg id="speaker-icon" xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-6 w-6 text-white/50 transition-colors duration-300">
                         </svg>
-                        <!-- ADDED VISUALLY HIDDEN LABEL -->
-                        <span class="sr-only">Toggle Mute</span>
                     </button>
                 </div>
-                
-                <div class="flex items-center space-x-4">
-                    
-<div class="w-16 h-16">
-                        <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
-                          <defs>
-                            <linearGradient id="logoGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                              <stop offset="0%" style="stop-color:#f97316; stop-opacity:1" />
-                              <stop offset="40%" style="stop-color:#ef4444; stop-opacity:1" />
-                              <stop offset="70%" style="stop-color:#c084fc; stop-opacity:1" />
-                              <stop offset="100%" style="stop-color:#818cf8; stop-opacity:1" />
-                            </linearGradient>
-                          </defs>
-                          <circle cx="32" cy="32" r="31" fill="url(#logoGradient)" fill-opacity="0.9" stroke="#ffffff" stroke-opacity="0.4" stroke-width="1" />
-                          <path d="M20 23 L35 32 L20 41 Z" fill="#ffffff" />
-                          <rect x="40" y="27" width="4" height="10" fill="#ffffff" rx="1" />
-                          <rect x="37" y="30" width="10" height="4" fill="#ffffff" rx="1" />
-                        </svg>
-                    </div>
-                    <div class="text-left">
-                        <h1 class="text-2xl font-extrabold bg-clip-text text-transparent" style="background-image: linear-gradient(to right, #ec4899, #c084fc, #6366f1)">
-                          FanPlusFollow
-                        </h1>
-                        <p class="text-indigo-300 text-sm flex items-center font-medium">
-                            
-<svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-1 h-3 w-3"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
-                            Growth AI
-                        </p>
-                    </div>
-                </div>
             </div>
-            
-            
-<div class="flex flex-col sm:flex-row items-center gap-3">
-                <div class="flex items-center space-x-3">
-                    
-<svg id="viral-toggle-zap" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-6 w-6 transition-colors duration-300"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
-                    <span id="viral-toggle-text" class="text-lg font-bold transition-colors duration-300 text-white">
-                        Viral Mode
-                    </span>
-                    <div
-                      id="viral-toggle-track"
-                      class="viral-toggle-track w-16 h-9 flex items-center rounded-full p-1 cursor-pointer transition-all duration-300 backdrop-blur-3xl active:scale-95"
-                      onclick="toggleViralBoost()"
-                      onmouseenter="playHoverSound()"
-                    >
-                      <div
-                        id="viral-toggle-knob"
-                        class="bg-white w-7 h-7 rounded-full transform transition-transform duration-300"
-                        style="box-shadow: 0 1px 3px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(255, 255, 255, 0.3) inset, 0 0 0 4px rgba(0, 0, 0, 0.05);"
-                      />
-                    </div>
-                </div>
-            </div>
-        </header>
+        </div>
+        <!-- END TOP BAR WRAPPER -->
 
         <main>
-            
-<div id="upload-card" class="glass-card fluid-transition p-6 rounded-[36px] mb-12 card-animation-target">
+            <!-- Upload Section (Glass Card) -->
+            <div id="upload-card" class="glass-card fluid-transition p-6 rounded-[36px] mb-12 card-animation-target">
                 <div class="mb-4">
                     <h2 class="text-2xl font-bold flex items-center gap-2">
-                        
-<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-indigo-400"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" x2="12" y1="3" y2="15"/></svg>
+                        <!-- Upload Icon (Lucide) --><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-indigo-400"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" x2="12" y1="3" y2="15"/></svg>
                         Upload Your Video
                     </h2>
                 </div>
                 <div class="p-1" id="upload-section-content">
-                    
-</div>
+                    <!-- Content rendered by JavaScript --></div>
             </div>
 
-            
-<div id="results-section">
-                
-</div>
+            <!-- ============================================== --><!-- Results Section --><!-- ============================================== --><div id="results-section">
+                <!-- Content rendered by JavaScript after processing --></div>
         </main>
 
-        
-<div class="mt-12 w-full px-0 sm:px-4">
+        <!-- ============================================== --><!-- Channel Promotion (Glass Card) --><!-- ============================================== --><div class="mt-12 w-full px-0 sm:px-4">
             <div id="promo-card" class="glass-card fluid-transition p-4 sm:p-6 max-w-4xl mx-auto card-animation-target"> 
                 <div class="p-1">
                     <div class="flex flex-col items-center">
-                        
-<div class="w-16 h-16 mb-2 sm:mb-4">
+                        <!-- FanPlusFollow Logo SVG --><div class="w-16 h-16 mb-2 sm:mb-4">
                             <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
                               <defs><linearGradient id="logoGradient2" x1="0%" y1="0%" x2="100%" y2="100%">
                                   <stop offset="0%" style="stop-color:#f97316; stop-opacity:1" />
@@ -423,28 +443,26 @@
                           Join the community for exclusive growth insights and advanced content tools.
                         </p>
                         <div class="mt-3 sm:mt-4 flex flex-wrap justify-center gap-4">
-                          
-<button 
+                          <!-- SUBSCRIBE BUTTON: Luminous Glass Button (Tactile) -->
+                          <button 
                             class="cta-button px-6 py-3 rounded-full font-bold transition-all duration-300 ease-in-out shadow-xl transform active:scale-[0.96] active:shadow-none 
                                    bg-gradient-to-r from-[#f97316]/20 via-[#ef4444]/20 to-[#c084fc]/20 hover:from-[#f97316]/80 hover:via-[#ef4444]/80 hover:to-[#818cf8]/80 
                                    backdrop-blur-3xl text-white flex items-center"
                             onclick="playClickSound(); window.open('https://www.youtube.com/@fanplusfollow', '_blank')"
                             onmouseenter="playHoverSound()"
                           >
-                            
-<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2 h-4 w-4"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                            <!-- Users Icon (Lucide) --><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2 h-4 w-4"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
                             Subscribe Now
                           </button>
-                          
-<button 
+                          <!-- FOLLOW BUTTON: Luminous Glass Button (Tactile) -->
+                          <button 
                             class="cta-button px-6 py-3 rounded-full font-bold transition-all duration-300 ease-in-out shadow-xl transform active:scale-[0.96] active:shadow-none 
                                    bg-gradient-to-r from-[#f97316]/20 via-[#ef4444]/20 to-[#c084fc]/20 hover:from-[#f97316]/80 hover:via-[#ef4444]/80 hover:to-[#818cf8]/80 
                                    backdrop-blur-3xl text-white flex items-center"
                             onclick="playClickSound(); window.open('https://www.instagram.com/_manmohit_singh_/', '_blank')"
                             onmouseenter="playHoverSound()"
                           >
-                            
-<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2 h-4 w-4"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                            <!-- Star Icon (Lucide) --><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2 h-4 w-4"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
                             Follow Now
                           </button>
                         </div>
@@ -453,14 +471,12 @@
             </div>
         </div>
         
-        
-<footer class="text-center text-indigo-400/70 text-xs mt-12 py-6 border-t border-white/5">
-          <p>©️ 2026 FanPlusFollow AI Growth Tools. Designed for ultimate fluidity.</p>
+        <!-- Footer --><footer class="text-center text-indigo-400/70 text-xs mt-12 py-6 border-t border-white/5">
+          <p>© 2026 FanPlusFollow AI Growth Tools. Designed for ultimate fluidity.</p>
         </footer>
     </div>
 
-    
-<script>
+    <!-- ============================================== --><!-- JAVASCRIPT LOGIC --><!-- ============================================== --><script>
         // --- GLOBAL STATE ---
         let file = null;
         let isProcessing = false;
@@ -965,8 +981,8 @@
                             <p class="font-bold ${textColorClass}">Drag & drop your MP4 file here</p>
                             <p class="text-sm mt-1 ${helperTextColorClass}">or click to browse (Max 500MB)</p>
                             </div>
-                            
-<button id="select-file-btn" class="cta-button mt-4 px-6 py-3 rounded-full font-bold transition-all duration-300 ease-in-out shadow-xl transform active:scale-[0.96] active:shadow-none 
+                            <!-- SELECT FILE BUTTON: Luminous Glass Button -->
+                            <button id="select-file-btn" class="cta-button mt-4 px-6 py-3 rounded-full font-bold transition-all duration-300 ease-in-out shadow-xl transform active:scale-[0.96] active:shadow-none 
                                    bg-gradient-to-r from-[#f97316]/20 via-[#ef4444]/20 to-[#c084fc]/20 hover:from-[#f97316]/80 hover:via-[#ef4444]/80 hover:to-[#818cf8]/80 
                                    backdrop-blur-3xl text-white"
                                    onmouseenter="playHoverSound()"
@@ -1026,8 +1042,8 @@
                     </div>
                     ${isProcessed ? `
                         <div class="flex gap-4 mt-6">
-                            
-<button 
+                            <!-- START NEW VIDEO BUTTON: Subtle Glass Button -->
+                            <button 
                                 onclick="resetApp()"
                                 onmouseenter="playHoverSound()"
                                 class="cta-button bg-gray-700/50 hover:bg-gray-600/70 text-white backdrop-blur-xl shadow-inner shadow-white/5 px-6 py-3 rounded-full font-medium flex items-center"
