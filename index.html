@@ -18,7 +18,7 @@
 <meta name="twitter:description" content="Growth AI">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FanPlusFollow</title>
+    <title>FanPlusFollow Viral Content Generator</title>
     <!-- Load Tailwind CSS from CDN --><script src="https://cdn.tailwindcss.com"></script>
     <!-- Load Tone.js for sound effects -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.8.49/Tone.js"></script>
@@ -277,14 +277,18 @@
             }
         }
         
+        /*
+         * --- CRITICAL CHANGE FOR MOBILE LAYOUT ---
+         * The default mobile layout is now flex-col (column) so the Controls 
+         * heading sits above the buttons, spanning the width.
+         */
         #controls-card {
-            /* On mobile, make it a horizontal row */
             width: 100%;
             display: flex;
-            flex-direction: row;
+            flex-direction: column; /* Changed from row to column on mobile */
             justify-content: center;
             align-items: center;
-            padding: 1rem; /* Adjust padding for compact look */
+            padding: 1.5rem; 
         }
         
         /* Adjust for desktop layout */
@@ -373,10 +377,12 @@
                 id="controls-card" 
                 class="glass-card fluid-transition card-animation-target flex-shrink-0 md:order-last"
             >
-                <h3 class="hidden md:block text-xs font-bold uppercase tracking-widest text-indigo-300/50 mb-4">
+                <!-- MODIFIED: Removed 'hidden md:block' and added 'text-center' -->
+                <h3 class="text-xs font-bold uppercase tracking-widest text-indigo-300/50 mb-4 text-center">
                     Controls
                 </h3>
                 <!-- Power and Mute Toggles (iOS Control Center Style) -->
+                <!-- The flex-row on mobile ensures the icons stay side-by-side below the heading -->
                 <div class="flex flex-row md:flex-col gap-4 flex-shrink-0"> 
                     <!-- 1. MODE TOGGLE BUTTON (POWER/LIGHT-DARK) -->
                     <button id="mode-toggle-button" onclick="toggleDarkMode()" onmouseenter="playHoverSound()"
