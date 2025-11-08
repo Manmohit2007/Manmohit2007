@@ -18,7 +18,7 @@
 <meta name="twitter:description" content="Growth AI">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FanPlusFollow Viral Content Generator</title>
+    <title>FanPlusFollow</title>
     <!-- Load Tailwind CSS from CDN --><script src="https://cdn.tailwindcss.com"></script>
     <!-- Load Tone.js for sound effects -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.8.49/Tone.js"></script>
@@ -34,7 +34,7 @@
         .fluid-transition {
             /* Optimized for speed and smoothness */
             transition: all 400ms cubic-bezier(0.25, 0.46, 0.45, 0.94);
-            /* CRITICAL FIX: Explicitly set will-change for GPU acceleration */
+            /* CRITICAL FIX: Explicitly set will-change for transform, shadow, and color properties */
             will-change: transform, box-shadow, filter, backdrop-filter, -webkit-backdrop-filter, background-color, color, opacity; 
         }
 
@@ -168,7 +168,7 @@
         }
         
         .viral-toggle-track.on-glow {
-            /* Intense Neon Glow for "ON" */
+            /* Intense Neon Glow for "ON" (Universal green glow) */
             box-shadow: 
                 0 0 25px rgba(0, 255, 0, 0.8), 
                 inset 0 0 15px rgba(0, 255, 0, 0.4), 
@@ -364,7 +364,7 @@
                         >
                           <div
                             id="viral-toggle-knob"
-                            class="bg-white w-7 h-7 rounded-full transform transition-transform duration-300"
+                            class="w-7 h-7 rounded-full transform transition-transform duration-300"
                             style="box-shadow: 0 1px 3px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(255, 255, 255, 0.3) inset, 0 0 0 4px rgba(0, 0, 0, 0.05);"
                           />
                         </div>
@@ -592,10 +592,9 @@
             playClickSound(); 
             updateModeUI();
             
-            if (isProcessed) {
-                // Re-render to ensure new mode styles apply to results instantly
-                updateUI();
-            }
+            // CRITICAL: Call updateUI to refresh the Viral Toggle knob color
+            // which depends on the new isDarkMode state.
+            updateUI(); 
         };
 
         const updateModeUI = () => {
@@ -742,11 +741,23 @@
 
             if (toggleTrack && toggleKnob && toggleZap && toggleText) {
                 
-                toggleTrack.classList.remove('bg-green-500/70', 'bg-white/10', 'on-glow', 'off-shadow', 'bg-gray-300/50', 'bg-gray-700/50');
+                // --- 1. Knob Color (Changes based on Dark/Light Mode) ---
+                toggleKnob.classList.remove('bg-white', 'bg-gray-800');
+                if (isDarkMode) {
+                    // Dark Mode: Knob is White
+                    toggleKnob.classList.add('bg-white');
+                } else {
+                    // Light Mode: Knob is Dark Grey
+                    toggleKnob.classList.add('bg-gray-800'); 
+                }
+
+                // --- 2. Track Color/Glow ---
+                toggleTrack.classList.remove('bg-green-500/70', 'bg-green-400/80', 'bg-white/10', 'on-glow', 'off-shadow', 'bg-gray-300/70', 'bg-gray-700/50');
                 
                 if (isViralBoostEnabled) {
-                    // ON state: Use the active green color
-                    toggleTrack.classList.add('bg-green-500/70', 'on-glow');
+                    // ON state: Use the active green color/glow.
+                    const onTrackClass = isDarkMode ? 'bg-green-500/70' : 'bg-green-400/80'; 
+                    toggleTrack.classList.add(onTrackClass, 'on-glow');
                 } else {
                     // OFF state: Greyed out
                     const offTrackClass = isDarkMode ? 'bg-gray-700/50' : 'bg-gray-300/70'; 
@@ -756,7 +767,7 @@
                 // Knob Position (Uses 28px for the new 9px height track / 7px knob)
                 toggleKnob.style.transform = isViralBoostEnabled ? 'translateX(28px)' : 'translateX(0)';
 
-                // --- ZAP ICON LOGIC (Enhanced for Colorless/Glow/Pop) ---
+                // --- 3. ZAP ICON LOGIC (Enhanced for Colorless/Glow/Pop) ---
                 
                 // 1. Reset dynamic classes and styles
                 toggleZap.classList.remove('text-green-400', 'text-green-600', 'text-gray-400', 'text-gray-500', 'icon-pop-on');
@@ -764,9 +775,8 @@
 
                 if (isViralBoostEnabled) {
                     // ON: Green color, glow effect, and pop animation
-                    const zapColorClass = isDarkMode ? 'text-green-400' : 'text-green-600';
+                    const zapColorClass = isDarkMode ? 'text-green-400' : 'text-green-600'; // Darker green for light mode contrast
                     toggleZap.classList.add(zapColorClass, 'icon-pop-on');
-                    // The glow is primarily handled by the .icon-pop-on class and keyframes, but setting the filter ensures persistence.
                     toggleZap.style.filter = 'drop-shadow(0 0 8px rgba(0, 255, 0, 0.9))';
                     
                 } else {
@@ -775,7 +785,7 @@
                     toggleZap.classList.add(zapColorClass);
                 }
                 
-                // --- TEXT LOGIC ---
+                // --- 4. TEXT LOGIC ---
                 const textColor = isDarkMode ? 'text-white' : 'text-gray-700';
                 const offTextColor = isDarkMode ? 'text-gray-400' : 'text-gray-500';
 
@@ -1205,7 +1215,7 @@
         const updateUI = () => {
             updateModeUI(); 
             updateMuteUI(); 
-            updateToggleUI();
+            updateToggleUI(); // <-- This refreshes the knob color based on the new isDarkMode state
             renderUploadSection();
             if(file && (isProcessing || isProcessed)) {
                 setProgress(progressValue);
