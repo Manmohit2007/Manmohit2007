@@ -155,7 +155,7 @@
             background-color: #0A0D14;
             /* Enhanced deep dark radial gradient */
             background-image: radial-gradient(circle at center, #1b0e2d 0%, #06090f 90%);
-            min-height: 100vh;
+            min-height: 100vh; /* Changed from min-height: 100vh for better mobile compatibility */
         }
         
         /* Viral Toggle Styles (High-Fidelity Switch) */
@@ -268,9 +268,10 @@
 
     </style>
 </head>
-<body class="text-white p-4 md:p-8" onload="initApp()">
+<body class="text-white p-4 md:p-8 h-full min-h-screen" onload="initApp()">
     
-    <div class="max-w-4xl mx-auto">
+    <!-- CHANGE: Increased max-w for large screens -->
+    <div class="max-w-4xl lg:max-w-6xl mx-auto">
         
         <!-- ============================================== --><!-- HEADER - Glass Bar (FIXED FOR MOBILE LAYOUT) --><!-- ============================================== --><header 
             id="app-header" 
@@ -297,7 +298,8 @@
                 </button>
             </div>
             
-            <!-- 2. LOGO & TITLE (Center, Flexible Space) --><!-- REFINEMENT: min-w-[120px] added to ensure enough space for the text --><div class="flex items-center space-x-2 md:space-x-4 flex-1 min-w-[120px] justify-center md:justify-start">
+            <!-- 2. LOGO & TITLE (Center, Flexible Space) --><!-- REFINEMENT: min-w-0 added for better overflow handling -->
+            <div class="flex items-center space-x-2 md:space-x-4 flex-1 min-w-0 justify-center md:justify-start">
                 <!-- FanPlusFollow Logo SVG --><div class="w-12 h-12 sm:w-16 sm:h-16 flex-shrink-0">
                     <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
                       <defs>
@@ -325,7 +327,8 @@
                 </div>
             </div>
             
-            <!-- 3. VIRAL MODE TOGGLE (Rightmost, Fixed width, flex-shrink-0) --><!-- REFINEMENT: Added ml-auto to push it right, adjusted gap for mobile --><div class="flex items-center gap-1 sm:gap-3 ml-auto flex-shrink-0">
+            <!-- 3. VIRAL MODE TOGGLE (Rightmost, Fixed width, flex-shrink-0) --><!-- REFINEMENT: Ensure gap scales appropriately for mobile/desktop -->
+            <div class="flex items-center gap-1 sm:gap-3 ml-auto flex-shrink-0">
                 <div class="flex items-center space-x-1 sm:space-x-3">
                     <!-- Zap Icon (Lucide) --><svg id="viral-toggle-zap" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5 sm:h-6 sm:w-6 transition-colors duration-300"></svg>
                     <span id="viral-toggle-text" class="text-sm sm:text-lg font-bold transition-colors duration-300 text-white whitespace-nowrap">
@@ -348,7 +351,7 @@
         </header>
 
         <main>
-            <!-- Upload Section (Glass Card) --><div id="upload-card" class="glass-card fluid-transition p-6 rounded-[36px] mb-12 card-animation-target">
+            <!-- Upload Section (Glass Card) --><div id="upload-card" class="glass-card fluid-transition p-6 sm:p-8 rounded-[36px] mb-12 card-animation-target">
                 <div class="mb-4">
                     <h2 class="text-2xl font-bold flex items-center gap-2">
                         <!-- Upload Icon (Lucide) --><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-indigo-400"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" x2="12" y1="3" y2="15"/></svg>
@@ -693,10 +696,8 @@
                 
                 // 2. Knob Position 
                 // w-14 track (56px) / w-6 knob (24px) -> knob moves 56 - 2*4 - 24 = 24px (used 28 in previous, let's stick to calculated 28 for consistency with old)
-                // New logic based on w-14/w-6 (mobile) or w-16/w-7 (desktop):
-                // w-14 (56px) - 2px padding - 24px knob = 30px offset needed for end position (from 1px padding on each side, total 2px, not p-1)
-                // Let's use 28px offset for visual consistency with the previous version:
-                const knobOffset = toggleTrack.classList.contains('w-14') ? '24px' : '28px'; // 28px was for w-16 track. Let's use 24px for w-14 track
+                // New logic based on w-14/w-7 (mobile) or w-16/w-8 (desktop)
+                const knobOffset = toggleTrack.classList.contains('w-14') ? '24px' : '28px'; // Use 28px for w-16 track.
                 toggleKnob.style.transform = isViralBoostEnabled ? `translateX(${knobOffset})` : 'translateX(0)';
 
                 // --- ZAP ICON LOGIC (Enhanced for Colorless/Glow/Pop) ---
@@ -1038,7 +1039,7 @@
                                        viralScore >= 75 ? 'text-shadow: 0 0 15px rgba(255, 255, 0, 0.5);' : 'text-shadow: none;';
                 
                 const viralScoreHTML = `
-                    <div class="glass-card fluid-transition p-6 rounded-[36px] mb-12">
+                    <div class="glass-card fluid-transition p-6 sm:p-8 rounded-[36px] mb-12">
                         <div class="mb-4"><h2 class="text-2xl font-bold text-indigo-200">Viral Potential Score</h2></div>
                         <div class="p-1">
                             <div class="flex items-center justify-between mb-4">
@@ -1112,7 +1113,7 @@
                     : 'bg-gray-100/70 hover:bg-gray-200/90 text-gray-700 shadow-inner shadow-black/5';
 
                 const descriptionHTML = `
-                    <div class="glass-card fluid-transition p-6 rounded-[36px] mb-12">
+                    <div class="glass-card fluid-transition p-6 sm:p-8 rounded-[36px] mb-12">
                         <div class="mb-4">
                             <h2 class="flex justify-between items-center text-xl sm:text-2xl font-bold text-indigo-200">
                                 <span>Optimized Description & Hashtags</span>
