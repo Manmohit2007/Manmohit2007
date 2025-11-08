@@ -115,9 +115,7 @@
                 -webkit-backdrop-filter: none;
                 backdrop-filter: none;
                 /* Enhanced fallback shadow to simulate depth */
-                box-shadow: 
-                    0 18px 36px rgba(0, 0, 0, 0.9), 
-                    inset 0 0 50px rgba(255, 255, 255, 0.08); 
+                box-shadow: 0 18px 36px rgba(0, 0, 0, 0.9), inset 0 0 50px rgba(255, 255, 255, 0.08); 
             }
             .title-result-card {
                 /* Optimized Dark Fallback: Slightly more transparent (0.9) */
@@ -279,6 +277,39 @@
             }
         }
         
+        /* Custom layout for the top row (Control Card + Header) */
+        @media (min-width: 768px) {
+            #controls-card {
+                /* Make the controls card just wide enough for its contents */
+                width: 130px; 
+            }
+        }
+        
+        /*
+         * --- CRITICAL CHANGE FOR MOBILE LAYOUT ---
+         * The default mobile layout is now flex-col (column) so the Controls 
+         * heading sits above the buttons, spanning the width.
+         */
+        #controls-card {
+            width: 100%;
+            display: flex;
+            flex-direction: column; /* Changed from row to column on mobile */
+            justify-content: center;
+            align-items: center;
+            padding: 1.5rem; 
+        }
+        
+        /* Adjust for desktop layout */
+        @media (min-width: 768px) {
+            #controls-card {
+                flex-direction: column;
+                justify-content: flex-start;
+                align-items: center;
+                width: 130px; /* Fixed width on desktop */
+                padding: 1.5rem;
+            }
+        }
+
         /* ============================================== */
         /* LIGHT MODE STYLES (Frosted White Glass) */
         /* ============================================== */
@@ -348,39 +379,6 @@
             transition: color 300ms, filter 300ms, transform 200ms;
         }
         
-        /* Custom layout for the top row (Control Card + Header) */
-        @media (min-width: 768px) {
-            #controls-card {
-                /* Make the controls card just wide enough for its contents */
-                width: 130px; 
-            }
-        }
-        
-        /*
-         * --- CRITICAL CHANGE FOR MOBILE LAYOUT ---
-         * The default mobile layout is now flex-col (column) so the Controls 
-         * heading sits above the buttons, spanning the width.
-         */
-        #controls-card {
-            width: 100%;
-            display: flex;
-            flex-direction: column; /* Changed from row to column on mobile */
-            justify-content: center;
-            align-items: center;
-            padding: 1.5rem; 
-        }
-        
-        /* Adjust for desktop layout */
-        @media (min-width: 768px) {
-            #controls-card {
-                flex-direction: column;
-                justify-content: flex-start;
-                align-items: center;
-                width: 130px; /* Fixed width on desktop */
-                padding: 1.5rem;
-            }
-        }
-
     </style>
 </head>
 <body class="text-white p-4 md:p-8" onload="initApp()">
@@ -389,9 +387,9 @@
         
         <!-- ============================================== -->
         <!-- TOP BAR WRAPPER: Control Card + Header Card -->
-        <!-- NOTE: Order is reversed on desktop (md:flex-row) using md:order-first/last -->
+        <!-- *** OPTIMIZATION: Reduced mobile gap from gap-12 to gap-8 *** -->
         <!-- ============================================== -->
-        <div class="flex flex-col md:flex-row gap-12 mb-12">
+        <div class="flex flex-col md:flex-row gap-8 md:gap-12 mb-12">
             
             <!-- 2. MAIN HEADER CARD (Cleaned up - set to order first on desktop) -->
             <header 
