@@ -20,8 +20,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>FanPlusFollow</title>
     <!-- Load Tailwind CSS from CDN --><script src="https://cdn.tailwindcss.com"></script>
-    <!-- Load Tone.js for sound effects -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.8.49/Tone.js"></script>
+    <!-- Load Tone.js for sound effects --><script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.8.49/Tone.js"></script>
     <style>
         /* Import Inter Font (Apple's San Francisco inspired) */
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
@@ -273,19 +272,14 @@
     
     <div class="max-w-4xl mx-auto">
         
-        <!-- ============================================== -->
-        <!-- HEADER - Glass Bar (FIXED FOR MOBILE LAYOUT) -->
-        <!-- ============================================== -->
-        <header 
+        <!-- ============================================== --><!-- HEADER - Glass Bar (FIXED FOR MOBILE LAYOUT) --><!-- ============================================== --><header 
             id="app-header" 
             class="glass-card fluid-transition p-4 md:p-6 mb-12 flex items-center justify-between card-animation-target"
             style="min-height: 100px;"
         >
             
-            <!-- 1. LEFT CONTROLS (Power/Mute Toggles) - Fixed width -->
-            <div class="flex flex-col gap-2 mr-2 flex-shrink-0"> 
-                <!-- 1. MODE TOGGLE BUTTON (POWER/LIGHT-DARK) -->
-                <button id="mode-toggle-button" onclick="toggleDarkMode()" onmouseenter="playHoverSound()"
+            <!-- 1. LEFT CONTROLS (Power/Mute Toggles) - Fixed width, shrink-0 --><div class="flex flex-col gap-2 mr-2 flex-shrink-0"> 
+                <!-- 1. MODE TOGGLE BUTTON (POWER/LIGHT-DARK) --><button id="mode-toggle-button" onclick="toggleDarkMode()" onmouseenter="playHoverSound()"
                     class="h-10 w-10 flex items-center justify-center rounded-full text-white transition-colors duration-300 hover:bg-white/10 flex-shrink-0 active:scale-95 cta-button"
                     style="box-shadow: none !important;"
                 >
@@ -294,8 +288,7 @@
                     </svg>
                 </button>
 
-                <!-- 2. MUTE TOGGLE BUTTON -->
-                <button id="mute-toggle-button" onclick="toggleMute()" 
+                <!-- 2. MUTE TOGGLE BUTTON --><button id="mute-toggle-button" onclick="toggleMute()" 
                     class="h-10 w-10 flex items-center justify-center rounded-full text-white transition-colors duration-300 hover:bg-white/10 flex-shrink-0 active:scale-95 cta-button"
                     style="box-shadow: none !important;"
                 >
@@ -304,11 +297,8 @@
                 </button>
             </div>
             
-            <!-- 2. LOGO & TITLE (Center, Flexible Space) -->
-            <!-- CRITICAL FIX: flex-1 min-w-0 added here to allow the central block to shrink effectively -->
-            <div class="flex items-center space-x-2 md:space-x-4 flex-1 min-w-0 justify-center md:justify-start">
-                <!-- FanPlusFollow Logo SVG -->
-                <div class="w-12 h-12 sm:w-16 sm:h-16 flex-shrink-0">
+            <!-- 2. LOGO & TITLE (Center, Flexible Space) --><!-- REFINEMENT: min-w-[120px] added to ensure enough space for the text --><div class="flex items-center space-x-2 md:space-x-4 flex-1 min-w-[120px] justify-center md:justify-start">
+                <!-- FanPlusFollow Logo SVG --><div class="w-12 h-12 sm:w-16 sm:h-16 flex-shrink-0">
                     <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
                       <defs>
                         <linearGradient id="logoGradient" x1="0%" y1="0%" x2="100%" y2="100%">
@@ -324,8 +314,7 @@
                       <rect x="37" y="30" width="10" height="4" fill="#ffffff" rx="1" />
                     </svg>
                 </div>
-                <!-- Title Text -->
-                <div class="text-left flex-shrink min-w-0">
+                <!-- Title Text --><div class="text-left flex-shrink min-w-0">
                     <h1 class="text-xl sm:text-2xl font-extrabold bg-clip-text text-transparent" style="background-image: linear-gradient(to right, #ec4899, #c084fc, #6366f1)">
                       FanPlusFollow
                     </h1>
@@ -336,9 +325,7 @@
                 </div>
             </div>
             
-            <!-- 3. VIRAL MODE TOGGLE (Rightmost, Fixed width) -->
-            <!-- CRITICAL FIX: The entire toggle system now sits on the right -->
-            <div class="flex items-center gap-1 sm:gap-3 ml-2 flex-shrink-0">
+            <!-- 3. VIRAL MODE TOGGLE (Rightmost, Fixed width, flex-shrink-0) --><!-- REFINEMENT: Added ml-auto to push it right, adjusted gap for mobile --><div class="flex items-center gap-1 sm:gap-3 ml-auto flex-shrink-0">
                 <div class="flex items-center space-x-1 sm:space-x-3">
                     <!-- Zap Icon (Lucide) --><svg id="viral-toggle-zap" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5 sm:h-6 sm:w-6 transition-colors duration-300"></svg>
                     <span id="viral-toggle-text" class="text-sm sm:text-lg font-bold transition-colors duration-300 text-white whitespace-nowrap">
@@ -361,8 +348,7 @@
         </header>
 
         <main>
-            <!-- Upload Section (Glass Card) -->
-            <div id="upload-card" class="glass-card fluid-transition p-6 rounded-[36px] mb-12 card-animation-target">
+            <!-- Upload Section (Glass Card) --><div id="upload-card" class="glass-card fluid-transition p-6 rounded-[36px] mb-12 card-animation-target">
                 <div class="mb-4">
                     <h2 class="text-2xl font-bold flex items-center gap-2">
                         <!-- Upload Icon (Lucide) --><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-indigo-400"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" x2="12" y1="3" y2="15"/></svg>
@@ -402,8 +388,7 @@
                           Join the community for exclusive growth insights and advanced content tools.
                         </p>
                         <div class="mt-3 sm:mt-4 flex flex-wrap justify-center gap-4">
-                          <!-- SUBSCRIBE BUTTON: Luminous Glass Button (Tactile) -->
-                          <button 
+                          <!-- SUBSCRIBE BUTTON: Luminous Glass Button (Tactile) --><button 
                             class="cta-button px-6 py-3 rounded-full font-bold transition-all duration-300 ease-in-out shadow-xl transform active:scale-[0.96] active:shadow-none 
                                    bg-gradient-to-r from-[#f97316]/20 via-[#ef4444]/20 to-[#c084fc]/20 hover:from-[#f97316]/80 hover:via-[#ef4444]/80 hover:to-[#818cf8]/80 
                                    backdrop-blur-3xl text-white flex items-center"
@@ -413,8 +398,7 @@
                             <!-- Users Icon (Lucide) --><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2 h-4 w-4"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
                             Subscribe Now
                           </button>
-                          <!-- FOLLOW BUTTON: Luminous Glass Button (Tactile) -->
-                          <button 
+                          <!-- FOLLOW BUTTON: Luminous Glass Button (Tactile) --><button 
                             class="cta-button px-6 py-3 rounded-full font-bold transition-all duration-300 ease-in-out shadow-xl transform active:scale-[0.96] active:shadow-none 
                                    bg-gradient-to-r from-[#f97316]/20 via-[#ef4444]/20 to-[#c084fc]/20 hover:from-[#f97316]/80 hover:via-[#ef4444]/80 hover:to-[#818cf8]/80 
                                    backdrop-blur-3xl text-white flex items-center"
@@ -948,8 +932,7 @@
                             <p class="font-bold ${textColorClass}">Drag & drop your MP4 file here</p>
                             <p class="text-sm mt-1 ${helperTextColorClass}">or click to browse (Max 500MB)</p>
                             </div>
-                            <!-- SELECT FILE BUTTON: Luminous Glass Button -->
-                            <button id="select-file-btn" class="cta-button mt-4 px-6 py-3 rounded-full font-bold transition-all duration-300 ease-in-out shadow-xl transform active:scale-[0.96] active:shadow-none 
+                            <!-- SELECT FILE BUTTON: Luminous Glass Button --><button id="select-file-btn" class="cta-button mt-4 px-6 py-3 rounded-full font-bold transition-all duration-300 ease-in-out shadow-xl transform active:scale-[0.96] active:shadow-none 
                                    bg-gradient-to-r from-[#f97316]/20 via-[#ef4444]/20 to-[#c084fc]/20 hover:from-[#f97316]/80 hover:via-[#ef4444]/80 hover:to-[#818cf8]/80 
                                    backdrop-blur-3xl text-white"
                                    onmouseenter="playHoverSound()"
@@ -1009,8 +992,7 @@
                     </div>
                     ${isProcessed ? `
                         <div class="flex gap-4 mt-6">
-                            <!-- START NEW VIDEO BUTTON: Subtle Glass Button -->
-                            <button 
+                            <!-- START NEW VIDEO BUTTON: Subtle Glass Button --><button 
                                 onclick="resetApp()"
                                 onmouseenter="playHoverSound()"
                                 class="cta-button bg-gray-700/50 hover:bg-gray-600/70 text-white backdrop-blur-xl shadow-inner shadow-white/5 px-6 py-3 rounded-full font-medium flex items-center"
