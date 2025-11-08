@@ -18,7 +18,7 @@
 <meta name="twitter:description" content="Growth AI">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FanPlusFollow</title>
+    <title>FanPlusFollow Viral Content Generator</title>
     <!-- Load Tailwind CSS from CDN --><script src="https://cdn.tailwindcss.com"></script>
     <!-- Load Tone.js for sound effects --><script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.8.49/Tone.js"></script>
     <style>
@@ -155,7 +155,7 @@
             background-color: #0A0D14;
             /* Enhanced deep dark radial gradient */
             background-image: radial-gradient(circle at center, #1b0e2d 0%, #06090f 90%);
-            min-height: 100vh; /* Changed from min-height: 100vh for better mobile compatibility */
+            min-height: 100vh;
         }
         
         /* Viral Toggle Styles (High-Fidelity Switch) */
@@ -266,83 +266,117 @@
             transition: color 300ms, filter 300ms, transform 200ms;
         }
 
+        /* Adjustments for the header layout to ensure content fits */
+        @media (max-width: 767px) {
+            #app-header {
+                flex-direction: column; /* Stack elements vertically on small screens */
+                align-items: center; /* Center items when stacked */
+                padding: 1.5rem 1rem; /* Adjust padding for smaller screens */
+            }
+
+            #app-header .flex.items-center.mb-4.md\\:mb-0 {
+                flex-direction: column; /* Stack logo and text vertically */
+                align-items: center;
+                margin-bottom: 1rem; /* Add some space below this section */
+            }
+
+            #app-header .flex.flex-col.gap-2.mr-4 {
+                flex-direction: row; /* Keep power/mute buttons in a row */
+                margin-bottom: 1rem; /* Add space below toggles */
+                margin-right: 0; /* Remove right margin */
+                justify-content: center; /* Center them */
+                width: 100%; /* Take full width */
+            }
+
+            #app-header .text-left {
+                text-align: center; /* Center the text content */
+            }
+            
+            #app-header .flex.flex-col.sm\\:flex-row {
+                flex-direction: column; /* Stack viral mode toggle */
+                align-items: center;
+                gap: 0.5rem; /* Reduce gap */
+            }
+            #app-header .flex.items-center.space-x-3 {
+                margin-top: 1rem; /* Space from header elements */
+            }
+        }
+
     </style>
 </head>
-<body class="text-white p-4 md:p-8 h-full min-h-screen" onload="initApp()">
+<body class="text-white p-4 md:p-8" onload="initApp()">
     
-    <!-- CHANGE: Increased max-w for large screens -->
-    <div class="max-w-4xl lg:max-w-6xl mx-auto">
+    <div class="max-w-4xl mx-auto">
         
-        <!-- ============================================== --><!-- HEADER - Glass Bar (FIXED FOR MOBILE LAYOUT) --><!-- ============================================== --><header 
+        <!-- ============================================== --><!-- HEADER - Glass Bar --><!-- ============================================== --><header 
             id="app-header" 
-            class="glass-card fluid-transition p-4 md:p-6 mb-12 flex items-center justify-between card-animation-target"
-            style="min-height: 100px;"
+            class="glass-card fluid-transition p-6 mb-12 flex flex-col md:flex-row items-center justify-between card-animation-target"
         >
-            
-            <!-- 1. LEFT CONTROLS (Power/Mute Toggles) - Fixed width, shrink-0 --><div class="flex flex-col gap-2 mr-2 flex-shrink-0"> 
-                <!-- 1. MODE TOGGLE BUTTON (POWER/LIGHT-DARK) --><button id="mode-toggle-button" onclick="toggleDarkMode()" onmouseenter="playHoverSound()"
-                    class="h-10 w-10 flex items-center justify-center rounded-full text-white transition-colors duration-300 hover:bg-white/10 flex-shrink-0 active:scale-95 cta-button"
-                    style="box-shadow: none !important;"
-                >
-                    <svg id="power-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-6 w-6 text-white/50 transition-colors duration-300">
-                        <path d="M18.36 6.64a9 9 0 1 1-12.73 0"/><line x1="12" x2="12" y1="2" y2="12"/>
-                    </svg>
-                </button>
+            <div class="flex items-center mb-4 md:mb-0">
+                
+                <!-- Power and Mute Toggles (iOS Control Center Style) --><div class="flex flex-col gap-2 mr-4 flex-shrink-0"> 
+                    <!-- 1. MODE TOGGLE BUTTON (POWER/LIGHT-DARK) --><button id="mode-toggle-button" onclick="toggleDarkMode()" onmouseenter="playHoverSound()"
+                        class="h-10 w-10 flex items-center justify-center rounded-full text-white transition-colors duration-300 hover:bg-white/10 flex-shrink-0 active:scale-95 cta-button"
+                        style="box-shadow: none !important;"
+                    >
+                        <svg id="power-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-6 w-6 text-white/50 transition-colors duration-300">
+                            <path d="M18.36 6.64a9 9 0 1 1-12.73 0"/><line x1="12" x2="12" y1="2" y2="12"/>
+                        </svg>
+                    </button>
 
-                <!-- 2. MUTE TOGGLE BUTTON --><button id="mute-toggle-button" onclick="toggleMute()" 
-                    class="h-10 w-10 flex items-center justify-center rounded-full text-white transition-colors duration-300 hover:bg-white/10 flex-shrink-0 active:scale-95 cta-button"
-                    style="box-shadow: none !important;"
-                >
-                    <svg id="speaker-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-6 w-6 text-white/50 transition-colors duration-300">
-                    </svg>
-                </button>
+                    <!-- 2. MUTE TOGGLE BUTTON --><button id="mute-toggle-button" onclick="toggleMute()" 
+                        class="h-10 w-10 flex items-center justify-center rounded-full text-white transition-colors duration-300 hover:bg-white/10 flex-shrink-0 active:scale-95 cta-button"
+                        style="box-shadow: none !important;"
+                    >
+                        <svg id="speaker-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-6 w-6 text-white/50 transition-colors duration-300">
+                        </svg>
+                    </button>
+                </div>
+                
+                <div class="flex items-center space-x-4">
+                    <!-- FanPlusFollow Logo SVG --><div class="w-16 h-16">
+                        <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+                          <defs>
+                            <linearGradient id="logoGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                              <stop offset="0%" style="stop-color:#f97316; stop-opacity:1" />
+                              <stop offset="40%" style="stop-color:#ef4444; stop-opacity:1" />
+                              <stop offset="70%" style="stop-color:#c084fc; stop-opacity:1" />
+                              <stop offset="100%" style="stop-color:#818cf8; stop-opacity:1" />
+                            </linearGradient>
+                          </defs>
+                          <circle cx="32" cy="32" r="31" fill="url(#logoGradient)" fill-opacity="0.9" stroke="#ffffff" stroke-opacity="0.4" stroke-width="1" />
+                          <path d="M20 23 L35 32 L20 41 Z" fill="#ffffff" />
+                          <rect x="40" y="27" width="4" height="10" fill="#ffffff" rx="1" />
+                          <rect x="37" y="30" width="10" height="4" fill="#ffffff" rx="1" />
+                        </svg>
+                    </div>
+                    <div class="text-left">
+                        <h1 class="text-2xl font-extrabold bg-clip-text text-transparent" style="background-image: linear-gradient(to right, #ec4899, #c084fc, #6366f1)">
+                          FanPlusFollow
+                        </h1>
+                        <p class="text-indigo-300 text-sm flex items-center font-medium">
+                            <!-- Users Icon (Lucide) --><svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-1 h-3 w-3"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                            Growth AI
+                        </p>
+                    </div>
+                </div>
             </div>
             
-            <!-- 2. LOGO & TITLE (Center, Flexible Space) --><!-- REFINEMENT: min-w-0 added for better overflow handling -->
-            <div class="flex items-center space-x-2 md:space-x-4 flex-1 min-w-0 justify-center md:justify-start">
-                <!-- FanPlusFollow Logo SVG --><div class="w-12 h-12 sm:w-16 sm:h-16 flex-shrink-0">
-                    <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
-                      <defs>
-                        <linearGradient id="logoGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                          <stop offset="0%" style="stop-color:#f97316; stop-opacity:1" />
-                          <stop offset="40%" style="stop-color:#ef4444; stop-opacity:1" />
-                          <stop offset="70%" style="stop-color:#c084fc; stop-opacity:1" />
-                          <stop offset="100%" style="stop-color:#818cf8; stop-opacity:1" />
-                        </linearGradient>
-                      </defs>
-                      <circle cx="32" cy="32" r="31" fill="url(#logoGradient)" fill-opacity="0.9" stroke="#ffffff" stroke-opacity="0.4" stroke-width="1" />
-                      <path d="M20 23 L35 32 L20 41 Z" fill="#ffffff" />
-                      <rect x="40" y="27" width="4" height="10" fill="#ffffff" rx="1" />
-                      <rect x="37" y="30" width="10" height="4" fill="#ffffff" rx="1" />
-                    </svg>
-                </div>
-                <!-- Title Text --><div class="text-left flex-shrink min-w-0">
-                    <h1 class="text-xl sm:text-2xl font-extrabold bg-clip-text text-transparent" style="background-image: linear-gradient(to right, #ec4899, #c084fc, #6366f1)">
-                      FanPlusFollow
-                    </h1>
-                    <p class="text-indigo-300 text-xs sm:text-sm flex items-center font-medium">
-                        <!-- Users Icon (Lucide) --><svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-1 h-3 w-3"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
-                        Growth AI
-                    </p>
-                </div>
-            </div>
-            
-            <!-- 3. VIRAL MODE TOGGLE (Rightmost, Fixed width, flex-shrink-0) --><!-- REFINEMENT: Ensure gap scales appropriately for mobile/desktop -->
-            <div class="flex items-center gap-1 sm:gap-3 ml-auto flex-shrink-0">
-                <div class="flex items-center space-x-1 sm:space-x-3">
-                    <!-- Zap Icon (Lucide) --><svg id="viral-toggle-zap" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-5 w-5 sm:h-6 sm:w-6 transition-colors duration-300"></svg>
-                    <span id="viral-toggle-text" class="text-sm sm:text-lg font-bold transition-colors duration-300 text-white whitespace-nowrap">
+            <!-- Viral Mode Toggle (High-Fidelity iOS Switch) --><div class="flex flex-col sm:flex-row items-center gap-3">
+                <div class="flex items-center space-x-3">
+                    <!-- Zap Icon (Lucide) - Removed initial color class to be controlled by JS --><svg id="viral-toggle-zap" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-6 w-6 transition-colors duration-300"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+                    <span id="viral-toggle-text" class="text-lg font-bold transition-colors duration-300 text-white">
                         Viral Mode
                     </span>
                     <div
                       id="viral-toggle-track"
-                      class="viral-toggle-track w-14 sm:w-16 h-8 sm:h-9 flex items-center rounded-full p-1 cursor-pointer transition-all duration-300 backdrop-blur-3xl active:scale-95"
+                      class="viral-toggle-track w-16 h-9 flex items-center rounded-full p-1 cursor-pointer transition-all duration-300 backdrop-blur-3xl active:scale-95"
                       onclick="toggleViralBoost()"
                       onmouseenter="playHoverSound()"
                     >
                       <div
                         id="viral-toggle-knob"
-                        class="bg-white w-6 h-6 sm:w-7 sm:h-7 rounded-full transform transition-transform duration-300"
+                        class="bg-white w-7 h-7 rounded-full transform transition-transform duration-300"
                         style="box-shadow: 0 1px 3px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(255, 255, 255, 0.3) inset, 0 0 0 4px rgba(0, 0, 0, 0.05);"
                       />
                     </div>
@@ -351,7 +385,7 @@
         </header>
 
         <main>
-            <!-- Upload Section (Glass Card) --><div id="upload-card" class="glass-card fluid-transition p-6 sm:p-8 rounded-[36px] mb-12 card-animation-target">
+            <!-- Upload Section (Glass Card) --><div id="upload-card" class="glass-card fluid-transition p-6 rounded-[36px] mb-12 card-animation-target">
                 <div class="mb-4">
                     <h2 class="text-2xl font-bold flex items-center gap-2">
                         <!-- Upload Icon (Lucide) --><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-indigo-400"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" x2="12" y1="3" y2="15"/></svg>
@@ -682,8 +716,7 @@
 
             if (toggleTrack && toggleKnob && toggleZap && toggleText) {
                 
-                // 1. Reset Track Classes and set Base
-                toggleTrack.classList.remove('bg-green-500/70', 'bg-white/10', 'on-glow', 'off-shadow', 'bg-gray-300/70', 'bg-gray-700/50');
+                toggleTrack.classList.remove('bg-green-500/70', 'bg-white/10', 'on-glow', 'off-shadow', 'bg-gray-300/50', 'bg-gray-700/50');
                 
                 if (isViralBoostEnabled) {
                     // ON state: Use the active green color
@@ -694,19 +727,14 @@
                     toggleTrack.classList.add(offTrackClass, 'off-shadow');
                 }
                 
-                // 2. Knob Position 
-                // w-14 track (56px) / w-6 knob (24px) -> knob moves 56 - 2*4 - 24 = 24px (used 28 in previous, let's stick to calculated 28 for consistency with old)
-                // New logic based on w-14/w-7 (mobile) or w-16/w-8 (desktop)
-                const knobOffset = toggleTrack.classList.contains('w-14') ? '24px' : '28px'; // Use 28px for w-16 track.
-                toggleKnob.style.transform = isViralBoostEnabled ? `translateX(${knobOffset})` : 'translateX(0)';
+                // Knob Position (Uses 28px for the new 9px height track / 7px knob)
+                toggleKnob.style.transform = isViralBoostEnabled ? 'translateX(28px)' : 'translateX(0)';
 
                 // --- ZAP ICON LOGIC (Enhanced for Colorless/Glow/Pop) ---
                 
-                // 3. Reset dynamic classes and styles
+                // 1. Reset dynamic classes and styles
                 toggleZap.classList.remove('text-green-400', 'text-green-600', 'text-gray-400', 'text-gray-500', 'icon-pop-on');
                 toggleZap.style.filter = 'none';
-                // Add the Zap Icon path (it was missing from the HTML structure)
-                toggleZap.innerHTML = `<polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>`;
 
                 if (isViralBoostEnabled) {
                     // ON: Green color, glow effect, and pop animation
@@ -721,11 +749,11 @@
                     toggleZap.classList.add(zapColorClass);
                 }
                 
-                // 4. TEXT LOGIC
+                // --- TEXT LOGIC ---
                 const textColor = isDarkMode ? 'text-white' : 'text-gray-700';
                 const offTextColor = isDarkMode ? 'text-gray-400' : 'text-gray-500';
 
-                toggleText.className = `text-sm sm:text-lg font-bold transition-colors duration-300 whitespace-nowrap ${isViralBoostEnabled ? textColor : offTextColor}`;
+                toggleText.className = `text-lg font-bold transition-colors duration-300 ${isViralBoostEnabled ? textColor : offTextColor}`;
             }
         };
 
@@ -1039,7 +1067,7 @@
                                        viralScore >= 75 ? 'text-shadow: 0 0 15px rgba(255, 255, 0, 0.5);' : 'text-shadow: none;';
                 
                 const viralScoreHTML = `
-                    <div class="glass-card fluid-transition p-6 sm:p-8 rounded-[36px] mb-12">
+                    <div class="glass-card fluid-transition p-6 rounded-[36px] mb-12">
                         <div class="mb-4"><h2 class="text-2xl font-bold text-indigo-200">Viral Potential Score</h2></div>
                         <div class="p-1">
                             <div class="flex items-center justify-between mb-4">
@@ -1113,7 +1141,7 @@
                     : 'bg-gray-100/70 hover:bg-gray-200/90 text-gray-700 shadow-inner shadow-black/5';
 
                 const descriptionHTML = `
-                    <div class="glass-card fluid-transition p-6 sm:p-8 rounded-[36px] mb-12">
+                    <div class="glass-card fluid-transition p-6 rounded-[36px] mb-12">
                         <div class="mb-4">
                             <h2 class="flex justify-between items-center text-xl sm:text-2xl font-bold text-indigo-200">
                                 <span>Optimized Description & Hashtags</span>
