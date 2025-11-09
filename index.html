@@ -281,10 +281,7 @@
         .viral-toggle-knob {
             /* Ensure the knob is highly visible */
             transition: transform 300ms cubic-bezier(0.25, 0.46, 0.45, 0.94);
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.8), /* Darker shadow */
-            
-             0 0 0 1px rgba(255, 255, 255, 0.4) inset;
- /* Brighter inner border */
+            /* Removed fixed box-shadow here to rely solely on JS */
         }
         
         /* === NEW: VIRAL ICON ANIMATION & GLOW === */
@@ -529,8 +526,7 @@
      <div
                             id="viral-toggle-knob"
                             class="w-7 h-7 rounded-full transform transition-transform duration-300 viral-toggle-knob"
-                            style="box-shadow: 0 1px 3px rgba(0, 0, 
- 0, 0.5), 0 0 0 1px rgba(255, 255, 255, 0.4) inset, 0 0 0 4px rgba(0, 0, 0, 0.05);"
+                            
                           />
                         </div>
                     </div>
@@ -705,8 +701,7 @@
         let copiedIndex = null;
         let isDarkMode = true;
         let isMuted = false;
-        // CHANGED: isViralBoostEnabled is now true by default
-        let isViralBoostEnabled = true; 
+        let isViralBoostEnabled = false;
         let progressValue = 0;
         let progressInterval = null;
 
@@ -997,11 +992,13 @@
             // Knob Color (Always white/light-grey for contrast)
             const knobBaseColor = isDarkMode ? 'rgba(255, 255, 255, 1)' : 'rgba(240, 240, 245, 1)';
             toggleKnob.style.backgroundColor = knobBaseColor;
-            toggleKnob.style.boxShadow = isDarkMode 
-                ? '0 1px 3px rgba(0, 0, 0, 0.8), 0 0 0 1px rgba(255, 255, 255, 0.4) inset, 0 0 0 4px rgba(0, 0, 0, 0.05)'
+            
+            // UPDATED: Clean, single-pixel white outline in Dark Mode
+            toggleKnob.style.boxShadow = isDarkMode
+                ? '0 1px 5px rgba(0, 0, 0, 0.9), 0 0 0 1px rgba(255, 255, 255, 0.8)' 
                 : '0 1px 3px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(0, 0, 0, 0.1) inset, 0 0 0 4px rgba(255, 255, 255, 0.1)';
 
- 
+
             if (isViralBoostEnabled) {
                 // ON state: Gradient for clear distinction and visual depth
                 if (isDarkMode) {
@@ -1122,7 +1119,7 @@
             if (!file) return;
 
             // Extract a clean file name for use in titles/description
-            const videoName = file.name.replace(/\.mp4$/i, '').replace(/[-_]/g, ' ').trim();
+            const videoName = file.name.replace(/\.mp4$/i, '', '').replace(/[-_]/g, ' ').trim();
 
             // Generate titles (Influenced by Viral Mode)
             const boost = isViralBoostEnabled ? "🔥 Viral" : "📈 Quick";
