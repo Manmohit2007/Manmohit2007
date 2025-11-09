@@ -56,6 +56,7 @@
         @-webkit-keyframes spiral-entry {
             0% {
                 opacity: 0;
+                /* ENSURED -WEBKIT- PREFIX FOR SAFARI 3D TRANSFORM */
                 -webkit-transform: perspective(1000px) 
  scale(0.7) rotateY(15deg) translateY(50px);
                 transform: perspective(1000px) scale(0.7) rotateY(15deg) translateY(50px);
@@ -65,8 +66,9 @@
             100% {
                 opacity: 1;
   
-               -webkit-transform: perspective(1000px) scale(1) rotateY(0deg) translateY(0);
-                transform: perspective(1000px) scale(1) rotateY(0deg) translateY(0);
+               /* NEW: Static 3D tilt applied */
+                -webkit-transform: perspective(1000px) scale(1) rotateY(0deg) rotateX(1deg) translateY(0);
+                transform: perspective(1000px) scale(1) rotateY(0deg) rotateX(1deg) translateY(0);
                 -webkit-filter: blur(0);
                 filter: blur(0);
             }
@@ -81,7 +83,8 @@
             100% {
       
            opacity: 1;
-                transform: perspective(1000px) scale(1) rotateY(0deg) translateY(0);
+                /* NEW: Static 3D tilt applied */
+                transform: perspective(1000px) scale(1) rotateY(0deg) rotateX(1deg) translateY(0);
                 filter: blur(0);
             }
         }
@@ -107,13 +110,13 @@
 
         /* ============================================== */
         /* MAIN GLASS CARD STYLES (Frosted Dark Glass) */
-        /* Glassiness/Transparency increased here */
+        /* Enhanced 3D Float Effect */
         /* ============================================== */
         .glass-card {
             background-color: rgba(15, 15, 25, 0.3);
  /* INCREASED TRANSPARENCY */
             
-            /* INCREASED BLUR for Maximum Frost Effect (Apple aesthetic) */
+            /* CRITICAL: ENSURED -WEBKIT- PREFIX FOR SAFARI BLUR */
             -webkit-backdrop-filter: blur(70px);
             backdrop-filter: blur(70px);
  /* HIGHER BLUR */
@@ -121,11 +124,14 @@
             border-radius: 36px;
             /* Subtler inner border and deep outer shadow */
             box-shadow: 
-                0 18px 36px rgba(0, 0, 0, 0.9), /* Deeper bottom shadow */
+                0 30px 60px rgba(0, 0, 0, 0.95), /* Deeper bottom shadow */
             
                 inset 0 0 0 1px rgba(255, 255, 255, 0.08);
  /* Inner white line */
             border: 1px solid rgba(255, 255, 255, 0.08);
+
+            /* NEW: Base 3D transformation for floating look */
+            transform: perspective(1000px) rotateX(1deg);
         }
 
         /* * --- CROSS-BROWSER FALLBACK (FIREFOX, etc.) ---
@@ -163,16 +169,18 @@
             body.light-mode .cta-button {
                 background-color: rgba(250, 250, 250, 0.98);
  /* Opaque white fallback */
+                -webkit-backdrop-filter: none;
+                backdrop-filter: none;
             }
         }
 
 
-        /* ENHANCED HOVER EFFECT (Lift and Shadow - for Floating Look) */
+        /* ENHANCED HOVER EFFECT (Lift, Rotation, and Shadow - for Maximum 3D Float) */
         .glass-card:hover {
-            transform: translateY(-12px) scale(1.01);
- /* HIGHER LIFT */
+            /* NEW: Increased lift and added strong forward tilt */
+            transform: perspective(1000px) translateY(-16px) scale(1.01) rotateX(-5deg); 
             box-shadow: 
-                0 40px 90px rgba(0, 0, 0, 0.99), /* Max dark shadow for deep float */
+                0 50px 120px rgba(0, 0, 0, 0.99), /* Max dark shadow for deep float */
                 0 0 0 2px rgba(192, 132, 252, 0.1), /* Subtle purple edge glow */
                 inset 0 0 50px rgba(255, 255, 255, 0.03);
  /* Subtle internal light */
@@ -184,35 +192,48 @@
         .title-result-card {
             background-color: rgba(15, 15, 25, 0.4);
  /* Increased transparency */
+            /* CRITICAL: ENSURED -WEBKIT- PREFIX FOR SAFARI BLUR */
             -webkit-backdrop-filter: blur(40px);
  /* Increased blur */
             backdrop-filter: blur(40px);
             border-radius: 32px;
             border: 1px solid rgba(255, 255, 255, 0.12);
  
-            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.7), inset 0 0 0 1px rgba(255, 255, 255, 0.05);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.8), inset 0 0 0 1px rgba(255, 255, 255, 0.05);
+            
+            /* NEW: Base 3D transformation for floating look */
+            transform: perspective(1000px) rotateX(1deg);
         }
 
         .title-result-card:hover {
-            transform: translateY(-8px) scale(1.02);
- /* Increased lift */
+            /* NEW: Increased lift and added strong forward tilt */
+            transform: perspective(1000px) translateY(-10px) scale(1.02) rotateX(-4deg); 
             box-shadow:
-                0 35px 60px rgba(0, 0, 0, 0.98), /* Deeper shadow */
+                0 45px 70px rgba(0, 0, 0, 0.98), /* Deeper shadow */
                 0 0 0 2px rgba(192, 132, 252, 0.2), 
                 0 5px 15px rgba(0, 0, 0, 0.9);
  
         }
         
         /* === TAPPED HOVER CLASS (CRITICAL for Mobile Apple feel) === */
-        .glass-card.tapped-hover,
-        .title-result-card.tapped-hover {
-            transform: translateY(-12px) scale(1.01) !important;
- /* Matches max hover lift */
+        /* Forces the hover state on touch devices, bypassing the delay */
+        .glass-card.tapped-hover {
+            /* Match glass-card:hover */
+            transform: perspective(1000px) translateY(-16px) scale(1.01) rotateX(-5deg) !important;
             box-shadow: 
-                0 40px 90px rgba(0, 0, 0, 0.99), 
+                0 50px 120px rgba(0, 0, 0, 0.99), 
                 0 0 0 2px rgba(192, 132, 252, 0.2), 
                 0 5px 15px rgba(0, 0, 0, 0.9) !important;
  
+        }
+
+        .title-result-card.tapped-hover {
+            /* Match title-result-card:hover */
+            transform: perspective(1000px) translateY(-10px) scale(1.02) rotateX(-4deg) !important;
+            box-shadow:
+                0 45px 70px rgba(0, 0, 0, 0.98), 
+                0 0 0 2px rgba(192, 132, 252, 0.2), 
+                0 5px 15px rgba(0, 0, 0, 0.9) !important;
         }
 
 
@@ -221,6 +242,7 @@
             transition: all 300ms cubic-bezier(0.25, 0.46, 0.45, 0.94);
             background-color: rgba(20, 20, 40, 0.5);
  /* Slightly more transparent */
+            /* CRITICAL: ENSURED -WEBKIT- PREFIX FOR SAFARI BLUR */
             -webkit-backdrop-filter: blur(20px);
  
             backdrop-filter: blur(20px);
@@ -229,10 +251,14 @@
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.7), inset 0 1px 0 rgba(255, 255, 255, 0.3);
  
             will-change: transform, box-shadow;
+            /* NEW: Base 3D for buttons */
+            transform: perspective(1000px);
+            cursor: pointer; /* Ensure clickability is clear on macOS/iPadOS */
         }
         
         .cta-button:hover {
-            transform: translateY(-4px) scale(1.02);
+            /* NEW: Subtle 3D tilt on hover */
+            transform: perspective(1000px) translateY(-4px) scale(1.02) rotateX(-1deg);
             /* Wider, brighter hover glow */
             box-shadow: 
                 0 
@@ -244,9 +270,11 @@
         
         /* CRITICAL: Tactile Press Effect (iOS Style) */
         .cta-button:active {
-            transform: scale(0.96) !important;
+            transform: perspective(1000px) scale(0.96) !important;
  /* Scale down immediately on tap */
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.9);
+            /* CRITICAL: Use -webkit-filter for press effect reliability */
+            -webkit-filter: brightness(0.9);
             filter: brightness(0.9);
  /* Subtle darkening on press */
         }
@@ -285,6 +313,11 @@
         }
         
         /* === NEW: VIRAL ICON ANIMATION & GLOW === */
+        @-webkit-keyframes icon-pop {
+            0% { -webkit-transform: scale(0.8); opacity: 0.5; -webkit-filter: drop-shadow(0 0 0 transparent); }
+            70% { -webkit-transform: scale(1.15); opacity: 1; }
+            100% { -webkit-transform: scale(1); opacity: 1; -webkit-filter: drop-shadow(0 0 8px rgba(0, 255, 0, 0.9)); }
+        }
         @keyframes icon-pop {
             0% { transform: scale(0.8);
  opacity: 0.5; filter: drop-shadow(0 0 0 transparent); }
@@ -296,18 +329,22 @@
 
         .icon-pop-on {
             /* Apply the animation when Viral Mode is active */
+            -webkit-animation: icon-pop 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
             animation: icon-pop 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
             /* Ensure the filter (glow) persists after animation */
+            -webkit-filter: drop-shadow(0 0 
+ 8px rgba(0, 255, 0, 0.9));
             filter: drop-shadow(0 0 
  8px rgba(0, 255, 0, 0.9));
         }
         /* === END NEW STYLES === */
 
-        /* Mobile Active State for Cards (Immediate Press) */
+        /* Mobile Active State for Cards (Immediate Press) - Crucial for iOS/iPadOS */
         @media (max-width: 767px) {
             .glass-card:active,
             .title-result-card:active {
-                transform: translateY(0px) scale(0.98) !important;
+                /* Reduced 3D transform on active/press for snappy feel */
+                transform: perspective(1000px) scale(0.98) rotateX(0deg) !important;
  
                 box-shadow: 0 5px 10px rgba(0, 0, 0, 0.95), inset 0 0 5px rgba(255, 255, 255, 0.05);
             }
@@ -348,6 +385,7 @@
         body.light-mode .title-result-card {
             background-color: rgba(255, 255, 255, 0.65);
  /* More transparent white */
+            /* CRITICAL: ENSURED -WEBKIT- PREFIX FOR SAFARI BLUR */
             -webkit-backdrop-filter: blur(45px);
  
             backdrop-filter: blur(45px);
@@ -356,15 +394,23 @@
             border: 1px solid rgba(0, 0, 0, 0.1);
         }
 
-        body.light-mode .glass-card:hover,
+        body.light-mode .glass-card:hover {
+            /* NEW: Increased lift and added strong forward tilt for light mode */
+            transform: perspective(1000px) translateY(-12px) scale(1.005) rotateX(-3deg);
+            box-shadow: 
+                0 35px 50px rgba(0, 0, 0, 0.25), /* Deeper shadow */
+                0 0 0 2px rgba(99, 102, 241, 0.2), 
+                0 5px 15px rgba(0, 0, 0, 0.1);
+ 
+        }
+
         body.light-mode .title-result-card:hover {
-            transform: translateY(-8px) scale(1.005);
- /* Increased lift */
+            /* NEW: Increased lift and added strong forward tilt for light mode */
+            transform: perspective(1000px) translateY(-8px) scale(1.02) rotateX(-2deg);
             box-shadow: 
                 0 25px 50px rgba(0, 0, 0, 0.25), /* Deeper shadow */
                 0 0 0 2px rgba(99, 102, 241, 0.2), 
                 0 5px 15px rgba(0, 0, 0, 0.1);
- 
         }
 
         body.light-mode .cta-button {
@@ -376,7 +422,8 @@
         }
         
         body.light-mode .cta-button:hover {
-            transform: translateY(-4px) scale(1.02);
+            /* NEW: Subtle 3D tilt on hover */
+            transform: perspective(1000px) translateY(-4px) scale(1.02) rotateX(-1deg);
             box-shadow: 
                 0 15px 30px rgba(0, 
  0, 0, 0.25), 
@@ -701,7 +748,7 @@
         let copiedIndex = null;
         let isDarkMode = true;
         let isMuted = false;
-        let isViralBoostEnabled = false;
+        let isViralBoostEnabled = true; // CHANGED: Set to true by default
         let progressValue = 0;
         let progressInterval = null;
 
@@ -757,13 +804,18 @@
         };
 
         const startAudioIfUnmuted = () => {
+            // CRITICAL FOR SAFARI/IOS: AudioContext must be started after a user gesture.
+            // This function is called from interaction handlers (toggleMute, playHoverSound, etc.)
             if (!isMuted && !audioContextStarted) {
-                Tone.start().then(() => {
-                    audioContextStarted = true;
-                    console.log("AudioContext started.");
-                }).catch(e => {
-                    console.error("Failed to start Tone.js AudioContext:", e);
-                });
+                // Check if Tone.js is available and initialized
+                if (typeof Tone !== 'undefined' && isToneInitialized) {
+                    Tone.start().then(() => {
+                        audioContextStarted = true;
+                        console.log("AudioContext started.");
+                    }).catch(e => {
+                        console.error("Failed to start Tone.js AudioContext:", e);
+                    });
+                }
             }
         }
 
@@ -771,6 +823,7 @@
 
         const playToggleSound = (isOn) => {
             initToneJs();
+            startAudioIfUnmuted(); // Attempt to start context on interaction
  
             if (!audioContextStarted || !synth || isMuted) return; 
 
@@ -785,6 +838,7 @@
 
         const playHoverSound = () => {
             initToneJs();
+            startAudioIfUnmuted(); // Attempt to start context on interaction
  
             const now = Date.now();
             if (!audioContextStarted || !hoverSynth || isMuted || (now - lastHoverTime < HOVER_SOUND_COOLDOWN)) return; 
@@ -796,6 +850,7 @@
 
         const playClickSound = () => {
             initToneJs();
+            startAudioIfUnmuted(); // Attempt to start context on interaction
  
             if (!audioContextStarted || !hoverSynth || isMuted) return; 
 
@@ -826,6 +881,7 @@
                 powerIcon.style.color = '';
  
                 powerIcon.style.filter = 'none';
+                powerIcon.style.webkitFilter = 'none'; // Added for Safari
             } else {
                 // LIGHT MODE: Vibrant "ON" state color
                 body.classList.add('light-mode');
@@ -835,7 +891,10 @@
                 // Subtle orange glow for power button
                 powerIcon.style.color = '#F97316';
  
-                powerIcon.style.filter = 'drop-shadow(0 0 4px rgba(249, 115, 22, 0.9))';
+                // CRITICAL: Applied -webkit-filter for glow consistency on Safari
+                const filterStyle = 'drop-shadow(0 0 4px rgba(249, 115, 22, 0.9))';
+                powerIcon.style.filter = filterStyle;
+                powerIcon.style.webkitFilter = filterStyle;
  
             }
         };
@@ -870,6 +929,7 @@
             speakerIcon.style.color = '';
  
             speakerIcon.style.filter = 'none'; 
+            speakerIcon.style.webkitFilter = 'none'; // Reset -webkit-filter
 
             if (isMuted) {
                 // Muted state: Subtle grey/white
@@ -880,7 +940,10 @@
                 speakerIcon.classList.add('text-indigo-400'); 
                 speakerIcon.style.color = '#C084FC';
  
-                speakerIcon.style.filter = 'drop-shadow(0 0 4px rgba(192, 132, 252, 0.9))';
+                // CRITICAL: Applied -webkit-filter for glow consistency on Safari
+                const filterStyle = 'drop-shadow(0 0 4px rgba(192, 132, 252, 0.9))';
+                speakerIcon.style.filter = filterStyle;
+                speakerIcon.style.webkitFilter = filterStyle;
  
             }
         };
@@ -994,9 +1057,12 @@
             toggleKnob.style.backgroundColor = knobBaseColor;
             
             // UPDATED: Clean, single-pixel white outline in Dark Mode
-            toggleKnob.style.boxShadow = isDarkMode
+            const boxShadowStyle = isDarkMode
                 ? '0 1px 5px rgba(0, 0, 0, 0.9), 0 0 0 1px rgba(255, 255, 255, 0.8)' 
                 : '0 1px 3px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(0, 0, 0, 0.1) inset, 0 0 0 4px rgba(255, 255, 255, 0.1)';
+
+            toggleKnob.style.boxShadow = boxShadowStyle;
+            // Safari compatibility for box-shadow is usually fine, but adding a specific style here ensures control.
 
 
             if (isViralBoostEnabled) {
@@ -1016,19 +1082,26 @@
             // Knob Position (Uses 28px for the new 9px height track / 7px knob)
             toggleKnob.style.transform = isViralBoostEnabled ?
  'translateX(28px)' : 'translateX(0)';
+             // CRITICAL: Ensure -webkit-transform is set for Safari compatibility
+            toggleKnob.style.webkitTransform = toggleKnob.style.transform;
 
             // --- 3. ZAP ICON LOGIC (Enhanced for Colorless/Glow/Pop) ---
 
             // 1. Reset dynamic classes and styles
             toggleZap.classList.remove('text-green-400', 'text-green-600', 'text-gray-400', 'text-gray-500', 'icon-pop-on');
             toggleZap.style.filter = 'none';
+            toggleZap.style.webkitFilter = 'none'; // Reset -webkit-filter
 
             if (isViralBoostEnabled) {
                 // ON: Green color, glow effect, and pop animation
                 const zapColorClass = isDarkMode ?
  'text-green-400' : 'text-green-600'; // Darker green for light mode contrast
                 toggleZap.classList.add(zapColorClass, 'icon-pop-on');
-                toggleZap.style.filter = 'drop-shadow(0 0 8px rgba(0, 255, 0, 0.9))';
+                
+                // CRITICAL: Applied -webkit-filter for glow consistency on Safari
+                const filterStyle = 'drop-shadow(0 0 8px rgba(0, 255, 0, 0.9))';
+                toggleZap.style.filter = filterStyle;
+                toggleZap.style.webkitFilter = filterStyle;
  
             } else {
                 // OFF: Colorless/Greyed out
@@ -1073,14 +1146,15 @@
 
             if (selectedFile) {
                 if (selectedFile.type !== 'video/mp4') {
-                    alert('Please select an MP4 video file.');
+                    // Using a custom message box instead of alert for better UX
+                    showCustomMessage('Error', 'Please select an MP4 video file.', 'error');
                     return;
                 }
                 
                 // Simulate file size limit (500MB)
                 const MAX_SIZE_MB = 500;
                 if (selectedFile.size > MAX_SIZE_MB * 1024 * 1024) {
-                    alert(`File size exceeds the limit of ${MAX_SIZE_MB}MB.`);
+                    showCustomMessage('Error', `File size exceeds the limit of ${MAX_SIZE_MB}MB.`, 'error');
                     return;
                 }
 
@@ -1101,9 +1175,25 @@
         const handleDrop = (event) => {
             event.preventDefault();
             event.stopPropagation();
+            // CRITICAL: Prevent default behavior for dragover/drop to ensure correct file handling
+            event.target.classList.remove('drag-over'); 
             handleFileChange(event);
         };
         
+        // Add drag event handlers for visual feedback on drag-and-drop on desktop/iPadOS
+        const handleDragOver = (event) => {
+            event.preventDefault();
+            event.stopPropagation();
+            event.currentTarget.classList.add('drag-over');
+        }
+
+        const handleDragLeave = (event) => {
+            event.preventDefault();
+            event.stopPropagation();
+            event.currentTarget.classList.remove('drag-over');
+        }
+
+
         const handleProcessFile = () => {
             if (file) {
                 // If a file is selected, start the processing simulation
@@ -1169,6 +1259,7 @@
             tempElement.value = text;
             document.body.appendChild(tempElement);
             tempElement.select();
+            // Use execCommand('copy') for better cross-browser compatibility, especially in iFrames
             document.execCommand('copy');
             document.body.removeChild(tempElement);
 
@@ -1207,6 +1298,29 @@
             attachStaticListeners();
  
         };
+        
+        // --- CUSTOM MESSAGE BOX (REPLACING ALERT) ---
+        const showCustomMessage = (title, message, type = 'info') => {
+            // Placeholder for a proper modal/message box implementation
+            // For this environment, we will use a console log and a simple visual message, but not alert()
+            console.warn(`[Custom Message - ${title}]: ${message}`);
+
+            // A minimal, temporary visual feedback element
+            const msgBox = document.createElement('div');
+            msgBox.textContent = `${title}: ${message}`;
+            
+            const color = type === 'error' ? 'bg-red-500' : 'bg-blue-500';
+            
+            msgBox.className = `fixed top-4 right-4 z-50 p-4 rounded-xl shadow-2xl text-white font-bold ${color} transition-opacity duration-300`;
+            
+            document.body.appendChild(msgBox);
+            
+            setTimeout(() => {
+                msgBox.style.opacity = '0';
+                msgBox.addEventListener('transitionend', () => msgBox.remove());
+            }, 3000);
+        };
+
 
         // --- TOUCH HOVER & MOUSE HOVER SOUND LOGIC ---
 
@@ -1215,6 +1329,7 @@
             const cards = document.querySelectorAll('.glass-card:not(.has-listener), .title-result-card:not(.has-listener)');
 
             const handleTouchHover = function(e) {
+                // IMPORTANT: Prevent text selection/dragging on touch devices
                 if (e.target.closest('button, input, textarea, a') || e.target.tagName === 'A') return;
 
                 // Add tapped-hover class on touchstart
@@ -1237,7 +1352,8 @@
 
             cards.forEach(card => {
                 card.addEventListener('mouseover', handleMouseOver);
-                card.addEventListener('touchstart', handleTouchHover);
+                // Use passive listener for touchstart for performance on iOS
+                card.addEventListener('touchstart', handleTouchHover, { passive: true });
                 card.classList.add('has-listener'); // Mark as having listeners to prevent re-attachment
             });
 
@@ -1260,6 +1376,14 @@
                         fileInput.click();
                     }
                 };
+                // Ensure drag/drop listeners are set for iPadOS/macOS
+                dropArea.removeEventListener('dragover', handleDragOver);
+                dropArea.removeEventListener('dragleave', handleDragLeave);
+                dropArea.removeEventListener('drop', handleDrop);
+                
+                dropArea.addEventListener('dragover', handleDragOver);
+                dropArea.addEventListener('dragleave', handleDragLeave);
+                dropArea.addEventListener('drop', handleDrop);
             }
         };
 
@@ -1269,7 +1393,9 @@
 
             setTimeout(() => {
                 targets.forEach(el => {
+                    // CRITICAL: Stop the animation after it finishes to ensure Safari switches to fluid transformations
                     el.style.animation = 'none'; 
+                    el.style.webkitAnimation = 'none';
                     el.style.opacity = '1'; 
                     el.classList.remove('card-animation-target');
                 });
@@ -1287,14 +1413,15 @@
                 const textColorClass = isDarkMode ?
  'text-white/80' : 'text-gray-600';
                 const helperTextColorClass = isDarkMode ? 'text-indigo-300' : 'text-indigo-600';
-                const borderColorClass = isDarkMode ?
- 'border-indigo-500/30 hover:border-indigo-400/70 hover:shadow-lg hover:shadow-indigo-900/50' : 'border-indigo-300 hover:border-indigo-500 hover:shadow-md hover:shadow-indigo-200/50';
+                // Added a new class 'drag-over' to the template for visual feedback
+                const borderColorClass = isDarkMode 
+                    ? 'border-indigo-500/30 hover:border-indigo-400/70 hover:shadow-lg hover:shadow-indigo-900/50 drag-over:border-green-400 drag-over:shadow-green-900/50' 
+                    : 'border-indigo-300 hover:border-indigo-500 hover:shadow-md hover:shadow-indigo-200/50 drag-over:border-green-600 drag-over:shadow-green-300/50';
 
                 uploadContainer.innerHTML = `
  <div
  id="file-drop-area"
  class="glass-card fluid-transition p-4 sm:p-6 text-center flex flex-col items-center justify-center gap-4 h-64 cursor-pointer hover:scale-[1.01]"
- ondragover="event.preventDefault()"
  onmouseenter="playHoverSound()"
  >
  <div id="inner-drop-div" class="w-full h-full flex flex-col items-center justify-center border-2 border-dashed rounded-[30px] transition-all duration-300 ${borderColorClass}">
@@ -1320,25 +1447,8 @@
 
                 const dropArea = document.getElementById('file-drop-area');
                 if (dropArea) {
-                    dropArea.addEventListener('drop', handleDrop);
- 
-                    const selectFileBtn = document.getElementById('select-file-btn');
-                    const fileInput = document.getElementById('file-upload-input');
-                    
-                    if (selectFileBtn && fileInput) {
-                        selectFileBtn.onclick = () => {
-                            playClickSound();
-                            fileInput.click();
-                        };
-                    }
-                    if (dropArea && fileInput) {
-                        dropArea.onclick = (e) => {
-                            if (e.target.id === 'file-drop-area' || e.target.id === 'inner-drop-div') {
-                                playClickSound();
-                                fileInput.click();
-                            }
-                        };
-                    }
+                    // Re-attach listeners after innerHTML update
+                    attachStaticListeners();
                 }
             } else {
                 // File is present, show processing/processed view
@@ -1422,12 +1532,12 @@
  
 
                 const scoreGlowStyle = viralScore >= 90 ?
- 'text-shadow: 0 0 25px rgba(0, 255, 0, 0.8), 0 0 8px rgba(255, 255, 255, 0.6);'
+ 'text-shadow: 0 0 25px rgba(0, 255, 0, 0.8), 0 0 8px rgba(255, 255, 255, 0.6); -webkit-text-shadow: 0 0 25px rgba(0, 255, 0, 0.8), 0 0 8px rgba(255, 255, 255, 0.6);'
  
                     : 
- viralScore >= 75 ? 'text-shadow: 0 0 15px rgba(255, 255, 0, 0.5);'
+ viralScore >= 75 ? 'text-shadow: 0 0 15px rgba(255, 255, 0, 0.5); -webkit-text-shadow: 0 0 15px rgba(255, 255, 0, 0.5);'
  
-                    : 'text-shadow: none;';
+                    : 'text-shadow: none; -webkit-text-shadow: none;';
 
                 const viralScoreHTML = `
  <div class="glass-card fluid-transition p-6 rounded-[36px] mb-12">
@@ -1468,7 +1578,7 @@
  <button
  onclick="copyToClipboard('${title.replace(/'/g, "\\'")}', ${index})"
  onmouseenter="playHoverSound()"
- class="h-8 w-8 p-0 bg-transparent hover:bg-white/10 ${isDarkMode ? 'text-indigo-300 hover:text-white' : 'text-indigo-500 hover:text-indigo-700'} shadow-none rounded-full flex items-center justify-center active:scale-95"
+ class="h-8 w-8 p-0 bg-transparent hover:bg-white/10 ${isDarkMode ? 'text-indigo-300 hover:text-white' : 'text-indigo-500 hover:text-indigo-700'} shadow-none rounded-full flex items-center justify-center active:scale-95 cta-button"
  >
  ${copiedIndex === index ? icon('Check', 'h-6 w-6 text-green-400') : icon('Copy', 'h-6 w-6')}
  </button>
