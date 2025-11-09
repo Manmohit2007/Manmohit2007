@@ -511,7 +511,9 @@
                     <div class="flex items-center space-x-3">
                        
  
-<svg id="viral-toggle-zap" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-6 w-6 transition-colors duration-300"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+<svg id="viral-toggle-zap" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-6 w-6 transition-colors duration-300">
+<!-- Size updated to h-6 w-6 -->
+<polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
                         <span id="viral-toggle-text" class="text-lg font-bold transition-colors duration-300 text-white">
                             Viral Mode
          
@@ -559,6 +561,7 @@
                     >
                         
  <svg id="power-icon" xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-6 w-6 text-white/50 transition-colors duration-300">
+                            <!-- Size updated to h-6 w-6 -->
                             <path d="M18.36 6.64a9 9 0 1 1-12.73 0"/><line x1="12" x2="12" y1="2" y2="12"/>
                         </svg>
                    
@@ -572,6 +575,7 @@
               
                 >
                         <svg id="speaker-icon" xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-6 w-6 text-white/50 transition-colors duration-300">
+                        <!-- Size updated to h-6 w-6 -->
                         </svg>
                     </button>
         
@@ -587,7 +591,7 @@
                     <h2 class="text-2xl font-bold flex items-center gap-2">
    
                        
-<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-indigo-400"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" x2="12" y1="3" y2="15"/></svg>
+<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-indigo-400 h-6 w-6"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" x2="12" y1="3" y2="15"/></svg>
                         Upload Your Video
                    
   </h2>
@@ -654,7 +658,7 @@
                             onmouseenter="playHoverSound()"
                           >
                             
-<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2 h-4 w-4"><path d="M16 
+<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2 h-6 w-6"><path d="M16 
  21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
                             Subscribe Now
                           </button>
@@ -670,7 +674,7 @@
                             onmouseenter="playHoverSound()"
                           >
                             
-<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2 h-4 w-4"><polygon points="12 
+<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2 h-6 w-6"><polygon points="12 
  2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
                             Follow Now
                           </button>
@@ -842,8 +846,8 @@
 
         // --- MUTE TOGGLE LOGIC ---
 
-        // Speaker with curved waves (Volume 2) - Used for both on and off states now
-        const VOLUME_ICON_PATH = `<polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 0 0 1 0 14.14"/>`;
+        // Speaker with two distinct curved waves (Volume 2)
+        const VOLUME_ICON_PATH = `<polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/>`;
 
         const toggleMute = () => {
             isMuted = !isMuted;
@@ -862,7 +866,7 @@
 
             if (!speakerIcon) return;
 
-            // 1. Always inject the same icon path for consistent shape
+            // 1. Always inject the same icon path for consistent shape (2 curves)
             speakerIcon.innerHTML = VOLUME_ICON_PATH;
  
             // 2. Reset classes and styles for state transition
@@ -887,7 +891,8 @@
 
 
         // --- ICON HELPER ---
-        const icon = (name, classes = '') => {
+        // Ensuring all icons are rendered h-6 w-6 unless specified otherwise in the classes string
+        const icon = (name, classes = 'h-6 w-6') => {
             const iconMap = {
                 'Upload': `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="${classes}"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" x2="12" y1="3" y2="15"/></svg>`,
                 'Play': `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="${classes}"><polygon points="5 3 19 12 5 21 5 3"/></svg>`,
@@ -918,7 +923,7 @@
 
             const finalTextColorClass = isDarkMode 
                 ?
- (isComplete ? "text-green-400" : "text-yellow-300")
+ (isComplete ? "text-green-400" : "text-green-600")
                 : (isComplete ? "text-green-600" : "text-yellow-600");
 
             
@@ -1294,7 +1299,7 @@
  onmouseenter="playHoverSound()"
  >
  <div id="inner-drop-div" class="w-full h-full flex flex-col items-center justify-center border-2 border-dashed rounded-[30px] transition-all duration-300 ${borderColorClass}">
- ${icon('Upload', `h-10 w-10 ${textColorClass}`)}
+ ${icon('Upload', `h-6 w-6 ${textColorClass}`)}
  <div>
  <p class="font-bold ${textColorClass}">Drag & drop your MP4 file here</p>
  <p class="text-sm mt-1 ${helperTextColorClass}">or click to browse (Max 500MB)</p>
@@ -1370,12 +1375,12 @@
  <button onclick="handleRegenerate()" onmouseenter="playHoverSound()"
  class="cta-button bg-gradient-to-r from-pink-500/50 to-purple-500/50 hover:from-pink-500 hover:to-purple-500 text-white shadow-xl shadow-pink-900/40 px-6 py-3 rounded-full font-bold flex items-center active:scale-[0.96]"
  >
- ${icon('RotateCcw', 'mr-2 h-4 w-4')} Regenerate
+ ${icon('RotateCcw', 'mr-2 h-6 w-6')} Regenerate
  </button>
  <button onclick="resetApp()" onmouseenter="playHoverSound()"
  class="cta-button bg-gray-700/50 hover:bg-gray-600/70 text-white backdrop-blur-xl shadow-inner shadow-white/5 px-6 py-3 rounded-full font-medium flex items-center"
  >
- ${icon('RotateCcw', 'mr-2 h-4 w-4')} Start New Video
+ ${icon('RotateCcw', 'mr-2 h-6 w-6')} Start New Video
  </button>
  </div>
  `;
@@ -1445,12 +1450,12 @@
  <div class="mb-12">
  <div class="flex items-center justify-between mb-6">
  <h2 class="text-2xl font-bold text-indigo-200 flex items-center gap-2">
- ${icon('FileText', 'text-pink-400')} Top Viral Titles
+ ${icon('FileText', 'text-pink-400 h-6 w-6')} Top Viral Titles
  </h2>
  <button onclick="handleRegenerate()" onmouseenter="playHoverSound()"
  class="cta-button bg-gray-700/50 hover:bg-gray-600/70 text-white backdrop-blur-xl shadow-inner shadow-white/5 px-4 py-2 rounded-full font-medium flex items-center text-sm"
  >
- ${icon('RotateCcw', `mr-2 h-3 w-3 ${isDarkMode ? 'text-white' : 'text-gray-700'}`)} Regenerate
+ ${icon('RotateCcw', `mr-2 h-6 w-6 ${isDarkMode ? 'text-white' : 'text-gray-700'}`)} Regenerate
  </button>
  </div>
  
@@ -1466,7 +1471,7 @@
  onmouseenter="playHoverSound()"
  class="h-8 w-8 p-0 bg-transparent hover:bg-white/10 ${isDarkMode ? 'text-indigo-300 hover:text-white' : 'text-indigo-500 hover:text-indigo-700'} shadow-none rounded-full flex items-center justify-center active:scale-95"
  >
- ${copiedIndex === index ? icon('Check', 'h-4 w-4 text-green-400') : icon('Copy', 'h-4 w-4')}
+ ${copiedIndex === index ? icon('Check', 'h-6 w-6 text-green-400') : icon('Copy', 'h-6 w-6')}
  </button>
  </div>
  <p class="text-base font-medium min-h-[60px] text-white/90">
@@ -1486,14 +1491,14 @@
  <div class="mb-12">
  <div class="flex items-center justify-between mb-6">
  <h2 class="text-2xl font-bold text-indigo-200 flex items-center gap-2">
- ${icon('FileText', 'text-pink-400')} Optimized Description
+ ${icon('FileText', 'text-pink-400 h-6 w-6')} Optimized Description
  </h2>
  <button
  onclick="copyToClipboard('${description.replace(/'/g, "\\'")}', titles.length)"
  onmouseenter="playHoverSound()"
  class="cta-button bg-gray-700/50 hover:bg-gray-600/70 text-white backdrop-blur-xl shadow-inner shadow-white/5 px-4 py-2 rounded-full font-medium flex items-center text-sm"
  >
- ${copiedIndex === titles.length ? icon('Check', 'h-4 w-4 text-green-400') : icon('Copy', 'h-4 w-4')} Copy
+ ${copiedIndex === titles.length ? icon('Check', 'h-6 w-6 text-green-400') : icon('Copy', 'h-6 w-6')} Copy
  </button>
  </div>
                         <div class="title-result-card fluid-transition p-6">
