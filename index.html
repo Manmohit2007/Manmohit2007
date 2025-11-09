@@ -287,16 +287,7 @@
  /* Brighter inner border */
         }
         
-        /* === NEW: VIRAL ICON ANIMATION & GLOW FIX === */
-        #viral-toggle-zap {
-            /* Larger size to accommodate 8px glow without clipping */
-            width: 40px;
-            height: 40px;
-            /* Move left slightly to keep icon centered with surrounding text despite larger size */
-            margin-right: -8px; 
-            margin-left: -8px;
-        }
-
+        /* === NEW: VIRAL ICON ANIMATION & GLOW === */
         @keyframes icon-pop {
             0% { transform: scale(0.8);
  opacity: 0.5; filter: drop-shadow(0 0 0 transparent); }
@@ -520,8 +511,8 @@
                     <div class="flex items-center space-x-3">
                        
  
-<svg id="viral-toggle-zap" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="transition-colors duration-300">
-<!-- Removed h-6 w-6 to allow space for the glow filter -->
+<svg id="viral-toggle-zap" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-6 w-6 transition-colors duration-300">
+<!-- Removed width="24" height="24" to prevent clipping -->
 <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
                         <span id="viral-toggle-text" class="text-lg font-bold transition-colors duration-300 text-white">
                             Viral Mode
@@ -1131,7 +1122,7 @@
             if (!file) return;
 
             // Extract a clean file name for use in titles/description
-            const videoName = file.name.replace(/\.mp4$/i, '', '').replace(/[-_]/g, ' ').trim();
+            const videoName = file.name.replace(/\.mp4$/i, '').replace(/[-_]/g, ' ').trim();
 
             // Generate titles (Influenced by Viral Mode)
             const boost = isViralBoostEnabled ? "🔥 Viral" : "📈 Quick";
