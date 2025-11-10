@@ -810,14 +810,14 @@
             
             const isComplete = progressValue >= 100;
             
-            // Dynamic color selection based on mode and status
-            const indicatorColorClass = isComplete 
-                ? (isDarkMode ? "bg-green-500 shadow-md shadow-green-500/50" : "bg-green-600 shadow-md shadow-green-400/50") 
-                : (isDarkMode ? "bg-yellow-400" : "bg-yellow-500");
+            // Force colors to green when processing (progress > 0)
+            const indicatorColorClass = isDarkMode 
+                ? "bg-green-500 shadow-md shadow-green-500/50" 
+                : "bg-green-600 shadow-md shadow-green-400/50";
                 
             const finalTextColorClass = isDarkMode 
-                ? (isComplete ? "text-green-400" : "text-yellow-300")
-                : (isComplete ? "text-green-600" : "text-yellow-600");
+                ? "text-green-400" 
+                : "text-green-600";
 
 
             if (indicator && label && statusText) {
@@ -1160,20 +1160,27 @@
                 const fileDetailColor = isDarkMode ? 'text-indigo-300' : 'text-indigo-600';
                 const fileBg = isDarkMode ? 'bg-white/10' : 'bg-gray-200/50';
                 const fileBorder = isDarkMode ? 'border-white/20' : 'border-gray-400/30';
+                
+                // --- NEW: Green colors for active processing status ---
+                const statusTextColorClass = isDarkMode ? 'text-green-400' : 'text-green-600';
+                const indicatorBarColorClass = isDarkMode 
+                    ? 'bg-green-500 shadow-md shadow-green-500/50' 
+                    : 'bg-green-600 shadow-md shadow-green-400/50';
+                // --- END NEW ---
 
 
                 const processingArea = isProcessing || isProcessed ? `
                     <div class="w-full max-w-sm mb-4">
                         <div class="flex justify-between mb-2">
-                            <span id="processing-status" class="font-medium text-yellow-300">
-                                Analyzing content and generating titles...
+                            <span id="processing-status" class="font-medium ${statusTextColorClass}">
+                                ${isProcessed ? 'Processing Complete!' : 'Analyzing content and generating titles...'}
                             </span>
-                            <span id="progress-label" class="text-yellow-300 font-bold">${progressValue}%</span>
+                            <span id="progress-label" class="${statusTextColorClass} font-bold">${progressValue}%</span>
                         </div>
                         <div class="w-full ${isDarkMode ? 'bg-white/10' : 'bg-gray-300'} rounded-full h-2.5">
                             <div
                                 id="progress-indicator"
-                                class="h-2.5 rounded-full transition-all duration-1000 bg-yellow-400"
+                                class="h-2.5 rounded-full transition-all duration-1000 ${indicatorBarColorClass}"
                                 style="width: ${progressValue}%"
                             ></div>
                         </div>
@@ -1256,6 +1263,7 @@
                     ? 'bg-gray-700/50 hover:bg-gray-600/70 text-white shadow-inner shadow-white/5' 
                     : 'bg-gray-100/70 hover:bg-gray-200/90 text-gray-700 shadow-inner shadow-black/5';
 
+                // NOTE: Removed mb-12 from this div to prevent double margin (mt-12 + mb-12) before the promo card.
                 const titlesHTML = `
                     <div class="mb-12">
                         <div class="flex justify-between items-center mb-6">
