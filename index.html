@@ -226,17 +226,28 @@
         }
         
         .viral-toggle-track.on-glow {
-            /* Reduced glow intensity for better knob contrast */
+            /* DARK MODE GLOW */
             box-shadow: 
-                0 0 15px rgba(0, 255, 0, 0.7), 
-                0 4px 10px rgba(0, 0, 0, 0.8);
+                0 0 15px rgba(0, 255, 0, 0.7), /* Green Glow */
+                0 4px 10px rgba(0, 0, 0, 0.8); /* Dark Shadow */
         }
+        
+        /* === ADDED FOR LIGHT MODE CONSISTENCY === */
+        body.light-mode .viral-toggle-track.on-glow {
+            box-shadow: 
+                0 0 15px rgba(0, 255, 0, 0.9), /* More intense Green Glow for white background */
+                0 4px 10px rgba(0, 0, 0, 0.2); /* Softer drop shadow for white background */
+        }
+        /* ======================================== */
         
         .viral-toggle-knob {
             /* Ensure the knob is highly visible */
             transition: transform 300ms cubic-bezier(0.25, 0.46, 0.45, 0.94);
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.8), /* Darker shadow */
-                        0 0 0 1px rgba(255, 255, 255, 0.4) inset; /* Brighter inner border */
+            /* --- UPDATED ---
+               Applied the light-mode outline style as the default for BOTH modes, as requested. */
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3), /* Softer shadow */
+                        0 0 0 1px rgba(0, 0, 0, 0.1) inset, /* Darker inner border */
+                        0 0 0 4px rgba(255, 255, 255, 0.1); /* Subtle outer glow for depth */
         }
         
         /* === NEW: VIRAL ICON ANIMATION & GLOW === */
@@ -276,6 +287,12 @@
             background-color: #F7F7F9; 
             background-image: radial-gradient(circle at center, #FFFFFF 0%, #E0E0E5 80%);
             color: #1F2937; 
+        }
+
+        body.light-mode .viral-toggle-knob {
+            /* --- UPDATED ---
+               Removed the redundant box-shadow, as it's now the default.
+               We can leave this empty or remove it, but for clarity, I'll leave the rule. */
         }
 
         body.light-mode .text-white {
@@ -403,7 +420,9 @@
                             </svg>
                         </div>
                         <div class="text-left">
-                            <h1 class="text-2xl font-extrabold bg-clip-text text-transparent" style="background-image: linear-gradient(to right, #ec4899, #c084fc, #6366f1)">
+                            
+
+<h1 class="text-2xl font-bold bg-clip-text text-transparent" style="background-image: linear-gradient(to right, #ec4899, #c084fc, #6366f1)">
                               FanPlusFollow
                             </h1>
                             <p class="text-indigo-300 text-sm flex items-center font-medium">
@@ -435,7 +454,6 @@
                           <div
                             id="viral-toggle-knob"
                             class="w-7 h-7 rounded-full transform transition-transform duration-300 viral-toggle-knob"
-                            style="box-shadow: 0 1px 3px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(255, 255, 255, 0.3) inset, 0 0 0 4px rgba(0, 0, 0, 0.05);"
                           />
                         </div>
                     </div>
@@ -487,9 +505,8 @@
 <div id="upload-card" class="glass-card fluid-transition p-6 rounded-[36px] mb-12 card-animation-target">
                 <div class="mb-4">
                     <h2 class="text-2xl font-bold flex items-center gap-2">
-                        
-
-<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-indigo-400"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" x2="12" y1="3" y2="15"/></svg>
+                        <!-- Header Icon size: h-8 w-8 -->
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-8 w-8 text-indigo-400"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" x2="12" y1="3" y2="15"/></svg>
                         Upload Your Video
                     </h2>
                 </div>
@@ -838,15 +855,9 @@
 
             if (toggleTrack && toggleKnob && toggleZap && toggleText) {
                 
-                // --- 1. Knob Color (Changes based on Dark/Light Mode) ---
+                // --- 1. Knob Color (Set to white in both modes as requested) ---
                 toggleKnob.classList.remove('bg-white', 'bg-gray-800');
-                if (isDarkMode) {
-                    // Dark Mode: Knob is White
-                    toggleKnob.classList.add('bg-white');
-                } else {
-                    // Light Mode: Knob is Dark Grey
-                    toggleKnob.classList.add('bg-gray-800'); 
-                }
+                toggleKnob.classList.add('bg-white');
 
                 // --- 2. Track Color/Glow (FIX: Use solid gradients for better cross-browser contrast) ---
                 toggleTrack.classList.remove(
@@ -859,6 +870,7 @@
                     if (isDarkMode) {
                         toggleTrack.classList.add('bg-gradient-to-r', 'from-green-500', 'to-lime-400', 'on-glow');
                     } else {
+                        // Light mode track gradient (slightly darker green)
                         toggleTrack.classList.add('bg-gradient-to-r', 'from-green-600', 'to-lime-500', 'on-glow');
                     }
                 } else {
@@ -1095,6 +1107,7 @@
                         onmouseenter="playHoverSound()"
                     >
                         <div id="inner-drop-div" class="w-full h-full flex flex-col items-center justify-center border-2 border-dashed rounded-[30px] transition-all duration-300 ${borderColorClass}">
+                            <!-- UPDATED ICON SIZE: h-10 w-10 -->
                             ${icon('Upload', `h-10 w-10 ${textColorClass}`)}
                             <div>
                             <p class="font-bold ${textColorClass}">Drag & drop your MP4 file here</p>
