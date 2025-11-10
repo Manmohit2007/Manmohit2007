@@ -388,6 +388,18 @@
                 padding: 1.5rem;
             }
         }
+        
+        /* --- Footer Style for Light Mode --- */
+        body.light-mode #app-footer {
+            /* Border color set to dark gray */
+            border-color: rgba(0, 0, 0, 0.2) !important; 
+        }
+        
+        /* OVERRIDE: Change footer text color to a dark bluish-purple in light mode */
+        body.light-mode .text-indigo-400\/70 {
+            color: #3730A3 !important; /* Indigo 800 - Dark bluish-purple */
+        }
+
 
     </style>
 </head>
@@ -595,7 +607,7 @@
         
         
 
-<footer class="text-center text-indigo-400/70 text-xs mt-12 py-6 border-t border-white/5">
+<footer id="app-footer" class="text-center text-indigo-400/70 text-xs mt-12 py-6 border-t border-white/5">
           <p>© 2025 FanPlusFollow AI Growth Tools. All rights reserved.</p>
         </footer>
     </div>
