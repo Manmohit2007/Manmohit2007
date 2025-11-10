@@ -144,9 +144,9 @@
         /* ENHANCED HOVER EFFECT (Lift and Shadow - for Floating Look) */
         .glass-card:hover {
             transform: translateY(-12px) scale(1.01); /* HIGHER LIFT */
+            /* UPDATED: Removed heavy drop shadow (0 40px 90px...), only keeping the subtle glow/internal light */
             box-shadow: 
-                0 40px 90px rgba(0, 0, 0, 0.99), /* Max dark shadow for deep float */
-                0 0 0 2px rgba(192, 132, 252, 0.1), /* Subtle purple edge glow */
+                0 0 0 2px rgba(192, 132, 252, 0.2), /* Subtle purple edge glow */
                 inset 0 0 50px rgba(255, 255, 255, 0.03); /* Subtle internal light */
         }
 
@@ -164,20 +164,18 @@
 
         .title-result-card:hover {
             transform: translateY(-8px) scale(1.02); /* Increased lift */
+            /* UPDATED: Removed heavy drop shadow, only keeping the subtle purple border glow */
             box-shadow:
-                0 35px 60px rgba(0, 0, 0, 0.98), 
-                0 0 0 2px rgba(192, 132, 252, 0.2), 
-                0 5px 15px rgba(0, 0, 0, 0.9); 
+                0 0 0 2px rgba(192, 132, 252, 0.3); 
         }
         
         /* === TAPPED HOVER CLASS (CRITICAL for Mobile Apple feel) === */
         .glass-card.tapped-hover,
         .title-result-card.tapped-hover {
             transform: translateY(-12px) scale(1.01) !important; /* Matches max hover lift */
+            /* UPDATED: Removed heavy drop shadow, only keeping the subtle purple border glow */
             box-shadow: 
-                0 40px 90px rgba(0, 0, 0, 0.99), 
-                0 0 0 2px rgba(192, 132, 252, 0.2), 
-                0 5px 15px rgba(0, 0, 0, 0.9) !important; 
+                0 0 0 2px rgba(192, 132, 252, 0.3) !important; 
         }
 
 
@@ -195,7 +193,7 @@
         
         .cta-button:hover {
             transform: translateY(-4px) scale(1.02);
-            /* Wider, brighter hover glow */
+            /* Wider, brighter hover glow - kept the glow/shadow here as it's a button, not a card */
             box-shadow: 
                 0 20px 40px rgba(0, 0, 0, 0.9), 
                 0 0 20px 5px rgba(192, 132, 252, 0.8), 
@@ -231,7 +229,6 @@
                 0 0 18px 2px rgba(0, 255, 0, 0.75), /* Bright, unified green glow */
                 0 4px 10px rgba(0, 0, 0, 0.2); /* Standard soft drop shadow */
         }
-        /* --- Removed the separate light-mode glow definition --- */
         
         .viral-toggle-knob {
             /* Ensure the knob is highly visible */
@@ -283,9 +280,7 @@
         }
 
         body.light-mode .viral-toggle-knob {
-            /* --- UPDATED ---
-               Removed the redundant box-shadow, as it's now the default.
-               We can leave this empty or remove it, but for clarity, I'll leave the rule. */
+            /* No change needed, inherited styles are fine for white knob */
         }
 
         body.light-mode .text-white {
@@ -323,10 +318,9 @@
         body.light-mode .glass-card:hover,
         body.light-mode .title-result-card:hover {
             transform: translateY(-8px) scale(1.005); /* Increased lift */
+            /* UPDATED: Removed drop shadow, only keeping the blue border/glow */
             box-shadow: 
-                0 25px 50px rgba(0, 0, 0, 0.25), /* Deeper shadow */
-                0 0 0 2px rgba(99, 102, 241, 0.2), 
-                0 5px 15px rgba(0, 0, 0, 0.1); 
+                0 0 0 2px rgba(99, 102, 241, 0.3); 
         }
 
         body.light-mode .cta-button {
@@ -1221,6 +1215,7 @@
                                 <p class="font-bold truncate ${textColor}">${file.name}</p>
                                 <p class="text-xs ${fileDetailColor}">
                                     ${(file.size / (1024 * 1024)).toFixed(2)} MB
+                                    
                                 </p>
                             </div>
                         </div>
