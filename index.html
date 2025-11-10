@@ -296,6 +296,19 @@
         body.light-mode .text-indigo-200 {
             color: #4F46E5 !important; 
         }
+        
+        /* --- NEW: DARKER TEXT FOR "Option 1/2/3" LABEL IN LIGHT MODE --- */
+        body.light-mode .text-pink-300 {
+            color: #C53030 !important; /* Darker Red/Pink for contrast (Red 700) */
+        }
+        /* Also update the background and border classes for the label to be lighter */
+        body.light-mode .bg-pink-700\/50 {
+            background-color: rgba(244, 114, 182, 0.2) !important; /* Pink 400 at 20% opacity */
+        }
+        body.light-mode .border-pink-500\/30 {
+            border-color: rgba(244, 114, 182, 0.5) !important; /* Pink 400 at 50% opacity */
+        }
+        /* --- END NEW STYLES --- */
 
         /* Light Mode Card Styling (More Transparent Frosted White) */
         body.light-mode .glass-card,
@@ -1219,7 +1232,6 @@
                         <div class="mb-4"><h2 class="text-2xl font-bold text-indigo-200">Viral Potential Score</h2></div>
                         <div class="p-1">
                             <div class="flex items-center justify-between mb-4">
-                                <span class="text-indigo-300 text-lg font-medium">Estimated Reach</span>
                                 <span class="text-5xl font-extrabold transition-colors duration-500 viral-score-text ${scoreColorClass}" style="${scoreGlowStyle}">
                                     ${viralScore}%
                                 </span>
