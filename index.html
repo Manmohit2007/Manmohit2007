@@ -274,9 +274,17 @@
         /* ============================================== */
         
         body.light-mode {
-            background-color: #F7F7F9; 
-            background-image: radial-gradient(circle at center, #FFFFFF 0%, #E0E0E5 80%);
-            color: #1F2937; 
+            /* Base color: Soft, cool light gray/blue to contrast the white cards */
+            background-color: #EBF1F7; 
+            /* Enhanced gradient: Soft pink/purple glow from center, fading to background base 
+               This mirrors the dark mode's two primary color glows (purple/red) */
+            background-image: 
+                radial-gradient(circle at 70% 30%, rgba(236, 72, 153, 0.1) 0%, transparent 35%), /* Soft Pink (Red/Orange counterpart) */
+                radial-gradient(circle at 30% 70%, rgba(192, 132, 252, 0.08) 0%, transparent 40%), /* Soft Purple (WAS Blue) */
+                linear-gradient(to bottom right, #f7f9fc, #e1e8f2); /* Base texture layer */
+            min-height: 100vh;
+            /* New darker, but still soft, text color for better contrast */
+            color: #374151; /* Tailwind gray-700 equivalent */
         }
 
         body.light-mode .viral-toggle-knob {
@@ -284,7 +292,7 @@
         }
 
         body.light-mode .text-white {
-            color: #1F2937 !important; 
+            color: #374151 !important; 
         }
         body.light-mode .text-indigo-300,
         body.light-mode .text-indigo-400,
@@ -308,7 +316,7 @@
         /* Light Mode Card Styling (More Transparent Frosted White) */
         body.light-mode .glass-card,
         body.light-mode .title-result-card {
-            background-color: rgba(255, 255, 255, 0.65); /* More transparent white */
+            background-color: rgba(255, 255, 255, 0.75); /* Slightly more opaque white to pop against new background */
             -webkit-backdrop-filter: blur(45px); 
             backdrop-filter: blur(45px);
             box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15), inset 0 0 0 1px rgba(0, 0, 0, 0.05); 
@@ -325,7 +333,7 @@
 
         body.light-mode .cta-button {
             background-color: rgba(255, 255, 255, 0.9); /* Near-opaque white button base */
-            color: #1F2937; 
+            color: #374151; /* Darker text */
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15), inset 0 1px 0 rgba(255, 255, 255, 0.7);
         }
         
@@ -339,7 +347,7 @@
         /* REMOVED: body.light-mode .bg-black\/40, as it is now handled dynamically in JS for the inner box border/bg */
 
         body.light-mode .text-indigo-100 {
-            color: #1F2937 !important; 
+            color: #374151 !important; /* Darker text */
         }
         
         #mode-toggle-button svg, #mute-toggle-button svg {
@@ -415,7 +423,7 @@
         /* LIGHT MODE: Transparent Light Dark */
         body.light-mode #controls-card button.cta-button {
             background-color: rgba(0, 0, 0, 0.1) !important; /* BASE: Very transparent dark/black */
-            color: #1F2937 !important; /* Ensure the button base color is dark for icon inheritance */
+            color: #374151 !important; /* Ensure the button base color is dark for icon inheritance */
         }
 
         /* Light Mode Hover */
@@ -1384,8 +1392,7 @@
                                 </button>
                             </h2>
                         </div>
-                        <!-- UPDATED LINE: Uses dynamic background and border classes -->
-                        <div class="${descriptionInnerBg} rounded-[24px] p-4 sm:p-5 min-h-[250px] max-h-96 border ${descriptionInnerBorder} overflow-auto">
+                        <!-- UPDATED LINE: Uses dynamic background and border classes --><div class="${descriptionInnerBg} rounded-[24px] p-4 sm:p-5 min-h-[250px] max-h-96 border ${descriptionInnerBorder} overflow-auto">
                             <pre class="whitespace-pre-wrap text-xs sm:text-sm font-mono ${descriptionTextColor} leading-relaxed">${description}</pre>
                         </div>
                     </div>
