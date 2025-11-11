@@ -674,6 +674,10 @@
         let viralScore = 0;
         let titles = [];
         let description = "";
+        let allTitles = []; // Will be populated with 9 titles (3 sets of 3)
+        let allDescriptions = []; // Will be populated with 3 descriptions
+        let currentTitleSetIndex = 0;
+        let currentDescriptionIndex = 0;
         let copiedIndex = null;
         let isViralBoostEnabled = true; // Default to true
         let progressValue = 0;
@@ -982,7 +986,7 @@
             playToggleSound(isViralBoostEnabled);
 
             if (isProcessed) {
-                generateViralContent();
+                generateViralContent(true); // <-- Pass true
             }
             updateUI();
         };
@@ -1009,6 +1013,8 @@
         const processFile = () => {
             isProcessing = true;
             isProcessed = false;
+            currentTitleSetIndex = 0; // Reset index on new file
+            currentDescriptionIndex = 0; // Reset index on new file
             updateUI();
             startProgressSimulation();
             
@@ -1017,7 +1023,7 @@
                 stopProgressSimulation();
                 
                 setTimeout(() => {
-                    generateViralContent();
+                    generateViralContent(true); // <-- Pass true
                     isProcessing = false;
                     isProcessed = true;
                     updateUI(); 
@@ -1025,39 +1031,87 @@
             }, 3000);
         };
 
-        const generateViralContent = () => {
+        const generateViralContent = (shouldUpdateScore = true) => { // <-- Add parameter
             if (!file) return;
             const fileName = file.name;
             const videoName = fileName.replace(/\.[^/.]+$/, "");
             
-            // Generate viral titles
-            titles = [
-              `🔥 ULTIMATE ${videoName} Guide! (FanPlusFollow Secret)`,
-              `📈 ${videoName}: Watch How We Went VIRAL in 24 Hours!`,
-              `🤯 You Won't BELIEVE This ${videoName} Trick!`,
+            // --- Populate all 9 titles (3 sets of 3) ---
+            allTitles = [
+                // Set 1
+                [
+                  `🔥 ULTIMATE ${videoName} Guide! (FanPlusFollow Secret)`,
+                  `📈 ${videoName}: Watch How We Went VIRAL in 24 Hours!`,
+                  `🤯 You Won't BELIEVE This ${videoName} Trick!`,
+                ],
+                // Set 2
+                [
+                  `🚀 ${videoName} HACK: Get More Views INSTANTLY!`,
+                  `This ONE ${videoName} Tip Changed Everything... (SHOCKING)`,
+                  `Stop Making ${videoName} Videos Until You Watch This! 🚫`,
+                ],
+                // Set 3
+                [
+                  `The ${videoName} MISTAKE Costing You Subscribers!`,
+                  `✅ ${videoName} Tutorial: From 0 to 100k Views!`,
+                  `Why Your ${videoName} Videos AREN'T Growing (FIXED!)`,
+                ]
             ];
             
-            // Generate description
-            description = `🎬 ${videoName} - Watch this incredible video to discover amazing insights!\n\n` +
-              `✨ What you'll learn:\n` +
-              `✅ Key techniques from FanPlusFollow's viral success\n` +
-              `✅ Insider tips from YouTube growth experts\n` +
-              `✅ Step-by-step instructions for success\n\n` +
-              `👍 Don't forget to LIKE, COMMENT, and SUBSCRIBE to @FanPlusFollow for more amazing content!\n` +
-              `🔔 Turn on notifications so you never miss an update!\n\n` +
-              `Check out the FanPlusFollow Channel here: ${YOUTUBE_CHANNEL_LINK}\n\n` +
-              `Follow Manmohit Singh on Instagram: ${INSTAGRAM_LINK}\n\n` +
-              `#FanPlusFollow #YouTubeGrowth #ViralVideo #ContentCreation #YouTubeTips`;
+            // --- Populate all 3 descriptions ---
+            allDescriptions = [
+                // Description 1
+                `🎬 ${videoName} - Watch this incredible video to discover amazing insights!\n\n` +
+                  `✨ What you'll learn:\n` +
+                  `✅ Key techniques from FanPlusFollow's viral success\n` +
+                  `✅ Insider tips from YouTube growth experts\n` +
+                  `✅ Step-by-step instructions for success\n\n` +
+                  `👍 Don't forget to LIKE, COMMENT, and SUBSCRIBE to @FanPlusFollow for more amazing content!\n` +
+                  `🔔 Turn on notifications so you never miss an update!\n\n` +
+                  `Check out the FanPlusFollow Channel here: ${YOUTUBE_CHANNEL_LINK}\n\n` +
+                  `Follow Manmohit Singh on Instagram: ${INSTAGRAM_LINK}\n\n` +
+                  `#FanPlusFollow #YouTubeGrowth #ViralVideo #ContentCreation #YouTubeTips`,
+                
+                // Description 2
+                `Is your ${videoName} content not performing? This video REVEALS the secret sauce.\n\n` +
+                  `In this episode, we break down:\n` +
+                  `1️⃣ The #1 ${videoName} mistake (and how to fix it)\n` +
+                  `2️⃣ FanPlusFollow's 3-step growth formula\n` +
+                  `3️⃣ How to 10x your engagement overnight!\n\n` +
+                  `Don't just make content, make content that WINS. 🏆\n\n` +
+                  `Subscribe to @FanPlusFollow for daily growth hacks!\n` +
+                  `Follow the journey on IG: ${INSTAGRAM_LINK}\n\n` +
+                  `#${videoName} #GrowthHacking #ContentStrategy #FanPlusFollow #ViralSecrets`,
+                
+                // Description 3
+                `STOP SCROLLING. ✋ If you need to master ${videoName}, this is the only video you need to watch today.\n\n` +
+                  `We're diving deep into the strategies that top creators (and @FanPlusFollow) use to dominate the algorithm.\n\n` +
+                  `--- LINKS ---\n` +
+                  `FanPlusFollow YouTube: ${YOUTUBE_CHANNEL_LINK}\n` +
+                  `Manmohit's Instagram: ${INSTAGRAM_LINK}\n\n` +
+                  `This isn't just theory—this is a practical, step-by-step guide to making your ${videoName} content go viral. Watch now and thank us later.\n\n` +
+                  `#${videoName}Guide #YouTubeAlgorithm #CreatorTips #FanPlusFollow #SubscribeNow`
+            ];
+
+            // --- Select current set based on indices ---
+            titles = allTitles[currentTitleSetIndex];
+            description = allDescriptions[currentDescriptionIndex];
             
             // Generate viral score (0-100) - Influenced by Viral Mode toggle
-            const scoreBase = isViralBoostEnabled ? 80 : 68;
-            viralScore = Math.floor(Math.random() * 18) + scoreBase; 
+            if (shouldUpdateScore) { // <-- Add condition
+                const scoreBase = isViralBoostEnabled ? 80 : 68;
+                viralScore = Math.floor(Math.random() * 18) + scoreBase; 
+            }
         };
 
         const handleRegenerate = () => {
             playClickSound(); 
             if (file) {
-                generateViralContent();
+                // --- Increment indices and loop back ---
+                currentTitleSetIndex = (currentTitleSetIndex + 1) % allTitles.length;
+                currentDescriptionIndex = (currentDescriptionIndex + 1) % allDescriptions.length;
+
+                generateViralContent(false); // <-- Pass false
                 updateUI();
                 attachStaticListeners(); 
             }
@@ -1089,6 +1143,8 @@
             titles = [];
             description = "";
             progressValue = 0;
+            currentTitleSetIndex = 0; // Reset index
+            currentDescriptionIndex = 0; // Reset index
             if (progressInterval) clearInterval(progressInterval);
 
             const fileInput = document.getElementById('file-upload-input');
