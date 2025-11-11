@@ -95,18 +95,18 @@
         /* Glassiness/Transparency increased here */
         /* ============================================== */
         .glass-card {
-            background-color: rgba(15, 15, 25, 0.3); /* INCREASED TRANSPARENCY */
+            background-color: rgba(15, 15, 25, 0.15); /* FURTHER INCREASED TRANSPARENCY */
             
             /* INCREASED BLUR for Maximum Frost Effect (Apple aesthetic) */
-            -webkit-backdrop-filter: blur(70px);
-            backdrop-filter: blur(70px); /* HIGHER BLUR */
+            -webkit-backdrop-filter: blur(80px); /* Increased blur */
+            backdrop-filter: blur(80px); /* HIGHER BLUR */
             
             border-radius: 36px;
             /* Subtler inner border and deep outer shadow */
             box-shadow: 
                 0 18px 36px rgba(0, 0, 0, 0.9), /* Deeper bottom shadow */
-                inset 0 0 0 1px rgba(255, 255, 255, 0.08); /* Inner white line */
-            border: 1px solid rgba(255, 255, 255, 0.08);
+                inset 0 0 0 1px rgba(255, 255, 255, 0.06); /* Inner white line */
+            border: 1px solid rgba(255, 255, 255, 0.06);
         }
 
         /* * --- CROSS-BROWSER FALLBACK (FIREFOX, etc.) ---
@@ -154,12 +154,12 @@
         /* SMALLER RESULT CARD STYLES (More Subtle Glass) */
         /* ============================================== */
         .title-result-card {
-            background-color: rgba(15, 15, 25, 0.4); /* Increased transparency */
-            -webkit-backdrop-filter: blur(40px); /* Increased blur */
-            backdrop-filter: blur(40px);
+            background-color: rgba(15, 15, 25, 0.2); /* FURTHER INCREASED TRANSPARENCY */
+            -webkit-backdrop-filter: blur(50px); /* Increased blur */
+            backdrop-filter: blur(50px);
             border-radius: 32px;
-            border: 1px solid rgba(255, 255, 255, 0.12); 
-            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.7), inset 0 0 0 1px rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1); 
+            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.7), inset 0 0 0 1px rgba(255, 255, 255, 0.04);
         }
 
         .title-result-card:hover {
@@ -182,7 +182,7 @@
         /* Custom Styles for CTA Buttons - Highly Tactile */
         .cta-button {
             transition: all 300ms cubic-bezier(0.25, 0.46, 0.45, 0.94);
-            background-color: rgba(20, 20, 40, 0.5); /* Slightly more transparent */
+            background-color: rgba(20, 20, 40, 0.3); /* Slightly more transparent */
             -webkit-backdrop-filter: blur(20px); 
             backdrop-filter: blur(20px);
             
@@ -209,7 +209,9 @@
         body {
             background-color: #0A0D14;
             /* Enhanced deep dark radial gradient */
-            background-image: radial-gradient(circle at center, #1b0e2d 0%, #06090f 90%);
+            background-image: radial-gradient(circle at 70% 30%, #c084fc4d 0%, transparent 35%), /* TOP: Purple (was #1b0e2d) */
+                              radial-gradient(circle at 30% 70%, #c084fc4d 0%, transparent 40%), /* BOTTOM: Purple (was #06090f) */
+                              linear-gradient(to bottom, #0A0D14, #06090f); /* Dark base gradient */
             min-height: 100vh;
         }
         
@@ -276,11 +278,11 @@
         body.light-mode {
             /* Base color: Soft, cool light gray/blue to contrast the white cards */
             background-color: #EBF1F7; 
-            /* Enhanced gradient: Soft pink/purple glow from center, fading to background base 
+            /* Enhanced gradient: Soft purple glow from center, fading to background base 
                This mirrors the dark mode's two primary color glows (purple/red) */
             background-image: 
-                radial-gradient(circle at 70% 30%, rgba(236, 72, 153, 0.1) 0%, transparent 35%), /* Soft Pink (Red/Orange counterpart) */
-                radial-gradient(circle at 30% 70%, rgba(192, 132, 252, 0.08) 0%, transparent 40%), /* Soft Purple (WAS Blue) */
+                radial-gradient(circle at 70% 30%, #c084fc4d 0%, transparent 35%), /* TOP: Purple */
+                radial-gradient(circle at 30% 70%, #c084fc4d 0%, transparent 40%), /* BOTTOM: Purple */
                 linear-gradient(to bottom right, #f7f9fc, #e1e8f2); /* Base texture layer */
             min-height: 100vh;
             /* New darker, but still soft, text color for better contrast */
@@ -314,13 +316,20 @@
         /* --- END NEW STYLES --- */
 
         /* Light Mode Card Styling (More Transparent Frosted White) */
-        body.light-mode .glass-card,
+        body.light-mode .glass-card {
+            background-color: rgba(255, 255, 255, 0.15); /* FURTHER INCREASED TRANSPARENCY - Matches dark mode opacity (was 0.75) */
+            -webkit-backdrop-filter: blur(80px); /* Matches dark mode blur */
+            backdrop-filter: blur(80px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12), inset 0 0 0 1px rgba(0, 0, 0, 0.04); 
+            border: 1px solid rgba(0, 0, 0, 0.08);
+        }
+        
         body.light-mode .title-result-card {
-            background-color: rgba(255, 255, 255, 0.75); /* Slightly more opaque white to pop against new background */
-            -webkit-backdrop-filter: blur(45px); 
-            backdrop-filter: blur(45px);
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15), inset 0 0 0 1px rgba(0, 0, 0, 0.05); 
-            border: 1px solid rgba(0, 0, 0, 0.1);
+            background-color: rgba(255, 255, 255, 0.2); /* FURTHER INCREASED TRANSPARENCY - Matches dark mode opacity (was 0.75) */
+            -webkit-backdrop-filter: blur(50px); /* Matches dark mode blur */
+            backdrop-filter: blur(50px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12), inset 0 0 0 1px rgba(0, 0, 0, 0.04); 
+            border: 1px solid rgba(0, 0, 0, 0.08);
         }
 
         body.light-mode .glass-card:hover,
