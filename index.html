@@ -336,10 +336,7 @@
             filter: brightness(1.1); /* Added slight brightness boost for visual feedback in light mode */
         }
         
-        body.light-mode .bg-black\/40 {
-            background-color: rgba(240, 240, 245, 0.9) !important; 
-            border-color: rgba(0, 0, 0, 0.1) !important;
-        }
+        /* REMOVED: body.light-mode .bg-black\/40, as it is now handled dynamically in JS for the inner box border/bg */
 
         body.light-mode .text-indigo-100 {
             color: #1F2937 !important; 
@@ -1362,6 +1359,12 @@
                 
                 // --- Description Section ---
                 const escapedDescription = description.replace(/'/g, "\\'").replace(/\n/g, '\\n');
+                
+                // NEW: Define the inner box style dynamically for the description box
+                const descriptionInnerBg = isDarkMode ? 'bg-black/40' : 'bg-gray-100/80'; 
+                const descriptionInnerBorder = isDarkMode ? 'border-white/20' : 'border-gray-400/40'; // Subtle visible gray border in light mode
+                const descriptionTextColor = isDarkMode ? 'text-indigo-100' : 'text-gray-700';
+
                 const copyAllButtonClasses = isDarkMode 
                     ? 'bg-gray-700/50 hover:bg-gray-600/70 text-white shadow-inner shadow-white/5' 
                     : 'bg-gray-100/70 hover:bg-gray-200/90 text-gray-700 shadow-inner shadow-black/5';
@@ -1381,9 +1384,9 @@
                                 </button>
                             </h2>
                         </div>
-                        <div class="${isDarkMode ? 'bg-black/40' : 'bg-gray-200/70'} rounded-[24px] p-4 sm:p-5 min-h-[250px] max-h-96 border border-white/20 overflow-auto">
-                                <pre class="whitespace-pre-wrap text-xs sm:text-sm font-mono ${isDarkMode ? 'text-indigo-100' : 'text-gray-800'} leading-relaxed">${description}</pre>
-                            </div>
+                        <!-- UPDATED LINE: Uses dynamic background and border classes -->
+                        <div class="${descriptionInnerBg} rounded-[24px] p-4 sm:p-5 min-h-[250px] max-h-96 border ${descriptionInnerBorder} overflow-auto">
+                            <pre class="whitespace-pre-wrap text-xs sm:text-sm font-mono ${descriptionTextColor} leading-relaxed">${description}</pre>
                         </div>
                     </div>
                 `;
