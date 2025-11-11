@@ -357,8 +357,7 @@
             }
         }
         
-        /*
-         * --- CRITICAL CHANGE FOR MOBILE LAYOUT ---
+        /* --- CRITICAL CHANGE FOR MOBILE LAYOUT ---
          * The default mobile layout is now flex-col (column) so the Controls 
          * heading sits above the buttons, spanning the width.
          */
@@ -391,6 +390,53 @@
         /* OVERRIDE: Change footer text color to a dark bluish-purple in light mode */
         body.light-mode .text-indigo-400\/70 {
             color: #3730A3 !important; /* Indigo 800 - Dark bluish-purple */
+        }
+        
+        /* ======================================================= */
+        /* UPDATED STYLES: Transparent Control Buttons */
+        /* ======================================================= */
+
+        /* Target the Mode and Mute toggle buttons */
+        #controls-card button.cta-button {
+            /* DARK MODE (Default): Transparent Light White */
+            background-color: rgba(255, 255, 255, 0.1) !important; /* BASE: Very transparent white */
+            box-shadow: none !important;
+            backdrop-filter: none !important; 
+            -webkit-backdrop-filter: none !important;
+            color: currentColor; /* Ensure icon color inheritance */
+        }
+
+        /* Dark Mode Hover */
+        #controls-card button.cta-button:hover {
+            background-color: rgba(255, 255, 255, 0.2) !important; /* Hover: Slightly more opaque white */
+        }
+        /* Dark Mode Active (Press) */
+        #controls-card button.cta-button:active {
+            background-color: rgba(255, 255, 255, 0.05) !important; /* Darker press effect */
+        }
+
+        /* LIGHT MODE: Transparent Light Dark */
+        body.light-mode #controls-card button.cta-button {
+            background-color: rgba(0, 0, 0, 0.1) !important; /* BASE: Very transparent dark/black */
+            color: #1F2937 !important; /* Ensure the button base color is dark for icon inheritance */
+        }
+
+        /* Light Mode Hover */
+        body.light-mode #controls-card button.cta-button:hover {
+            background-color: rgba(0, 0, 0, 0.2) !important; /* Hover: Slightly more opaque dark */
+            filter: brightness(1.0) !important; /* Prevent unwanted brightness change */
+        }
+
+        /* Light Mode Active (Press) */
+        body.light-mode #controls-card button.cta-button:active {
+            background-color: rgba(0, 0, 0, 0.05) !important; /* Lighter press effect (less visible dark) */
+        }
+        
+        /* --- MODIFIED: Make icons gray in light mode (Per User Request) --- */
+        body.light-mode #speaker-icon,
+        body.light-mode #power-icon {
+            /* Set to a subtle gray color for light mode icons: Tailwind gray-500 */
+            color: #6B7280; 
         }
 
 
@@ -488,7 +534,7 @@
                     
 
 <button id="mode-toggle-button" onclick="toggleDarkMode()" onmouseenter="playHoverSound()"
-                        class="h-12 w-12 flex items-center justify-center rounded-full text-white transition-colors duration-300 hover:bg-white/10 flex-shrink-0 active:scale-95 cta-button"
+                        class="h-12 w-12 flex items-center justify-center rounded-full text-white transition-colors duration-300 flex-shrink-0 active:scale-95 cta-button"
                         style="box-shadow: none !important;"
                     >
                         <svg id="power-icon" xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-6 w-6 text-white/50 transition-colors duration-300">
@@ -499,7 +545,7 @@
                     
 
 <button id="mute-toggle-button" onclick="toggleMute()" 
-                        class="h-12 w-12 flex items-center justify-center rounded-full text-white transition-colors duration-300 hover:bg-white/10 flex-shrink-0 active:scale-95 cta-button"
+                        class="h-12 w-12 flex items-center justify-center rounded-full text-white transition-colors duration-300 flex-shrink-0 active:scale-95 cta-button"
                         style="box-shadow: none !important;"
                     >
                         <svg id="speaker-icon" xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-6 w-6 text-white/50 transition-colors duration-300">
@@ -771,12 +817,13 @@
             
             // 2. Reset classes and styles for state transition
             speakerIcon.classList.remove('text-indigo-400', 'text-white/30', 'text-white/50'); 
-            speakerIcon.style.color = ''; 
+            // Note: We leave speakerIcon.style.color reset to let the CSS rule take effect
             speakerIcon.style.filter = 'none'; 
 
             if (isMuted) {
                 // Muted state: Subtle grey/white
                 speakerIcon.classList.add('text-white/50'); 
+                speakerIcon.style.color = ''; // reset inline color
             } else {
                 // Sound On state: Vibrant purple glow
                 speakerIcon.classList.add('text-indigo-400'); 
@@ -1265,6 +1312,15 @@
                     ? 'bg-gray-700/50 hover:bg-gray-600/70 text-white shadow-inner shadow-white/5' 
                     : 'bg-gray-100/70 hover:bg-gray-200/90 text-gray-700 shadow-inner shadow-black/5';
 
+                // --- UPDATED: Copy Button Dynamic Classes for Light Mode Contrast ---
+                const copyButtonBaseClasses = "h-8 w-8 p-0 shadow-none rounded-full flex items-center justify-center active:scale-95 transition-all duration-300 ease-in-out";
+
+                const copyButtonDynamicClasses = isDarkMode 
+                    ? "bg-transparent hover:bg-white/10 text-indigo-300 hover:text-white" 
+                    : "bg-transparent hover:bg-gray-300/50 text-indigo-500 hover:text-indigo-700"; 
+                // Changed hover:bg-white/10 to hover:bg-gray-300/50 for a dark pop in light mode.
+
+
                 // NOTE: Removed mb-12 from this div to prevent double margin (mt-12 + mb-12) before the promo card.
                 const titlesHTML = `
                     <div class="mb-12">
@@ -1291,7 +1347,7 @@
                                             <button
                                                 onclick="copyToClipboard('${title.replace(/'/g, "\\'")}', ${index})"
                                                 onmouseenter="playHoverSound()"
-                                                class="h-8 w-8 p-0 bg-transparent hover:bg-white/10 ${isDarkMode ? 'text-indigo-300 hover:text-white' : 'text-indigo-500 hover:text-indigo-700'} shadow-none rounded-full flex items-center justify-center active:scale-95"
+                                                class="${copyButtonBaseClasses} ${copyButtonDynamicClasses}"
                                             >
                                                 ${copiedIndex === index ? icon('Check', 'h-4 w-4 text-green-400') : icon('Copy', 'h-4 w-4')}
                                             </button>
