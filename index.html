@@ -266,6 +266,11 @@
             background-attachment: fixed;
             /* Add transition for smooth dark/light mode switch */
             transition: background-image 500ms ease-in-out;
+            
+            /* NEW: Force hardware acceleration to prevent repaint lag on iOS */
+            -webkit-transform: translateZ(0);
+            transform: translateZ(0);
+            will-change: transform;
         }
         
         /* Viral Toggle Styles (High-Fidelity Switch) */
