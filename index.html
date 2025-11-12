@@ -33,6 +33,12 @@
             box-sizing: border-box;
         }
 
+        /* NEW: Set base color on HTML to prevent white flicker */
+        html {
+            background-color: #0A0D14; /* Dark mode base */
+            transition: background-color 300ms ease-in-out;
+        }
+
         *, *::before, *::after {
             box-sizing: inherit;
         }
@@ -831,12 +837,14 @@
         const updateModeUI = () => {
             const body = document.body;
             const powerIcon = document.getElementById('power-icon');
+            const htmlElement = document.documentElement; // <-- ADD THIS
 
             if (!powerIcon) return;
 
             if (isDarkMode) {
                 // DARK MODE: Default subtle grey/white
                 body.classList.remove('light-mode');
+                htmlElement.style.backgroundColor = '#0A0D14'; // <-- ADD THIS
                 powerIcon.classList.remove('text-red-500');
                 powerIcon.classList.add('text-white/50');
                 powerIcon.style.color = ''; 
@@ -844,6 +852,7 @@
             } else {
                 // LIGHT MODE: Vibrant "ON" state color
                 body.classList.add('light-mode');
+                htmlElement.style.backgroundColor = '#EBF1F7'; // <-- ADD THIS
                 powerIcon.classList.remove('text-white/50');
                 powerIcon.classList.add('text-red-500'); 
                 // Subtle orange glow for power button
