@@ -447,46 +447,10 @@
             color: #3730A3 !important; /* Indigo 800 - Dark bluish-purple */
         }
         
-        /* ======================================================= */
-        /* UPDATED STYLES: Transparent Control Buttons */
-        /* ======================================================= */
-
-        /* Target the Mode and Mute toggle buttons */
-        #controls-card button.cta-button {
-            /* DARK MODE (Default): Transparent Light White */
-            background-color: rgba(255, 255, 255, 0.1) !important; /* BASE: Very transparent white */
-            box-shadow: none !important;
-            backdrop-filter: none !important; 
-            -webkit-backdrop-filter: none !important;
-            color: currentColor; /* Ensure icon color inheritance */
-        }
-
-        /* Dark Mode Hover */
-        #controls-card button.cta-button:hover {
-            background-color: rgba(255, 255, 255, 0.2) !important; /* Hover: Slightly more opaque white */
-        }
-        /* Dark Mode Active (Press) */
-        #controls-card button.cta-button:active {
-            background-color: rgba(255, 255, 255, 0.05) !important; /* Darker press effect */
-        }
-
-        /* LIGHT MODE: Transparent Light Dark */
-        body.light-mode #controls-card button.cta-button {
-            background-color: rgba(0, 0, 0, 0.1) !important; /* BASE: Very transparent dark/black */
-            color: #374151 !important; /* Ensure the button base color is dark for icon inheritance */
-            border: 1px solid rgba(0, 0, 0, 0.1) !important; /* UPDATED: Light grey outline for light mode */
-        }
-
-        /* Light Mode Hover */
-        body.light-mode #controls-card button.cta-button:hover {
-            background-color: rgba(0, 0, 0, 0.2) !important; /* Hover: Slightly more opaque dark */
-            filter: brightness(1.0) !important; /* Prevent unwanted brightness change */
-        }
-
-        /* Light Mode Active (Press) */
-        body.light-mode #controls-card button.cta-button:active {
-            background-color: rgba(0, 0, 0, 0.05) !important; /* Lighter press effect (less visible dark) */
-        }
+        /* * REMOVED CSS block for 'Transparent Control Buttons'.
+         * The control buttons will now default to the main .cta-button
+         * 'Liquid Glass' style as requested.
+         */
         
         /* --- MODIFIED: Make icons gray in light mode (Per User Request) --- */
         body.light-mode #speaker-icon,
@@ -591,7 +555,6 @@
 
 <button id="mode-toggle-button" onclick="toggleDarkMode()" onmouseenter="playHoverSound()"
                         class="h-12 w-12 flex items-center justify-center rounded-full text-white transition-colors duration-300 flex-shrink-0 active:scale-95 cta-button"
-                        style="box-shadow: none !important;"
                     >
                         <svg id="power-icon" xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-6 w-6 text-white/50 transition-colors duration-300">
                             <path d="M18.36 6.64a9 9 0 1 1-12.73 0"/><line x1="12" x2="12" y1="2" y2="12"/>
@@ -602,7 +565,6 @@
 
 <button id="mute-toggle-button" onclick="toggleMute()" 
                         class="h-12 w-12 flex items-center justify-center rounded-full text-white transition-colors duration-300 flex-shrink-0 active:scale-95 cta-button"
-                        style="box-shadow: none !important;"
                     >
                         <svg id="speaker-icon" xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-6 w-6 text-white/50 transition-colors duration-300">
                         </svg>
