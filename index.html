@@ -95,7 +95,7 @@
         /* Glassiness/Transparency increased here */
         /* ============================================== */
         .glass-card {
-            background-color: rgba(15, 15, 25, 0.1); /* LIQUID GLASS: Increased Transparency */
+            background-color: rgba(15, 15, 25, 0.2); /* LIQUID GLASS: Slightly more opaque */
             
             /* INCREASED BLUR for Maximum Frost Effect (Apple aesthetic) */
             -webkit-backdrop-filter: blur(100px); /* LIQUID GLASS: Increased Blur */
@@ -104,10 +104,10 @@
             border-radius: 36px;
             /* LIQUID GLASS: Replaced hard shadow with softer, "wetter" shadows */
             box-shadow: 
-                inset 0 2px 8px rgba(0, 0, 0, 0.4), /* Soft inner top shadow */
-                inset 0 0 0 1.5px rgba(255, 255, 255, 0.08), /* "Wet" edge highlight */
+                inset 0 4px 12px rgba(0, 0, 0, 0.6), /* LIQUID GLASS: Deeper inner shadow */
+                inset 0 0 0 1.5px rgba(255, 255, 255, 0.15), /* LIQUID GLASS: Brighter "Wet" edge */
                 0 25px 50px rgba(0, 0, 0, 0.7); /* Softer, deeper drop shadow */
-            border: 1.5px solid rgba(255, 255, 255, 0.08); /* LIQUID GLASS: Stronger border */
+            border: 1.5px solid rgba(255, 255, 255, 0.15); /* LIQUID GLASS: Stronger border */
         }
 
         /* * --- CROSS-BROWSER FALLBACK (FIREFOX, etc.) ---
@@ -155,7 +155,7 @@
         /* SMALLER RESULT CARD STYLES (More Subtle Glass) */
         /* ============================================== */
         .title-result-card {
-            background-color: rgba(15, 15, 25, 0.1); /* LIQUID GLASS: Increased Transparency */
+            background-color: rgba(15, 15, 25, 0.2); /* LIQUID GLASS: Slightly more opaque */
             /* INCREASED BLUR for Maximum Frost Effect (Apple aesthetic) */
             -webkit-backdrop-filter: blur(100px); /* LIQUID GLASS: Increased Blur */
             backdrop-filter: blur(100px); /* LIQUID GLASS: Increased Blur */
@@ -163,10 +163,10 @@
             border-radius: 36px; /* LIQUID GLASS: Matched parent card */
             /* LIQUID GLASS: Replaced hard shadow with softer, "wetter" shadows */
             box-shadow: 
-                inset 0 2px 8px rgba(0, 0, 0, 0.4), /* Soft inner top shadow */
-                inset 0 0 0 1.5px rgba(255, 255, 255, 0.08), /* "Wet" edge highlight */
+                inset 0 4px 12px rgba(0, 0, 0, 0.6), /* LIQUID GLASS: Deeper inner shadow */
+                inset 0 0 0 1.5px rgba(255, 255, 255, 0.15), /* LIQUID GLASS: Brighter "Wet" edge */
                 0 25px 50px rgba(0, 0, 0, 0.7); /* Softer, deeper drop shadow */
-            border: 1.5px solid rgba(255, 255, 255, 0.08); /* LIQUID GLASS: Stronger border */
+            border: 1.5px solid rgba(255, 255, 255, 0.15); /* LIQUID GLASS: Stronger border */
         }
 
         .title-result-card:hover {
@@ -233,6 +233,7 @@
                               radial-gradient(circle at 30% 70%, #c084fc4d 0%, transparent 40%), /* BOTTOM: Purple (was #06090f) */
                               linear-gradient(to bottom, #0A0D14, #06090f); /* Dark base gradient */
             min-height: 100vh;
+            background-attachment: fixed; /* <-- ADDED THIS LINE */
         }
         
         /* Viral Toggle Styles (High-Fidelity Switch) */
@@ -340,27 +341,27 @@
 
         /* Light Mode Card Styling (More Transparent Frosted White) */
         body.light-mode .glass-card {
-            background-color: rgba(255, 255, 255, 0.1); /* LIQUID GLASS: Increased Transparency */
+            background-color: rgba(255, 255, 255, 0.25); /* LIQUID GLASS: Slightly more opaque */
             -webkit-backdrop-filter: blur(100px); /* LIQUID GLASS: Increased Blur */
             backdrop-filter: blur(100px); /* LIQUID GLASS: Increased Blur */
             /* LIQUID GLASS: Replaced flat shadow with "wetter" light-mode shadows */
             box-shadow: 
-                inset 0 2px 8px rgba(0, 0, 0, 0.05), /* Soft inner top shadow */
-                inset 0 0 0 1.5px rgba(255, 255, 255, 0.6), /* "Wet" edge highlight */
+                inset 0 3px 10px rgba(0, 0, 0, 0.1), /* LIQUID GLASS: Deeper inner shadow */
+                inset 0 0 0 2px rgba(255, 255, 255, 0.75), /* LIQUID GLASS: Brighter "Wet" edge */
                 0 25px 50px rgba(0, 0, 0, 0.15); /* Softer, deeper drop shadow */
-            border: 1.5px solid rgba(255, 255, 255, 0.6); /* LIQUID GLASS: Stronger border */
+            border: 2px solid rgba(255, 255, 255, 0.75); /* LIQUID GLASS: Stronger border */
         }
         
         body.light-mode .title-result-card {
-            background-color: rgba(255, 255, 255, 0.1); /* LIQUID GLASS: Increased Transparency */
+            background-color: rgba(255, 255, 255, 0.25); /* LIQUID GLASS: Slightly more opaque */
             -webkit-backdrop-filter: blur(100px); /* LIQUID GLASS: Increased Blur */
             backdrop-filter: blur(100px); /* LIQUID GLASS: Increased Blur */
             /* LIQUID GLASS: Replaced flat shadow with "wetter" light-mode shadows */
             box-shadow: 
-                inset 0 2px 8px rgba(0, 0, 0, 0.05), /* Soft inner top shadow */
-                inset 0 0 0 1.5px rgba(255, 255, 255, 0.6), /* "Wet" edge highlight */
+                inset 0 3px 10px rgba(0, 0, 0, 0.1), /* LIQUID GLASS: Deeper inner shadow */
+                inset 0 0 0 2px rgba(255, 255, 255, 0.75), /* LIQUID GLASS: Brighter "Wet" edge */
                 0 25px 50px rgba(0, 0, 0, 0.15); /* Softer, deeper drop shadow */
-            border: 1.5px solid rgba(255, 255, 255, 0.6); /* LIQUID GLASS: Stronger border */
+            border: 2px solid rgba(255, 255, 255, 0.75); /* LIQUID GLASS: Stronger border */
         }
 
         body.light-mode .glass-card:hover,
