@@ -506,6 +506,21 @@
             color: #6B7280; 
         }
 
+        /* NEW: Drag-over active state for drop area (MATCHES HOVER) */
+        .drag-over-active {
+            /* Dark Mode Hover Style */
+            border-color: rgba(167, 139, 250, 0.7) !important; /* from hover:border-indigo-400/70 */
+            box-shadow: 0 10px 15px -3px rgba(49, 46, 129, 0.5), 0 4px 6px -4px rgba(49, 46, 129, 0.5) !important; /* from hover:shadow-lg hover:shadow-indigo-900/50 */
+            /* Removed transform: scale(1.02) */
+            /* Removed border-style: solid */
+        }
+        
+        body.light-mode .drag-over-active {
+            /* Light Mode Hover Style */
+            border-color: #6366f1 !important; /* from hover:border-indigo-500 */
+            box-shadow: 0 4px 6px -1px rgba(199, 210, 254, 0.5), 0 2px 4px -2px rgba(199, 210, 254, 0.5) !important; /* from hover:shadow-md hover:shadow-indigo-200/50 */
+        }
+
 
     </style>
 </head>
@@ -1308,8 +1323,39 @@
                 `;
                 
                 const dropArea = document.getElementById('file-drop-area');
-                if (dropArea) {
-                    dropArea.addEventListener('drop', handleDrop);
+                
+                // NEW: Get the inner div
+                const innerDropDiv = document.getElementById('inner-drop-div');
+                let dragCounter = 0; // NEW: Counter for nested element events
+
+                if (dropArea && innerDropDiv) { // NEW: Modified check
+                    
+                    // NEW: Add drag-over styling listeners
+                    dropArea.addEventListener('dragenter', (e) => {
+                        e.preventDefault();
+                        dragCounter++;
+                        innerDropDiv.classList.add('drag-over-active');
+                    });
+                    
+                    dropArea.addEventListener('dragover', (e) => {
+                        e.preventDefault(); // Necessary to allow drop
+                    });
+                    
+                    dropArea.addEventListener('dragleave', (e) => {
+                        e.preventDefault();
+                        dragCounter--;
+                        if (dragCounter === 0) {
+                            innerDropDiv.classList.remove('drag-over-active');
+                        }
+                    });
+                    
+                    // Modified drop handler
+                    dropArea.addEventListener('drop', (e) => {
+                        e.preventDefault(); 
+                        dragCounter = 0;
+                        innerDropDiv.classList.remove('drag-over-active');
+                        handleDrop(e); // Call the existing handler
+                    });
                     
                     const selectFileBtn = document.getElementById('select-file-btn');
                     const fileInput = document.getElementById('file-upload-input');
