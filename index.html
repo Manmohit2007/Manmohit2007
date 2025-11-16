@@ -197,14 +197,16 @@
         .cta-button {
             transition: all 300ms cubic-bezier(0.25, 0.46, 0.45, 0.94);
             /* LIQUID DROP: Updated background and border */
-            background-color: rgba(255, 255, 255, 0.1); 
+            background-color: rgba(255, 255, 255, 0.1); /* Reset to 0.1 */
             -webkit-backdrop-filter: blur(20px); 
             backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            /* REMOVED BORDER: This was causing the leak */
+            /* border: 1px solid rgba(255, 255, 255, 0.08); */
             
             /* LIQUID DROP: New shadow stack for 3D drop effect */
             box-shadow: 
-                inset 0 1.5px 3px rgba(255, 255, 255, 0.3), /* Top highlight */
+                inset 0 0 0 1px rgba(255, 255, 255, 0.1), /* NEW: This shadow replaces the border */
+                inset 0 1.5px 3px rgba(255, 255, 255, 0.2), /* Top highlight */
                 inset 0 -1.5px 3px rgba(0, 0, 0, 0.4), /* Bottom shadow (volume) */
                 0 8px 16px rgba(0, 0, 0, 0.6); /* Diffused drop shadow */
             will-change: transform, box-shadow, filter; /* Added filter */
@@ -214,6 +216,7 @@
             /* LIQUID DROP: Enhanced "lift" and "shimmer" */
             transform: translateY(-6px) scale(1.03);
             box-shadow: 
+                inset 0 0 0 1px rgba(255, 255, 255, 0.2), /* NEW: Brighter border shadow on hover */
                 inset 0 2px 4px rgba(255, 255, 255, 0.5), /* Brighter highlight */
                 inset 0 -2px 4px rgba(0, 0, 0, 0.3), /* Same bottom shadow */
                 0 12px 24px rgba(0, 0, 0, 0.7); /* Bigger drop shadow */
@@ -527,8 +530,7 @@
 </head>
 <body class="text-white p-4 md:p-8" onload="initApp()">
     
-    <!-- NEW: Added dedicated background div -->
-    <div id="fixed-background"></div>
+    <!-- NEW: Added dedicated background div --><div id="fixed-background"></div>
     
     <div class="max-w-4xl mx-auto">
         
@@ -537,7 +539,6 @@
 <div class="flex flex-col md:flex-row gap-12 mb-12">
             
             
-
 <header 
                 id="app-header" 
                 class="glass-card fluid-transition p-6 flex flex-col md:flex-row items-center justify-between flex-1 card-animation-target md:order-first"
@@ -547,20 +548,8 @@
                         
 
 <div class="w-16 h-16">
-                            <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
-                              <defs>
-                                <linearGradient id="logoGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                                  <stop offset="0%" style="stop-color:#f97316; stop-opacity:1" />
-                                  <stop offset="40%" style="stop-color:#ef4444; stop-opacity:1" />
-                                  <stop offset="70%" style="stop-color:#c084fc; stop-opacity:1" />
-                                  <stop offset="100%" style="stop-color:#818cf8; stop-opacity:1" />
-                                </linearGradient>
-                              </defs>
-                              <circle cx="32" cy="32" r="31" fill="url(#logoGradient)" fill-opacity="0.9" stroke="#ffffff" stroke-opacity="0.4" stroke-width="1" />
-                              <path d="M20 23 L35 32 L20 41 Z" fill="#ffffff" />
-                              <rect x="40" y="27" width="4" height="10" fill="#ffffff" rx="1" />
-                              <rect x="37" y="30" width="10" height="4" fill="#ffffff" rx="1" />
-                            </svg>
+                            
+                            <img src="https://manmohit2007.github.io/Manmohit2007/preview.png" alt="FanPlusFollow Logo" class="w-full h-full object-contain">
                         </div>
                         <div class="text-left">
                             
@@ -604,39 +593,6 @@
             </header>
             
             
-
-<div 
-                id="controls-card" 
-                class="glass-card fluid-transition card-animation-target flex-shrink-0 md:order-last"
-            >
-                
-
-<h3 class="text-xs font-bold uppercase tracking-widest text-indigo-300/50 mb-4 text-center">
-                    Controls
-                </h3>
-                
-
-<div class="flex flex-row md:flex-col gap-4 flex-shrink-0"> 
-                    
-
-<button id="mode-toggle-button" onclick="toggleDarkMode()" onmouseenter="playHoverSound()"
-                        class="h-12 w-12 flex items-center justify-center rounded-full text-white transition-colors duration-300 flex-shrink-0 active:scale-95 cta-button"
-                    >
-                        <svg id="power-icon" xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-6 w-6 text-white/50 transition-colors duration-300">
-                            <path d="M18.36 6.64a9 9 0 1 1-12.73 0"/><line x1="12" x2="12" y1="2" y2="12"/>
-                        </svg>
-                    </button>
-
-                    
-
-<button id="mute-toggle-button" onclick="toggleMute()" 
-                        class="h-12 w-12 flex items-center justify-center rounded-full text-white transition-colors duration-300 flex-shrink-0 active:scale-95 cta-button"
-                    >
-                        <svg id="speaker-icon" xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-6 w-6 text-white/50 transition-colors duration-300">
-                        </svg>
-                    </button>
-                </div>
-            </div>
         </div>
         
 
@@ -673,18 +629,7 @@
                         
 
 <div class="w-16 h-16 mb-2 sm:mb-4">
-                            <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
-                              <defs><linearGradient id="logoGradient2" x1="0%" y1="0%" x2="100%" y2="100%">
-                                  <stop offset="0%" style="stop-color:#f97316; stop-opacity:1" />
-                                  <stop offset="40%" style="stop-color:#ef4444; stop-opacity:1" />
-                                  <stop offset="70%" style="stop-color:#c084fc; stop-opacity:1" />
-                                  <stop offset="100%" style="stop-color:#818cf8; stop-opacity:1" />
-                                </linearGradient></defs>
-                              <circle cx="32" cy="32" r="31" fill="url(#logoGradient2)" fill-opacity="0.9" stroke="#ffffff" stroke-opacity="0.4" stroke-width="1" />
-                              <path d="M20 23 L35 32 L20 41 Z" fill="#ffffff" />
-                              <rect x="40" y="27" width="4" height="10" fill="#ffffff" rx="1" />
-                              <rect x="37" y="30" width="10" height="4" fill="#ffffff" rx="1" />
-                            </svg>
+                            <img src="https://manmohit2007.github.io/Manmohit2007/preview.png" alt="FanPlusFollow Logo" class="w-full h-full object-contain">
                         </div>
                         <h3 class="text-xl sm:text-2xl font-bold bg-clip-text text-transparent text-center" style="background-image: linear-gradient(to right, #ec4899, #c084fc)">
                           Boost Your Reach With FanPlusFollow
@@ -753,7 +698,7 @@
         let progressValue = 0;
         let progressInterval = null;
         let isDarkMode = true; // Default to dark mode
-        let isMuted = true; // DEFAULT: Start muted
+        let isMuted = false; // DEFAULT: Sound on
         
         // --- TONE.JS AUDIO SETUP ---
         let audioContextStarted = false;
@@ -774,7 +719,7 @@
             
             // 1. Initialize main toggle synth (for toggleViralBoost) - Clean Sine
             synth = new Tone.PolySynth(Tone.Synth, {
-                volume: -12, 
+                volume: 2, // <-- Increased from -2
                 oscillator: { type: 'sine' }, 
                 envelope: {
                     attack: 0.01,
@@ -786,7 +731,7 @@
 
             // 2. Initialize soft hover/click synth - Subtle Triangle
             hoverSynth = new Tone.Synth({
-                volume: -18, 
+                volume: -4, // <-- Increased from -8
                 oscillator: { type: 'triangle' }, 
                 envelope: {
                     attack: 0.001,
@@ -799,21 +744,28 @@
             isToneInitialized = true;
         };
 
-        const startAudioIfUnmuted = () => {
+        const startAudioIfUnmuted = async () => {
             if (!isMuted && !audioContextStarted) {
-                Tone.start().then(() => {
+                try {
+                    // 1. Start the audio context first (this must be awaited)
+                    await Tone.start();
+                    
+                    // 2. Initialize synths AFTER the context is confirmed running
+                    initToneJs(); 
+                    
                     audioContextStarted = true;
-                    console.log("AudioContext started.");
-                }).catch(e => {
+                    console.log("AudioContext started and synths initialized.");
+                } catch (e) {
                     console.error("Failed to start Tone.js AudioContext:", e);
-                });
+                }
             }
         }
 
         // --- AUDIO FUNCTIONS ---
 
-        const playToggleSound = (isOn) => {
-            initToneJs(); 
+        const playToggleSound = async (isOn) => {
+            await startAudioIfUnmuted(); // Start context on first user gesture
+            // initToneJs(); // <-- REMOVED
             if (!audioContextStarted || !synth || isMuted) return; 
             
             if (isOn) {
@@ -823,8 +775,9 @@
             }
         };
 
-        const playHoverSound = () => {
-            initToneJs(); 
+        const playHoverSound = async () => {
+            await startAudioIfUnmuted(); // Start context on first user gesture
+            // initToneJs(); // <-- REMOVED
             if (!audioContextStarted || !hoverSynth || isMuted) return; 
             
             const now = Date.now();
@@ -836,8 +789,9 @@
             hoverSynth.triggerAttackRelease("C4", "32n");
         };
         
-        const playClickSound = () => {
-            initToneJs(); 
+        const playClickSound = async () => {
+            await startAudioIfUnmuted(); // Start context on first user gesture
+            // initToneJs(); // <-- REMOVED
             if (!audioContextStarted || !hoverSynth || isMuted) return; 
             
             hoverSynth.triggerAttackRelease("D4", "32n");
@@ -845,90 +799,22 @@
 
         // --- DARK/LIGHT MODE LOGIC ---
 
-        const toggleDarkMode = () => {
-            isDarkMode = !isDarkMode;
-            playClickSound(); 
-            updateModeUI();
-            
-            // CRITICAL: Call updateUI to refresh the Viral Toggle knob color
-            // which depends on the new isDarkMode state.
-            updateUI(); 
-        };
-
         const updateModeUI = () => {
             const body = document.body;
-            const powerIcon = document.getElementById('power-icon');
-            const htmlElement = document.documentElement; // <-- ADD THIS
-
-            if (!powerIcon) return;
+            const htmlElement = document.documentElement; 
 
             if (isDarkMode) {
-                // DARK MODE: Default subtle grey/white
+                // DARK MODE
                 body.classList.remove('light-mode');
-                htmlElement.style.backgroundColor = '#0A0D14'; // <-- ADD THIS
-                powerIcon.classList.remove('text-red-500');
-                powerIcon.classList.add('text-white/50');
-                powerIcon.style.color = ''; 
-                powerIcon.style.filter = 'none';
+                htmlElement.style.backgroundColor = '#0A0D14'; 
             } else {
-                // LIGHT MODE: Vibrant "ON" state color
+                // LIGHT MODE
                 body.classList.add('light-mode');
-                htmlElement.style.backgroundColor = '#EBF1F7'; // <-- ADD THIS
-                powerIcon.classList.remove('text-white/50');
-                powerIcon.classList.add('text-red-500'); 
-                // Subtle orange glow for power button
-                powerIcon.style.color = '#F97316'; 
-                powerIcon.style.filter = 'drop-shadow(0 0 4px rgba(249, 115, 22, 0.9))'; 
+                htmlElement.style.backgroundColor = '#EBF1F7'; 
             }
         };
 
         // --- MUTE TOGGLE LOGIC ---
-
-        // Speaker with curved waves (Volume 2) - Used for both on and off states now
-        const VOLUME_ICON_PATH = `<polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/>`;
-
-        const toggleMute = () => {
-            isMuted = !isMuted;
-            
-            if (!isMuted) {
-                startAudioIfUnmuted();
-            }
-            
-            playClickSound(); 
-            updateMuteUI();
-        };
-
-        const updateMuteUI = () => {
-            const speakerIcon = document.getElementById('speaker-icon');
-            
-            if (!speakerIcon) return;
-
-            // 1. Always inject the same icon path for consistent shape
-            speakerIcon.innerHTML = VOLUME_ICON_PATH; 
-            
-            // 2. Reset classes and styles for state transition
-            speakerIcon.classList.remove('text-indigo-400', 'text-white/30', 'text-white/50'); 
-            // Note: We leave speakerIcon.style.color reset to let the CSS rule take effect
-            speakerIcon.style.filter = 'none'; 
-
-            if (isMuted) {
-                // Muted state: Subtle grey/white
-                speakerIcon.classList.add('text-white/50'); 
-                speakerIcon.style.color = ''; // reset inline color
-            } else {
-                // Sound On state: Vibrant purple glow
-                speakerIcon.classList.add('text-indigo-400'); 
-                speakerIcon.style.color = '#C084FC'; 
-                speakerIcon.style.filter = 'drop-shadow(0 0 4px rgba(192, 132, 252, 0.8))';
-            }
-            
-            // Re-attach hover listener if it was lost (safe guard)
-            const muteBtn = document.getElementById('mute-toggle-button');
-            if (muteBtn && !muteBtn.classList.contains('has-hover-listener')) {
-                 muteBtn.addEventListener('mouseenter', playHoverSound);
-                 muteBtn.classList.add('has-hover-listener');
-            }
-        };
 
         // --- ICON HELPER ---
         const icon = (name, classes) => {
@@ -1426,8 +1312,7 @@
 
                 uploadContainer.innerHTML = `
                     <div class="flex flex-col items-center">
-                        <!-- UPDATED: Replaced dynamic bg/border with 'glass-card' for Liquid Glass theme -->
-                        <div class="glass-card fluid-transition flex items-center gap-3 mb-4 p-4 w-full max-w-sm">
+                        <!-- UPDATED: Replaced dynamic bg/border with 'glass-card' for Liquid Glass theme --><div class="glass-card fluid-transition flex items-center gap-3 mb-4 p-4 w-full max-w-sm">
                             ${icon('Play', `h-8 w-8 ${fileIconColor} flex-shrink-0`)}
                             <div class="text-left overflow-hidden">
                                 <p class="font-bold truncate ${textColor}">${file.name}</p>
@@ -1584,7 +1469,6 @@
 
         const updateUI = () => {
             updateModeUI(); 
-            updateMuteUI(); 
             updateToggleUI(); // <-- This refreshes the knob color based on the new isDarkMode state
             renderUploadSection();
             if(file && (isProcessing || isProcessed)) {
@@ -1594,10 +1478,22 @@
         };
 
         const initApp = () => {
-            initToneJs();
+            // initToneJs(); // <-- REMOVED
             startLaunchAnimation(); 
+            
+            // --- NEW: System Theme Matching ---
+            const prefersDarkScheme = window.matchMedia('(prefers-color-scheme: dark)');
+            isDarkMode = prefersDarkScheme.matches; // Set initial state based on system
+            
+            // Add listener for real-time changes
+            prefersDarkScheme.addEventListener('change', (e) => {
+                isDarkMode = e.matches;
+                updateUI(); // Update all components when the system theme changes
+            });
+            // --- END NEW ---
+            
             updateModeUI();
-            updateMuteUI(); 
+            // startAudioIfUnmuted(); // <-- REMOVED: Must be triggered by user gesture
 
             const resultsContainer = document.getElementById('results-section');
             if (resultsContainer) {
