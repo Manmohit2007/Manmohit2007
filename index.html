@@ -1259,6 +1259,14 @@
                     ? 'bg-green-500 shadow-md shadow-green-500/50' 
                     : 'bg-green-600 shadow-md shadow-green-400/50';
                 // --- END NEW ---
+                
+                // --- NEW: Dynamic classes for Start New Video button ---
+                const startNewButtonClasses = isDarkMode 
+                    ? 'bg-gray-700/50 hover:bg-gray-600/70 text-white shadow-inner shadow-white/5' 
+                    : 'bg-gray-100/70 hover:bg-gray-200/90 text-gray-700 shadow-inner shadow-black/5 shadow-lg shadow-gray-300/50';
+                
+                const startNewIconColor = isDarkMode ? 'text-white' : 'text-gray-700';
+                // --- END NEW ---
 
 
                 const processingArea = isProcessing || isProcessed ? `
@@ -1284,9 +1292,9 @@
 <button 
                                 onclick="resetApp()"
                                 onmouseenter="playHoverSound()"
-                                class="cta-button bg-gray-700/50 hover:bg-gray-600/70 text-white backdrop-blur-xl shadow-inner shadow-white/5 px-6 py-3 rounded-full font-medium flex items-center"
+                                class="cta-button ${startNewButtonClasses} backdrop-blur-xl px-6 py-3 rounded-full font-medium flex items-center"
                             >
-                                ${icon('RotateCcw', 'mr-2 h-4 w-4')}
+                                ${icon('RotateCcw', `mr-2 h-4 w-4 ${startNewIconColor}`)}
                                 Start New Video
                             </button>
                         </div>
@@ -1354,7 +1362,7 @@
                 
                 const regenerateButtonClasses = isDarkMode 
                     ? 'bg-gray-700/50 hover:bg-gray-600/70 text-white shadow-inner shadow-white/5' 
-                    : 'bg-gray-100/70 hover:bg-gray-200/90 text-gray-700 shadow-inner shadow-black/5';
+                    : 'bg-gray-100/70 hover:bg-gray-200/90 text-gray-700 shadow-inner shadow-black/5 shadow-lg shadow-gray-300/50';
 
                 // --- UPDATED: Copy Button Dynamic Classes for Light Mode Contrast ---
                 const copyButtonBaseClasses = "h-8 w-8 p-0 shadow-none rounded-full flex items-center justify-center active:scale-95 transition-all duration-300 ease-in-out";
@@ -1414,7 +1422,7 @@
 
                 const copyAllButtonClasses = isDarkMode 
                     ? 'bg-gray-700/50 hover:bg-gray-600/70 text-white shadow-inner shadow-white/5' 
-                    : 'bg-gray-100/70 hover:bg-gray-200/90 text-gray-700 shadow-inner shadow-black/5';
+                    : 'bg-gray-100/70 hover:bg-gray-200/90 text-gray-700 shadow-inner shadow-black/5 shadow-lg shadow-gray-300/50';
 
                 // NOTE: Removed mb-12 from this div to prevent double margin (mt-12 + mb-12) before the promo card.
                 const descriptionHTML = `
