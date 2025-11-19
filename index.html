@@ -1,21 +1,24 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <link rel="icon" type="image/png" href="preview.png">
+    <!-- CRITICAL FIX: Using Absolute URLs for Icons to ensure YouTube/Social Media find them correctly -->
+    <link rel="icon" type="image/png" sizes="32x32" href="https://manmohit2007.github.io/Manmohit2007/preview.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="https://manmohit2007.github.io/Manmohit2007/preview.png">
+    <link rel="shortcut icon" href="https://manmohit2007.github.io/Manmohit2007/preview.png">
+    <link rel="apple-touch-icon" href="https://manmohit2007.github.io/Manmohit2007/preview.png">
 
-<link rel="apple-touch-icon" href="preview.png">
+    <meta name="msapplication-TileImage" content="https://manmohit2007.github.io/Manmohit2007/preview.png">
+    <meta name="msapplication-TileColor" content="#ffffff">
 
-<meta name="msapplication-TileImage" content="preview.png">
-<meta name="msapplication-TileColor" content="#ffffff">
+    <meta property="og:image" content="https://manmohit2007.github.io/Manmohit2007/preview.png">
+    <meta property="og:title" content="FanPlusFollow"> 
+    <meta property="og:description" content="Growth AI">
 
-<meta property="og:image" content="https://manmohit2007.github.io/Manmohit2007/preview.png">
-<meta property="og:title" content="FanPlusFollow"> 
-<meta property="og:description" content="Growth AI">
-
-<meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="https://manmohit2007.github.io/Manmohit2007/preview.png">
-<meta name="twitter:title" content="FanPlusFollow">
-<meta name="twitter:description" content="Growth AI">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content="https://manmohit2007.github.io/Manmohit2007/preview.png">
+    <meta name="twitter:title" content="FanPlusFollow">
+    <meta name="twitter:description" content="Growth AI">
+    
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>FanPlusFollow</title>
@@ -517,7 +520,9 @@
 </head>
 <body class="text-white p-4 md:p-8" onload="initApp()">
     
-    <!-- NEW: Added dedicated background div --><div id="fixed-background"></div>
+    
+
+<div id="fixed-background"></div>
     
     <div class="max-w-4xl mx-auto">
         
@@ -589,7 +594,9 @@
 <div id="upload-card" class="glass-card fluid-transition p-6 rounded-[36px] mb-12 card-animation-target">
                 <div class="mb-4">
                     <h2 class="text-2xl font-bold flex items-center gap-2">
-                        <!-- Header Icon size: h-8 w-8 --><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-8 w-8 text-indigo-400"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" x2="12" y1="3" y2="15"/></svg>
+                        
+
+<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-8 w-8 text-indigo-400"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" x2="12" y1="3" y2="15"/></svg>
                         Upload Your Video
                     </h2>
                 </div>
@@ -1177,7 +1184,9 @@
                         onmouseenter="playHoverSound()"
                     >
                         <div id="inner-drop-div" class="w-full h-full flex flex-col items-center justify-center border-2 border-dashed rounded-[30px] transition-all duration-300 ${borderColorClass}">
-                            <!-- UPDATED ICON SIZE: h-10 w-10 -->${icon('Upload', `h-10 w-10 ${textColorClass}`)}
+                            
+
+${icon('Upload', `h-10 w-10 ${textColorClass}`)}
                             <div>
                             <p class="font-bold ${textColorClass}">Drag & drop your MP4 file here</p>
                             <p class="text-sm mt-1 ${helperTextColorClass}">or click to browse (Max 500MB)</p>
@@ -1307,7 +1316,9 @@
 
                 uploadContainer.innerHTML = `
                     <div class="flex flex-col items-center">
-                        <!-- UPDATED: Replaced dynamic bg/border with 'glass-card' for Liquid Glass theme --><div class="glass-card fluid-transition flex items-center gap-3 mb-4 p-4 w-full max-w-sm">
+                        
+
+<div class="glass-card fluid-transition flex items-center gap-3 mb-4 p-4 w-full max-w-sm">
                             ${icon('Play', `h-8 w-8 ${fileIconColor} flex-shrink-0`)}
                             <div class="text-left overflow-hidden">
                                 <p class="font-bold truncate ${textColor}">${file.name}</p>
@@ -1443,7 +1454,9 @@
                                 </button>
                             </h2>
                         </div>
-                        <!-- UPDATED LINE: Uses dynamic background and border classes --><div class="${descriptionInnerBg} rounded-[24px] p-4 sm:p-5 min-h-[250px] max-h-96 border ${descriptionInnerBorder} overflow-auto">
+                        
+
+<div class="${descriptionInnerBg} rounded-[24px] p-4 sm:p-5 min-h-[250px] max-h-96 border ${descriptionInnerBorder} overflow-auto">
                             <pre class="whitespace-pre-wrap text-xs sm:text-sm font-mono ${descriptionTextColor} leading-relaxed">${description}</pre>
                         </div>
                     </div>
