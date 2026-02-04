@@ -177,11 +177,19 @@
             width: 100vw; 
             height: 100vh; 
             z-index: -1; 
+            /* Default to mobile background */
             background-image: linear-gradient(rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.2)), url('background.png');
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
             pointer-events: none;
+        }
+
+        /* Desktop Background Override */
+        @media (min-width: 768px) {
+            #fixed-background {
+                background-image: linear-gradient(rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.2)), url('landscape.png');
+            }
         }
         
         .viral-toggle-track {
