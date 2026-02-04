@@ -235,8 +235,9 @@
     <div id="fixed-background"></div>
     <div class="max-w-4xl mx-auto">
         <div class="flex flex-col md:flex-row gap-12 mb-12">
-            <header id="app-header" class="glass-card fluid-transition p-6 flex flex-col md:flex-row items-center justify-between flex-1 card-animation-target md:order-first">
-                <div class="flex items-center mb-4 md:mb-0">
+            <!-- Updated Header with landscape mobile support for right alignment -->
+            <header id="app-header" class="glass-card fluid-transition p-6 flex flex-col landscape:flex-row md:flex-row items-center justify-between flex-1 card-animation-target md:order-first">
+                <div class="flex items-center mb-4 landscape:mb-0 md:mb-0">
                     <div class="flex items-center space-x-4">
                         <div class="w-16 h-16">
                             <img src="https://manmohit2007.github.io/Manmohit2007/brand_logo.png?v=10" alt="FanPlusFollow Logo" class="w-full h-full object-contain filter drop-shadow-md">
@@ -252,7 +253,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="flex flex-col sm:flex-row items-center gap-3">
+                <div class="flex flex-col landscape:flex-row sm:flex-row items-center gap-3">
                     <div class="flex items-center space-x-3 toggle-click-area p-2 rounded-xl transition-colors" onclick="toggleViralBoost()">
                         <svg id="viral-toggle-zap" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-6 w-6 transition-colors duration-300 overflow-visible text-green-400 icon-pop-on drop-shadow-[0_0_5px_rgba(74,222,128,0.8)]"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
                         <span id="viral-toggle-text" class="text-lg font-bold transition-colors duration-300 text-black">
@@ -266,16 +267,16 @@
             </header>
         </div>
         <main>
-            <!-- Modified Upload Card with unified content -->
-            <div id="upload-card" class="glass-card fluid-transition p-6 rounded-[36px] mb-12 card-animation-target">
-                <div class="mb-4">
+            <!-- Optimized card size with left-aligned header text -->
+            <div id="upload-card" class="glass-card fluid-transition p-6 sm:p-8 rounded-[36px] mb-12 card-animation-target max-w-2xl mx-auto">
+                <div class="mb-6">
                     <h2 class="text-2xl font-bold flex items-center gap-2 text-black">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-8 w-8 text-black"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" x2="12" y1="3" y2="15"/></svg>
                         Upload Video
                     </h2>
                 </div>
-                <!-- This container now behaves as the unified drop area -->
-                <div class="p-1 min-h-[16rem]" id="upload-section-content"></div>
+                <!-- Upload content remains centered within the smaller card -->
+                <div class="p-1 min-h-[14rem] flex flex-col items-center justify-center text-center" id="upload-section-content"></div>
             </div>
             <div id="results-section"></div>
         </main>
@@ -361,7 +362,7 @@
                 label.innerHTML = `${progressValue}%`;
                 label.className = `font-bold ${finalTextColorClass} transition-colors duration-500`;
                 indicator.className = `h-2.5 rounded-full transition-all duration-1000 ${indicatorColorClass}`;
-                statusText.className = `font-medium transition-colors duration-500 ${finalTextColorClass}`;
+                statusText.className = `font-medium transition-colors duration-500 ${finalTextColorClass} text-center`;
                 statusText.textContent = isComplete ? "Processing Complete!" : "Analyzing content and generating titles...";
             }
         };
@@ -554,19 +555,18 @@
         
         const renderUploadSection = () => {
             const uploadContainer = document.getElementById('upload-section-content');
-            const uploadCard = document.getElementById('upload-card'); // Get parent card for global drag state
+            const uploadCard = document.getElementById('upload-card'); 
             if (!uploadContainer) return;
 
             if (!file) {
-                // Content now sits directly in the upload card space
                 uploadContainer.innerHTML = `
                     <div id="file-drop-area" class="fluid-transition w-full h-full flex flex-col items-center justify-center text-center cursor-pointer">
-                        ${icon('Upload', `h-12 w-12 text-black mb-4`)}
+                        ${icon('Upload', `h-16 w-16 text-black mb-6`)}
                         <div>
                             <p class="text-xl font-bold text-black">Drag & Drop Video File</p>
                             <p class="text-sm mt-2 text-black opacity-60">or browse the video file</p>
                         </div>
-                        <button id="select-file-btn" class="cta-button mt-6 px-8 py-4 rounded-full font-bold transition-all duration-300 ease-in-out transform backdrop-blur-3xl text-lg">Select File</button>
+                        <button id="select-file-btn" class="cta-button mt-8 px-10 py-4 rounded-full font-bold transition-all duration-300 ease-in-out transform backdrop-blur-3xl text-lg">Select File</button>
                         <input type="file" id="file-upload-input" class="hidden" accept="video/*" onchange="handleFileChange(event)"/>
                     </div>`;
 
@@ -599,28 +599,27 @@
                     dropArea.onclick = (e) => { if(e.target === dropArea || e.target.closest('#file-drop-area')) { fileInput.click(); } };
                 }
             } else {
-                // Keep the processing view clean as well
                 const statusTextColorClass = 'text-green-400 drop-shadow-[0_0_8px_rgba(74,222,128,0.8)]';
                 const indicatorBarColorClass = 'bg-green-400 shadow-[0_0_15px_rgba(74,222,128,0.6)]';
                 
                 const processingArea = isProcessing || isProcessed ? `
                     <div class="w-full max-w-sm mb-4">
-                        <div class="flex justify-between mb-2">
-                            <span id="processing-status" class="font-medium ${statusTextColorClass}">${isProcessed ? 'Processing Complete!' : 'Analyzing content and generating titles...'}</span>
-                            <span id="progress-label" class="${statusTextColorClass} font-bold">${progressValue}%</span>
+                        <div class="flex flex-col items-center mb-4">
+                            <span id="processing-status" class="font-medium ${statusTextColorClass} text-center mb-1">${isProcessed ? 'Processing Complete!' : 'Analyzing content and generating titles...'}</span>
+                            <span id="progress-label" class="${statusTextColorClass} font-extrabold text-2xl">${progressValue}%</span>
                         </div>
-                        <div class="w-full progress-track-fused h-2.5">
-                            <div id="progress-indicator" class="h-2.5 rounded-full transition-all duration-1000 ${indicatorBarColorClass}" style="width: ${progressValue}%"></div>
+                        <div class="w-full progress-track-fused h-3 mb-2">
+                            <div id="progress-indicator" class="h-3 rounded-full transition-all duration-1000 ${indicatorBarColorClass}" style="width: ${progressValue}%"></div>
                         </div>
                     </div>
-                    ${isProcessed ? `<div class="flex gap-4 mt-6"><button onclick="resetApp()" class="cta-button backdrop-blur-xl px-6 py-3 rounded-full font-medium flex items-center">${icon('RotateCcw', `mr-2 h-4 w-4 text-white`)} Start New Video</button></div>` : ''}
+                    ${isProcessed ? `<div class="flex gap-4 mt-6"><button onclick="resetApp()" class="cta-button backdrop-blur-xl px-8 py-3 rounded-full font-bold flex items-center">${icon('RotateCcw', `mr-2 h-4 w-4 text-white`)} New Video</button></div>` : ''}
                 ` : '';
 
                 let titleContentHTML = '';
                 if (isEditingTitle) {
                     titleContentHTML = `
                         <div class="flex-1 min-w-0 mr-2">
-                            <input type="text" id="title-edit-input" value="${currentFileName}" class="w-full bg-transparent focus:outline-none font-bold text-gray-800 py-1" onkeydown="handleTitleInputKey(event)">
+                            <input type="text" id="title-edit-input" value="${currentFileName}" class="w-full bg-transparent focus:outline-none font-bold text-gray-800 py-1 text-center" onkeydown="handleTitleInputKey(event)">
                         </div>
                         <button onclick="saveTitleEdit()" class="p-2 rounded-full hover:bg-black/5 transition-colors text-green-400 flex-shrink-0" title="Save">
                             ${icon('Check', 'h-5 w-5')}
@@ -628,19 +627,19 @@
                     `;
                 } else {
                     titleContentHTML = `
-                        <div class="text-left overflow-hidden flex-1 min-w-0 mr-2">
-                            <p class="font-bold truncate text-gray-800">${currentFileName}</p>
-                            <p class="text-xs text-black opacity-60">${(file.size / (1024 * 1024)).toFixed(2)} MB</p>
+                        <div class="text-center overflow-hidden flex-1 min-w-0 mx-2">
+                            <p class="font-bold truncate text-gray-800 text-lg">${currentFileName}</p>
+                            <p class="text-xs text-black opacity-60 font-medium">${(file.size / (1024 * 1024)).toFixed(2)} MB</p>
                         </div>
-                        <button onclick="enableTitleEdit()" class="p-2 rounded-full hover:bg-black/5 transition-colors text-gray-500 hover:text-black flex-shrink-0" title="Edit Name">
-                            ${icon('Edit', 'h-6 w-6')}
+                        <button onclick="enableTitleEdit()" class="p-2 rounded-full hover:bg-black/5 transition-colors text-gray-400 hover:text-black flex-shrink-0" title="Edit Name">
+                            ${icon('Edit', 'h-5 w-5')}
                         </button>
                     `;
                 }
 
                 uploadContainer.innerHTML = `
-                    <div class="flex flex-col items-center justify-center h-full min-h-[14rem]">
-                        <div class="glass-inset-panel fluid-transition flex items-center gap-3 mb-6 p-4 w-full max-w-sm">
+                    <div class="flex flex-col items-center justify-center w-full">
+                        <div class="glass-inset-panel fluid-transition flex items-center justify-center gap-2 mb-8 p-4 w-full max-w-md">
                             ${titleContentHTML}
                         </div>
                         ${processingArea}
@@ -695,47 +694,47 @@
                 else scoreGlowStyle = 'text-shadow: 0 0 30px rgba(74, 222, 128, 0.8);'; 
                 
                 const viralScoreHTML = `
-                    <div class="glass-card fluid-transition p-6 rounded-[36px] mb-12">
-                        <div class="mb-4"><h2 class="text-2xl font-bold text-black">Viral Potential</h2></div>
+                    <div class="glass-card fluid-transition p-6 sm:p-8 rounded-[36px] mb-12">
+                        <div class="mb-6"><h2 class="text-2xl font-bold text-black">Viral Potential</h2></div>
                         <div class="p-1">
-                            <div class="flex items-center justify-between mb-4"><span class="text-5xl font-extrabold transition-colors duration-500 viral-score-text ${scoreColorClass}" style="${scoreGlowStyle}">${viralScore}%</span></div>
-                            <div class="w-full progress-track-fused h-3">
-                                <div class="h-3 rounded-full transition-all duration-1000 ${viralScore < 75 ? "bg-red-500 shadow-[0_0_15px_rgba(239,68,68,0.6)]" : viralScore < 90 ? "bg-yellow-500 shadow-[0_0_15px_rgba(234,179,8,0.6)]" : "bg-green-400 shadow-[0_0_15px_rgba(74,222,128,0.6)]"}" style="width: ${viralScore}%"></div>
+                            <div class="flex items-center justify-between mb-4"><span class="text-6xl font-black transition-colors duration-500 viral-score-text ${scoreColorClass}" style="${scoreGlowStyle}">${viralScore}%</span></div>
+                            <div class="w-full progress-track-fused h-4">
+                                <div class="h-4 rounded-full transition-all duration-1000 ${viralScore < 75 ? "bg-red-500 shadow-[0_0_15px_rgba(239,68,68,0.6)]" : viralScore < 90 ? "bg-yellow-500 shadow-[0_0_15px_rgba(234,179,8,0.6)]" : "bg-green-400 shadow-[0_0_15px_rgba(74,222,128,0.6)]"}" style="width: ${viralScore}%"></div>
                             </div>
-                            <p class="text-base font-medium text-black mt-3">${scoreText}</p>
+                            <p class="text-base font-semibold text-black mt-4">${scoreText}</p>
                         </div>
                     </div>`;
 
                 const titlesHTML = `
-                    <div class="glass-card fluid-transition p-6 rounded-[36px] mb-12">
-                        <div class="flex justify-between items-center mb-6">
-                            <h2 class="text-2xl font-bold text-black">Titles</h2>
-                            <button onclick="handleRegenerate()" class="cta-button backdrop-blur-xl text-sm px-4 py-2 rounded-full font-medium flex items-center whitespace-nowrap flex-shrink-0"><span class="flex items-center">${icon('RotateCcw', `mr-2 h-4 w-4 text-white`)} Regenerate</span></button>
+                    <div class="glass-card fluid-transition p-6 sm:p-8 rounded-[36px] mb-12">
+                        <div class="flex justify-between items-center mb-8">
+                            <h2 class="text-2xl font-bold text-black">Viral Titles</h2>
+                            <button onclick="handleRegenerate()" class="cta-button backdrop-blur-xl text-sm px-6 py-2 rounded-full font-bold flex items-center whitespace-nowrap flex-shrink-0"><span class="flex items-center">${icon('RotateCcw', `mr-2 h-4 w-4 text-white`)} Regenerate</span></button>
                         </div>
                         <div class="grid grid-cols-1 md:grid-cols-3 gap-6 overflow-visible">
                             ${titles.map((title, index) => `
-                                <div class="glass-inset-panel interactive fluid-transition p-4">
+                                <div class="glass-inset-panel interactive fluid-transition p-5 flex flex-col justify-between">
                                     <div class="p-1">
-                                        <div class="flex justify-between items-start mb-2">
-                                            <span class="text-xs font-medium px-2 py-1 rounded-full bg-pink-100 text-pink-700 border border-pink-300">Option ${index + 1}</span>
-                                            <button onclick="copyToClipboard('${title.replace(/'/g, "\\'")}', ${index})" class="h-8 w-8 p-0 rounded-full flex items-center justify-center transition-all duration-300 bg-transparent hover:bg-black/5 text-gray-800 hover:text-black active:scale-90 active:bg-black/10">${copiedIndex === index ? icon('Check', 'h-4 w-4 text-green-400') : icon('Copy', 'h-4 w-4')}</button>
+                                        <div class="flex justify-between items-start mb-4">
+                                            <span class="text-[10px] tracking-widest uppercase font-black px-2 py-1 rounded-md bg-pink-100 text-pink-700 border border-pink-200">Option ${index + 1}</span>
+                                            <button onclick="copyToClipboard('${title.replace(/'/g, "\\'")}', ${index})" class="h-9 w-9 p-0 rounded-full flex items-center justify-center transition-all duration-300 bg-transparent hover:bg-black/5 text-gray-800 hover:text-black active:scale-90 active:bg-black/10">${copiedIndex === index ? icon('Check', 'h-5 w-5 text-green-400') : icon('Copy', 'h-5 w-5')}</button>
                                         </div>
-                                        <p class="text-base font-medium text-gray-800 p-1">${title}</p>
+                                        <p class="text-base font-bold text-gray-800 leading-tight">${title}</p>
                                     </div>
                                 </div>`).join('')}
                         </div>
                     </div>`;
                 
                 const descriptionHTML = `
-                    <div class="glass-card fluid-transition p-6 rounded-[36px]"> 
-                        <div class="mb-4">
+                    <div class="glass-card fluid-transition p-6 sm:p-8 rounded-[36px]"> 
+                        <div class="mb-6">
                             <h2 class="flex justify-between items-center text-2xl font-bold text-black">
-                                <span class="truncate mr-2">Description</span>
-                                <button onclick="copyDescriptionToClipboard()" class="cta-button backdrop-blur-xl text-sm px-4 py-2 rounded-full font-medium flex items-center whitespace-nowrap flex-shrink-0">${copiedIndex === 3 ? `<span class="flex items-center">${icon('Check', 'mr-2 h-4 w-4 text-white')} Copied!</span>` : `<span class="flex items-center">${icon('Copy', 'mr-2 h-4 w-4 text-white')} Copy All</span>`}</button>
+                                <span class="truncate mr-2">Optimized Description</span>
+                                <button onclick="copyDescriptionToClipboard()" class="cta-button backdrop-blur-xl text-sm px-6 py-2 rounded-full font-bold flex items-center whitespace-nowrap flex-shrink-0">${copiedIndex === 3 ? `<span class="flex items-center">${icon('Check', 'mr-2 h-4 w-4 text-white')} Copied!</span>` : `<span class="flex items-center">${icon('Copy', 'mr-2 h-4 w-4 text-white')} Copy All</span>`}</button>
                             </h2>
                         </div>
-                        <div class="glass-inset-panel p-4 sm:p-5 min-h-[250px] max-h-96 overflow-auto custom-scrollbar">
-                            <pre class="whitespace-pre-wrap text-xs sm:text-sm font-mono text-gray-700 leading-relaxed">${description}</pre>
+                        <div class="glass-inset-panel p-5 min-h-[300px] max-h-[500px] overflow-auto custom-scrollbar">
+                            <pre class="whitespace-pre-wrap text-sm font-mono text-gray-700 leading-relaxed">${description}</pre>
                         </div>
                     </div>`;
                 resultsContainer.innerHTML = viralScoreHTML + titlesHTML + descriptionHTML;
