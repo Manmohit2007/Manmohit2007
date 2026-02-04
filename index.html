@@ -95,7 +95,7 @@
             .cta-button:hover {
                 transform: translateY(-4px) scale(1.02) translateZ(0);
                 opacity: 1; /* Fully opaque on hover */
-                box-shadow: 0 10px 20px rgba(236, 72, 153, 0.4); 
+                box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1); 
                 filter: brightness(1.1); 
             }
             
@@ -118,7 +118,7 @@
             /* Vivid Gradient */
             background: linear-gradient(to right, #c084fc, #f472b6, #fb923c); 
             color: #ffffff; /* White text */
-            box-shadow: 0 4px 10px rgba(236, 72, 153, 0.2); 
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); 
             will-change: transform, filter, opacity, box-shadow; 
             border: none;
             opacity: 0.9; /* Higher visibility by default */
@@ -134,7 +134,7 @@
         .cta-button:active {
             transform: scale(0.92) translateZ(0) !important; 
             transition: transform 0.05s ease-out, opacity 0.05s ease-out; /* Instant feedback */
-            box-shadow: 0 2px 5px rgba(236, 72, 153, 0.4);
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
             filter: brightness(1.2); /* Flash bright on tap */
             opacity: 1; 
         }
@@ -657,9 +657,9 @@
                 if (isEditingTitle) {
                     titleContentHTML = `
                         <div class="flex-1 min-w-0 mr-2">
-                            <input type="text" id="title-edit-input" value="${currentFileName}" class="w-full bg-transparent border-b-2 border-green-400 focus:outline-none font-bold text-gray-800 py-1" onkeydown="handleTitleInputKey(event)">
+                            <input type="text" id="title-edit-input" value="${currentFileName}" class="w-full bg-transparent focus:outline-none font-bold text-gray-800 py-1" onkeydown="handleTitleInputKey(event)">
                         </div>
-                        <button onclick="saveTitleEdit()" class="p-2 rounded-full hover:bg-black/5 transition-colors text-green-400 drop-shadow-[0_0_5px_rgba(74,222,128,0.8)] flex-shrink-0" title="Save">
+                        <button onclick="saveTitleEdit()" class="p-2 rounded-full hover:bg-black/5 transition-colors text-green-400 flex-shrink-0" title="Save">
                             ${icon('Check', 'h-5 w-5')}
                         </button>
                     `;
