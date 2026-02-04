@@ -45,7 +45,8 @@
 
         .fluid-transition {
             transition: all 400ms cubic-bezier(0.25, 0.46, 0.45, 0.94);
-            will-change: transform, box-shadow, filter, background-color, color, opacity; 
+            /* Optimized will-change to reduce memory overhead while maintaining smoothness */
+            will-change: transform, opacity; 
         }
 
         /* Animation */
@@ -73,44 +74,12 @@
             box-shadow: inset 0 0 40px rgba(255, 255, 255, 0.4), 0 25px 50px rgba(0, 0, 0, 0.05);
             border: 1px solid rgba(255, 255, 255, 0.5);
             border-radius: 36px;
-            transform: translateZ(0);
+            /* Performance optimizations for scrolling */
+            transform: translate3d(0, 0, 0);
+            backface-visibility: hidden;
+            perspective: 1000px;
             /* Improve touch handling */
             touch-action: manipulation;
-        }
-
-        /* Hover effects ONLY for devices with a pointer (mouse) */
-        @media (hover: hover) {
-            .glass-card:hover {
-                transform: translateY(-8px) scale(1.005) translateZ(0); 
-                /* Brighter inner glow on hover */
-                box-shadow: 0 15px 40px rgba(0, 0, 0, 0.08), inset 0 0 50px rgba(255, 255, 255, 0.5);
-                border-color: rgba(255, 255, 255, 0.7);
-            }
-            
-            .title-result-card:hover {
-                transform: translateY(-8px) scale(1.005) translateZ(0); 
-                box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15), inset 0 0 30px rgba(255, 255, 255, 0.4);
-                border-color: rgba(255, 255, 255, 0.8);
-            }
-
-            .cta-button:hover {
-                transform: translateY(-4px) scale(1.02) translateZ(0);
-                opacity: 1; /* Fully opaque on hover */
-                box-shadow: none; 
-                filter: none; 
-            }
-            
-            .gradient-border-mask:hover::before {
-                opacity: 1; 
-                filter: drop-shadow(0 0 5px rgba(236, 72, 153, 0.3)); 
-            }
-        }
-
-        /* Active states for touch feedback (replaces hover on mobile) */
-        .cta-button:active, 
-        .glass-card:active {
-            transform: scale(0.98) translateZ(0) !important;
-            transition-duration: 100ms;
         }
 
         .title-result-card {
@@ -119,32 +88,71 @@
             box-shadow: inset 0 0 20px rgba(255, 255, 255, 0.3), 0 15px 30px rgba(0, 0, 0, 0.05);
             border: 1px solid rgba(255, 255, 255, 0.5);
             border-radius: 36px;
-            transform: translateZ(0);
+            transform: translate3d(0,0,0);
+            backface-visibility: hidden;
             touch-action: manipulation;
         }
 
-        /* --- CTA BUTTONS --- */
+        /* --- BUTTONS & INTERACTIONS --- */
         .cta-button {
-            transition: all 300ms cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            /* Use specific transitions to avoid jitter on 'all' */
+            transition: transform 300ms cubic-bezier(0.25, 0.46, 0.45, 0.94), 
+                        opacity 300ms ease,
+                        filter 300ms ease;
             /* Vivid Gradient */
             background: linear-gradient(to right, #a855f7, #ec4899, #f97316); 
-            color: #ffffff; /* White text */
-            box-shadow: none; /* No shadow */
-            will-change: transform, filter, opacity; 
+            color: #ffffff; 
+            box-shadow: none; 
+            will-change: transform, opacity; 
             border: none;
-            opacity: 0.6; /* Moderate brightness by default */
-            /* Ensure text doesn't select on button tap */
+            opacity: 0.8; /* Slightly higher default opacity for better visibility on mobile */
             user-select: none;
             -webkit-user-select: none;
             touch-action: manipulation;
             cursor: pointer;
+            /* Removed backdrop-filter from moving buttons to fix mobile jitters */
         }
-        
-        .cta-button:active {
-            transform: scale(0.97) translateZ(0) !important; 
-            box-shadow: none;
-            filter: brightness(0.95); 
-            opacity: 1; /* Make it opaque on tap */
+
+        /* DEFAULT (TOUCH) BEHAVIOR */
+        /* Immediate feedback on tap without layout shifts */
+        .cta-button:active, 
+        .glass-card:active {
+            transform: scale(0.96) translate3d(0,0,0);
+            transition-duration: 100ms; /* Snappy response */
+            opacity: 1;
+            filter: brightness(1.1);
+        }
+
+        /* DESKTOP/MOUSE BEHAVIOR */
+        @media (hover: hover) {
+            .glass-card:hover {
+                transform: translate3d(0, -8px, 0) scale(1.005); 
+                box-shadow: 0 15px 40px rgba(0, 0, 0, 0.08), inset 0 0 50px rgba(255, 255, 255, 0.5);
+                border-color: rgba(255, 255, 255, 0.7);
+            }
+            
+            .title-result-card:hover {
+                transform: translate3d(0, -8px, 0) scale(1.005); 
+                box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15), inset 0 0 30px rgba(255, 255, 255, 0.4);
+                border-color: rgba(255, 255, 255, 0.8);
+            }
+
+            .cta-button:hover {
+                transform: translate3d(0, -4px, 0) scale(1.02);
+                opacity: 1; 
+                filter: brightness(1.1);
+            }
+            
+            /* Smart Active State for Mouse: Prevents snapping back to 0px */
+            /* Pressing down partially from the floated hover state */
+            .cta-button:active {
+                transform: translate3d(0, -2px, 0) scale(0.98);
+            }
+            
+            .gradient-border-mask:hover::before {
+                opacity: 1; 
+                filter: drop-shadow(0 0 5px rgba(236, 72, 153, 0.3)); 
+            }
         }
 
         /* --- GRADIENT BORDER MASK --- */
@@ -166,8 +174,8 @@
             -webkit-mask-composite: xor;
             mask-composite: exclude;
             pointer-events: none;
-            transition: all 500ms cubic-bezier(0.4, 0, 0.2, 1);
-            opacity: 0.6; /* Moderate brightness by default */
+            transition: opacity 500ms ease;
+            opacity: 0.6; 
         }
         
         body {
@@ -189,10 +197,11 @@
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
-            /* Important: Transition for smooth motion */
-            transition: transform 0.1s ease-out;
+            /* Removed CSS transition, handling in JS for smoother loop */
             will-change: transform;
             pointer-events: none;
+            /* Initial slight scale to prevent edges showing on movement */
+            transform: scale(1.05); 
         }
         
         .viral-toggle-track {
@@ -321,11 +330,11 @@
                           Join the community for exclusive growth insights and advanced content tools.
                         </p>
                         <div class="mt-3 sm:mt-4 flex flex-wrap justify-center gap-4">
-                          <button class="cta-button px-6 py-3 rounded-full font-bold transition-all duration-300 ease-in-out transform backdrop-blur-3xl flex items-center" onclick="playClickSound(); window.open('https://www.youtube.com/@fanplusfollow', '_blank')" onmouseenter="playHoverSound()">
+                          <button class="cta-button px-6 py-3 rounded-full font-bold flex items-center" onclick="playClickSound(); window.open('https://www.youtube.com/@fanplusfollow', '_blank')" onmouseenter="playHoverSound()">
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2 h-4 w-4"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
                             Subscribe Now
                           </button>
-                          <button class="cta-button px-6 py-3 rounded-full font-bold transition-all duration-300 ease-in-out transform backdrop-blur-3xl flex items-center" onclick="playClickSound(); window.open('https://www.instagram.com/_manmohit_singh_/', '_blank')" onmouseenter="playHoverSound()">
+                          <button class="cta-button px-6 py-3 rounded-full font-bold flex items-center" onclick="playClickSound(); window.open('https://www.instagram.com/_manmohit_singh_/', '_blank')" onmouseenter="playHoverSound()">
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2 h-4 w-4"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
                             Follow Now
                           </button>
@@ -366,32 +375,66 @@
         const YOUTUBE_CHANNEL_LINK = "https://www.youtube.com/@fanplusfollow";
         const INSTAGRAM_LINK = "https://www.instagram.com/_manmohit_singh_/";
 
-        // --- PARALLAX EFFECT INIT ---
+        // --- IMPROVED PARALLAX ENGINE ---
+        // Uses linear interpolation (lerp) within a requestAnimationFrame loop 
+        // to smooth out mouse/device inputs and remove jitter.
         const initParallax = () => {
             const bg = document.getElementById('fixed-background');
             if (!bg) return;
 
-            // Mouse Move Parallax (Desktop)
+            // State variables for position
+            let targetX = 0;
+            let targetY = 0;
+            let currentX = 0;
+            let currentY = 0;
+            
+            // Configuration
+            const lerpFactor = 0.08; // Lower = smoother/slower, Higher = quicker/snappier
+            const moveRange = 25; // Pixels to move in each direction
+
+            // Input Handling: Mouse (Desktop)
             document.addEventListener('mousemove', (e) => {
-                const x = (e.clientX / window.innerWidth - 0.5) * 20; // Move range: +/- 10px
-                const y = (e.clientY / window.innerHeight - 0.5) * 20;
-                // Invert movement for depth effect
-                bg.style.transform = `translate(${-x}px, ${-y}px) scale(1.02)`; 
+                // Normalize coordinates -1 to 1
+                const xPct = (e.clientX / window.innerWidth) - 0.5;
+                const yPct = (e.clientY / window.innerHeight) - 0.5;
+                
+                // Set target position (inverted for depth effect)
+                targetX = -xPct * moveRange;
+                targetY = -yPct * moveRange;
             });
 
-            // Device Orientation Parallax (Mobile)
+            // Input Handling: Device Orientation (Mobile)
             if (window.DeviceOrientationEvent) {
                 window.addEventListener('deviceorientation', (e) => {
                     const gamma = e.gamma; // Left-to-right tilt
                     const beta = e.beta;   // Front-to-back tilt
                     if (gamma !== null && beta !== null) {
-                        // Clamp values to prevent extreme shifts
-                        const x = Math.min(Math.max(gamma, -20), 20); 
-                        const y = Math.min(Math.max(beta, -20), 20);
-                        bg.style.transform = `translate(${-x}px, ${-y}px) scale(1.02)`;
+                        // Clamp values to avoid extreme movement
+                        // Maps tilt to range -1 to 1 approx
+                        const xPct = Math.min(Math.max(gamma, -20), 20) / 20; 
+                        const yPct = Math.min(Math.max(beta, -20), 20) / 20;
+                        
+                        targetX = -xPct * moveRange;
+                        targetY = -yPct * moveRange;
                     }
                 });
             }
+
+            // Animation Loop
+            const animate = () => {
+                // Linear Interpolation: Move current towards target by percentage
+                currentX += (targetX - currentX) * lerpFactor;
+                currentY += (targetY - currentY) * lerpFactor;
+
+                // Apply transform using translate3d for GPU acceleration
+                // Keep scale(1.05) to prevent background edges from showing
+                bg.style.transform = `translate3d(${currentX}px, ${currentY}px, 0) scale(1.05)`;
+
+                requestAnimationFrame(animate);
+            };
+
+            // Start loop
+            requestAnimationFrame(animate);
         };
 
         const initToneJs = () => {
@@ -684,7 +727,7 @@
                             <p class="font-bold ${textColorClass}">Drag & Drop Your Video File Here</p>
                             <p class="text-sm mt-1 ${helperTextColorClass}">or click to browse the video file</p>
                             </div>
-                            <button id="select-file-btn" class="cta-button mt-4 px-6 py-3 rounded-full font-bold transition-all duration-300 ease-in-out transform backdrop-blur-3xl" onmouseenter="playHoverSound()">Select File</button>
+                            <button id="select-file-btn" class="cta-button mt-4 px-6 py-3 rounded-full font-bold flex items-center" onmouseenter="playHoverSound()">Select File</button>
                         </div>
                         <input type="file" id="file-upload-input" class="hidden" accept="video/*" onchange="handleFileChange(event)"/>
                     </div>`;
@@ -721,7 +764,7 @@
                             <div id="progress-indicator" class="h-2.5 rounded-full transition-all duration-1000 ${indicatorBarColorClass}" style="width: ${progressValue}%"></div>
                         </div>
                     </div>
-                    ${isProcessed ? `<div class="flex gap-4 mt-6"><button onclick="resetApp()" onmouseenter="playHoverSound()" class="cta-button ${startNewButtonClasses} backdrop-blur-xl px-6 py-3 rounded-full font-medium flex items-center">${icon('RotateCcw', `mr-2 h-4 w-4 ${startNewIconColor}`)} Start New Video</button></div>` : ''}
+                    ${isProcessed ? `<div class="flex gap-4 mt-6"><button onclick="resetApp()" onmouseenter="playHoverSound()" class="cta-button ${startNewButtonClasses} px-6 py-3 rounded-full font-medium flex items-center">${icon('RotateCcw', `mr-2 h-4 w-4 ${startNewIconColor}`)} Start New Video</button></div>` : ''}
                 ` : '';
 
                 // Title Section Logic
