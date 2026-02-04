@@ -13,7 +13,7 @@
     <!-- Standard Meta Tags -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, viewport-fit=cover">
-    <meta name="color-scheme" content="only light">
+    <meta name="color-scheme" content="light dark">
     <title>FanPlusFollow - Growth AI</title>
     <meta name="description" content="Growth AI for Content Creators. Boost your reach with advanced tools.">
 
@@ -24,7 +24,7 @@
         :root { 
             font-family: 'Inter', sans-serif; 
             box-sizing: border-box;
-            color-scheme: only light;
+            color-scheme: light dark;
             /* Disable default tap highlight on mobile for custom feeling */
             -webkit-tap-highlight-color: transparent;
         }
@@ -176,11 +176,28 @@
             width: 100vw; 
             height: 100vh; 
             z-index: -1; 
+            /* Default (Light Mode) */
             background-image: linear-gradient(rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.2)), url('background.png');
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
             pointer-events: none;
+            transition: background-image 0.5s ease-in-out;
+        }
+
+        /* Dark Mode Configurations */
+        @media (prefers-color-scheme: dark) {
+            #fixed-background {
+                /* Portrait / Default Dark Mode */
+                background-image: linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.4)), url('backdark.png');
+            }
+        }
+
+        @media (prefers-color-scheme: dark) and (orientation: landscape) {
+            #fixed-background {
+                /* Landscape Dark Mode */
+                background-image: linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.4)), url('landmark.png');
+            }
         }
         
         .viral-toggle-track {
@@ -444,9 +461,11 @@
         };
 
         const toggleViralBoost = () => {
-            isViralBoostEnabled = !isViralBoostEnabled;
-            if (isProcessed) generateViralContent(true);
-            updateUI();
+            setTimeout(() => {
+                isViralBoostEnabled = !isViralBoostEnabled;
+                if (isProcessed) generateViralContent(true);
+                updateUI();
+            }, 150);
         };
 
         const handleFileChange = (event) => {
@@ -528,36 +547,43 @@
         const copyDescriptionToClipboard = () => copyToClipboard(description, 3);
 
         const copyToClipboard = (text, index) => {
+            // Perform copy immediately to ensure browser security context (user activation) is respected
             const tempElement = document.createElement('textarea');
             tempElement.value = text;
             document.body.appendChild(tempElement);
             tempElement.select();
             document.execCommand('copy');
             document.body.removeChild(tempElement);
-            copiedIndex = index;
-            updateUI(); 
-            setTimeout(() => { copiedIndex = null; updateUI(); }, 2000);
+
+            // Delay the visual update
+            setTimeout(() => {
+                copiedIndex = index;
+                updateUI(); 
+                setTimeout(() => { copiedIndex = null; updateUI(); }, 2000);
+            }, 150);
         };
 
         const resetApp = () => {
-            file = null;
-            currentFileName = ""; 
-            isEditingTitle = false; 
-            isProcessing = false;
-            isProcessed = false;
-            viralScore = 0;
-            titles = [];
-            description = "";
-            progressValue = 0;
-            currentTitleSetIndex = 0; 
-            currentDescriptionIndex = 0; 
-            if (progressInterval) clearInterval(progressInterval);
-            const fileInput = document.getElementById('file-upload-input');
-            if (fileInput) fileInput.value = "";
-            const resultsContainer = document.getElementById('results-section');
-            if (resultsContainer) resultsContainer.classList.remove('show-results');
-            updateUI();
-            attachStaticListeners(); 
+            setTimeout(() => {
+                file = null;
+                currentFileName = ""; 
+                isEditingTitle = false; 
+                isProcessing = false;
+                isProcessed = false;
+                viralScore = 0;
+                titles = [];
+                description = "";
+                progressValue = 0;
+                currentTitleSetIndex = 0; 
+                currentDescriptionIndex = 0; 
+                if (progressInterval) clearInterval(progressInterval);
+                const fileInput = document.getElementById('file-upload-input');
+                if (fileInput) fileInput.value = "";
+                const resultsContainer = document.getElementById('results-section');
+                if (resultsContainer) resultsContainer.classList.remove('show-results');
+                updateUI();
+                attachStaticListeners(); 
+            }, 150);
         };
 
         const attachStaticListeners = () => {
@@ -672,30 +698,34 @@
         };
 
         const enableTitleEdit = () => {
-            isEditingTitle = true;
-            updateUI();
             setTimeout(() => {
-                const input = document.getElementById('title-edit-input');
-                if(input) {
-                    input.focus();
-                    input.select();
-                }
-            }, 50);
+                isEditingTitle = true;
+                updateUI();
+                setTimeout(() => {
+                    const input = document.getElementById('title-edit-input');
+                    if(input) {
+                        input.focus();
+                        input.select();
+                    }
+                }, 50);
+            }, 150);
         };
 
         const saveTitleEdit = () => {
-            const input = document.getElementById('title-edit-input');
-            if (input && input.value.trim() !== "") {
-                currentFileName = input.value.trim();
-                isEditingTitle = false;
-                if (isProcessed) {
-                    generateViralContent(true); 
+            setTimeout(() => {
+                const input = document.getElementById('title-edit-input');
+                if (input && input.value.trim() !== "") {
+                    currentFileName = input.value.trim();
+                    isEditingTitle = false;
+                    if (isProcessed) {
+                        generateViralContent(true); 
+                    }
+                    updateUI();
+                } else {
+                    isEditingTitle = false;
+                    updateUI();
                 }
-                updateUI();
-            } else {
-                isEditingTitle = false;
-                updateUI();
-            }
+            }, 150);
         };
 
         const handleTitleInputKey = (e) => {
