@@ -175,31 +175,36 @@
             min-height: 100vh;
             color: #374151;
             overflow-x: hidden;
-            /* Prevent bounce effect on iOS body scroll if needed, though usually desirable */
         }
 
         #fixed-background {
             position: fixed;
-            top: 0; left: 0; width: 100vw; height: 100vh; z-index: -1; 
+            /* Expanded size to allow parallax movement */
+            top: -5vh; 
+            left: -5vw; 
+            width: 110vw; 
+            height: 110vh; 
+            z-index: -1; 
             background-image: linear-gradient(rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.2)), url('IMG_2982.png');
             background-size: cover;
             background-position: center;
-            background-attachment: fixed;
+            background-repeat: no-repeat;
+            /* Important: Transition for smooth motion */
+            transition: transform 0.1s ease-out;
+            will-change: transform;
+            pointer-events: none;
         }
         
         .viral-toggle-track {
             transition: all 400ms cubic-bezier(0.25, 0.46, 0.45, 0.94);
-            /* Removed default heavy shadow to allow states to manage it */
             border-radius: 9999px;
             cursor: pointer;
-            /* Prevent zoom on double tap */
             touch-action: manipulation;
         }
         
         /* FUSED OFF STATE: Carved into the glass */
         .viral-toggle-track.infused-off {
-            background-color: rgba(0, 0, 0, 0.02); /* Barely visible to catch inner shadow */
-            /* Deep inset shadow for the "carved" look + Bottom highlight for depth */
+            background-color: rgba(0, 0, 0, 0.02); 
             box-shadow: 
                 inset 0 4px 8px rgba(0, 0, 0, 0.15), 
                 inset 0 1px 2px rgba(0, 0, 0, 0.06),
@@ -209,17 +214,14 @@
 
         /* LEAKING ON STATE: Intense glow spread */
         .viral-toggle-track.on-glow {
-            /* Inner shadow for depth inside the light source */
-            /* Outer shadows: 1. Core tight glow, 2. Wide ambient leak */
             box-shadow: 
                 inset 0 2px 4px rgba(0, 0, 0, 0.2), 
-                0 0 30px 8px rgba(0, 255, 85, 0.9),
-                0 0 80px 30px rgba(0, 255, 85, 0.6); 
+                0 0 30px 8px rgba(34, 197, 94, 0.9),
+                0 0 80px 30px rgba(34, 197, 94, 0.6); 
         }
         
         .viral-toggle-knob {
-            transition: transform 400ms cubic-bezier(0.34, 1.56, 0.64, 1); /* Bouncy spring effect */
-            /* Refined knob shadow for "floating" feel */
+            transition: transform 400ms cubic-bezier(0.34, 1.56, 0.64, 1); 
             box-shadow: 
                 0 2px 5px rgba(0, 0, 0, 0.2), 
                 inset 0 -2px 2px rgba(0, 0, 0, 0.05), 
@@ -281,13 +283,11 @@
                     </div>
                 </div>
                 <div class="flex flex-col sm:flex-row items-center gap-3">
-                    <!-- Wrapped entire toggle area in click handler for better touch target -->
                     <div class="flex items-center space-x-3 toggle-click-area p-2 rounded-xl transition-colors active:bg-black/5" onclick="toggleViralBoost()">
                         <svg id="viral-toggle-zap" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-6 w-6 transition-colors duration-300 overflow-visible"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
                         <span id="viral-toggle-text" class="text-lg font-bold transition-colors duration-300 text-black">
                             Viral Mode
                         </span>
-                        <!-- Removed onclick from track since parent handles it -->
                         <div id="viral-toggle-track" class="viral-toggle-track w-16 h-9 flex items-center rounded-full p-1 transition-all duration-300 backdrop-blur-3xl touch-none">
                           <div id="viral-toggle-knob" class="w-7 h-7 rounded-full transform transition-transform duration-300 viral-toggle-knob"></div>
                         </div>
@@ -314,7 +314,6 @@
                         <div class="w-16 h-16 mb-2 sm:mb-4">
                             <img src="https://manmohit2007.github.io/Manmohit2007/brand_logo.png?v=10" alt="FanPlusFollow Logo" class="w-full h-full object-contain filter drop-shadow-md">
                         </div>
-                        <!-- Vivid Gradient -->
                         <h3 class="text-xl sm:text-2xl font-bold bg-clip-text text-transparent text-center" style="background-image: linear-gradient(to right, #a855f7, #ec4899, #f97316)">
                           Boost Your Reach With FanPlusFollow
                         </h3>
@@ -340,8 +339,8 @@
     <script>
         // --- GLOBAL STATE ---
         let file = null;
-        let currentFileName = ""; // New state for editable filename
-        let isEditingTitle = false; // New state for edit mode
+        let currentFileName = ""; 
+        let isEditingTitle = false; 
         let isProcessing = false;
         let isProcessed = false;
         let viralScore = 0;
@@ -366,6 +365,34 @@
         let lastHoverTime = 0;
         const YOUTUBE_CHANNEL_LINK = "https://www.youtube.com/@fanplusfollow";
         const INSTAGRAM_LINK = "https://www.instagram.com/_manmohit_singh_/";
+
+        // --- PARALLAX EFFECT INIT ---
+        const initParallax = () => {
+            const bg = document.getElementById('fixed-background');
+            if (!bg) return;
+
+            // Mouse Move Parallax (Desktop)
+            document.addEventListener('mousemove', (e) => {
+                const x = (e.clientX / window.innerWidth - 0.5) * 20; // Move range: +/- 10px
+                const y = (e.clientY / window.innerHeight - 0.5) * 20;
+                // Invert movement for depth effect
+                bg.style.transform = `translate(${-x}px, ${-y}px) scale(1.02)`; 
+            });
+
+            // Device Orientation Parallax (Mobile)
+            if (window.DeviceOrientationEvent) {
+                window.addEventListener('deviceorientation', (e) => {
+                    const gamma = e.gamma; // Left-to-right tilt
+                    const beta = e.beta;   // Front-to-back tilt
+                    if (gamma !== null && beta !== null) {
+                        // Clamp values to prevent extreme shifts
+                        const x = Math.min(Math.max(gamma, -20), 20); 
+                        const y = Math.min(Math.max(beta, -20), 20);
+                        bg.style.transform = `translate(${-x}px, ${-y}px) scale(1.02)`;
+                    }
+                });
+            }
+        };
 
         const initToneJs = () => {
             if (isToneInitialized) return;
@@ -441,7 +468,6 @@
             const label = document.getElementById('progress-label');
             const statusText = document.getElementById('processing-status');
             const isComplete = progressValue >= 100;
-            // Updated to brighter green (500) and added glow shadows for visibility
             const indicatorColorClass = "bg-green-500 shadow-[0_0_15px_rgba(34,197,94,0.6)]";
             const finalTextColorClass = "text-green-500 drop-shadow-[0_0_8px_rgba(34,197,94,0.8)]";
             if (indicator && label && statusText) {
@@ -482,21 +508,19 @@
                 toggleKnob.classList.remove('bg-white', 'bg-gray-800');
                 toggleKnob.classList.add('bg-white');
                 
-                // Reset base classes to ensure clean state switching
-                toggleTrack.classList.remove('bg-green-500/70', 'bg-gray-700', 'bg-gray-300', 'bg-gradient-to-t', 'from-green-500', 'to-lime-400', 'from-green-400', 'to-lime-300', 'on-glow', 'infused-off');
+                toggleTrack.classList.remove('bg-green-500/70', 'bg-gray-700', 'bg-gray-300', 'bg-gradient-to-t', 'from-green-500', 'to-lime-400', 'on-glow', 'infused-off');
                 
                 if (isViralBoostEnabled) {
-                    toggleTrack.classList.add('bg-gradient-to-t', 'from-green-400', 'to-lime-300', 'on-glow');
+                    toggleTrack.classList.add('bg-gradient-to-t', 'from-green-500', 'to-lime-400', 'on-glow');
                 } else {
-                    // "Infused" state: transparent/glassy instead of solid gray
                     toggleTrack.classList.add('infused-off');
                 }
                 toggleKnob.style.transform = isViralBoostEnabled ? 'translateX(28px)' : 'translateX(0)';
                 
-                toggleZap.classList.remove('text-green-500', 'text-green-600', 'text-gray-500', 'icon-pop-on');
+                toggleZap.classList.remove('text-green-600', 'text-gray-500', 'icon-pop-on');
                 toggleZap.style.filter = '';
                 if (isViralBoostEnabled) {
-                    toggleZap.classList.add('text-green-500', 'icon-pop-on');
+                    toggleZap.classList.add('text-green-600', 'icon-pop-on');
                 } else {
                     toggleZap.classList.add('text-gray-500');
                 }
@@ -515,7 +539,7 @@
             const selectedFile = event.target.files?.[0];
             if (selectedFile && selectedFile.type.startsWith("video/")) {
                 file = selectedFile;
-                currentFileName = file.name; // Initialize current filename
+                currentFileName = file.name; 
                 processFile();
             }
         };
@@ -525,7 +549,7 @@
             const droppedFile = event.dataTransfer.files?.[0];
             if (droppedFile && droppedFile.type.startsWith("video/")) {
                 file = droppedFile;
-                currentFileName = file.name; // Initialize current filename
+                currentFileName = file.name; 
                 processFile();
             }
         };
@@ -550,7 +574,7 @@
 
         const generateViralContent = (shouldUpdateScore = true) => { 
             if (!file) return;
-            const fileName = currentFileName; // Use the editable filename
+            const fileName = currentFileName; 
             const videoName = fileName.replace(/\.[^/.]+$/, "");
             allTitles = [
                 [`🔥 ULTIMATE ${videoName} Guide! (FanPlusFollow Secret)`, `📈 ${videoName}: Watch How We Went VIRAL in 24 Hours!`, `🤯 You Won't BELIEVE This ${videoName} Trick!`],
@@ -603,8 +627,8 @@
         const resetApp = () => {
             playClickSound(); 
             file = null;
-            currentFileName = ""; // Reset filename
-            isEditingTitle = false; // Reset edit mode
+            currentFileName = ""; 
+            isEditingTitle = false; 
             isProcessing = false;
             isProcessed = false;
             viralScore = 0;
@@ -679,13 +703,11 @@
                 }
             } else {
                 const textColor = 'text-gray-800';
-                const fileIconColor = 'text-green-600';
+                // Kept vibrant green + glow
+                const fileIconColor = 'text-green-500 drop-shadow-[0_0_5px_rgba(34,197,94,0.8)]';
                 const fileDetailColor = 'text-black';
-                
-                // Updated to brighter green with glow
                 const statusTextColorClass = 'text-green-500 drop-shadow-[0_0_8px_rgba(34,197,94,0.8)]';
                 const indicatorBarColorClass = 'bg-green-500 shadow-[0_0_15px_rgba(34,197,94,0.6)]';
-                
                 const startNewButtonClasses = ''; 
                 const startNewIconColor = 'text-white'; 
                 
@@ -709,7 +731,7 @@
                         <div class="flex-1 min-w-0 mr-2">
                             <input type="text" id="title-edit-input" value="${currentFileName}" class="w-full bg-transparent border-b-2 border-green-500 focus:outline-none font-bold text-gray-800 py-1" onkeydown="handleTitleInputKey(event)">
                         </div>
-                        <button onclick="saveTitleEdit()" class="p-2 rounded-full hover:bg-black/5 transition-colors text-green-600 flex-shrink-0" title="Save">
+                        <button onclick="saveTitleEdit()" class="p-2 rounded-full hover:bg-black/5 transition-colors text-green-500 drop-shadow-[0_0_5px_rgba(34,197,94,0.8)] flex-shrink-0" title="Save">
                             ${icon('Check', 'h-5 w-5')}
                         </button>
                     `;
@@ -756,7 +778,7 @@
                 currentFileName = input.value.trim();
                 isEditingTitle = false;
                 if (isProcessed) {
-                    generateViralContent(true); // Regenerate content with new name
+                    generateViralContent(true); 
                 }
                 updateUI();
             } else {
@@ -777,18 +799,16 @@
             const resultsContainer = document.getElementById('results-section');
             if (!resultsContainer) return;
             if (isProcessed) {
-                // Updated score colors to brighter variants and added specific glow logic
                 const scoreColorClass = viralScore < 75 ? "text-red-500" : viralScore < 90 ? "text-yellow-500" : "text-green-500";
                 const scoreText = viralScore < 75 ? "Rethink your content hook for better reach." : viralScore < 90 ? "Solid performance. A few tweaks could push it higher." : "VIRAL READY! This content is primed for maximum engagement. Post ASAP.";
                 
-                // Conditional glow style for ALL score ranges
                 let scoreGlowStyle = '';
                 if (viralScore < 75) {
-                    scoreGlowStyle = 'text-shadow: 0 0 30px rgba(239, 68, 68, 0.6);'; // Red glow
+                    scoreGlowStyle = 'text-shadow: 0 0 30px rgba(239, 68, 68, 0.6);'; 
                 } else if (viralScore < 90) {
-                    scoreGlowStyle = 'text-shadow: 0 0 30px rgba(234, 179, 8, 0.6);'; // Yellow glow
+                    scoreGlowStyle = 'text-shadow: 0 0 30px rgba(234, 179, 8, 0.6);'; 
                 } else {
-                    scoreGlowStyle = 'text-shadow: 0 0 30px rgba(34, 197, 94, 0.8);'; // Green glow
+                    scoreGlowStyle = 'text-shadow: 0 0 30px rgba(34, 197, 94, 0.8);'; 
                 }
                 
                 const viralScoreHTML = `
@@ -827,7 +847,6 @@
                         </div>
                     </div>`;
                 
-                // Changed to use the new "glass-inset-panel" class instead of bg-gray and border
                 const descriptionInnerClass = 'glass-inset-panel'; 
                 const descriptionTextColor = 'text-gray-700';
                 const copyAllButtonClasses = ''; 
@@ -859,6 +878,7 @@
         };
 
         const initApp = () => {
+            initParallax(); // START PARALLAX LISTENER
             startLaunchAnimation(); 
             const resultsContainer = document.getElementById('results-section');
             if (resultsContainer) resultsContainer.classList.remove('show-results');
