@@ -19,8 +19,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
     <!-- CRITICAL FIX FOR SAMSUNG INTERNET / CHROME MOBILE -->
-    <!-- This meta tag tells browsers NOT to "Force Dark Mode" inversion -->
-    <meta name="color-scheme" content="light dark">
+    <!-- The 'only' keyword tells browsers NOT to force inversion if the site already supports both modes -->
+    <meta name="color-scheme" content="only light dark">
+    <meta name="supported-color-schemes" content="only light dark">
     
     <title>FanPlusFollow - Growth AI</title>
     <meta name="description" content="Growth AI for Content Creators. Boost your reach with advanced tools.">
@@ -55,14 +56,15 @@
             box-sizing: border-box;
             
             /* CRITICAL FIX FOR MOBILE BROWSER INVERSION */
-            /* Explicitly declaration prevents Samsung Internet from overriding our theme */
-            color-scheme: light dark;
+            /* Using 'only' prevents Samsung Internet from overriding our theme */
+            color-scheme: only light dark;
         }
 
         /* NEW: Set base color on HTML to prevent white flicker */
         html {
             background-color: #0A0D14; /* Dark mode base */
             transition: background-color 300ms ease-in-out;
+            color-scheme: only light dark;
         }
 
         *, *::before, *::after {
@@ -435,7 +437,6 @@
                         <span id="viral-toggle-text" class="text-lg font-bold transition-colors duration-300 text-white">
                             Viral Mode
                         </span>
-                        <!-- onmouseenter="playHoverSound()" REMOVED from toggle below -->
                         <div id="viral-toggle-track" class="viral-toggle-track w-16 h-9 flex items-center rounded-full p-1 cursor-pointer transition-all duration-300 backdrop-blur-3xl active:scale-95" onclick="toggleViralBoost()">
                           <div id="viral-toggle-knob" class="w-7 h-7 rounded-full transform transition-transform duration-300 viral-toggle-knob"></div>
                         </div>
@@ -571,12 +572,16 @@
         const updateModeUI = () => {
             const body = document.body;
             const htmlElement = document.documentElement; 
+            
+            // CRITICAL FIX: Explicitly set color-scheme on root element to signal dark mode compliance
             if (isDarkMode) {
                 body.classList.remove('light-mode');
                 htmlElement.style.backgroundColor = '#0A0D14'; 
+                htmlElement.style.colorScheme = 'only dark'; // Signal compliance
             } else {
                 body.classList.add('light-mode');
                 htmlElement.style.backgroundColor = '#EBF1F7'; 
+                htmlElement.style.colorScheme = 'only light'; // Signal compliance
             }
         };
 
