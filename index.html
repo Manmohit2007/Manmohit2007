@@ -25,7 +25,6 @@
             font-family: 'Inter', sans-serif; 
             box-sizing: border-box;
             color-scheme: only light;
-            /* Disable default tap highlight on mobile for custom feeling */
             -webkit-tap-highlight-color: transparent;
         }
 
@@ -41,7 +40,6 @@
             background-color: rgba(155, 155, 155, 0.2);
             border-radius: 20px;
         }
-        /* Fix for white square artifact on mobile/webkit */
         ::-webkit-scrollbar-corner {
             background: transparent;
         }
@@ -68,48 +66,31 @@
 
         /* Glass Card */
         .glass-card {
-            /* Milky/Frosted: Lower opacity, stronger white inset */
             background-color: rgba(255, 255, 255, 0.15);
             -webkit-backdrop-filter: blur(24px) saturate(110%);
             backdrop-filter: blur(24px) saturate(110%); 
-            /* Enhanced white inner shadow for milky feel */
             box-shadow: inset 0 0 40px rgba(255, 255, 255, 0.4), 0 25px 50px rgba(0, 0, 0, 0.05);
             border: 1px solid rgba(255, 255, 255, 0.5);
             border-radius: 36px;
             transform: translateZ(0);
-            /* Improve touch handling */
             touch-action: manipulation;
         }
 
-        /* Hover effects ONLY for devices with a pointer (mouse) */
         @media (hover: hover) {
             .glass-card:hover {
                 transform: translateY(-8px) scale(1.005) translateZ(0); 
-                /* Brighter inner glow on hover */
                 box-shadow: 0 15px 40px rgba(0, 0, 0, 0.08), inset 0 0 50px rgba(255, 255, 255, 0.5);
                 border-color: rgba(255, 255, 255, 0.7);
             }
             
-            .title-result-card:hover {
-                transform: translateY(-8px) scale(1.005) translateZ(0); 
-                box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15), inset 0 0 30px rgba(255, 255, 255, 0.4);
-                border-color: rgba(255, 255, 255, 0.8);
-            }
-
             .cta-button:hover {
                 transform: translateY(-4px) scale(1.02) translateZ(0);
-                opacity: 1; /* Fully opaque on hover */
+                opacity: 1; 
                 box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1); 
                 filter: brightness(1.1); 
             }
-            
-            .gradient-border-mask:hover::before {
-                opacity: 1; 
-                filter: drop-shadow(0 0 5px rgba(236, 72, 153, 0.3)); 
-            }
         }
 
-        /* Active states for touch feedback (replaces hover on mobile) */
         .glass-card:active {
             transform: scale(0.98) translateZ(0) !important;
             transition-duration: 100ms;
@@ -117,59 +98,26 @@
 
         /* --- CTA BUTTONS --- */
         .cta-button {
-            /* Elastic Bounce: Slow, springy return */
             transition: transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.4s ease-out, filter 0.3s ease, box-shadow 0.4s ease;
-            /* Vivid Gradient - Smoother Mix: Violet/Pink (0-40%), Blend (40-75%), Lighter Orange (75-100%) */
             background: linear-gradient(to right, #a78bfa 0%, #f472b6 40%, #fca564 75%, #fca564 100%); 
-            color: #ffffff; /* White text */
+            color: #ffffff; 
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); 
             will-change: transform, filter, opacity, box-shadow; 
             border: none;
-            opacity: 0.9; /* Higher visibility by default */
-            /* Ensure text doesn't select on button tap */
+            opacity: 0.9; 
             user-select: none;
             -webkit-user-select: none;
             touch-action: manipulation;
             cursor: pointer;
-            transform: translateZ(0); /* Hardware accelerate */
+            transform: translateZ(0); 
         }
         
-        /* Instant Press: Fast in, Deep compression */
         .cta-button:active {
             transform: scale(0.92) translateZ(0) !important; 
-            transition: transform 0.05s ease-out, opacity 0.05s ease-out; /* Instant feedback */
+            transition: transform 0.05s ease-out, opacity 0.05s ease-out; 
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-            filter: brightness(1.2); /* Flash bright on tap */
+            filter: brightness(1.2); 
             opacity: 1; 
-        }
-
-        /* --- GRADIENT BORDER MASK --- */
-        .gradient-border-mask {
-            position: relative;
-            border-width: 0 !important; 
-            border-radius: 30px;
-        }
-        
-        .gradient-border-mask::before {
-            content: "";
-            position: absolute;
-            inset: 0;
-            border-radius: 30px; 
-            padding: 2px; /* Slightly thicker for glow visibility */
-            /* Vivid Gradient - Smoother Mix: Violet/Pink (0-40%), Blend (40-75%), Lighter Orange (75-100%) */
-            background: linear-gradient(to right, #a78bfa 0%, #f472b6 40%, #fca564 75%, #fca564 100%); 
-            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-            -webkit-mask-composite: xor;
-            mask-composite: exclude;
-            pointer-events: none;
-            transition: all 500ms cubic-bezier(0.4, 0, 0.2, 1);
-            opacity: 0.7; /* Increased visibility */
-        }
-        
-        .gradient-border-mask:hover::before {
-            opacity: 1; 
-            /* Enhanced layered glow matching the button colors */
-            filter: drop-shadow(0 0 8px rgba(244, 114, 182, 0.6)) drop-shadow(0 0 20px rgba(167, 139, 250, 0.4)); 
         }
 
         body {
@@ -206,7 +154,6 @@
             touch-action: manipulation;
         }
         
-        /* FUSED OFF STATE: Carved into the glass */
         .viral-toggle-track.infused-off {
             background-color: rgba(0, 0, 0, 0.02); 
             box-shadow: 
@@ -216,7 +163,6 @@
             border: none; 
         }
 
-        /* LEAKING ON STATE: Intense glow spread */
         .viral-toggle-track.on-glow {
             box-shadow: 
                 inset 0 2px 4px rgba(0, 0, 0, 0.2), 
@@ -246,20 +192,20 @@
             filter: drop-shadow(0 0 12px rgba(74, 222, 128, 0.9));
         }
 
-        /* Replaced simple border with intense glow for drag state */
-        .drag-over-active::before { 
-            opacity: 1 !important;
-            filter: drop-shadow(0 0 10px rgba(244, 114, 182, 0.8)) drop-shadow(0 0 25px rgba(167, 139, 250, 0.6)) !important;
+        /* Updated Drag Over State - Simple White Highlight */
+        .drag-over-active { 
+            border-color: #ffffff !important;
+            border-width: 2px !important;
+            background-color: rgba(255, 255, 255, 0.1);
+            transform: scale(1.01);
         }
 
-        /* Make toggle area easier to hit on mobile */
         .toggle-click-area {
             cursor: pointer;
             user-select: none;
             -webkit-user-select: none;
         }
 
-        /* NEW: Fused Inset Panel Style for "carved" look */
         .glass-inset-panel {
             background-color: rgba(0, 0, 0, 0.02);
             box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.1), 0 1px 0 rgba(255, 255, 255, 0.2);
@@ -267,7 +213,6 @@
             border: none;
         }
 
-        /* Hover state for inset panels to make them interactive inside the main card */
         .glass-inset-panel.interactive {
             transition: background-color 0.3s ease, box-shadow 0.3s ease;
         }
@@ -279,7 +224,6 @@
             }
         }
 
-        /* Fused Progress Track - replaces standard gray background */
         .progress-track-fused {
             background-color: rgba(0, 0, 0, 0.06);
             box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1), 0 1px 0 rgba(255, 255, 255, 0.4);
@@ -298,7 +242,6 @@
                             <img src="https://manmohit2007.github.io/Manmohit2007/brand_logo.png?v=10" alt="FanPlusFollow Logo" class="w-full h-full object-contain filter drop-shadow-md">
                         </div>
                         <div class="text-left">
-                            <!-- Vivid Gradient Title - Smoother Mix: Violet/Pink (0-40%), Blend (40-75%), Lighter Orange (75-100%) -->
                             <h1 class="text-2xl font-bold bg-clip-text text-transparent" style="background-image: linear-gradient(to right, #a78bfa 0%, #f472b6 40%, #fca564 75%, #fca564 100%)">
                               FanPlusFollow
                             </h1>
@@ -341,7 +284,6 @@
                         <div class="w-16 h-16 mb-2 sm:mb-4">
                             <img src="https://manmohit2007.github.io/Manmohit2007/brand_logo.png?v=10" alt="FanPlusFollow Logo" class="w-full h-full object-contain filter drop-shadow-md">
                         </div>
-                        <!-- Vivid Gradient Title - Smoother Mix: Violet/Pink (0-40%), Blend (40-75%), Lighter Orange (75-100%) -->
                         <h3 class="text-xl sm:text-2xl font-bold bg-clip-text text-transparent text-center" style="background-image: linear-gradient(to right, #a78bfa 0%, #f472b6 40%, #fca564 75%, #fca564 100%)">
                           Boost Your Reach With FanPlusFollow
                         </h3>
@@ -399,7 +341,6 @@
                 'Copy': `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="${classes}"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>`,
                 'Check': `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="${classes}"><polyline points="20 6 9 17 4 12"/></svg>`,
                 'RotateCcw': `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="${classes}"><path d="M3 2v6h6"/><path d="M3 13a9 9 0 1 0 3-7.7L3 8"/></svg>`,
-                // Updated gradient definition - Smoother Mix: Violet/Pink (0-40%), Blend (40-75%), Lighter Orange (75-100%)
                 'Edit': `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="url(#pencil-gradient)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="${classes}"><defs><linearGradient id="pencil-gradient" x1="0%" y1="0%" x2="100%" y2="0%"><stop offset="0%" stop-color="#a78bfa" /><stop offset="40%" stop-color="#f472b6" /><stop offset="75%" stop-color="#fca564" /><stop offset="100%" stop-color="#fca564" /></linearGradient></defs><path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"/></svg>`,
             };
             return iconMap[name] || '';
@@ -450,18 +391,14 @@
             if (toggleTrack && toggleKnob && toggleZap && toggleText) {
                 toggleKnob.classList.remove('bg-white', 'bg-gray-800');
                 toggleKnob.classList.add('bg-white');
-                
                 toggleTrack.classList.remove('bg-green-500/70', 'bg-gray-700', 'bg-gray-300', 'bg-gradient-to-t', 'from-green-500', 'to-lime-400', 'on-glow', 'infused-off');
-                
                 if (isViralBoostEnabled) {
                     toggleTrack.classList.add('bg-gradient-to-t', 'from-green-400', 'to-lime-400', 'on-glow');
                 } else {
                     toggleTrack.classList.add('infused-off');
                 }
                 toggleKnob.style.transform = isViralBoostEnabled ? 'translateX(28px)' : 'translateX(0)';
-                
                 toggleZap.classList.remove('text-green-400', 'text-gray-500', 'icon-pop-on', 'drop-shadow-[0_0_5px_rgba(74,222,128,0.8)]');
-                toggleZap.style.filter = '';
                 if (isViralBoostEnabled) {
                     toggleZap.classList.add('text-green-400', 'icon-pop-on', 'drop-shadow-[0_0_5px_rgba(74,222,128,0.8)]');
                 } else {
@@ -542,7 +479,6 @@
 
         const handleRegenerate = () => {
             if (file) {
-                // Added delay to allow visual feedback (button press) before DOM refresh
                 setTimeout(() => {
                     currentTitleSetIndex = (currentTitleSetIndex + 1) % allTitles.length;
                     currentDescriptionIndex = (currentDescriptionIndex + 1) % allDescriptions.length;
@@ -558,15 +494,12 @@
         }
 
         const copyToClipboard = (text, index) => {
-            // Perform copy immediately to ensure browser security context (user activation) is respected
             const tempElement = document.createElement('textarea');
             tempElement.value = text;
             document.body.appendChild(tempElement);
             tempElement.select();
             document.execCommand('copy');
             document.body.removeChild(tempElement);
-
-            // Delay the visual update
             setTimeout(() => {
                 copiedIndex = index;
                 updateUI(); 
@@ -590,19 +523,17 @@
                 if (progressInterval) clearInterval(progressInterval);
                 const fileInput = document.getElementById('file-upload-input');
                 if (fileInput) fileInput.value = "";
-                const resultsContainer = document.getElementById('results-section');
-                if (resultsContainer) resultsContainer.classList.remove('show-results');
                 updateUI();
                 attachStaticListeners(); 
             }, 200);
         };
 
         const attachStaticListeners = () => {
-            const cards = document.querySelectorAll('.glass-card:not(.has-listener), .title-result-card:not(.has-listener)');
+            const cards = document.querySelectorAll('.glass-card:not(.has-listener)');
             const handleTouchHover = function(e) {
                 if (e.target.closest('button, input, textarea, a')) return;
                 const isAlreadyHovered = this.classList.contains('tapped-hover');
-                document.querySelectorAll('.glass-card, .title-result-card').forEach(el => { if (el !== this) el.classList.remove('tapped-hover'); });
+                document.querySelectorAll('.glass-card').forEach(el => { if (el !== this) el.classList.remove('tapped-hover'); });
                 if (!isAlreadyHovered) this.classList.add('tapped-hover');
                 else this.classList.remove('tapped-hover');
             };
@@ -623,16 +554,15 @@
             const uploadContainer = document.getElementById('upload-section-content');
             if (!uploadContainer) return;
             if (!file) {
-                const textColorClass = 'text-black';
-                const helperTextColorClass = 'text-black';
-                const borderColorClass = 'gradient-border-mask'; 
+                // Modified for thin white outline
+                const borderColorClass = 'border-white'; 
                 uploadContainer.innerHTML = `
                     <div id="file-drop-area" class="fluid-transition w-full h-64 flex flex-col items-center justify-center text-center cursor-pointer hover:scale-[1.01]" ondragover="event.preventDefault()">
-                        <div id="inner-drop-div" class="w-full h-full flex flex-col items-center justify-center border-2 border-solid rounded-[30px] transition-all duration-300 ${borderColorClass}">
-                            ${icon('Upload', `h-10 w-10 ${textColorClass}`)}
+                        <div id="inner-drop-div" class="w-full h-full flex flex-col items-center justify-center border border-solid rounded-[30px] transition-all duration-300 ${borderColorClass}">
+                            ${icon('Upload', `h-10 w-10 text-black`)}
                             <div>
-                            <p class="font-bold ${textColorClass}">Drag & Drop Your Video File Here</p>
-                            <p class="text-sm mt-1 ${helperTextColorClass}">or click to browse the video file</p>
+                                <p class="font-bold text-black">Drag & Drop Your Video File Here</p>
+                                <p class="text-sm mt-1 text-black">or click to browse the video file</p>
                             </div>
                             <button id="select-file-btn" class="cta-button mt-4 px-6 py-3 rounded-full font-bold transition-all duration-300 ease-in-out transform backdrop-blur-3xl">Select File</button>
                         </div>
@@ -655,14 +585,8 @@
                     dropArea.onclick = (e) => { if(e.target === dropArea || e.target.closest('#inner-drop-div')) { fileInput.click(); } };
                 }
             } else {
-                const textColor = 'text-gray-800';
-                // Kept vibrant green + glow
-                const fileIconColor = 'text-green-400';
-                const fileDetailColor = 'text-black';
                 const statusTextColorClass = 'text-green-400 drop-shadow-[0_0_8px_rgba(74,222,128,0.8)]';
                 const indicatorBarColorClass = 'bg-green-400 shadow-[0_0_15px_rgba(74,222,128,0.6)]';
-                const startNewButtonClasses = ''; 
-                const startNewIconColor = 'text-white'; 
                 
                 const processingArea = isProcessing || isProcessed ? `
                     <div class="w-full max-w-sm mb-4">
@@ -674,10 +598,9 @@
                             <div id="progress-indicator" class="h-2.5 rounded-full transition-all duration-1000 ${indicatorBarColorClass}" style="width: ${progressValue}%"></div>
                         </div>
                     </div>
-                    ${isProcessed ? `<div class="flex gap-4 mt-6"><button onclick="resetApp()" class="cta-button ${startNewButtonClasses} backdrop-blur-xl px-6 py-3 rounded-full font-medium flex items-center">${icon('RotateCcw', `mr-2 h-4 w-4 ${startNewIconColor}`)} Start New Video</button></div>` : ''}
+                    ${isProcessed ? `<div class="flex gap-4 mt-6"><button onclick="resetApp()" class="cta-button backdrop-blur-xl px-6 py-3 rounded-full font-medium flex items-center">${icon('RotateCcw', `mr-2 h-4 w-4 text-white`)} Start New Video</button></div>` : ''}
                 ` : '';
 
-                // Title Section Logic
                 let titleContentHTML = '';
                 if (isEditingTitle) {
                     titleContentHTML = `
@@ -691,8 +614,8 @@
                 } else {
                     titleContentHTML = `
                         <div class="text-left overflow-hidden flex-1 min-w-0 mr-2">
-                            <p class="font-bold truncate ${textColor}">${currentFileName}</p>
-                            <p class="text-xs ${fileDetailColor}">${(file.size / (1024 * 1024)).toFixed(2)} MB</p>
+                            <p class="font-bold truncate text-gray-800">${currentFileName}</p>
+                            <p class="text-xs text-black">${(file.size / (1024 * 1024)).toFixed(2)} MB</p>
                         </div>
                         <button onclick="enableTitleEdit()" class="p-2 rounded-full hover:bg-black/5 transition-colors text-gray-500 hover:text-black flex-shrink-0" title="Edit Name">
                             ${icon('Edit', 'h-6 w-6')}
@@ -711,36 +634,23 @@
         };
 
         const enableTitleEdit = () => {
-            // iOS FIX: Executing strictly synchronously to ensure keyboard launch.
-            // Any setTimeout (even 0ms) will break the "user interaction" chain on iPad/iPhone.
             isEditingTitle = true;
             updateUI();
-            
             const input = document.getElementById('title-edit-input');
             if(input) {
                 input.focus();
-                // Try standard select, fallback to setSelectionRange for better iOS compatibility
-                try {
-                    input.select();
-                } catch (e) {
-                    input.setSelectionRange(0, 9999);
-                }
+                try { input.select(); } catch (e) { input.setSelectionRange(0, 9999); }
             }
         };
 
         const saveTitleEdit = () => {
-            // KEYBOARD FIX: Explicitly blur the input immediately to force keyboard to close
             const input = document.getElementById('title-edit-input');
             if (input) input.blur();
-
             setTimeout(() => {
-                // Input reference is still valid here even if blurred
                 if (input && input.value.trim() !== "") {
                     currentFileName = input.value.trim();
                     isEditingTitle = false;
-                    if (isProcessed) {
-                        generateViralContent(true); 
-                    }
+                    if (isProcessed) generateViralContent(true);
                     updateUI();
                 } else {
                     isEditingTitle = false;
@@ -765,13 +675,9 @@
                 const scoreText = viralScore < 75 ? "Rethink your content hook for better reach." : viralScore < 90 ? "Solid performance. A few tweaks could push it higher." : "VIRAL READY! This content is primed for maximum engagement. Post ASAP.";
                 
                 let scoreGlowStyle = '';
-                if (viralScore < 75) {
-                    scoreGlowStyle = 'text-shadow: 0 0 30px rgba(239, 68, 68, 0.6);'; 
-                } else if (viralScore < 90) {
-                    scoreGlowStyle = 'text-shadow: 0 0 30px rgba(234, 179, 8, 0.6);'; 
-                } else {
-                    scoreGlowStyle = 'text-shadow: 0 0 30px rgba(74, 222, 128, 0.8);'; 
-                }
+                if (viralScore < 75) scoreGlowStyle = 'text-shadow: 0 0 30px rgba(239, 68, 68, 0.6);'; 
+                else if (viralScore < 90) scoreGlowStyle = 'text-shadow: 0 0 30px rgba(234, 179, 8, 0.6);'; 
+                else scoreGlowStyle = 'text-shadow: 0 0 30px rgba(74, 222, 128, 0.8);'; 
                 
                 const viralScoreHTML = `
                     <div class="glass-card fluid-transition p-6 rounded-[36px] mb-12">
@@ -784,17 +690,12 @@
                             <p class="text-base font-medium text-black mt-3">${scoreText}</p>
                         </div>
                     </div>`;
-                const titleTextColor = 'text-gray-800';
-                const regenerateButtonClasses = ''; 
-                
-                /* Updated Copy Button Classes to match Edit Pencil style */
-                const copyButtonBaseClasses = "h-8 w-8 p-0 rounded-full flex items-center justify-center transition-all duration-300";
-                const copyButtonDynamicClasses = "bg-transparent hover:bg-black/5 text-gray-800 hover:text-black active:scale-90 active:bg-black/10"; 
+
                 const titlesHTML = `
                     <div class="glass-card fluid-transition p-6 rounded-[36px] mb-12">
                         <div class="flex justify-between items-center mb-6">
                             <h2 class="text-2xl font-bold text-black">Titles</h2>
-                            <button onclick="handleRegenerate()" class="cta-button ${regenerateButtonClasses} backdrop-blur-xl text-sm px-4 py-2 rounded-full font-medium flex items-center whitespace-nowrap flex-shrink-0"><span class="flex items-center">${icon('RotateCcw', `mr-2 h-4 w-4 text-white`)} Regenerate</span></button>
+                            <button onclick="handleRegenerate()" class="cta-button backdrop-blur-xl text-sm px-4 py-2 rounded-full font-medium flex items-center whitespace-nowrap flex-shrink-0"><span class="flex items-center">${icon('RotateCcw', `mr-2 h-4 w-4 text-white`)} Regenerate</span></button>
                         </div>
                         <div class="grid grid-cols-1 md:grid-cols-3 gap-6 overflow-visible">
                             ${titles.map((title, index) => `
@@ -802,34 +703,30 @@
                                     <div class="p-1">
                                         <div class="flex justify-between items-start mb-2">
                                             <span class="text-xs font-medium px-2 py-1 rounded-full bg-pink-100 text-pink-700 border border-pink-300">Option ${index + 1}</span>
-                                            <button onclick="copyToClipboard('${title.replace(/'/g, "\\'")}', ${index})" class="${copyButtonBaseClasses} ${copyButtonDynamicClasses}">${copiedIndex === index ? icon('Check', 'h-4 w-4 text-green-400') : icon('Copy', 'h-4 w-4')}</button>
+                                            <button onclick="copyToClipboard('${title.replace(/'/g, "\\'")}', ${index})" class="h-8 w-8 p-0 rounded-full flex items-center justify-center transition-all duration-300 bg-transparent hover:bg-black/5 text-gray-800 hover:text-black active:scale-90 active:bg-black/10">${copiedIndex === index ? icon('Check', 'h-4 w-4 text-green-400') : icon('Copy', 'h-4 w-4')}</button>
                                         </div>
-                                        <p class="text-base font-medium ${titleTextColor} p-1">${title}</p>
+                                        <p class="text-base font-medium text-gray-800 p-1">${title}</p>
                                     </div>
                                 </div>`).join('')}
                         </div>
                     </div>`;
                 
-                const descriptionInnerClass = 'glass-inset-panel'; 
-                const descriptionTextColor = 'text-gray-700';
-                const copyAllButtonClasses = ''; 
                 const descriptionHTML = `
                     <div class="glass-card fluid-transition p-6 rounded-[36px]"> 
                         <div class="mb-4">
                             <h2 class="flex justify-between items-center text-2xl font-bold text-black">
                                 <span class="truncate mr-2">Description</span>
-                                <button onclick="copyDescriptionToClipboard()" class="cta-button ${copyAllButtonClasses} backdrop-blur-xl text-sm px-4 py-2 rounded-full font-medium flex items-center whitespace-nowrap flex-shrink-0">${copiedIndex === 3 ? `<span class="flex items-center">${icon('Check', 'mr-2 h-4 w-4 text-white')} Copied!</span>` : `<span class="flex items-center">${icon('Copy', 'mr-2 h-4 w-4 text-white')} Copy All</span>`}</button>
+                                <button onclick="copyDescriptionToClipboard()" class="cta-button backdrop-blur-xl text-sm px-4 py-2 rounded-full font-medium flex items-center whitespace-nowrap flex-shrink-0">${copiedIndex === 3 ? `<span class="flex items-center">${icon('Check', 'mr-2 h-4 w-4 text-white')} Copied!</span>` : `<span class="flex items-center">${icon('Copy', 'mr-2 h-4 w-4 text-white')} Copy All</span>`}</button>
                             </h2>
                         </div>
-                        <div class="${descriptionInnerClass} p-4 sm:p-5 min-h-[250px] max-h-96 overflow-auto custom-scrollbar">
-                            <pre class="whitespace-pre-wrap text-xs sm:text-sm font-mono ${descriptionTextColor} leading-relaxed">${description}</pre>
+                        <div class="glass-inset-panel p-4 sm:p-5 min-h-[250px] max-h-96 overflow-auto custom-scrollbar">
+                            <pre class="whitespace-pre-wrap text-xs sm:text-sm font-mono text-gray-700 leading-relaxed">${description}</pre>
                         </div>
                     </div>`;
                 resultsContainer.innerHTML = viralScoreHTML + titlesHTML + descriptionHTML;
-                setTimeout(() => { resultsContainer.classList.add('show-results'); attachStaticListeners(); }, 50);
+                setTimeout(() => resultsContainer.classList.add('show-results'), 50);
             } else {
                 resultsContainer.innerHTML = '';
-                resultsContainer.classList.remove('show-results');
             }
         };
 
@@ -842,8 +739,6 @@
 
         const initApp = () => {
             startLaunchAnimation(); 
-            const resultsContainer = document.getElementById('results-section');
-            if (resultsContainer) resultsContainer.classList.remove('show-results');
             updateUI();
             attachStaticListeners();
         };
