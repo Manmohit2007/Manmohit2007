@@ -235,8 +235,8 @@
     <div id="fixed-background"></div>
     <div class="max-w-4xl mx-auto">
         <div class="flex flex-col md:flex-row gap-12 mb-12">
-            <header id="app-header" class="glass-card fluid-transition p-6 flex flex-col md:flex-row items-center justify-between flex-1 card-animation-target md:order-first">
-                <div class="flex items-center mb-4 md:mb-0">
+            <header id="app-header" class="glass-card fluid-transition p-6 flex flex-col sm:flex-row items-center justify-between flex-1 card-animation-target sm:order-first">
+                <div class="flex items-center mb-4 sm:mb-0">
                     <div class="flex items-center space-x-4">
                         <div class="w-16 h-16">
                             <img src="https://manmohit2007.github.io/Manmohit2007/brand_logo.png?v=10" alt="FanPlusFollow Logo" class="w-full h-full object-contain filter drop-shadow-md">
@@ -297,7 +297,7 @@
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2 h-4 w-4"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
                             Subscribe Now
                           </button>
-                          <button class="cta-button px-6 py-3 rounded-full font-bold transition-all duration-300 ease-in-out transform backdrop-blur-3xl flex items-center" onclick="openLinkWithDelay('https://www.instagram.com/_manmohit_singh_/')">
+                          <button class="cta-button px-6 py-3 rounded-full font-bold transition-all duration-300 ease-in-out transform backdrop-blur-3xl flex items-center" onclick="openLinkWithDelay('https://www.instagram.com/_manmohit_sing_/')">
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2 h-4 w-4"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
                             Follow Now
                           </button>
@@ -328,7 +328,7 @@
         let progressInterval = null;
 
         const YOUTUBE_CHANNEL_LINK = "https://www.youtube.com/@fanplusfollow";
-        const INSTAGRAM_LINK = "https://www.instagram.com/_manmohit_singh_/";
+        const INSTAGRAM_LINK = "https://www.instagram.com/_manmohit_sing_/";
 
         const openLinkWithDelay = (url) => {
             setTimeout(() => {
@@ -563,8 +563,8 @@
                     <div id="file-drop-area" class="fluid-transition w-full h-full flex flex-col items-center justify-center text-center cursor-pointer">
                         ${icon('Upload', `h-12 w-12 text-black mb-4`)}
                         <div>
-                            <p class="text-xl font-bold text-black">Drag & Drop Your Video File Here</p>
-                            <p class="text-sm mt-2 text-black opacity-60">or click to browse from your device</p>
+                            <p class="text-xl font-bold text-black">Drag & Drop Your Video File</p>
+                            <p class="text-sm mt-2 text-black opacity-60">or click to browse the video file</p>
                         </div>
                         <button id="select-file-btn" class="cta-button mt-6 px-8 py-4 rounded-full font-bold transition-all duration-300 ease-in-out transform backdrop-blur-3xl text-lg">Select File</button>
                         <input type="file" id="file-upload-input" class="hidden" accept="video/*" onchange="handleFileChange(event)"/>
