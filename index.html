@@ -789,7 +789,7 @@
                 
                 /* Updated Copy Button Classes to match Edit Pencil style */
                 const copyButtonBaseClasses = "h-8 w-8 p-0 rounded-full flex items-center justify-center transition-all duration-300";
-                const copyButtonDynamicClasses = "bg-transparent hover:bg-black/5 text-gray-500 hover:text-black active:scale-90 active:bg-black/10"; 
+                const copyButtonDynamicClasses = "bg-transparent hover:bg-black/5 text-gray-800 hover:text-black active:scale-90 active:bg-black/10"; 
                 const titlesHTML = `
                     <div class="glass-card fluid-transition p-6 rounded-[36px] mb-12">
                         <div class="flex justify-between items-center mb-6">
@@ -817,8 +817,8 @@
                     <div class="glass-card fluid-transition p-6 rounded-[36px]"> 
                         <div class="mb-4">
                             <h2 class="flex justify-between items-center text-xl sm:text-2xl font-bold text-black">
-                                <span>Optimized Description & Hashtags</span>
-                                <button onclick="copyDescriptionToClipboard()" class="cta-button ${copyAllButtonClasses} backdrop-blur-xl text-sm px-4 py-2 rounded-full font-medium flex items-center">${copiedIndex === 3 ? `<span class="flex items-center">${icon('Check', 'mr-2 h-4 w-4 text-white')} Copied!</span>` : `<span class="flex items-center">${icon('Copy', 'mr-2 h-4 w-4 text-white')} Copy All</span>`}</button>
+                                <span class="truncate mr-2">Optimized Description & Hashtags</span>
+                                <button onclick="copyDescriptionToClipboard()" class="cta-button ${copyAllButtonClasses} backdrop-blur-xl text-sm px-4 py-2 rounded-full font-medium flex items-center whitespace-nowrap flex-shrink-0">${copiedIndex === 3 ? `<span class="flex items-center">${icon('Check', 'mr-2 h-4 w-4 text-white')} Copied!</span>` : `<span class="flex items-center">${icon('Copy', 'mr-2 h-4 w-4 text-white')} Copy All</span>`}</button>
                             </h2>
                         </div>
                         <div class="${descriptionInnerClass} p-4 sm:p-5 min-h-[250px] max-h-96 overflow-auto custom-scrollbar">
