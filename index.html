@@ -26,6 +26,8 @@
             font-family: 'Inter', sans-serif; 
             box-sizing: border-box;
             color-scheme: only light;
+            /* Disable default tap highlight on mobile for custom feeling */
+            -webkit-tap-highlight-color: transparent;
         }
 
         html {
@@ -72,13 +74,43 @@
             border: 1px solid rgba(255, 255, 255, 0.5);
             border-radius: 36px;
             transform: translateZ(0);
+            /* Improve touch handling */
+            touch-action: manipulation;
         }
 
-        .glass-card:hover {
-            transform: translateY(-8px) scale(1.005) translateZ(0); 
-            /* Brighter inner glow on hover */
-            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.08), inset 0 0 50px rgba(255, 255, 255, 0.5);
-            border-color: rgba(255, 255, 255, 0.7);
+        /* Hover effects ONLY for devices with a pointer (mouse) */
+        @media (hover: hover) {
+            .glass-card:hover {
+                transform: translateY(-8px) scale(1.005) translateZ(0); 
+                /* Brighter inner glow on hover */
+                box-shadow: 0 15px 40px rgba(0, 0, 0, 0.08), inset 0 0 50px rgba(255, 255, 255, 0.5);
+                border-color: rgba(255, 255, 255, 0.7);
+            }
+            
+            .title-result-card:hover {
+                transform: translateY(-8px) scale(1.005) translateZ(0); 
+                box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15), inset 0 0 30px rgba(255, 255, 255, 0.4);
+                border-color: rgba(255, 255, 255, 0.8);
+            }
+
+            .cta-button:hover {
+                transform: translateY(-4px) scale(1.02) translateZ(0);
+                opacity: 1; /* Fully opaque on hover */
+                box-shadow: none; 
+                filter: none; 
+            }
+            
+            .gradient-border-mask:hover::before {
+                opacity: 1; 
+                filter: drop-shadow(0 0 5px rgba(236, 72, 153, 0.3)); 
+            }
+        }
+
+        /* Active states for touch feedback (replaces hover on mobile) */
+        .cta-button:active, 
+        .glass-card:active {
+            transform: scale(0.98) translateZ(0) !important;
+            transition-duration: 100ms;
         }
 
         .title-result-card {
@@ -88,18 +120,7 @@
             border: 1px solid rgba(255, 255, 255, 0.5);
             border-radius: 36px;
             transform: translateZ(0);
-        }
-
-        .title-result-card:hover {
-            transform: translateY(-8px) scale(1.005) translateZ(0); 
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15), inset 0 0 30px rgba(255, 255, 255, 0.4);
-            border-color: rgba(255, 255, 255, 0.8);
-        }
-        
-        .glass-card.tapped-hover,
-        .title-result-card.tapped-hover {
-            transform: translateY(-8px) scale(1.005) translateZ(0) !important; 
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15) !important; 
+            touch-action: manipulation;
         }
 
         /* --- CTA BUTTONS --- */
@@ -112,19 +133,18 @@
             will-change: transform, filter, opacity; 
             border: none;
             opacity: 0.6; /* Moderate brightness by default */
-        }
-        
-        .cta-button:hover {
-            transform: translateY(-4px) scale(1.02) translateZ(0);
-            opacity: 1; /* Fully opaque on hover */
-            filter: none; /* Removed extra brightness */
-            box-shadow: none; 
+            /* Ensure text doesn't select on button tap */
+            user-select: none;
+            -webkit-user-select: none;
+            touch-action: manipulation;
+            cursor: pointer;
         }
         
         .cta-button:active {
             transform: scale(0.97) translateZ(0) !important; 
             box-shadow: none;
             filter: brightness(0.95); 
+            opacity: 1; /* Make it opaque on tap */
         }
 
         /* --- GRADIENT BORDER MASK --- */
@@ -150,17 +170,12 @@
             opacity: 0.6; /* Moderate brightness by default */
         }
         
-        .gradient-border-mask:hover::before {
-            opacity: 1; /* Fully opaque on hover */
-            /* Subtle Pink Glow */
-            filter: drop-shadow(0 0 5px rgba(236, 72, 153, 0.3)); 
-        }
-
         body {
             background-color: transparent; 
             min-height: 100vh;
             color: #374151;
             overflow-x: hidden;
+            /* Prevent bounce effect on iOS body scroll if needed, though usually desirable */
         }
 
         #fixed-background {
@@ -176,6 +191,9 @@
             transition: all 400ms cubic-bezier(0.25, 0.46, 0.45, 0.94);
             /* Removed default heavy shadow to allow states to manage it */
             border-radius: 9999px;
+            cursor: pointer;
+            /* Prevent zoom on double tap */
+            touch-action: manipulation;
         }
         
         /* FUSED OFF STATE: Carved into the glass */
@@ -195,8 +213,8 @@
             /* Outer shadows: 1. Core tight glow, 2. Wide ambient leak */
             box-shadow: 
                 inset 0 2px 4px rgba(0, 0, 0, 0.2), 
-                0 0 30px 8px rgba(34, 197, 94, 0.9),
-                0 0 80px 30px rgba(34, 197, 94, 0.6); 
+                0 0 30px 8px rgba(0, 255, 85, 0.9),
+                0 0 80px 30px rgba(0, 255, 85, 0.6); 
         }
         
         .viral-toggle-knob {
@@ -223,6 +241,21 @@
         }
 
         .drag-over-active { border-color: #000000 !important; }
+
+        /* Make toggle area easier to hit on mobile */
+        .toggle-click-area {
+            cursor: pointer;
+            user-select: none;
+            -webkit-user-select: none;
+        }
+
+        /* NEW: Fused Inset Panel Style for "carved" look */
+        .glass-inset-panel {
+            background-color: rgba(0, 0, 0, 0.02);
+            box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.1), 0 1px 0 rgba(255, 255, 255, 0.2);
+            border-radius: 24px;
+            border: none;
+        }
     </style>
 </head>
 <body class="p-4 md:p-8" onload="initApp()">
@@ -248,12 +281,14 @@
                     </div>
                 </div>
                 <div class="flex flex-col sm:flex-row items-center gap-3">
-                    <div class="flex items-center space-x-3">
+                    <!-- Wrapped entire toggle area in click handler for better touch target -->
+                    <div class="flex items-center space-x-3 toggle-click-area p-2 rounded-xl transition-colors active:bg-black/5" onclick="toggleViralBoost()">
                         <svg id="viral-toggle-zap" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-6 w-6 transition-colors duration-300 overflow-visible"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
                         <span id="viral-toggle-text" class="text-lg font-bold transition-colors duration-300 text-black">
                             Viral Mode
                         </span>
-                        <div id="viral-toggle-track" class="viral-toggle-track w-16 h-9 flex items-center rounded-full p-1 cursor-pointer transition-all duration-300 backdrop-blur-3xl active:scale-95 touch-none" onclick="toggleViralBoost()">
+                        <!-- Removed onclick from track since parent handles it -->
+                        <div id="viral-toggle-track" class="viral-toggle-track w-16 h-9 flex items-center rounded-full p-1 transition-all duration-300 backdrop-blur-3xl touch-none">
                           <div id="viral-toggle-knob" class="w-7 h-7 rounded-full transform transition-transform duration-300 viral-toggle-knob"></div>
                         </div>
                     </div>
@@ -305,6 +340,8 @@
     <script>
         // --- GLOBAL STATE ---
         let file = null;
+        let currentFileName = ""; // New state for editable filename
+        let isEditingTitle = false; // New state for edit mode
         let isProcessing = false;
         let isProcessed = false;
         let viralScore = 0;
@@ -393,6 +430,7 @@
                 'Copy': `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="${classes}"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>`,
                 'Check': `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="${classes}"><polyline points="20 6 9 17 4 12"/></svg>`,
                 'RotateCcw': `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="${classes}"><path d="M3 2v6h6"/><path d="M3 13a9 9 0 1 0 3-7.7L3 8"/></svg>`,
+                'Edit': `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="url(#pencil-gradient)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="${classes}"><defs><linearGradient id="pencil-gradient" x1="0%" y1="0%" x2="100%" y2="0%"><stop offset="0%" stop-color="#a855f7" /><stop offset="50%" stop-color="#ec4899" /><stop offset="100%" stop-color="#f97316" /></linearGradient></defs><path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"/></svg>`,
             };
             return iconMap[name] || '';
         };
@@ -403,8 +441,9 @@
             const label = document.getElementById('progress-label');
             const statusText = document.getElementById('processing-status');
             const isComplete = progressValue >= 100;
-            const indicatorColorClass = "bg-green-600 shadow-md shadow-green-400/50";
-            const finalTextColorClass = "text-green-600";
+            // Updated to brighter green (500) and added glow shadows for visibility
+            const indicatorColorClass = "bg-green-500 shadow-[0_0_15px_rgba(34,197,94,0.6)]";
+            const finalTextColorClass = "text-green-500 drop-shadow-[0_0_8px_rgba(34,197,94,0.8)]";
             if (indicator && label && statusText) {
                 indicator.style.width = `${progressValue}%`;
                 label.innerHTML = `${progressValue}%`;
@@ -444,20 +483,20 @@
                 toggleKnob.classList.add('bg-white');
                 
                 // Reset base classes to ensure clean state switching
-                toggleTrack.classList.remove('bg-green-500/70', 'bg-gray-700', 'bg-gray-300', 'bg-gradient-to-t', 'from-green-500', 'to-lime-400', 'on-glow', 'infused-off');
+                toggleTrack.classList.remove('bg-green-500/70', 'bg-gray-700', 'bg-gray-300', 'bg-gradient-to-t', 'from-green-500', 'to-lime-400', 'from-green-400', 'to-lime-300', 'on-glow', 'infused-off');
                 
                 if (isViralBoostEnabled) {
-                    toggleTrack.classList.add('bg-gradient-to-t', 'from-green-500', 'to-lime-400', 'on-glow');
+                    toggleTrack.classList.add('bg-gradient-to-t', 'from-green-400', 'to-lime-300', 'on-glow');
                 } else {
                     // "Infused" state: transparent/glassy instead of solid gray
                     toggleTrack.classList.add('infused-off');
                 }
                 toggleKnob.style.transform = isViralBoostEnabled ? 'translateX(28px)' : 'translateX(0)';
                 
-                toggleZap.classList.remove('text-green-600', 'text-gray-500', 'icon-pop-on');
+                toggleZap.classList.remove('text-green-500', 'text-green-600', 'text-gray-500', 'icon-pop-on');
                 toggleZap.style.filter = '';
                 if (isViralBoostEnabled) {
-                    toggleZap.classList.add('text-green-600', 'icon-pop-on');
+                    toggleZap.classList.add('text-green-500', 'icon-pop-on');
                 } else {
                     toggleZap.classList.add('text-gray-500');
                 }
@@ -476,6 +515,7 @@
             const selectedFile = event.target.files?.[0];
             if (selectedFile && selectedFile.type.startsWith("video/")) {
                 file = selectedFile;
+                currentFileName = file.name; // Initialize current filename
                 processFile();
             }
         };
@@ -485,6 +525,7 @@
             const droppedFile = event.dataTransfer.files?.[0];
             if (droppedFile && droppedFile.type.startsWith("video/")) {
                 file = droppedFile;
+                currentFileName = file.name; // Initialize current filename
                 processFile();
             }
         };
@@ -509,7 +550,7 @@
 
         const generateViralContent = (shouldUpdateScore = true) => { 
             if (!file) return;
-            const fileName = file.name;
+            const fileName = currentFileName; // Use the editable filename
             const videoName = fileName.replace(/\.[^/.]+$/, "");
             allTitles = [
                 [`🔥 ULTIMATE ${videoName} Guide! (FanPlusFollow Secret)`, `📈 ${videoName}: Watch How We Went VIRAL in 24 Hours!`, `🤯 You Won't BELIEVE This ${videoName} Trick!`],
@@ -562,6 +603,8 @@
         const resetApp = () => {
             playClickSound(); 
             file = null;
+            currentFileName = ""; // Reset filename
+            isEditingTitle = false; // Reset edit mode
             isProcessing = false;
             isProcessed = false;
             viralScore = 0;
@@ -638,8 +681,10 @@
                 const textColor = 'text-gray-800';
                 const fileIconColor = 'text-green-600';
                 const fileDetailColor = 'text-black';
-                const statusTextColorClass = 'text-green-600';
-                const indicatorBarColorClass = 'bg-green-600 shadow-md shadow-green-400/50';
+                
+                // Updated to brighter green with glow
+                const statusTextColorClass = 'text-green-500 drop-shadow-[0_0_8px_rgba(34,197,94,0.8)]';
+                const indicatorBarColorClass = 'bg-green-500 shadow-[0_0_15px_rgba(34,197,94,0.6)]';
                 
                 const startNewButtonClasses = ''; 
                 const startNewIconColor = 'text-white'; 
@@ -656,17 +701,75 @@
                     </div>
                     ${isProcessed ? `<div class="flex gap-4 mt-6"><button onclick="resetApp()" onmouseenter="playHoverSound()" class="cta-button ${startNewButtonClasses} backdrop-blur-xl px-6 py-3 rounded-full font-medium flex items-center">${icon('RotateCcw', `mr-2 h-4 w-4 ${startNewIconColor}`)} Start New Video</button></div>` : ''}
                 ` : '';
+
+                // Title Section Logic
+                let titleContentHTML = '';
+                if (isEditingTitle) {
+                    titleContentHTML = `
+                        <div class="flex-1 min-w-0 mr-2">
+                            <input type="text" id="title-edit-input" value="${currentFileName}" class="w-full bg-transparent border-b-2 border-green-500 focus:outline-none font-bold text-gray-800 py-1" onkeydown="handleTitleInputKey(event)">
+                        </div>
+                        <button onclick="saveTitleEdit()" class="p-2 rounded-full hover:bg-black/5 transition-colors text-green-600 flex-shrink-0" title="Save">
+                            ${icon('Check', 'h-5 w-5')}
+                        </button>
+                    `;
+                } else {
+                    titleContentHTML = `
+                        <div class="text-left overflow-hidden flex-1 min-w-0 mr-2">
+                            <p class="font-bold truncate ${textColor}">${currentFileName}</p>
+                            <p class="text-xs ${fileDetailColor}">${(file.size / (1024 * 1024)).toFixed(2)} MB</p>
+                        </div>
+                        <button onclick="enableTitleEdit()" class="p-2 rounded-full hover:bg-black/5 transition-colors text-gray-500 hover:text-black flex-shrink-0" title="Edit Name">
+                            ${icon('Edit', 'h-6 w-6')}
+                        </button>
+                    `;
+                }
+
                 uploadContainer.innerHTML = `
                     <div class="flex flex-col items-center">
-                        <div class="glass-card fluid-transition flex items-center gap-3 mb-4 p-4 w-full max-w-sm">
+                        <div class="glass-inset-panel fluid-transition flex items-center gap-3 mb-4 p-4 w-full max-w-sm">
                             ${icon('Play', `h-8 w-8 ${fileIconColor} flex-shrink-0`)}
-                            <div class="text-left overflow-hidden">
-                                <p class="font-bold truncate ${textColor}">${file.name}</p>
-                                <p class="text-xs ${fileDetailColor}">${(file.size / (1024 * 1024)).toFixed(2)} MB</p>
-                            </div>
+                            ${titleContentHTML}
                         </div>
                         ${processingArea}
                     </div>`;
+            }
+        };
+
+        const enableTitleEdit = () => {
+            playClickSound();
+            isEditingTitle = true;
+            updateUI();
+            setTimeout(() => {
+                const input = document.getElementById('title-edit-input');
+                if(input) {
+                    input.focus();
+                    input.select();
+                }
+            }, 50);
+        };
+
+        const saveTitleEdit = () => {
+            playClickSound();
+            const input = document.getElementById('title-edit-input');
+            if (input && input.value.trim() !== "") {
+                currentFileName = input.value.trim();
+                isEditingTitle = false;
+                if (isProcessed) {
+                    generateViralContent(true); // Regenerate content with new name
+                }
+                updateUI();
+            } else {
+                isEditingTitle = false;
+                updateUI();
+            }
+        };
+
+        const handleTitleInputKey = (e) => {
+            if (e.key === 'Enter') saveTitleEdit();
+            if (e.key === 'Escape') {
+                isEditingTitle = false;
+                updateUI();
             }
         };
 
@@ -674,16 +777,27 @@
             const resultsContainer = document.getElementById('results-section');
             if (!resultsContainer) return;
             if (isProcessed) {
-                const scoreColorClass = viralScore < 75 ? "text-red-500" : viralScore < 90 ? "text-yellow-600" : "text-green-600";
+                // Updated score colors to brighter variants and added specific glow logic
+                const scoreColorClass = viralScore < 75 ? "text-red-500" : viralScore < 90 ? "text-yellow-500" : "text-green-500";
                 const scoreText = viralScore < 75 ? "Rethink your content hook for better reach." : viralScore < 90 ? "Solid performance. A few tweaks could push it higher." : "VIRAL READY! This content is primed for maximum engagement. Post ASAP.";
-                const scoreGlowStyle = 'text-shadow: none;';
+                
+                // Conditional glow style for ALL score ranges
+                let scoreGlowStyle = '';
+                if (viralScore < 75) {
+                    scoreGlowStyle = 'text-shadow: 0 0 30px rgba(239, 68, 68, 0.6);'; // Red glow
+                } else if (viralScore < 90) {
+                    scoreGlowStyle = 'text-shadow: 0 0 30px rgba(234, 179, 8, 0.6);'; // Yellow glow
+                } else {
+                    scoreGlowStyle = 'text-shadow: 0 0 30px rgba(34, 197, 94, 0.8);'; // Green glow
+                }
+                
                 const viralScoreHTML = `
                     <div class="glass-card fluid-transition p-6 rounded-[36px] mb-12">
                         <div class="mb-4"><h2 class="text-2xl font-bold text-black">Viral Potential Score</h2></div>
                         <div class="p-1">
                             <div class="flex items-center justify-between mb-4"><span class="text-5xl font-extrabold transition-colors duration-500 viral-score-text ${scoreColorClass}" style="${scoreGlowStyle}">${viralScore}%</span></div>
                             <div class="w-full bg-gray-300 rounded-full h-3">
-                                <div class="h-3 rounded-full transition-all duration-1000 ${viralScore < 75 ? "bg-red-500 shadow-md shadow-red-500/50" : viralScore < 90 ? "bg-yellow-500 shadow-md shadow-yellow-500/50" : "bg-green-500 shadow-md shadow-green-500/50"}" style="width: ${viralScore}%"></div>
+                                <div class="h-3 rounded-full transition-all duration-1000 ${viralScore < 75 ? "bg-red-500 shadow-[0_0_15px_rgba(239,68,68,0.6)]" : viralScore < 90 ? "bg-yellow-500 shadow-[0_0_15px_rgba(234,179,8,0.6)]" : "bg-green-500 shadow-[0_0_15px_rgba(34,197,94,0.6)]"}" style="width: ${viralScore}%"></div>
                             </div>
                             <p class="text-base font-medium text-black mt-3">${scoreText}</p>
                         </div>
@@ -712,8 +826,9 @@
                                 </div>`).join('')}
                         </div>
                     </div>`;
-                const descriptionInnerBg = 'bg-gray-100/80'; 
-                const descriptionInnerBorder = 'border-gray-400/40'; 
+                
+                // Changed to use the new "glass-inset-panel" class instead of bg-gray and border
+                const descriptionInnerClass = 'glass-inset-panel'; 
                 const descriptionTextColor = 'text-gray-700';
                 const copyAllButtonClasses = ''; 
                 const descriptionHTML = `
@@ -724,7 +839,7 @@
                                 <button onclick="copyDescriptionToClipboard()" onmouseenter="playHoverSound()" class="cta-button ${copyAllButtonClasses} backdrop-blur-xl text-sm px-4 py-2 rounded-full font-medium flex items-center">${copiedIndex === 3 ? `<span class="flex items-center">${icon('Check', 'mr-2 h-4 w-4 text-white')} Copied!</span>` : `<span class="flex items-center">${icon('Copy', 'mr-2 h-4 w-4 text-white')} Copy All</span>`}</button>
                             </h2>
                         </div>
-                        <div class="${descriptionInnerBg} rounded-[24px] p-4 sm:p-5 min-h-[250px] max-h-96 border ${descriptionInnerBorder} overflow-auto custom-scrollbar">
+                        <div class="${descriptionInnerClass} p-4 sm:p-5 min-h-[250px] max-h-96 overflow-auto custom-scrollbar">
                             <pre class="whitespace-pre-wrap text-xs sm:text-sm font-mono ${descriptionTextColor} leading-relaxed">${description}</pre>
                         </div>
                     </div>`;
