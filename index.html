@@ -267,7 +267,7 @@
         </div>
         <main>
             <!-- Modified Upload Card with unified content -->
-            <div id="upload-card" class="glass-card fluid-transition p-6 rounded-[36px] mb-12 card-animation-target">
+            <div id="upload-card" class="glass-card fluid-transition p-4 sm:p-6 rounded-[36px] mb-12 card-animation-target">
                 <div class="mb-4">
                     <h2 class="text-2xl font-bold flex items-center gap-2 text-black">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-8 w-8 text-black"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" x2="12" y1="3" y2="15"/></svg>
@@ -563,8 +563,8 @@
                     <div id="file-drop-area" class="fluid-transition w-full h-full flex flex-col items-center justify-center text-center cursor-pointer">
                         ${icon('Upload', `h-12 w-12 text-black mb-4`)}
                         <div>
-                            <p class="text-xl font-bold text-black">Drag & Drop Your Video File Here</p>
-                            <p class="text-sm mt-2 text-black opacity-60">or click to browse from your device</p>
+                            <p class="text-sm sm:text-xl font-bold text-black whitespace-nowrap">Drag & Drop Your Video File Here</p>
+                            <p class="text-sm sm:text-base mt-2 text-black">or click to browse from your device</p>
                         </div>
                         <button id="select-file-btn" class="cta-button mt-6 px-8 py-4 rounded-full font-bold transition-all duration-300 ease-in-out transform backdrop-blur-3xl text-lg">Select File</button>
                         <input type="file" id="file-upload-input" class="hidden" accept="video/*" onchange="handleFileChange(event)"/>
