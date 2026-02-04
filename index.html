@@ -13,7 +13,7 @@
     <!-- Standard Meta Tags -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, viewport-fit=cover">
-    <meta name="color-scheme" content="only light">
+    <meta name="color-scheme" content="light dark">
     <title>FanPlusFollow - Growth AI</title>
     <meta name="description" content="Growth AI for Content Creators. Boost your reach with advanced tools.">
 
@@ -25,11 +25,51 @@
         :root { 
             font-family: 'Inter', sans-serif; 
             box-sizing: border-box;
-            color-scheme: only light;
+            
+            /* Light Mode Defaults (Milky Glass) */
+            --glass-bg: rgba(255, 255, 255, 0.25);
+            --glass-border: rgba(255, 255, 255, 0.6);
+            --glass-inset-shadow: rgba(255, 255, 255, 0.4);
+            --glass-drop-shadow: rgba(0, 0, 0, 0.05);
+            --text-primary: #000000;
+            --text-secondary: #374151;
+            --bg-color: #EBF1F7;
+            --bg-overlay: rgba(255, 255, 255, 0.1);
+
+            --btn-text: #ffffff; /* White text in Light Mode */
+        }
+
+        @media (prefers-color-scheme: dark) {
+            :root {
+                /* Dark Mode Defaults (Smoked Glass) */
+                --glass-bg: rgba(15, 23, 42, 0.5);
+                --glass-border: rgba(255, 255, 255, 0.15);
+                --glass-inset-shadow: rgba(255, 255, 255, 0.05);
+                --glass-drop-shadow: rgba(0, 0, 0, 0.4);
+                --text-primary: #ffffff;
+                --text-secondary: #d1d5db;
+                --bg-color: #0f172a;
+                --bg-overlay: rgba(0, 0, 0, 0.5);
+
+                --btn-text: #000000; /* Black text in Dark Mode */
+            }
+
+            /* Dark Mode Overrides for Tailwind Classes */
+            .text-black { color: #ffffff !important; }
+            .text-gray-800 { color: #f3f4f6 !important; }
+            .text-gray-700 { color: #e5e7eb !important; }
+            .text-gray-500 { color: #9ca3af !important; }
+            
+            /* Result Cards Updates */
+            .bg-pink-100 { 
+                background-color: rgba(131, 24, 67, 0.3) !important; 
+                border-color: rgba(244, 114, 182, 0.3) !important;
+                color: #fbcfe8 !important;
+            }
         }
 
         html {
-            background-color: #EBF1F7;
+            background-color: var(--bg-color);
             scroll-behavior: smooth;
         }
 
@@ -61,42 +101,43 @@
         #upload-card.card-animation-target { animation-delay: 0.3s; } 
         #promo-card.card-animation-target { animation-delay: 0.4s; }
 
-        /* Glass Card */
+        /* Glass Card - Updated for milky/dark mode support */
         .glass-card {
-            background-color: rgba(255, 255, 255, 0.35);
-            -webkit-backdrop-filter: blur(80px) saturate(160%);
-            backdrop-filter: blur(80px) saturate(160%); 
-            box-shadow: inset 0 0 20px rgba(255, 255, 255, 0.2), 0 25px 50px rgba(0, 0, 0, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.4);
+            background-color: var(--glass-bg);
+            -webkit-backdrop-filter: blur(50px) saturate(180%);
+            backdrop-filter: blur(50px) saturate(180%); 
+            box-shadow: inset 0 0 20px var(--glass-inset-shadow), 0 25px 50px var(--glass-drop-shadow);
+            border: 1px solid var(--glass-border);
             border-radius: 36px;
             transform: translateZ(0);
         }
 
         .glass-card:hover {
             transform: translateY(-8px) scale(1.005) translateZ(0); 
-            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.08), inset 0 0 20px rgba(255, 255, 255, 0.3);
-            border-color: rgba(255, 255, 255, 0.6);
+            box-shadow: 0 15px 40px var(--glass-drop-shadow), inset 0 0 20px var(--glass-inset-shadow);
+            border-color: var(--glass-border);
+            filter: brightness(1.05);
         }
 
         .title-result-card {
-            background-color: rgba(255, 255, 255, 0.35);
-            backdrop-filter: blur(60px) saturate(160%); 
-            box-shadow: inset 0 0 10px rgba(255, 255, 255, 0.2), 0 15px 30px rgba(0, 0, 0, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.4);
+            background-color: var(--glass-bg);
+            backdrop-filter: blur(40px) saturate(160%); 
+            box-shadow: inset 0 0 10px var(--glass-inset-shadow), 0 15px 30px var(--glass-drop-shadow);
+            border: 1px solid var(--glass-border);
             border-radius: 36px;
             transform: translateZ(0);
         }
 
         .title-result-card:hover {
             transform: translateY(-8px) scale(1.005) translateZ(0); 
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15), inset 0 0 10px rgba(255, 255, 255, 0.4);
-            border-color: rgba(255, 255, 255, 0.7);
+            box-shadow: 0 10px 30px var(--glass-drop-shadow), inset 0 0 10px var(--glass-inset-shadow);
+            border-color: var(--glass-border);
         }
         
         .glass-card.tapped-hover,
         .title-result-card.tapped-hover {
             transform: translateY(-8px) scale(1.005) translateZ(0) !important; 
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15) !important; 
+            box-shadow: 0 10px 30px var(--glass-drop-shadow) !important; 
         }
 
         /* --- CTA BUTTONS --- */
@@ -104,11 +145,11 @@
             transition: all 300ms cubic-bezier(0.25, 0.46, 0.45, 0.94);
             /* Soft Pastel Gradient */
             background: linear-gradient(to right, #c084fc, #f472b6, #fb923c); 
-            color: #000000; /* Black text */
+            color: var(--btn-text); /* Use the adaptive variable */
             box-shadow: none; /* No shadow */
             will-change: transform, filter, opacity; 
             border: none;
-            opacity: 0.4; /* Default transparency */
+            opacity: 0.6; /* Increased visibility for milky glass */
         }
         
         .cta-button:hover {
@@ -144,7 +185,7 @@
             mask-composite: exclude;
             pointer-events: none;
             transition: all 500ms cubic-bezier(0.4, 0, 0.2, 1);
-            opacity: 0.4; /* Default transparency */
+            opacity: 0.6; 
         }
         
         .gradient-border-mask:hover::before {
@@ -156,14 +197,14 @@
         body {
             background-color: transparent; 
             min-height: 100vh;
-            color: #374151;
+            color: var(--text-secondary);
             overflow-x: hidden;
         }
 
         #fixed-background {
             position: fixed;
             top: 0; left: 0; width: 100vw; height: 100vh; z-index: -1; 
-            background-image: linear-gradient(rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.2)), url('IMG_2982.png');
+            background-image: linear-gradient(var(--bg-overlay), var(--bg-overlay)), url('IMG_2982.png');
             background-size: cover;
             background-position: center;
             background-attachment: fixed;
@@ -175,9 +216,9 @@
         }
         
         .viral-toggle-track.infused-off {
-            background-color: rgba(255, 255, 255, 0.15); /* Glassy transparent background */
-            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1), inset 0 -1px 2px rgba(255, 255, 255, 0.2); /* Subtle depth */
-            border: 1px solid rgba(255, 255, 255, 0.25); /* Subtle glass border */
+            background-color: var(--glass-bg); /* Use glass variable */
+            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1), inset 0 -1px 2px rgba(255, 255, 255, 0.2); 
+            border: none;
             backdrop-filter: blur(4px);
         }
 
@@ -204,7 +245,23 @@
             filter: drop-shadow(0 0 8px rgba(0, 255, 0, 0.6));
         }
 
-        .drag-over-active { border-color: #000000 !important; }
+        .drag-over-active { border-color: var(--text-primary) !important; }
+
+        /* Infused Box Style (Recessed Look) */
+        .infused-box {
+            background-color: rgba(255, 255, 255, 0.15);
+            box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.06), inset 0 -1px 2px rgba(255, 255, 255, 0.3);
+            border-radius: 24px;
+            border: 1px solid rgba(0, 0, 0, 0.05); /* Light Mode Border */
+        }
+
+        @media (prefers-color-scheme: dark) {
+            .infused-box {
+                background-color: rgba(0, 0, 0, 0.25);
+                box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.4), inset 0 -1px 1px rgba(255, 255, 255, 0.05);
+                border: 1px solid rgba(255, 255, 255, 0.1); /* Dark Mode Border */
+            }
+        }
     </style>
 </head>
 <body class="p-4 md:p-8" onload="initApp()">
@@ -624,7 +681,7 @@
                 const indicatorBarColorClass = 'bg-green-600 shadow-md shadow-green-400/50';
                 
                 const startNewButtonClasses = ''; 
-                const startNewIconColor = 'text-black'; 
+                const startNewIconColor = ''; /* Removed text-black to inherit button color */
                 
                 const processingArea = isProcessing || isProcessed ? `
                     <div class="w-full max-w-sm mb-4">
@@ -679,7 +736,7 @@
                     <div class="mb-12">
                         <div class="flex justify-between items-center mb-6">
                             <h2 class="text-2xl font-bold text-gray-800">Suggested Titles</h2>
-                            <button onclick="handleRegenerate()" onmouseenter="playHoverSound()" class="cta-button ${regenerateButtonClasses} backdrop-blur-xl text-sm px-4 py-2 rounded-full font-medium flex items-center">${icon('RotateCcw', `mr-2 h-3 w-3 text-black`)} Regenerate</button>
+                            <button onclick="handleRegenerate()" onmouseenter="playHoverSound()" class="cta-button ${regenerateButtonClasses} backdrop-blur-xl text-sm px-4 py-2 rounded-full font-medium flex items-center">${icon('RotateCcw', `mr-2 h-3 w-3`)} Regenerate</button>
                         </div>
                         <div class="grid grid-cols-1 md:grid-cols-3 gap-6 overflow-visible">
                             ${titles.map((title, index) => `
@@ -694,8 +751,7 @@
                                 </div>`).join('')}
                         </div>
                     </div>`;
-                const descriptionInnerBg = 'bg-gray-100/80'; 
-                const descriptionInnerBorder = 'border-gray-400/40'; 
+                const descriptionInnerBg = 'infused-box'; 
                 const descriptionTextColor = 'text-gray-700';
                 const copyAllButtonClasses = ''; 
                 const descriptionHTML = `
@@ -703,10 +759,10 @@
                         <div class="mb-4">
                             <h2 class="flex justify-between items-center text-xl sm:text-2xl font-bold text-black">
                                 <span>Optimized Description & Hashtags</span>
-                                <button onclick="copyDescriptionToClipboard()" onmouseenter="playHoverSound()" class="cta-button ${copyAllButtonClasses} backdrop-blur-xl text-sm px-4 py-2 rounded-full font-medium flex items-center">${copiedIndex === 3 ? `<span class="flex items-center">${icon('Check', 'mr-2 h-4 w-4 text-black')} Copied!</span>` : `<span class="flex items-center">${icon('Copy', 'mr-2 h-4 w-4 text-black')} Copy All</span>`}</button>
+                                <button onclick="copyDescriptionToClipboard()" onmouseenter="playHoverSound()" class="cta-button ${copyAllButtonClasses} backdrop-blur-xl text-sm px-4 py-2 rounded-full font-medium flex items-center">${copiedIndex === 3 ? `<span class="flex items-center">${icon('Check', 'mr-2 h-4 w-4')} Copied!</span>` : `<span class="flex items-center">${icon('Copy', 'mr-2 h-4 w-4')} Copy All</span>`}</button>
                             </h2>
                         </div>
-                        <div class="${descriptionInnerBg} rounded-[24px] p-4 sm:p-5 min-h-[250px] max-h-96 border ${descriptionInnerBorder} overflow-auto custom-scrollbar">
+                        <div class="${descriptionInnerBg} rounded-[24px] p-4 sm:p-5 min-h-[250px] max-h-96 overflow-auto custom-scrollbar">
                             <pre class="whitespace-pre-wrap text-xs sm:text-sm font-mono ${descriptionTextColor} leading-relaxed">${description}</pre>
                         </div>
                     </div>`;
