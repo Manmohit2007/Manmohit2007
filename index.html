@@ -793,8 +793,8 @@
                 const titlesHTML = `
                     <div class="glass-card fluid-transition p-6 rounded-[36px] mb-12">
                         <div class="flex justify-between items-center mb-6">
-                            <h2 class="text-2xl font-bold text-black">Suggested Titles</h2>
-                            <button onclick="handleRegenerate()" class="cta-button ${regenerateButtonClasses} backdrop-blur-xl text-sm px-4 py-2 rounded-full font-medium flex items-center">${icon('RotateCcw', `mr-2 h-3 w-3 text-white`)} Regenerate</button>
+                            <h2 class="text-xl sm:text-2xl font-bold text-black">Suggested Titles</h2>
+                            <button onclick="handleRegenerate()" class="cta-button ${regenerateButtonClasses} backdrop-blur-xl text-sm px-4 py-2 rounded-full font-medium flex items-center whitespace-nowrap flex-shrink-0"><span class="flex items-center">${icon('RotateCcw', `mr-2 h-4 w-4 text-white`)} Regenerate</span></button>
                         </div>
                         <div class="grid grid-cols-1 md:grid-cols-3 gap-6 overflow-visible">
                             ${titles.map((title, index) => `
@@ -804,7 +804,7 @@
                                             <span class="text-xs font-medium px-2 py-1 rounded-full bg-pink-100 text-pink-700 border border-pink-300">Option ${index + 1}</span>
                                             <button onclick="copyToClipboard('${title.replace(/'/g, "\\'")}', ${index})" class="${copyButtonBaseClasses} ${copyButtonDynamicClasses}">${copiedIndex === index ? icon('Check', 'h-4 w-4 text-green-400') : icon('Copy', 'h-4 w-4')}</button>
                                         </div>
-                                        <p class="text-base font-medium min-h-[50px] flex items-center ${titleTextColor} p-1">${title}</p>
+                                        <p class="text-base font-medium truncate ${titleTextColor} p-1">${title}</p>
                                     </div>
                                 </div>`).join('')}
                         </div>
