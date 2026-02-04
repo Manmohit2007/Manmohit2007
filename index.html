@@ -64,7 +64,7 @@
         #upload-card.card-animation-target { animation-delay: 0.3s; } 
         #promo-card.card-animation-target { animation-delay: 0.4s; }
 
-        /* Glass Card Base Style */
+        /* Glass Card */
         .glass-card {
             background-color: rgba(255, 255, 255, 0.15);
             -webkit-backdrop-filter: blur(24px) saturate(110%);
@@ -192,12 +192,11 @@
             filter: drop-shadow(0 0 12px rgba(74, 222, 128, 0.9));
         }
 
-        /* Updated Drag Over State - Match Glass Card Outline (1px semi-transparent white) */
+        /* Updated Drag Over State - Simple Black Highlight */
         .drag-over-active { 
-            border-color: rgba(255, 255, 255, 0.9) !important;
-            border-width: 1px !important;
-            background-color: rgba(255, 255, 255, 0.15);
-            box-shadow: 0 0 20px rgba(255, 255, 255, 0.2);
+            border-color: #000000 !important;
+            border-width: 2px !important;
+            background-color: rgba(0, 0, 0, 0.02);
             transform: scale(1.01);
         }
 
@@ -296,7 +295,7 @@
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2 h-4 w-4"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
                             Subscribe Now
                           </button>
-                          <button class="cta-button px-6 py-3 rounded-full font-bold transition-all duration-300 ease-in-out transform backdrop-blur-3xl flex items-center" onclick="openLinkWithDelay('https://www.instagram.com/_manmohit_sing_/')">
+                          <button class="cta-button px-6 py-3 rounded-full font-bold transition-all duration-300 ease-in-out transform backdrop-blur-3xl flex items-center" onclick="openLinkWithDelay('https://www.instagram.com/_manmohit_singh_/')">
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2 h-4 w-4"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
                             Follow Now
                           </button>
@@ -555,8 +554,8 @@
             const uploadContainer = document.getElementById('upload-section-content');
             if (!uploadContainer) return;
             if (!file) {
-                // Modified for thin white outline that matches glass card (1px solid rgba(255, 255, 255, 0.5))
-                const borderColorClass = 'border-white/50'; 
+                // Modified for thin black outline
+                const borderColorClass = 'border-black'; 
                 uploadContainer.innerHTML = `
                     <div id="file-drop-area" class="fluid-transition w-full h-64 flex flex-col items-center justify-center text-center cursor-pointer hover:scale-[1.01]" ondragover="event.preventDefault()">
                         <div id="inner-drop-div" class="w-full h-full flex flex-col items-center justify-center border border-solid rounded-[30px] transition-all duration-300 ${borderColorClass}">
