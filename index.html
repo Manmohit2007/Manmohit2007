@@ -18,13 +18,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, viewport-fit=cover">
     
-    <!-- CRITICAL FIX FOR SAMSUNG INTERNET / CHROME MOBILE -->
-    <meta name="color-scheme" content="only light dark">
-    <meta name="supported-color-schemes" content="only light dark">
+    <!-- Enforce Light Scheme -->
+    <meta name="color-scheme" content="only light">
+    <meta name="supported-color-schemes" content="only light">
     
     <title>FanPlusFollow - Growth AI</title>
     <meta name="description" content="Growth AI for Content Creators. Boost your reach with advanced tools.">
-    <meta name="theme-color" content="#0A0D14">
+    <meta name="theme-color" content="#EBF1F7">
 
     <!-- ============================================== -->
     <!-- SOCIAL MEDIA PREVIEW (Open Graph)             -->
@@ -47,32 +47,27 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.8.49/Tone.js"></script>
     <style>
-        /* Import Inter Font (Apple's San Francisco inspired) */
+        /* Import Inter Font */
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
         
         :root { 
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif; 
             box-sizing: border-box;
-            
-            /* CRITICAL FIX FOR MOBILE BROWSER INVERSION */
-            color-scheme: only light dark;
+            color-scheme: only light;
         }
 
         /* ============================================== */
         /* FLUID SCROLL & CONNECTIVITY OPTIMIZATIONS      */
         /* ============================================== */
         html {
-            background-color: #0A0D14; /* Dark mode base */
+            background-color: #EBF1F7; /* Light mode base */
             transition: background-color 300ms ease-in-out;
-            color-scheme: only light dark;
-            scroll-behavior: smooth; /* Native smooth scroll */
-            
-            /* Custom Scrollbar Logic */
+            scroll-behavior: smooth;
             scrollbar-width: thin; 
             scrollbar-color: rgba(155, 155, 155, 0.3) transparent;
         }
 
-        /* WebKit Scrollbar Styling (Chrome, Safari, Edge) */
+        /* WebKit Scrollbar Styling */
         ::-webkit-scrollbar {
             width: 8px;
             height: 8px;
@@ -84,67 +79,44 @@
             background-color: rgba(155, 155, 155, 0.2);
             border-radius: 20px;
             backdrop-filter: blur(10px);
-            border: 2px solid transparent; /* Creates padding effect */
+            border: 2px solid transparent; 
             background-clip: content-box;
         }
         ::-webkit-scrollbar-thumb:hover {
             background-color: rgba(155, 155, 155, 0.5);
         }
 
-        /* Mobile Tap & Select Optimizations */
         * {
-            -webkit-tap-highlight-color: transparent; /* Removes blue flash on mobile */
+            -webkit-tap-highlight-color: transparent;
         }
         
         button, .clickable {
-            touch-action: manipulation; /* Improves touch response time */
-            user-select: none; /* App-like feel */
+            touch-action: manipulation;
+            user-select: none;
         }
 
         *, *::before, *::after {
             box-sizing: inherit;
         }
 
-        /* Fluid Transition (Apple's signature smooth movement) */
         .fluid-transition {
             transition: all 400ms cubic-bezier(0.25, 0.46, 0.45, 0.94);
             will-change: transform, box-shadow, filter, background-color, color, opacity; 
         }
 
         /* ============================================== */
-        /* LAUNCH ANIMATION STYLES (Smooth Entry) */
+        /* LAUNCH ANIMATION STYLES */
         /* ============================================== */
         @-webkit-keyframes spiral-entry {
-            0% {
-                opacity: 0;
-                -webkit-transform: perspective(1000px) scale(0.9) translateY(30px);
-                transform: perspective(1000px) scale(0.9) translateY(30px);
-                -webkit-filter: blur(10px);
-                filter: blur(10px);
-            }
-            100% {
-                opacity: 1;
-                -webkit-transform: perspective(1000px) scale(1) translateY(0);
-                transform: perspective(1000px) scale(1) translateY(0);
-                -webkit-filter: blur(0);
-                filter: blur(0);
-            }
+            0% { opacity: 0; transform: perspective(1000px) scale(0.9) translateY(30px); filter: blur(10px); }
+            100% { opacity: 1; transform: perspective(1000px) scale(1) translateY(0); filter: blur(0); }
         }
         @keyframes spiral-entry {
-            0% {
-                opacity: 0;
-                transform: perspective(1000px) scale(0.9) translateY(30px);
-                filter: blur(10px);
-            }
-            100% {
-                opacity: 1;
-                transform: perspective(1000px) scale(1) translateY(0);
-                filter: blur(0);
-            }
+            0% { opacity: 0; transform: perspective(1000px) scale(0.9) translateY(30px); filter: blur(10px); }
+            100% { opacity: 1; transform: perspective(1000px) scale(1) translateY(0); filter: blur(0); }
         }
         
         .card-animation-target {
-            -webkit-animation: spiral-entry 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards; /* More fluid easing */
             animation: spiral-entry 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
             opacity: 0; 
         }
@@ -156,111 +128,78 @@
 
 
         /* ============================================== */
-        /* MAIN GLASS CARD STYLES (Frosted Dark Glass) */
+        /* MAIN GLASS CARD STYLES (Updated for iOS Milky Look) */
         /* ============================================== */
         .glass-card {
-            background-color: rgba(15, 15, 25, 0.2); 
-            -webkit-backdrop-filter: blur(50px); /* Optimized blur for performance */
-            backdrop-filter: blur(50px); 
-            border-radius: 36px;
+            background-color: rgba(255, 255, 255, 0.35); /* Increased transparency for milky effect */
+            -webkit-backdrop-filter: blur(80px) saturate(160%); /* Heavier blur + saturation for iOS feel */
+            backdrop-filter: blur(80px) saturate(160%); 
             box-shadow: 
-                inset 0 4px 12px rgba(0, 0, 0, 0.6), 
-                inset 0 0 0 1.5px rgba(255, 255, 255, 0.15), 
-                0 25px 50px rgba(0, 0, 0, 0.7); 
-            border: 1.5px solid rgba(255, 255, 255, 0.15); 
-            /* Hardware acceleration for smoother renders */
+                inset 0 0 20px rgba(255, 255, 255, 0.2), /* Subtle inner glow */
+                0 25px 50px rgba(0, 0, 0, 0.05); /* Softer shadow */
+            border: 1px solid rgba(255, 255, 255, 0.4); /* Thinner, clearer border */
+            border-radius: 36px;
             transform: translateZ(0);
-        }
-
-        @supports not ((-webkit-backdrop-filter: blur(1px)) or (backdrop-filter: blur(1px))) {
-            .glass-card {
-                background-color: rgba(25, 25, 45, 0.95);
-                -webkit-backdrop-filter: none;
-                backdrop-filter: none;
-            }
-            .title-result-card {
-                background-color: rgba(30, 30, 50, 0.95);
-                -webkit-backdrop-filter: none;
-                backdrop-filter: none;
-            }
-            .cta-button {
-                background-color: rgba(40, 40, 60, 0.9);
-                -webkit-backdrop-filter: none;
-                backdrop-filter: none;
-            }
-            body.light-mode .glass-card,
-            body.light-mode .title-result-card {
-                background-color: rgba(255, 255, 255, 0.98);
-            }
-            body.light-mode .cta-button {
-                background-color: rgba(250, 250, 250, 0.98);
-            }
         }
 
         .glass-card:hover {
             transform: translateY(-8px) scale(1.005) translateZ(0); 
-            box-shadow: 
-                0 0 0 2px rgba(192, 132, 252, 0.2), 
-                inset 0 0 50px rgba(255, 255, 255, 0.03); 
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.08), inset 0 0 20px rgba(255, 255, 255, 0.3);
+            border-color: rgba(255, 255, 255, 0.6);
         }
 
         .title-result-card {
-            background-color: rgba(15, 15, 25, 0.2); 
-            -webkit-backdrop-filter: blur(40px); 
-            backdrop-filter: blur(40px); 
-            border-radius: 36px; 
+            background-color: rgba(255, 255, 255, 0.35);
+            -webkit-backdrop-filter: blur(60px) saturate(160%); 
+            backdrop-filter: blur(60px) saturate(160%); 
             box-shadow: 
-                inset 0 4px 12px rgba(0, 0, 0, 0.6), 
-                inset 0 0 0 1.5px rgba(255, 255, 255, 0.15), 
-                0 25px 50px rgba(0, 0, 0, 0.7); 
-            border: 1.5px solid rgba(255, 255, 255, 0.15); 
+                inset 0 0 10px rgba(255, 255, 255, 0.2),
+                0 15px 30px rgba(0, 0, 0, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            border-radius: 36px;
             transform: translateZ(0);
         }
 
         .title-result-card:hover {
             transform: translateY(-8px) scale(1.005) translateZ(0); 
-            box-shadow: 
-                0 0 0 2px rgba(192, 132, 252, 0.2), 
-                inset 0 0 50px rgba(255, 255, 255, 0.03); 
+            box-shadow: 0 10px 30px rgba(99, 102, 241, 0.15), inset 0 0 10px rgba(255, 255, 255, 0.4);
+            border-color: rgba(255, 255, 255, 0.7);
         }
         
         .glass-card.tapped-hover,
         .title-result-card.tapped-hover {
             transform: translateY(-8px) scale(1.005) translateZ(0) !important; 
-            box-shadow: 0 0 0 2px rgba(192, 132, 252, 0.3) !important; 
+            box-shadow: 0 10px 30px rgba(99, 102, 241, 0.15) !important; 
         }
 
+        /* Light Mode CTA Button */
         .cta-button {
             transition: all 300ms cubic-bezier(0.25, 0.46, 0.45, 0.94);
-            background-color: rgba(255, 255, 255, 0.1); 
-            color: #FFF; 
-            -webkit-backdrop-filter: blur(20px); 
-            backdrop-filter: blur(20px);
+            background-color: rgba(255, 255, 255, 0.55); /* Slightly clearer */
+            color: #4F46E5;
+            -webkit-backdrop-filter: blur(30px) saturate(120%); 
+            backdrop-filter: blur(30px) saturate(120%);
             box-shadow: 
-                inset 0 0 0 1px rgba(255, 255, 255, 0.1), 
-                inset 0 1.5px 3px rgba(255, 255, 255, 0.2), 
-                inset 0 -1.5px 3px rgba(0, 0, 0, 0.4), 
-                0 8px 16px rgba(0, 0, 0, 0.6); 
+                inset 0 0 0 1px rgba(255, 255, 255, 0.5), 
+                0 8px 16px rgba(0, 0, 0, 0.08); 
             will-change: transform, box-shadow, filter; 
         }
         
         .cta-button:hover {
             transform: translateY(-4px) scale(1.02) translateZ(0);
+            background-color: rgba(255, 255, 255, 0.75);
             box-shadow: 
-                inset 0 0 0 1px rgba(255, 255, 255, 0.2), 
-                inset 0 2px 4px rgba(255, 255, 255, 0.5), 
-                inset 0 -2px 4px rgba(0, 0, 0, 0.3), 
-                0 12px 24px rgba(0, 0, 0, 0.7); 
-            filter: brightness(1.2); 
+                inset 0 0 0 1px rgba(255, 255, 255, 0.8), 
+                0 12px 24px rgba(0, 0, 0, 0.12);
+            filter: brightness(1.05); 
         }
         
         .cta-button:active {
             transform: scale(0.97) translateZ(0) !important; 
             box-shadow: 
-                inset 0 1px 1px rgba(255, 255, 255, 0.2), 
-                inset 0 -1px 1px rgba(0, 0, 0, 0.5), 
-                0 2px 4px rgba(0, 0, 0, 0.5); 
-            filter: brightness(0.9); 
+                inset 0 1px 1px rgba(0, 0, 0, 0.05), 
+                0 2px 4px rgba(0, 0, 0, 0.05);
+            filter: brightness(0.95); 
         }
         
         body {
@@ -268,7 +207,8 @@
             min-height: 100vh;
             position: relative; 
             z-index: 0; 
-            overflow-x: hidden; /* Prevent horizontal scroll */
+            overflow-x: hidden;
+            color: #374151; /* Default to Gray 700 */
         }
 
         #fixed-background {
@@ -278,14 +218,13 @@
             width: 100vw;
             height: 100vh; 
             z-index: -1; 
-            /* REPLACED WITH UPLOADED IMAGE (UPDATED TO .png) */
-            background-image: linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.4)), url('IMG_2982.png');
+            /* LIGHT MODE BACKGROUND PERMANENT */
+            background-image: linear-gradient(rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.2)), url('IMG_2982.png');
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
-            background-attachment: fixed; /* Parallax feel */
+            background-attachment: fixed;
             transition: background-image 500ms ease-in-out;
-            -webkit-transform: translateZ(0); /* GPU Force */
             transform: translateZ(0);
             will-change: background-image;
         }
@@ -293,21 +232,21 @@
         .viral-toggle-track {
             transition: all 300ms cubic-bezier(0.25, 0.46, 0.45, 0.94);
             box-sizing: border-box; 
-            box-shadow: inset 0 3px 6px rgba(0, 0, 0, 0.6);
+            box-shadow: inset 0 3px 6px rgba(0, 0, 0, 0.35); /* Increased shadow opacity */
         }
         
         .viral-toggle-track.on-glow {
             box-shadow: 
-                inset 0 3px 6px rgba(0, 0, 0, 0.4), 
-                0 0 18px 2px rgba(0, 255, 0, 0.75); 
+                inset 0 3px 6px rgba(0, 0, 0, 0.35), 
+                0 0 18px 2px rgba(0, 255, 0, 0.5); 
         }
         
         .viral-toggle-knob {
             transition: transform 300ms cubic-bezier(0.25, 0.46, 0.45, 0.94);
             box-shadow: 
-                inset 0 3px 3px rgba(255, 255, 255, 0.7), 
-                inset 0 -3px 3px rgba(0, 0, 0, 0.2),   
-                0 5px 10px rgba(0, 0, 0, 0.5);         
+                inset 0 3px 3px rgba(255, 255, 255, 0.9), 
+                inset 0 -3px 3px rgba(0, 0, 0, 0.1),   
+                0 5px 10px rgba(0, 0, 0, 0.4); /* Stronger drop shadow for the button/knob */       
         }
         
         #viral-toggle-zap {
@@ -325,167 +264,34 @@
         }
 
         #viral-toggle-zap.icon-pop-on polygon {
-            filter: drop-shadow(0 0 8px rgba(0, 255, 0, 0.9));
+            filter: drop-shadow(0 0 8px rgba(0, 255, 0, 0.6));
         }
 
-        /* Mobile Light Mode Fixes */
+        /* Mobile Fixes & Active States */
         @media (max-width: 767px) {
             .glass-card:active,
             .title-result-card:active {
                 transform: translateY(0px) scale(0.98) translateZ(0) !important; 
-                box-shadow: 0 5px 10px rgba(0, 0, 0, 0.95), inset 0 0 5px rgba(255, 255, 255, 0.05);
+                box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), inset 0 0 5px rgba(0, 0, 0, 0.05) !important;
             }
             #file-drop-area:active {
                 transform: scale(0.98) translateZ(0) !important;
-                box-shadow: 0 0 10px rgba(0, 0, 0, 0.8), inset 0 0 5px rgba(255, 255, 255, 0.05);
-            }
-            
-            /* Specific fix for light mode mobile active states to remove black shadow leak */
-            body.light-mode .glass-card:active,
-            body.light-mode .title-result-card:active {
-                box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), inset 0 0 5px rgba(0, 0, 0, 0.05) !important;
-            }
-            body.light-mode #file-drop-area:active {
                  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), inset 0 0 5px rgba(0, 0, 0, 0.05) !important;
             }
         }
         
-        body.light-mode {
-            background-color: transparent; 
-            min-height: 100vh;
-            color: #374151; 
-        }
-
-        body.light-mode #fixed-background {
-            /* KEEP IMAGE IN LIGHT MODE, ADD SLIGHT WHITE TINT (UPDATED TO .png) */
-            background-image: linear-gradient(rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.2)), url('IMG_2982.png');
-        }
-
-        body.light-mode .text-white {
-            color: #374151 !important; 
-        }
-        body.light-mode .text-indigo-300,
-        body.light-mode .text-indigo-400,
-        body.light-mode .text-indigo-200 {
-            color: #4F46E5 !important; 
-        }
-        
-        body.light-mode .text-pink-300 {
-            color: #C53030 !important; 
-        }
-        body.light-mode .bg-pink-700\/50 {
-            background-color: rgba(244, 114, 182, 0.2) !important; 
-        }
-        body.light-mode .border-pink-500\/30 {
-            border-color: rgba(244, 114, 182, 0.5) !important; 
-        }
-
-        /* LIGHT MODE SPECIFIC OVERRIDES */
-        body.light-mode .glass-card {
-            background-color: rgba(255, 255, 255, 0.65); /* Increased opacity for readability against image */
-            -webkit-backdrop-filter: blur(50px); 
-            backdrop-filter: blur(50px); 
-            box-shadow: 
-                inset 0 3px 10px rgba(0, 0, 0, 0.05), /* Reduced opacity */
-                inset 0 0 0 1.5px rgba(255, 255, 255, 0.75), 
-                0 25px 50px rgba(0, 0, 0, 0.1); /* Reduced opacity */
-            border: 1.5px solid rgba(255, 255, 255, 0.75); 
-        }
-        
-        body.light-mode .title-result-card {
-            background-color: rgba(255, 255, 255, 0.65); /* Increased opacity for readability */
-            -webkit-backdrop-filter: blur(40px); 
-            backdrop-filter: blur(40px); 
-            box-shadow: 
-                inset 0 3px 10px rgba(0, 0, 0, 0.05), /* Reduced opacity */
-                inset 0 0 0 1.5px rgba(255, 255, 255, 0.75), 
-                0 25px 50px rgba(0, 0, 0, 0.1); /* Reduced opacity */
-            border: 1.5px solid rgba(255, 255, 255, 0.75); 
-        }
-
-        /* Fix CTA Button Black Shadow Leak in Light Mode */
-        body.light-mode .cta-button {
-            background-color: rgba(255, 255, 255, 0.7);
-            color: #4F46E5;
-            box-shadow: 
-                inset 0 0 0 1px rgba(0, 0, 0, 0.05), 
-                inset 0 1.5px 3px rgba(255, 255, 255, 0.8), 
-                inset 0 -1.5px 3px rgba(0, 0, 0, 0.05), 
-                0 8px 16px rgba(0, 0, 0, 0.1); /* Much softer shadow */
-        }
-
-        body.light-mode .cta-button:hover {
-            box-shadow: 
-                inset 0 0 0 1px rgba(0, 0, 0, 0.1), 
-                inset 0 2px 4px rgba(255, 255, 255, 0.9), 
-                inset 0 -2px 4px rgba(0, 0, 0, 0.05), 
-                0 12px 24px rgba(0, 0, 0, 0.15);
-        }
-
-        body.light-mode .glass-card:hover,
-        body.light-mode .title-result-card:hover {
-            transform: translateY(-8px) scale(1.005) translateZ(0); 
-            box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.3); 
-        }
-
-        body.light-mode .text-indigo-100 {
-            color: #374151 !important; 
-        }
-        
-        #mode-toggle-button svg, #mute-toggle-button svg {
-            transition: color 300ms, filter 300ms, transform 200ms;
-        }
-        
-        @media (min-width: 768px) {
-            #controls-card {
-                width: 130px; 
-            }
-        }
-        
-        #controls-card {
-            width: 100%;
-            display: flex;
-            flex-direction: column; 
-            justify-content: center;
-            align-items: center;
-            padding: 1.5rem; 
-        }
-        
-        @media (min-width: 768px) {
-            #controls-card {
-                flex-direction: column;
-                justify-content: flex-start;
-                align-items: center;
-                width: 130px; 
-                padding: 1.5rem;
-            }
-        }
-        
-        body.light-mode #app-footer {
-            border-color: rgba(255, 255, 255, 0.4) !important; 
-        }
-        
-        body.light-mode .text-indigo-400\/70 {
-            color: #3730A3 !important; 
-        }
-        
-        body.light-mode #speaker-icon,
-        body.light-mode #power-icon {
-            color: #6B7280; 
-        }
-
         .drag-over-active {
-            border-color: rgba(129, 140, 248, 0.7) !important; 
-            box-shadow: 0 10px 15px -3px rgba(49, 46, 129, 0.5), 0 4px 6px -4px rgba(49, 46, 129, 0.5) !important; 
-        }
-        
-        body.light-mode .drag-over-active {
             border-color: #6366f1 !important; 
-            box-shadow: 0 4px 6px -1px rgba(199, 210, 254, 0.5), 0 2px 4px -2px rgba(199, 210, 254, 0.5) !important; 
+            box-shadow: none !important; 
         }
+
+        /* Utility helper classes to replace dark mode specifics */
+        .text-subtle { color: #4B5563; }
+        .text-primary { color: #4F46E5; }
+        .footer-border { border-color: rgba(255, 255, 255, 0.4); }
     </style>
 </head>
-<body class="text-white p-4 md:p-8" onload="initApp()">
+<body class="p-4 md:p-8" onload="initApp()">
     <div id="fixed-background"></div>
     <div class="max-w-4xl mx-auto">
         <div class="flex flex-col md:flex-row gap-12 mb-12">
@@ -499,7 +305,7 @@
                             <h1 class="text-2xl font-bold bg-clip-text text-transparent" style="background-image: linear-gradient(to right, #ec4899, #c084fc, #6366f1)">
                               FanPlusFollow
                             </h1>
-                            <p class="text-indigo-300 text-sm flex items-center font-medium">
+                            <p class="text-indigo-600 text-sm flex items-center font-medium">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-1 h-3 w-3"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
                                 Growth AI
                             </p>
@@ -509,7 +315,7 @@
                 <div class="flex flex-col sm:flex-row items-center gap-3">
                     <div class="flex items-center space-x-3">
                         <svg id="viral-toggle-zap" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-6 w-6 transition-colors duration-300 overflow-visible"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
-                        <span id="viral-toggle-text" class="text-lg font-bold transition-colors duration-300 text-white">
+                        <span id="viral-toggle-text" class="text-lg font-bold transition-colors duration-300 text-black">
                             Viral Mode
                         </span>
                         <div id="viral-toggle-track" class="viral-toggle-track w-16 h-9 flex items-center rounded-full p-1 cursor-pointer transition-all duration-300 backdrop-blur-3xl active:scale-95 touch-none" onclick="toggleViralBoost()">
@@ -522,8 +328,8 @@
         <main>
             <div id="upload-card" class="glass-card fluid-transition p-6 rounded-[36px] mb-12 card-animation-target">
                 <div class="mb-4">
-                    <h2 class="text-2xl font-bold flex items-center gap-2">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-8 w-8 text-indigo-400"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" x2="12" y1="3" y2="15"/></svg>
+                    <h2 class="text-2xl font-bold flex items-center gap-2 text-gray-800">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-8 w-8 text-indigo-500"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" x2="12" y1="3" y2="15"/></svg>
                         Upload Your Video
                     </h2>
                 </div>
@@ -541,15 +347,15 @@
                         <h3 class="text-xl sm:text-2xl font-bold bg-clip-text text-transparent text-center" style="background-image: linear-gradient(to right, #ec4899, #c084fc)">
                           Boost Your Reach With FanPlusFollow
                         </h3>
-                        <p class="text-indigo-300 mt-1 sm:mt-2 text-center max-w-md text-sm sm:text-base">
+                        <p class="text-indigo-600 mt-1 sm:mt-2 text-center max-w-md text-sm sm:text-base">
                           Join the community for exclusive growth insights and advanced content tools.
                         </p>
                         <div class="mt-3 sm:mt-4 flex flex-wrap justify-center gap-4">
-                          <button class="cta-button px-6 py-3 rounded-full font-bold transition-all duration-300 ease-in-out shadow-xl transform active:scale-[0.96] active:shadow-none bg-gradient-to-r from-[#f97316]/20 via-[#ef4444]/20 to-[#c084fc]/20 hover:from-[#f97316]/80 hover:via-[#ef4444]/80 hover:to-[#818cf8]/80 backdrop-blur-3xl text-white flex items-center" onclick="playClickSound(); window.open('https://www.youtube.com/@fanplusfollow', '_blank')" onmouseenter="playHoverSound()">
+                          <button class="cta-button px-6 py-3 rounded-full font-bold transition-all duration-300 ease-in-out shadow-xl transform active:scale-[0.96] active:shadow-none bg-gradient-to-r from-[#f97316]/20 via-[#ef4444]/20 to-[#c084fc]/20 hover:from-[#f97316]/80 hover:via-[#ef4444]/80 hover:to-[#818cf8]/80 backdrop-blur-3xl text-black flex items-center" onclick="playClickSound(); window.open('https://www.youtube.com/@fanplusfollow', '_blank')" onmouseenter="playHoverSound()">
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2 h-4 w-4"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
                             Subscribe Now
                           </button>
-                          <button class="cta-button px-6 py-3 rounded-full font-bold transition-all duration-300 ease-in-out shadow-xl transform active:scale-[0.96] active:shadow-none bg-gradient-to-r from-[#f97316]/20 via-[#ef4444]/20 to-[#c084fc]/20 hover:from-[#f97316]/80 hover:via-[#ef4444]/80 hover:to-[#818cf8]/80 backdrop-blur-3xl text-white flex items-center" onclick="playClickSound(); window.open('https://www.instagram.com/_manmohit_singh_/', '_blank')" onmouseenter="playHoverSound()">
+                          <button class="cta-button px-6 py-3 rounded-full font-bold transition-all duration-300 ease-in-out shadow-xl transform active:scale-[0.96] active:shadow-none bg-gradient-to-r from-[#f97316]/20 via-[#ef4444]/20 to-[#c084fc]/20 hover:from-[#f97316]/80 hover:via-[#ef4444]/80 hover:to-[#818cf8]/80 backdrop-blur-3xl text-black flex items-center" onclick="playClickSound(); window.open('https://www.instagram.com/_manmohit_singh_/', '_blank')" onmouseenter="playHoverSound()">
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2 h-4 w-4"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
                             Follow Now
                           </button>
@@ -558,9 +364,6 @@
                 </div>
             </div>
         </div>
-        <footer id="app-footer" class="text-center text-indigo-400/70 text-xs mt-12 py-6 border-t border-white/20">
-          <p>© 2025 FanPlusFollow AI Growth Tools. All rights reserved.</p>
-        </footer>
     </div>
 
     <script>
@@ -579,7 +382,6 @@
         let isViralBoostEnabled = true; 
         let progressValue = 0;
         let progressInterval = null;
-        let isDarkMode = true; 
         let isMuted = false; 
         
         let audioContextStarted = false;
@@ -644,22 +446,6 @@
             hoverSynth.triggerAttackRelease("D4", "32n");
         };
 
-        const updateModeUI = () => {
-            const body = document.body;
-            const htmlElement = document.documentElement; 
-            
-            // CRITICAL FIX: Explicitly set color-scheme on root element to signal dark mode compliance
-            if (isDarkMode) {
-                body.classList.remove('light-mode');
-                htmlElement.style.backgroundColor = '#0A0D14'; 
-                htmlElement.style.colorScheme = 'only dark'; // Signal compliance
-            } else {
-                body.classList.add('light-mode');
-                htmlElement.style.backgroundColor = '#EBF1F7'; 
-                htmlElement.style.colorScheme = 'only light'; // Signal compliance
-            }
-        };
-
         const icon = (name, classes) => {
             const iconMap = {
                 'Upload': `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="${classes}"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" x2="12" y1="3" y2="15"/></svg>`,
@@ -677,8 +463,9 @@
             const label = document.getElementById('progress-label');
             const statusText = document.getElementById('processing-status');
             const isComplete = progressValue >= 100;
-            const indicatorColorClass = isDarkMode ? "bg-green-500 shadow-md shadow-green-500/50" : "bg-green-600 shadow-md shadow-green-400/50";
-            const finalTextColorClass = isDarkMode ? "text-green-400" : "text-green-600";
+            // LIGHT MODE COLORS
+            const indicatorColorClass = "bg-green-600 shadow-md shadow-green-400/50";
+            const finalTextColorClass = "text-green-600";
             if (indicator && label && statusText) {
                 indicator.style.width = `${progressValue}%`;
                 label.innerHTML = `${progressValue}%`;
@@ -720,21 +507,21 @@
                 if (isViralBoostEnabled) {
                     toggleTrack.classList.add('bg-gradient-to-t', 'from-green-500', 'to-lime-400', 'on-glow');
                 } else {
-                    const offTrackClass = isDarkMode ? 'bg-gray-700' : 'bg-gray-300'; 
+                    const offTrackClass = 'bg-gray-300'; 
                     toggleTrack.classList.add(offTrackClass);
                 }
                 toggleKnob.style.transform = isViralBoostEnabled ? 'translateX(28px)' : 'translateX(0)';
                 toggleZap.classList.remove('text-green-400', 'text-green-600', 'text-gray-400', 'text-gray-500', 'icon-pop-on');
                 toggleZap.style.filter = '';
                 if (isViralBoostEnabled) {
-                    const zapColorClass = isDarkMode ? 'text-green-400' : 'text-green-600'; 
+                    const zapColorClass = 'text-green-600'; 
                     toggleZap.classList.add(zapColorClass, 'icon-pop-on');
                 } else {
-                    const zapColorClass = isDarkMode ? 'text-gray-400' : 'text-gray-500';
+                    const zapColorClass = 'text-gray-500';
                     toggleZap.classList.add(zapColorClass);
                 }
-                const textColor = isDarkMode ? 'text-white' : 'text-gray-700';
-                const offTextColor = isDarkMode ? 'text-gray-400' : 'text-gray-500';
+                const textColor = 'text-black';
+                const offTextColor = 'text-gray-500';
                 toggleText.className = `text-lg font-bold transition-colors duration-300 ${isViralBoostEnabled ? textColor : offTextColor}`;
             }
         };
@@ -887,18 +674,19 @@
             const uploadContainer = document.getElementById('upload-section-content');
             if (!uploadContainer) return;
             if (!file) {
-                const textColorClass = isDarkMode ? 'text-white/80' : 'text-gray-600';
-                const helperTextColorClass = isDarkMode ? 'text-indigo-300' : 'text-indigo-600';
-                const borderColorClass = isDarkMode ? 'border-indigo-500/30 hover:border-indigo-400/70 hover:shadow-lg hover:shadow-indigo-900/50' : 'border-indigo-300 hover:border-indigo-500 hover:shadow-md hover:shadow-indigo-200/50';
+                // LIGHT MODE COLORS HARDCODED
+                const textColorClass = 'text-black';
+                const helperTextColorClass = 'text-indigo-600';
+                const borderColorClass = 'border-indigo-300 hover:border-indigo-500';
                 uploadContainer.innerHTML = `
-                    <div id="file-drop-area" class="glass-card fluid-transition p-4 sm:p-6 text-center flex flex-col items-center justify-center gap-4 h-64 cursor-pointer hover:scale-[1.01]" ondragover="event.preventDefault()" onmouseenter="playHoverSound()">
-                        <div id="inner-drop-div" class="w-full h-full flex flex-col items-center justify-center border-2 border-dashed rounded-[30px] transition-all duration-300 ${borderColorClass}">
+                    <div id="file-drop-area" class="fluid-transition w-full h-64 flex flex-col items-center justify-center text-center cursor-pointer hover:scale-[1.01]" ondragover="event.preventDefault()" onmouseenter="playHoverSound()">
+                        <div id="inner-drop-div" class="w-full h-full flex flex-col items-center justify-center border-2 border-solid rounded-[30px] transition-all duration-300 ${borderColorClass}">
                             ${icon('Upload', `h-10 w-10 ${textColorClass}`)}
                             <div>
                             <p class="font-bold ${textColorClass}">Drag & Drop Your Video File Here</p>
                             <p class="text-sm mt-1 ${helperTextColorClass}">or click to browse the video file</p>
                             </div>
-                            <button id="select-file-btn" class="cta-button mt-4 px-6 py-3 rounded-full font-bold transition-all duration-300 ease-in-out shadow-xl transform active:scale-[0.96] active:shadow-none bg-gradient-to-r from-[#f97316]/20 via-[#ef4444]/20 to-[#c084fc]/20 hover:from-[#f97316]/80 hover:via-[#ef4444]/80 hover:to-[#818cf8]/80 backdrop-blur-3xl text-white" onmouseenter="playHoverSound()">Select File</button>
+                            <button id="select-file-btn" class="cta-button mt-4 px-6 py-3 rounded-full font-bold transition-all duration-300 ease-in-out shadow-xl transform active:scale-[0.96] active:shadow-none bg-gradient-to-r from-[#f97316]/20 via-[#ef4444]/20 to-[#c084fc]/20 hover:from-[#f97316]/80 hover:via-[#ef4444]/80 hover:to-[#818cf8]/80 backdrop-blur-3xl text-black" onmouseenter="playHoverSound()">Select File</button>
                         </div>
                         <input type="file" id="file-upload-input" class="hidden" accept="video/*" onchange="handleFileChange(event)"/>
                     </div>`;
@@ -916,20 +704,21 @@
                     dropArea.onclick = (e) => { if(e.target === dropArea || e.target.closest('#inner-drop-div')) { playClickSound(); fileInput.click(); } };
                 }
             } else {
-                const textColor = isDarkMode ? 'text-white' : 'text-gray-800';
-                const fileIconColor = isDarkMode ? 'text-green-400' : 'text-green-600';
-                const fileDetailColor = isDarkMode ? 'text-indigo-300' : 'text-indigo-600';
-                const statusTextColorClass = isDarkMode ? 'text-green-400' : 'text-green-600';
-                const indicatorBarColorClass = isDarkMode ? 'bg-green-500 shadow-md shadow-green-500/50' : 'bg-green-600 shadow-md shadow-green-400/50';
-                const startNewButtonClasses = isDarkMode ? 'bg-gray-700/50 hover:bg-gray-600/70 text-white shadow-inner shadow-white/5' : 'bg-gray-100/70 hover:bg-gray-200/90 text-gray-700 shadow-inner shadow-black/5 shadow-lg shadow-gray-300/50';
-                const startNewIconColor = isDarkMode ? 'text-white' : 'text-gray-700';
+                // LIGHT MODE HARDCODED
+                const textColor = 'text-gray-800';
+                const fileIconColor = 'text-green-600';
+                const fileDetailColor = 'text-indigo-600';
+                const statusTextColorClass = 'text-green-600';
+                const indicatorBarColorClass = 'bg-green-600 shadow-md shadow-green-400/50';
+                const startNewButtonClasses = 'bg-gray-100/70 hover:bg-gray-200/90 text-gray-700 shadow-inner shadow-black/5 shadow-lg shadow-gray-300/50';
+                const startNewIconColor = 'text-gray-700';
                 const processingArea = isProcessing || isProcessed ? `
                     <div class="w-full max-w-sm mb-4">
                         <div class="flex justify-between mb-2">
                             <span id="processing-status" class="font-medium ${statusTextColorClass}">${isProcessed ? 'Processing Complete!' : 'Analyzing content and generating titles...'}</span>
                             <span id="progress-label" class="${statusTextColorClass} font-bold">${progressValue}%</span>
                         </div>
-                        <div class="w-full ${isDarkMode ? 'bg-white/10' : 'bg-gray-300'} rounded-full h-2.5">
+                        <div class="w-full bg-gray-300 rounded-full h-2.5">
                             <div id="progress-indicator" class="h-2.5 rounded-full transition-all duration-1000 ${indicatorBarColorClass}" style="width: ${progressValue}%"></div>
                         </div>
                     </div>
@@ -953,53 +742,53 @@
             const resultsContainer = document.getElementById('results-section');
             if (!resultsContainer) return;
             if (isProcessed) {
-                const scoreColorClass = viralScore < 75 ? "text-red-400" : viralScore < 90 ? "text-yellow-400" : "text-green-400";
+                const scoreColorClass = viralScore < 75 ? "text-red-500" : viralScore < 90 ? "text-yellow-600" : "text-green-600";
                 const scoreText = viralScore < 75 ? "Rethink your content hook for better reach." : viralScore < 90 ? "Solid performance. A few tweaks could push it higher." : "VIRAL READY! This content is primed for maximum engagement. Post ASAP.";
-                const scoreGlowStyle = viralScore >= 90 ? 'text-shadow: 0 0 25px rgba(0, 255, 0, 0.8), 0 0 8px rgba(255, 255, 255, 0.6);' : viralScore >= 75 ? 'text-shadow: 0 0 15px rgba(255, 255, 0, 0.5);' : 'text-shadow: none;';
+                const scoreGlowStyle = 'text-shadow: none;'; // Removed heavy glow for light mode
                 const viralScoreHTML = `
                     <div class="glass-card fluid-transition p-6 rounded-[36px] mb-12">
-                        <div class="mb-4"><h2 class="text-2xl font-bold text-indigo-200">Viral Potential Score</h2></div>
+                        <div class="mb-4"><h2 class="text-2xl font-bold text-indigo-800">Viral Potential Score</h2></div>
                         <div class="p-1">
                             <div class="flex items-center justify-between mb-4"><span class="text-5xl font-extrabold transition-colors duration-500 viral-score-text ${scoreColorClass}" style="${scoreGlowStyle}">${viralScore}%</span></div>
-                            <div class="w-full ${isDarkMode ? 'bg-white/10' : 'bg-gray-300'} rounded-full h-3">
+                            <div class="w-full bg-gray-300 rounded-full h-3">
                                 <div class="h-3 rounded-full transition-all duration-1000 ${viralScore < 75 ? "bg-red-500 shadow-md shadow-red-500/50" : viralScore < 90 ? "bg-yellow-500 shadow-md shadow-yellow-500/50" : "bg-green-500 shadow-md shadow-green-500/50"}" style="width: ${viralScore}%"></div>
                             </div>
-                            <p class="text-base font-medium text-indigo-300 mt-3">${scoreText}</p>
+                            <p class="text-base font-medium text-indigo-700 mt-3">${scoreText}</p>
                         </div>
                     </div>`;
-                const titleTextColor = isDarkMode ? 'text-white/90' : 'text-gray-800';
-                const regenerateButtonClasses = isDarkMode ? 'bg-gray-700/50 hover:bg-gray-600/70 text-white shadow-inner shadow-white/5' : 'bg-gray-100/70 hover:bg-gray-200/90 text-gray-700 shadow-inner shadow-black/5 shadow-lg shadow-gray-300/50';
+                const titleTextColor = 'text-gray-800';
+                const regenerateButtonClasses = 'bg-gray-100/70 hover:bg-gray-200/90 text-gray-700 shadow-inner shadow-black/5 shadow-lg shadow-gray-300/50';
                 const copyButtonBaseClasses = "h-8 w-8 p-0 shadow-none rounded-full flex items-center justify-center active:scale-95 transition-all duration-300 ease-in-out";
-                const copyButtonDynamicClasses = isDarkMode ? "bg-transparent hover:bg-white/10 text-indigo-300 hover:text-white" : "bg-transparent hover:bg-gray-300/50 text-indigo-500 hover:text-black"; 
+                const copyButtonDynamicClasses = "bg-transparent hover:bg-gray-300/50 text-indigo-500 hover:text-black"; 
                 const titlesHTML = `
                     <div class="mb-12">
                         <div class="flex justify-between items-center mb-6">
-                            <h2 class="text-2xl font-bold ${isDarkMode ? 'text-white' : 'text-gray-800'}">Suggested Titles</h2>
-                            <button onclick="handleRegenerate()" onmouseenter="playHoverSound()" class="cta-button ${regenerateButtonClasses} backdrop-blur-xl text-sm px-4 py-2 rounded-full font-medium flex items-center">${icon('RotateCcw', `mr-2 h-3 w-3 ${isDarkMode ? 'text-white' : 'text-gray-700'}`)} Regenerate</button>
+                            <h2 class="text-2xl font-bold text-gray-800">Suggested Titles</h2>
+                            <button onclick="handleRegenerate()" onmouseenter="playHoverSound()" class="cta-button ${regenerateButtonClasses} backdrop-blur-xl text-sm px-4 py-2 rounded-full font-medium flex items-center">${icon('RotateCcw', `mr-2 h-3 w-3 text-gray-700`)} Regenerate</button>
                         </div>
                         <div class="grid grid-cols-1 md:grid-cols-3 gap-6 overflow-visible">
                             ${titles.map((title, index) => `
                                 <div class="title-result-card fluid-transition p-4">
                                     <div class="p-1">
                                         <div class="flex justify-between items-start mb-2">
-                                            <span class="text-xs font-medium px-2 py-1 rounded-full bg-pink-700/50 text-pink-300 border border-pink-500/30">Option ${index + 1}</span>
-                                            <button onclick="copyToClipboard('${title.replace(/'/g, "\\'")}', ${index})" onmouseenter="playHoverSound()" class="${copyButtonBaseClasses} ${copyButtonDynamicClasses}">${copiedIndex === index ? icon('Check', 'h-4 w-4 text-green-400') : icon('Copy', 'h-4 w-4')}</button>
+                                            <span class="text-xs font-medium px-2 py-1 rounded-full bg-pink-100 text-pink-700 border border-pink-300">Option ${index + 1}</span>
+                                            <button onclick="copyToClipboard('${title.replace(/'/g, "\\'")}', ${index})" onmouseenter="playHoverSound()" class="${copyButtonBaseClasses} ${copyButtonDynamicClasses}">${copiedIndex === index ? icon('Check', 'h-4 w-4 text-green-600') : icon('Copy', 'h-4 w-4')}</button>
                                         </div>
                                         <p class="text-base font-medium min-h-[50px] flex items-center ${titleTextColor} p-1">${title}</p>
                                     </div>
                                 </div>`).join('')}
                         </div>
                     </div>`;
-                const descriptionInnerBg = isDarkMode ? 'bg-black/40' : 'bg-gray-100/80'; 
-                const descriptionInnerBorder = isDarkMode ? 'border-white/20' : 'border-gray-400/40'; 
-                const descriptionTextColor = isDarkMode ? 'text-indigo-100' : 'text-gray-700';
-                const copyAllButtonClasses = isDarkMode ? 'bg-gray-700/50 hover:bg-gray-600/70 text-white shadow-inner shadow-white/5' : 'bg-gray-100/70 hover:bg-gray-200/90 text-gray-700 shadow-inner shadow-black/5 shadow-lg shadow-gray-300/50';
+                const descriptionInnerBg = 'bg-gray-100/80'; 
+                const descriptionInnerBorder = 'border-gray-400/40'; 
+                const descriptionTextColor = 'text-gray-700';
+                const copyAllButtonClasses = 'bg-gray-100/70 hover:bg-gray-200/90 text-gray-700 shadow-inner shadow-black/5 shadow-lg shadow-gray-300/50';
                 const descriptionHTML = `
                     <div class="glass-card fluid-transition p-6 rounded-[36px]"> 
                         <div class="mb-4">
-                            <h2 class="flex justify-between items-center text-xl sm:text-2xl font-bold text-indigo-200">
+                            <h2 class="flex justify-between items-center text-xl sm:text-2xl font-bold text-indigo-800">
                                 <span>Optimized Description & Hashtags</span>
-                                <button onclick="copyDescriptionToClipboard()" onmouseenter="playHoverSound()" class="cta-button ${copyAllButtonClasses} backdrop-blur-xl text-sm px-4 py-2 rounded-full font-medium flex items-center">${copiedIndex === 3 ? `<span class="flex items-center">${icon('Check', 'mr-2 h-4 w-4 text-green-400')} Copied!</span>` : `<span class="flex items-center">${icon('Copy', 'mr-2 h-4 w-4')} Copy All</span>`}</button>
+                                <button onclick="copyDescriptionToClipboard()" onmouseenter="playHoverSound()" class="cta-button ${copyAllButtonClasses} backdrop-blur-xl text-sm px-4 py-2 rounded-full font-medium flex items-center">${copiedIndex === 3 ? `<span class="flex items-center">${icon('Check', 'mr-2 h-4 w-4 text-green-600')} Copied!</span>` : `<span class="flex items-center">${icon('Copy', 'mr-2 h-4 w-4')} Copy All</span>`}</button>
                             </h2>
                         </div>
                         <div class="${descriptionInnerBg} rounded-[24px] p-4 sm:p-5 min-h-[250px] max-h-96 border ${descriptionInnerBorder} overflow-auto custom-scrollbar">
@@ -1015,7 +804,6 @@
         };
 
         const updateUI = () => {
-            updateModeUI(); 
             updateToggleUI(); 
             renderUploadSection();
             if(file && (isProcessing || isProcessed)) setProgress(progressValue);
@@ -1024,10 +812,7 @@
 
         const initApp = () => {
             startLaunchAnimation(); 
-            const prefersDarkScheme = window.matchMedia('(prefers-color-scheme: dark)');
-            isDarkMode = prefersDarkScheme.matches; 
-            prefersDarkScheme.addEventListener('change', (e) => { isDarkMode = e.matches; updateUI(); });
-            updateModeUI();
+            // Removed dark mode listener logic
             const resultsContainer = document.getElementById('results-section');
             if (resultsContainer) resultsContainer.classList.remove('show-results');
             updateUI();
