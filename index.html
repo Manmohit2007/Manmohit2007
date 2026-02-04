@@ -339,11 +339,11 @@
                           Join the community for exclusive growth insights and advanced content tools.
                         </p>
                         <div class="mt-3 sm:mt-4 flex flex-wrap justify-center gap-4">
-                          <button class="cta-button px-6 py-3 rounded-full font-bold transition-all duration-300 ease-in-out transform backdrop-blur-3xl flex items-center" onclick="window.open('https://www.youtube.com/@fanplusfollow', '_blank')">
+                          <button class="cta-button px-6 py-3 rounded-full font-bold transition-all duration-300 ease-in-out transform backdrop-blur-3xl flex items-center" onclick="openLinkWithDelay('https://www.youtube.com/@fanplusfollow')">
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2 h-4 w-4"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
                             Subscribe Now
                           </button>
-                          <button class="cta-button px-6 py-3 rounded-full font-bold transition-all duration-300 ease-in-out transform backdrop-blur-3xl flex items-center" onclick="window.open('https://www.instagram.com/_manmohit_singh_/', '_blank')">
+                          <button class="cta-button px-6 py-3 rounded-full font-bold transition-all duration-300 ease-in-out transform backdrop-blur-3xl flex items-center" onclick="openLinkWithDelay('https://www.instagram.com/_manmohit_singh_/')">
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2 h-4 w-4"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
                             Follow Now
                           </button>
@@ -375,6 +375,12 @@
 
         const YOUTUBE_CHANNEL_LINK = "https://www.youtube.com/@fanplusfollow";
         const INSTAGRAM_LINK = "https://www.instagram.com/_manmohit_singh_/";
+
+        const openLinkWithDelay = (url) => {
+            setTimeout(() => {
+                window.open(url, '_blank');
+            }, 200);
+        };
 
         const icon = (name, classes) => {
             const iconMap = {
@@ -456,11 +462,9 @@
         };
 
         const toggleViralBoost = () => {
-            setTimeout(() => {
-                isViralBoostEnabled = !isViralBoostEnabled;
-                if (isProcessed) generateViralContent(true);
-                updateUI();
-            }, 150);
+            isViralBoostEnabled = !isViralBoostEnabled;
+            if (isProcessed) generateViralContent(true);
+            updateUI();
         };
 
         const handleFileChange = (event) => {
@@ -535,11 +539,13 @@
                     generateViralContent(false); 
                     updateUI();
                     attachStaticListeners(); 
-                }, 150);
+                }, 200);
             }
         };
 
-        const copyDescriptionToClipboard = () => copyToClipboard(description, 3);
+        const copyDescriptionToClipboard = () => {
+             setTimeout(() => copyToClipboard(description, 3), 200);
+        }
 
         const copyToClipboard = (text, index) => {
             // Perform copy immediately to ensure browser security context (user activation) is respected
@@ -578,7 +584,7 @@
                 if (resultsContainer) resultsContainer.classList.remove('show-results');
                 updateUI();
                 attachStaticListeners(); 
-            }, 150);
+            }, 200);
         };
 
         const attachStaticListeners = () => {
@@ -632,7 +638,10 @@
                     dropArea.addEventListener('drop', (e) => { e.preventDefault(); dragCounter = 0; innerDropDiv.classList.remove('drag-over-active'); handleDrop(e); });
                     const selectFileBtn = document.getElementById('select-file-btn');
                     const fileInput = document.getElementById('file-upload-input');
-                    if(selectFileBtn && fileInput) selectFileBtn.onclick = (e) => { e.stopPropagation(); fileInput.click(); };
+                    if(selectFileBtn && fileInput) selectFileBtn.onclick = (e) => { 
+                        e.stopPropagation(); 
+                        setTimeout(() => fileInput.click(), 200); 
+                    };
                     dropArea.onclick = (e) => { if(e.target === dropArea || e.target.closest('#inner-drop-div')) { fileInput.click(); } };
                 }
             } else {
