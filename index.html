@@ -155,7 +155,7 @@
             position: absolute;
             inset: 0;
             border-radius: 30px; 
-            padding: 1.5px; /* Thin border */
+            padding: 2px; /* Slightly thicker for glow visibility */
             /* Vivid Gradient - Smoother Mix: Violet/Pink (0-40%), Blend (40-75%), Lighter Orange (75-100%) */
             background: linear-gradient(to right, #a78bfa 0%, #f472b6 40%, #fca564 75%, #fca564 100%); 
             -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
@@ -163,9 +163,15 @@
             mask-composite: exclude;
             pointer-events: none;
             transition: all 500ms cubic-bezier(0.4, 0, 0.2, 1);
-            opacity: 0.6; /* Moderate brightness by default */
+            opacity: 0.7; /* Increased visibility */
         }
         
+        .gradient-border-mask:hover::before {
+            opacity: 1; 
+            /* Enhanced layered glow matching the button colors */
+            filter: drop-shadow(0 0 8px rgba(244, 114, 182, 0.6)) drop-shadow(0 0 20px rgba(167, 139, 250, 0.4)); 
+        }
+
         body {
             background-color: transparent; 
             min-height: 100vh;
@@ -240,7 +246,11 @@
             filter: drop-shadow(0 0 12px rgba(74, 222, 128, 0.9));
         }
 
-        .drag-over-active { border-color: #000000 !important; }
+        /* Replaced simple border with intense glow for drag state */
+        .drag-over-active::before { 
+            opacity: 1 !important;
+            filter: drop-shadow(0 0 10px rgba(244, 114, 182, 0.8)) drop-shadow(0 0 25px rgba(167, 139, 250, 0.6)) !important;
+        }
 
         /* Make toggle area easier to hit on mobile */
         .toggle-click-area {
@@ -385,7 +395,7 @@
         const icon = (name, classes) => {
             const iconMap = {
                 'Upload': `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="${classes}"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" x2="12" y1="3" y2="15"/></svg>`,
-                'Play': `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="${classes}"><circle cx="12" cy="12" r="10"/><polygon points="10 8 16 12 10 16 10 8"/></svg>`,
+                'Play': `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="${classes}"><circle cx="12" cy="12" r="10"/><polygon points="10 8 16 12 10 16 10 8"/></svg>`,
                 'Copy': `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="${classes}"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>`,
                 'Check': `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="${classes}"><polyline points="20 6 9 17 4 12"/></svg>`,
                 'RotateCcw': `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="${classes}"><path d="M3 2v6h6"/><path d="M3 13a9 9 0 1 0 3-7.7L3 8"/></svg>`,
@@ -647,7 +657,7 @@
             } else {
                 const textColor = 'text-gray-800';
                 // Kept vibrant green + glow
-                const fileIconColor = 'text-green-400 drop-shadow-[0_0_5px_rgba(74,222,128,0.8)]';
+                const fileIconColor = 'text-green-400';
                 const fileDetailColor = 'text-black';
                 const statusTextColorClass = 'text-green-400 drop-shadow-[0_0_8px_rgba(74,222,128,0.8)]';
                 const indicatorBarColorClass = 'bg-green-400 shadow-[0_0_15px_rgba(74,222,128,0.6)]';
@@ -693,7 +703,6 @@
                 uploadContainer.innerHTML = `
                     <div class="flex flex-col items-center">
                         <div class="glass-inset-panel fluid-transition flex items-center gap-3 mb-4 p-4 w-full max-w-sm">
-                            ${icon('Play', `h-8 w-8 ${fileIconColor} flex-shrink-0`)}
                             ${titleContentHTML}
                         </div>
                         ${processingArea}
@@ -702,22 +711,30 @@
         };
 
         const enableTitleEdit = () => {
-            setTimeout(() => {
-                isEditingTitle = true;
-                updateUI();
-                setTimeout(() => {
-                    const input = document.getElementById('title-edit-input');
-                    if(input) {
-                        input.focus();
-                        input.select();
-                    }
-                }, 50);
-            }, 150);
+            // iOS FIX: Executing strictly synchronously to ensure keyboard launch.
+            // Any setTimeout (even 0ms) will break the "user interaction" chain on iPad/iPhone.
+            isEditingTitle = true;
+            updateUI();
+            
+            const input = document.getElementById('title-edit-input');
+            if(input) {
+                input.focus();
+                // Try standard select, fallback to setSelectionRange for better iOS compatibility
+                try {
+                    input.select();
+                } catch (e) {
+                    input.setSelectionRange(0, 9999);
+                }
+            }
         };
 
         const saveTitleEdit = () => {
+            // KEYBOARD FIX: Explicitly blur the input immediately to force keyboard to close
+            const input = document.getElementById('title-edit-input');
+            if (input) input.blur();
+
             setTimeout(() => {
-                const input = document.getElementById('title-edit-input');
+                // Input reference is still valid here even if blurred
                 if (input && input.value.trim() !== "") {
                     currentFileName = input.value.trim();
                     isEditingTitle = false;
@@ -770,9 +787,9 @@
                 const titleTextColor = 'text-gray-800';
                 const regenerateButtonClasses = ''; 
                 
-                /* Updated Copy Button Classes for Elastic Feel */
-                const copyButtonBaseClasses = "h-8 w-8 p-0 shadow-none rounded-full flex items-center justify-center transition-all duration-500 cubic-bezier(0.34, 1.56, 0.64, 1)";
-                const copyButtonDynamicClasses = "bg-transparent hover:bg-gray-300/50 text-black hover:text-black active:scale-75 active:bg-gray-300/80 active:duration-75"; 
+                /* Updated Copy Button Classes to match Edit Pencil style */
+                const copyButtonBaseClasses = "h-8 w-8 p-0 rounded-full flex items-center justify-center transition-all duration-300";
+                const copyButtonDynamicClasses = "bg-transparent hover:bg-black/5 text-gray-500 hover:text-black active:scale-90 active:bg-black/10"; 
                 const titlesHTML = `
                     <div class="glass-card fluid-transition p-6 rounded-[36px] mb-12">
                         <div class="flex justify-between items-center mb-6">
