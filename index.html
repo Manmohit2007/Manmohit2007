@@ -13,7 +13,7 @@
     <!-- Standard Meta Tags -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, viewport-fit=cover">
-    <meta name="color-scheme" content="light dark">
+    <meta name="color-scheme" content="only light">
     <title>FanPlusFollow - Growth AI</title>
     <meta name="description" content="Growth AI for Content Creators. Boost your reach with advanced tools.">
 
@@ -25,53 +25,11 @@
         :root { 
             font-family: 'Inter', sans-serif; 
             box-sizing: border-box;
-            
-            /* Light Mode Defaults (Milky Glass - iOS 9 Style) */
-            --glass-bg: rgba(255, 255, 255, 0.65);
-            --glass-border: rgba(255, 255, 255, 0.4);
-            --glass-inset-shadow: rgba(255, 255, 255, 0.5);
-            --glass-drop-shadow: rgba(0, 0, 0, 0.1);
-            --text-primary: #000000;
-            --text-secondary: #374151;
-            --bg-color: #EBF1F7;
-            --bg-overlay: rgba(255, 255, 255, 0.1);
-
-            --btn-text: #ffffff; /* White text in Light Mode */
-        }
-
-        @media (prefers-color-scheme: dark) {
-            :root {
-                /* Dark Mode Defaults (Smoked Glass - Darker Cards) */
-                --glass-bg: rgba(20, 20, 20, 0.85);
-                --glass-border: rgba(255, 255, 255, 0.1);
-                --glass-inset-shadow: rgba(255, 255, 255, 0.05);
-                --glass-drop-shadow: rgba(0, 0, 0, 0.6);
-                --text-primary: #ffffff;
-                --text-secondary: #e5e7eb;
-                
-                /* Keep background similar to light mode (not darker) */
-                --bg-color: #EBF1F7;
-                --bg-overlay: rgba(255, 255, 255, 0.05);
-
-                --btn-text: #000000; /* Black text in Dark Mode */
-            }
-
-            /* Dark Mode Overrides for Tailwind Classes */
-            .text-black { color: #ffffff !important; }
-            .text-gray-800 { color: #f3f4f6 !important; }
-            .text-gray-700 { color: #e5e7eb !important; }
-            .text-gray-500 { color: #9ca3af !important; }
-            
-            /* Result Cards Updates */
-            .bg-pink-100 { 
-                background-color: rgba(131, 24, 67, 0.3) !important; 
-                border-color: rgba(244, 114, 182, 0.3) !important;
-                color: #fbcfe8 !important;
-            }
+            color-scheme: only light;
         }
 
         html {
-            background-color: var(--bg-color);
+            background-color: #EBF1F7;
             scroll-behavior: smooth;
         }
 
@@ -103,61 +61,60 @@
         #upload-card.card-animation-target { animation-delay: 0.3s; } 
         #promo-card.card-animation-target { animation-delay: 0.4s; }
 
-        /* Glass Card - Updated for iOS 9 frosted transparency */
+        /* Glass Card */
         .glass-card {
-            background-color: var(--glass-bg);
-            -webkit-backdrop-filter: blur(20px) saturate(180%);
-            backdrop-filter: blur(20px) saturate(180%); 
-            box-shadow: inset 0 0 20px var(--glass-inset-shadow), 0 25px 50px var(--glass-drop-shadow);
-            border: 1px solid var(--glass-border);
+            background-color: rgba(255, 255, 255, 0.35);
+            -webkit-backdrop-filter: blur(80px) saturate(160%);
+            backdrop-filter: blur(80px) saturate(160%); 
+            box-shadow: inset 0 0 20px rgba(255, 255, 255, 0.2), 0 25px 50px rgba(0, 0, 0, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.4);
             border-radius: 36px;
             transform: translateZ(0);
         }
 
         .glass-card:hover {
             transform: translateY(-8px) scale(1.005) translateZ(0); 
-            box-shadow: 0 15px 40px var(--glass-drop-shadow), inset 0 0 20px var(--glass-inset-shadow);
-            border-color: var(--glass-border);
-            filter: brightness(1.05);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.08), inset 0 0 20px rgba(255, 255, 255, 0.3);
+            border-color: rgba(255, 255, 255, 0.6);
         }
 
         .title-result-card {
-            background-color: var(--glass-bg);
-            backdrop-filter: blur(20px) saturate(160%); 
-            box-shadow: inset 0 0 10px var(--glass-inset-shadow), 0 15px 30px var(--glass-drop-shadow);
-            border: 1px solid var(--glass-border);
+            background-color: rgba(255, 255, 255, 0.35);
+            backdrop-filter: blur(60px) saturate(160%); 
+            box-shadow: inset 0 0 10px rgba(255, 255, 255, 0.2), 0 15px 30px rgba(0, 0, 0, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.4);
             border-radius: 36px;
             transform: translateZ(0);
         }
 
         .title-result-card:hover {
             transform: translateY(-8px) scale(1.005) translateZ(0); 
-            box-shadow: 0 10px 30px var(--glass-drop-shadow), inset 0 0 10px var(--glass-inset-shadow);
-            border-color: var(--glass-border);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15), inset 0 0 10px rgba(255, 255, 255, 0.4);
+            border-color: rgba(255, 255, 255, 0.7);
         }
         
         .glass-card.tapped-hover,
         .title-result-card.tapped-hover {
             transform: translateY(-8px) scale(1.005) translateZ(0) !important; 
-            box-shadow: 0 10px 30px var(--glass-drop-shadow) !important; 
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15) !important; 
         }
 
         /* --- CTA BUTTONS --- */
         .cta-button {
             transition: all 300ms cubic-bezier(0.25, 0.46, 0.45, 0.94);
-            /* Soft Pastel Gradient */
-            background: linear-gradient(to right, #c084fc, #f472b6, #fb923c); 
-            color: var(--btn-text); /* Use the adaptive variable */
+            /* Vivid Gradient */
+            background: linear-gradient(to right, #a855f7, #ec4899, #f97316); 
+            color: #ffffff; /* White text */
             box-shadow: none; /* No shadow */
             will-change: transform, filter, opacity; 
             border: none;
-            opacity: 0.8; /* Increased visibility for milky glass */
+            opacity: 0.6; /* Moderate brightness by default */
         }
         
         .cta-button:hover {
             transform: translateY(-4px) scale(1.02) translateZ(0);
             opacity: 1; /* Fully opaque on hover */
-            filter: brightness(1.05); /* Slight brightness, NO glow/drop-shadow */
+            filter: none; /* Removed extra brightness */
             box-shadow: none; 
         }
         
@@ -180,57 +137,72 @@
             inset: 0;
             border-radius: 30px; 
             padding: 1.5px; /* Thin border */
-            /* Soft Pastel Gradient */
-            background: linear-gradient(to right, #c084fc, #f472b6, #fb923c); 
+            /* Vivid Gradient */
+            background: linear-gradient(to right, #a855f7, #ec4899, #f97316); 
             -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
             -webkit-mask-composite: xor;
             mask-composite: exclude;
             pointer-events: none;
             transition: all 500ms cubic-bezier(0.4, 0, 0.2, 1);
-            opacity: 0.6; 
+            opacity: 0.6; /* Moderate brightness by default */
         }
         
         .gradient-border-mask:hover::before {
             opacity: 1; /* Fully opaque on hover */
-            /* Soft Pink Glow */
-            filter: drop-shadow(0 0 12px rgba(244, 114, 182, 0.6)); 
+            /* Subtle Pink Glow */
+            filter: drop-shadow(0 0 5px rgba(236, 72, 153, 0.3)); 
         }
 
         body {
             background-color: transparent; 
             min-height: 100vh;
-            color: var(--text-secondary);
+            color: #374151;
             overflow-x: hidden;
         }
 
         #fixed-background {
             position: fixed;
             top: 0; left: 0; width: 100vw; height: 100vh; z-index: -1; 
-            background-image: linear-gradient(var(--bg-overlay), var(--bg-overlay)), url('IMG_2982.png');
+            background-image: linear-gradient(rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.2)), url('IMG_2982.png');
             background-size: cover;
             background-position: center;
             background-attachment: fixed;
         }
         
         .viral-toggle-track {
-            transition: all 300ms ease;
+            transition: all 400ms cubic-bezier(0.25, 0.46, 0.45, 0.94);
             /* Removed default heavy shadow to allow states to manage it */
+            border-radius: 9999px;
         }
         
+        /* FUSED OFF STATE: Carved into the glass */
         .viral-toggle-track.infused-off {
-            background-color: var(--glass-bg); /* Use glass variable */
-            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1), inset 0 -1px 2px rgba(255, 255, 255, 0.2); 
-            border: none;
-            backdrop-filter: blur(4px);
+            background-color: rgba(0, 0, 0, 0.02); /* Barely visible to catch inner shadow */
+            /* Deep inset shadow for the "carved" look + Bottom highlight for depth */
+            box-shadow: 
+                inset 0 4px 8px rgba(0, 0, 0, 0.15), 
+                inset 0 1px 2px rgba(0, 0, 0, 0.06),
+                0 1px 0 rgba(255, 255, 255, 0.3); 
+            border: none; 
         }
 
+        /* LEAKING ON STATE: Intense glow spread */
         .viral-toggle-track.on-glow {
-            box-shadow: inset 0 3px 6px rgba(0, 0, 0, 0.2), 0 0 18px 2px rgba(0, 255, 0, 0.5); 
+            /* Inner shadow for depth inside the light source */
+            /* Outer shadows: 1. Core tight glow, 2. Wide ambient leak */
+            box-shadow: 
+                inset 0 2px 4px rgba(0, 0, 0, 0.2), 
+                0 0 20px 5px rgba(74, 222, 128, 0.7),
+                0 0 50px 15px rgba(74, 222, 128, 0.4); 
         }
         
         .viral-toggle-knob {
-            transition: transform 300ms ease;
-            box-shadow: inset 0 3px 3px rgba(255, 255, 255, 0.9), inset 0 -3px 3px rgba(0, 0, 0, 0.1), 0 5px 10px rgba(0, 0, 0, 0.4);      
+            transition: transform 400ms cubic-bezier(0.34, 1.56, 0.64, 1); /* Bouncy spring effect */
+            /* Refined knob shadow for "floating" feel */
+            box-shadow: 
+                0 2px 5px rgba(0, 0, 0, 0.2), 
+                inset 0 -2px 2px rgba(0, 0, 0, 0.05), 
+                inset 0 2px 4px rgba(255, 255, 255, 1);      
         }
         
         @keyframes icon-pop {
@@ -247,23 +219,7 @@
             filter: drop-shadow(0 0 8px rgba(0, 255, 0, 0.6));
         }
 
-        .drag-over-active { border-color: var(--text-primary) !important; }
-
-        /* Infused Box Style (Recessed Look) */
-        .infused-box {
-            background-color: rgba(255, 255, 255, 0.15);
-            box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.06), inset 0 -1px 2px rgba(255, 255, 255, 0.3);
-            border-radius: 24px;
-            border: 1px solid rgba(0, 0, 0, 0.05); /* Light Mode Border */
-        }
-
-        @media (prefers-color-scheme: dark) {
-            .infused-box {
-                background-color: rgba(0, 0, 0, 0.25);
-                box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.4), inset 0 -1px 1px rgba(255, 255, 255, 0.05);
-                border: 1px solid rgba(255, 255, 255, 0.1); /* Dark Mode Border */
-            }
-        }
+        .drag-over-active { border-color: #000000 !important; }
     </style>
 </head>
 <body class="p-4 md:p-8" onload="initApp()">
@@ -277,8 +233,8 @@
                             <img src="https://manmohit2007.github.io/Manmohit2007/brand_logo.png?v=10" alt="FanPlusFollow Logo" class="w-full h-full object-contain filter drop-shadow-md">
                         </div>
                         <div class="text-left">
-                            <!-- Soft Pastel Gradient Title -->
-                            <h1 class="text-2xl font-bold bg-clip-text text-transparent" style="background-image: linear-gradient(to right, #c084fc, #f472b6, #fb923c)">
+                            <!-- Vivid Gradient Title -->
+                            <h1 class="text-2xl font-bold bg-clip-text text-transparent" style="background-image: linear-gradient(to right, #a855f7, #ec4899, #f97316)">
                               FanPlusFollow
                             </h1>
                             <p class="text-black text-sm flex items-center font-medium">
@@ -320,8 +276,8 @@
                         <div class="w-16 h-16 mb-2 sm:mb-4">
                             <img src="https://manmohit2007.github.io/Manmohit2007/brand_logo.png?v=10" alt="FanPlusFollow Logo" class="w-full h-full object-contain filter drop-shadow-md">
                         </div>
-                        <!-- Soft Pastel Gradient -->
-                        <h3 class="text-xl sm:text-2xl font-bold bg-clip-text text-transparent text-center" style="background-image: linear-gradient(to right, #c084fc, #f472b6, #fb923c)">
+                        <!-- Vivid Gradient -->
+                        <h3 class="text-xl sm:text-2xl font-bold bg-clip-text text-transparent text-center" style="background-image: linear-gradient(to right, #a855f7, #ec4899, #f97316)">
                           Boost Your Reach With FanPlusFollow
                         </h3>
                         <p class="text-black mt-1 sm:mt-2 text-center max-w-md text-sm sm:text-base">
@@ -683,7 +639,7 @@
                 const indicatorBarColorClass = 'bg-green-600 shadow-md shadow-green-400/50';
                 
                 const startNewButtonClasses = ''; 
-                const startNewIconColor = ''; /* Removed text-black to inherit button color */
+                const startNewIconColor = 'text-white'; 
                 
                 const processingArea = isProcessing || isProcessed ? `
                     <div class="w-full max-w-sm mb-4">
@@ -738,7 +694,7 @@
                     <div class="mb-12">
                         <div class="flex justify-between items-center mb-6">
                             <h2 class="text-2xl font-bold text-gray-800">Suggested Titles</h2>
-                            <button onclick="handleRegenerate()" onmouseenter="playHoverSound()" class="cta-button ${regenerateButtonClasses} backdrop-blur-xl text-sm px-4 py-2 rounded-full font-medium flex items-center">${icon('RotateCcw', `mr-2 h-3 w-3`)} Regenerate</button>
+                            <button onclick="handleRegenerate()" onmouseenter="playHoverSound()" class="cta-button ${regenerateButtonClasses} backdrop-blur-xl text-sm px-4 py-2 rounded-full font-medium flex items-center">${icon('RotateCcw', `mr-2 h-3 w-3 text-white`)} Regenerate</button>
                         </div>
                         <div class="grid grid-cols-1 md:grid-cols-3 gap-6 overflow-visible">
                             ${titles.map((title, index) => `
@@ -753,7 +709,8 @@
                                 </div>`).join('')}
                         </div>
                     </div>`;
-                const descriptionInnerBg = 'infused-box'; 
+                const descriptionInnerBg = 'bg-gray-100/80'; 
+                const descriptionInnerBorder = 'border-gray-400/40'; 
                 const descriptionTextColor = 'text-gray-700';
                 const copyAllButtonClasses = ''; 
                 const descriptionHTML = `
@@ -761,10 +718,10 @@
                         <div class="mb-4">
                             <h2 class="flex justify-between items-center text-xl sm:text-2xl font-bold text-black">
                                 <span>Optimized Description & Hashtags</span>
-                                <button onclick="copyDescriptionToClipboard()" onmouseenter="playHoverSound()" class="cta-button ${copyAllButtonClasses} backdrop-blur-xl text-sm px-4 py-2 rounded-full font-medium flex items-center">${copiedIndex === 3 ? `<span class="flex items-center">${icon('Check', 'mr-2 h-4 w-4')} Copied!</span>` : `<span class="flex items-center">${icon('Copy', 'mr-2 h-4 w-4')} Copy All</span>`}</button>
+                                <button onclick="copyDescriptionToClipboard()" onmouseenter="playHoverSound()" class="cta-button ${copyAllButtonClasses} backdrop-blur-xl text-sm px-4 py-2 rounded-full font-medium flex items-center">${copiedIndex === 3 ? `<span class="flex items-center">${icon('Check', 'mr-2 h-4 w-4 text-white')} Copied!</span>` : `<span class="flex items-center">${icon('Copy', 'mr-2 h-4 w-4 text-white')} Copy All</span>`}</button>
                             </h2>
                         </div>
-                        <div class="${descriptionInnerBg} rounded-[24px] p-4 sm:p-5 min-h-[250px] max-h-96 overflow-auto custom-scrollbar">
+                        <div class="${descriptionInnerBg} rounded-[24px] p-4 sm:p-5 min-h-[250px] max-h-96 border ${descriptionInnerBorder} overflow-auto custom-scrollbar">
                             <pre class="whitespace-pre-wrap text-xs sm:text-sm font-mono ${descriptionTextColor} leading-relaxed">${description}</pre>
                         </div>
                     </div>`;
