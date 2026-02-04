@@ -327,7 +327,7 @@
                 <div class="mb-4">
                     <h2 class="text-2xl font-bold flex items-center gap-2 text-black">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-8 w-8 text-black"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" x2="12" y1="3" y2="15"/></svg>
-                        Upload Your Video
+                        Upload Video
                     </h2>
                 </div>
                 <div class="p-1" id="upload-section-content"></div>
@@ -775,7 +775,7 @@
                 
                 const viralScoreHTML = `
                     <div class="glass-card fluid-transition p-6 rounded-[36px] mb-12">
-                        <div class="mb-4"><h2 class="text-2xl font-bold text-black">Viral Potential Score</h2></div>
+                        <div class="mb-4"><h2 class="text-2xl font-bold text-black">Viral Potential</h2></div>
                         <div class="p-1">
                             <div class="flex items-center justify-between mb-4"><span class="text-5xl font-extrabold transition-colors duration-500 viral-score-text ${scoreColorClass}" style="${scoreGlowStyle}">${viralScore}%</span></div>
                             <div class="w-full progress-track-fused h-3">
@@ -793,7 +793,7 @@
                 const titlesHTML = `
                     <div class="glass-card fluid-transition p-6 rounded-[36px] mb-12">
                         <div class="flex justify-between items-center mb-6">
-                            <h2 class="text-xl sm:text-2xl font-bold text-black">Suggested Titles</h2>
+                            <h2 class="text-xl sm:text-2xl font-bold text-black">Titles</h2>
                             <button onclick="handleRegenerate()" class="cta-button ${regenerateButtonClasses} backdrop-blur-xl text-sm px-4 py-2 rounded-full font-medium flex items-center whitespace-nowrap flex-shrink-0"><span class="flex items-center">${icon('RotateCcw', `mr-2 h-4 w-4 text-white`)} Regenerate</span></button>
                         </div>
                         <div class="grid grid-cols-1 md:grid-cols-3 gap-6 overflow-visible">
@@ -817,7 +817,7 @@
                     <div class="glass-card fluid-transition p-6 rounded-[36px]"> 
                         <div class="mb-4">
                             <h2 class="flex justify-between items-center text-xl sm:text-2xl font-bold text-black">
-                                <span class="truncate mr-2">Optimized Description & Hashtags</span>
+                                <span class="truncate mr-2">Description</span>
                                 <button onclick="copyDescriptionToClipboard()" class="cta-button ${copyAllButtonClasses} backdrop-blur-xl text-sm px-4 py-2 rounded-full font-medium flex items-center whitespace-nowrap flex-shrink-0">${copiedIndex === 3 ? `<span class="flex items-center">${icon('Check', 'mr-2 h-4 w-4 text-white')} Copied!</span>` : `<span class="flex items-center">${icon('Copy', 'mr-2 h-4 w-4 text-white')} Copy All</span>`}</button>
                             </h2>
                         </div>
