@@ -78,7 +78,7 @@
 
         @media (hover: hover) {
             .glass-card:hover {
-                transform: translateY(-8px) scale(1.005) translateZ(0); 
+                transform: translateY(-4px) scale(1.002) translateZ(0); 
                 box-shadow: 0 15px 40px rgba(0, 0, 0, 0.08), inset 0 0 50px rgba(255, 255, 255, 0.5);
                 border-color: rgba(255, 255, 255, 0.7);
             }
@@ -192,48 +192,12 @@
             filter: drop-shadow(0 0 12px rgba(74, 222, 128, 0.9));
         }
 
-        /* --- GLASS UPLOAD ZONE WITH CORNER GRADIENTS --- */
-        .glass-upload-zone {
-            position: relative;
-            background: rgba(255, 255, 255, 0.08);
-            -webkit-backdrop-filter: blur(12px);
-            backdrop-filter: blur(12px);
-            border-radius: 30px;
-            border: 1px solid rgba(255, 255, 255, 0.15);
-            box-shadow: inset 0 0 25px rgba(255, 255, 255, 0.1);
-            transition: all 400ms cubic-bezier(0.25, 0.46, 0.45, 0.94);
-            overflow: visible; /* Allow glow to show */
-        }
-
-        /* Corner Glow Effect */
-        .glass-upload-zone::before {
-            content: "";
-            position: absolute;
-            inset: -1px;
-            border-radius: 30px;
-            padding: 1.5px; /* Stroke width of the corner gradient */
-            background: radial-gradient(circle at 0% 0%, rgba(255, 255, 255, 1) 0%, transparent 45%),
-                        radial-gradient(circle at 100% 0%, rgba(255, 255, 255, 1) 0%, transparent 45%),
-                        radial-gradient(circle at 100% 100%, rgba(255, 255, 255, 1) 0%, transparent 45%),
-                        radial-gradient(circle at 0% 100%, rgba(255, 255, 255, 1) 0%, transparent 45%);
-            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-            -webkit-mask-composite: xor;
-            mask-composite: exclude;
-            pointer-events: none;
-            opacity: 0.5;
-            transition: opacity 400ms ease, padding 400ms ease;
-        }
-
-        /* Drag Over State */
+        /* --- DRAG OVER FEEDBACK ON MAIN CARD --- */
         .drag-over-active { 
-            transform: scale(1.015);
-            background: rgba(255, 255, 255, 0.12);
-            box-shadow: 0 0 40px rgba(255, 255, 255, 0.2), inset 0 0 30px rgba(255, 255, 255, 0.15);
-        }
-
-        .drag-over-active::before { 
-            opacity: 1;
-            padding: 2.5px; /* Thicker corners on drag */
+            background-color: rgba(255, 255, 255, 0.25) !important;
+            transform: scale(1.02) translateY(-4px) !important;
+            box-shadow: 0 20px 60px rgba(255, 255, 255, 0.3), inset 0 0 60px rgba(255, 255, 255, 0.6) !important;
+            border-color: rgba(255, 255, 255, 1) !important;
         }
 
         .toggle-click-area {
@@ -302,6 +266,7 @@
             </header>
         </div>
         <main>
+            <!-- Modified Upload Card with unified content -->
             <div id="upload-card" class="glass-card fluid-transition p-6 rounded-[36px] mb-12 card-animation-target">
                 <div class="mb-4">
                     <h2 class="text-2xl font-bold flex items-center gap-2 text-black">
@@ -309,7 +274,8 @@
                         Upload Video
                     </h2>
                 </div>
-                <div class="p-1" id="upload-section-content"></div>
+                <!-- This container now behaves as the unified drop area -->
+                <div class="p-1 min-h-[16rem]" id="upload-section-content"></div>
             </div>
             <div id="results-section"></div>
         </main>
@@ -588,37 +554,52 @@
         
         const renderUploadSection = () => {
             const uploadContainer = document.getElementById('upload-section-content');
+            const uploadCard = document.getElementById('upload-card'); // Get parent card for global drag state
             if (!uploadContainer) return;
+
             if (!file) {
+                // Content now sits directly in the upload card space
                 uploadContainer.innerHTML = `
-                    <div id="file-drop-area" class="fluid-transition w-full h-64 flex flex-col items-center justify-center text-center cursor-pointer hover:scale-[1.01]" ondragover="event.preventDefault()">
-                        <div id="inner-drop-div" class="w-full h-full flex flex-col items-center justify-center glass-upload-zone transition-all duration-300">
-                            ${icon('Upload', `h-10 w-10 text-black`)}
-                            <div>
-                                <p class="font-bold text-black">Drag & Drop Your Video File Here</p>
-                                <p class="text-sm mt-1 text-black">or click to browse the video file</p>
-                            </div>
-                            <button id="select-file-btn" class="cta-button mt-4 px-6 py-3 rounded-full font-bold transition-all duration-300 ease-in-out transform backdrop-blur-3xl">Select File</button>
+                    <div id="file-drop-area" class="fluid-transition w-full h-full flex flex-col items-center justify-center text-center cursor-pointer">
+                        ${icon('Upload', `h-12 w-12 text-black mb-4`)}
+                        <div>
+                            <p class="text-xl font-bold text-black">Drag & Drop Your Video File Here</p>
+                            <p class="text-sm mt-2 text-black opacity-60">or click to browse from your device</p>
                         </div>
+                        <button id="select-file-btn" class="cta-button mt-6 px-8 py-4 rounded-full font-bold transition-all duration-300 ease-in-out transform backdrop-blur-3xl text-lg">Select File</button>
                         <input type="file" id="file-upload-input" class="hidden" accept="video/*" onchange="handleFileChange(event)"/>
                     </div>`;
+
                 const dropArea = document.getElementById('file-drop-area');
-                const innerDropDiv = document.getElementById('inner-drop-div');
                 let dragCounter = 0; 
-                if (dropArea && innerDropDiv) {
-                    dropArea.addEventListener('dragenter', (e) => { e.preventDefault(); dragCounter++; innerDropDiv.classList.add('drag-over-active'); });
+                if (dropArea && uploadCard) {
+                    dropArea.addEventListener('dragenter', (e) => { 
+                        e.preventDefault(); 
+                        dragCounter++; 
+                        uploadCard.classList.add('drag-over-active'); 
+                    });
                     dropArea.addEventListener('dragover', (e) => { e.preventDefault(); });
-                    dropArea.addEventListener('dragleave', (e) => { e.preventDefault(); dragCounter--; if (dragCounter === 0) innerDropDiv.classList.remove('drag-over-active'); });
-                    dropArea.addEventListener('drop', (e) => { e.preventDefault(); dragCounter = 0; innerDropDiv.classList.remove('drag-over-active'); handleDrop(e); });
+                    dropArea.addEventListener('dragleave', (e) => { 
+                        e.preventDefault(); 
+                        dragCounter--; 
+                        if (dragCounter === 0) uploadCard.classList.remove('drag-over-active'); 
+                    });
+                    dropArea.addEventListener('drop', (e) => { 
+                        e.preventDefault(); 
+                        dragCounter = 0; 
+                        uploadCard.classList.remove('drag-over-active'); 
+                        handleDrop(e); 
+                    });
                     const selectFileBtn = document.getElementById('select-file-btn');
                     const fileInput = document.getElementById('file-upload-input');
                     if(selectFileBtn && fileInput) selectFileBtn.onclick = (e) => { 
                         e.stopPropagation(); 
                         setTimeout(() => fileInput.click(), 200); 
                     };
-                    dropArea.onclick = (e) => { if(e.target === dropArea || e.target.closest('#inner-drop-div')) { fileInput.click(); } };
+                    dropArea.onclick = (e) => { if(e.target === dropArea || e.target.closest('#file-drop-area')) { fileInput.click(); } };
                 }
             } else {
+                // Keep the processing view clean as well
                 const statusTextColorClass = 'text-green-400 drop-shadow-[0_0_8px_rgba(74,222,128,0.8)]';
                 const indicatorBarColorClass = 'bg-green-400 shadow-[0_0_15px_rgba(74,222,128,0.6)]';
                 
@@ -649,7 +630,7 @@
                     titleContentHTML = `
                         <div class="text-left overflow-hidden flex-1 min-w-0 mr-2">
                             <p class="font-bold truncate text-gray-800">${currentFileName}</p>
-                            <p class="text-xs text-black">${(file.size / (1024 * 1024)).toFixed(2)} MB</p>
+                            <p class="text-xs text-black opacity-60">${(file.size / (1024 * 1024)).toFixed(2)} MB</p>
                         </div>
                         <button onclick="enableTitleEdit()" class="p-2 rounded-full hover:bg-black/5 transition-colors text-gray-500 hover:text-black flex-shrink-0" title="Edit Name">
                             ${icon('Edit', 'h-6 w-6')}
@@ -658,8 +639,8 @@
                 }
 
                 uploadContainer.innerHTML = `
-                    <div class="flex flex-col items-center">
-                        <div class="glass-inset-panel fluid-transition flex items-center gap-3 mb-4 p-4 w-full max-w-sm">
+                    <div class="flex flex-col items-center justify-center h-full min-h-[14rem]">
+                        <div class="glass-inset-panel fluid-transition flex items-center gap-3 mb-6 p-4 w-full max-w-sm">
                             ${titleContentHTML}
                         </div>
                         ${processingArea}
