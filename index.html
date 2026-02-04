@@ -2,101 +2,43 @@
 <html lang="en">
 <head>
     <!-- ============================================== -->
-    <!-- FAVICON & BRANDING (Updated for Robustness)   -->
+    <!-- FAVICON & BRANDING -->
     <!-- ============================================== -->
-    <!-- Primary Favicon (Covers most browsers) -->
     <link rel="icon" href="https://manmohit2007.github.io/Manmohit2007/brand_logo.png?v=10">
-    <!-- Specific Sizes -->
     <link rel="icon" type="image/png" sizes="32x32" href="https://manmohit2007.github.io/Manmohit2007/brand_logo.png?v=10">
     <link rel="icon" type="image/png" sizes="192x192" href="https://manmohit2007.github.io/Manmohit2007/brand_logo.png?v=10">
-    <!-- Apple Touch Icon (iOS Home Screen) -->
     <link rel="apple-touch-icon" sizes="180x180" href="https://manmohit2007.github.io/Manmohit2007/brand_logo.png?v=10">
-    <!-- Legacy Shortcut -->
     <link rel="shortcut icon" href="https://manmohit2007.github.io/Manmohit2007/brand_logo.png?v=10">
 
     <!-- Standard Meta Tags -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, viewport-fit=cover">
-    
-    <!-- Enforce Light Scheme -->
     <meta name="color-scheme" content="only light">
-    <meta name="supported-color-schemes" content="only light">
-    
     <title>FanPlusFollow - Growth AI</title>
     <meta name="description" content="Growth AI for Content Creators. Boost your reach with advanced tools.">
-    <meta name="theme-color" content="#EBF1F7">
-
-    <!-- ============================================== -->
-    <!-- SOCIAL MEDIA PREVIEW (Open Graph)             -->
-    <!-- ============================================== -->
-    <meta property="og:type" content="website">
-    <meta property="og:url" content="https://manmohit2007.github.io/Manmohit2007/">
-    <meta property="og:title" content="FanPlusFollow - Growth AI">
-    <meta property="og:description" content="Unlock your viral potential. Upload your content and get AI-driven growth insights.">
-    <meta property="og:image" content="https://manmohit2007.github.io/Manmohit2007/brand_logo.png?v=10">
-    <meta property="og:image:type" content="image/png">
-    <meta property="og:image:width" content="800">
-    <meta property="og:image:height" content="800">
-
-    <!-- Twitter Card -->
-    <meta name="twitter:card" content="summary">
-    <meta name="twitter:title" content="FanPlusFollow">
-    <meta name="twitter:description" content="Growth AI for Content Creators">
-    <meta name="twitter:image" content="https://manmohit2007.github.io/Manmohit2007/brand_logo.png?v=10">
 
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.8.49/Tone.js"></script>
     <style>
-        /* Import Inter Font */
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
         
         :root { 
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif; 
+            font-family: 'Inter', sans-serif; 
             box-sizing: border-box;
             color-scheme: only light;
         }
 
-        /* ============================================== */
-        /* FLUID SCROLL & CONNECTIVITY OPTIMIZATIONS      */
-        /* ============================================== */
         html {
-            background-color: #EBF1F7; /* Light mode base */
-            transition: background-color 300ms ease-in-out;
+            background-color: #EBF1F7;
             scroll-behavior: smooth;
-            scrollbar-width: thin; 
-            scrollbar-color: rgba(155, 155, 155, 0.3) transparent;
         }
 
-        /* WebKit Scrollbar Styling */
-        ::-webkit-scrollbar {
-            width: 8px;
-            height: 8px;
-        }
-        ::-webkit-scrollbar-track {
-            background: transparent; 
-        }
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 8px; height: 8px; }
+        ::-webkit-scrollbar-track { background: transparent; }
         ::-webkit-scrollbar-thumb {
             background-color: rgba(155, 155, 155, 0.2);
             border-radius: 20px;
-            backdrop-filter: blur(10px);
-            border: 2px solid transparent; 
-            background-clip: content-box;
-        }
-        ::-webkit-scrollbar-thumb:hover {
-            background-color: rgba(155, 155, 155, 0.5);
-        }
-
-        * {
-            -webkit-tap-highlight-color: transparent;
-        }
-        
-        button, .clickable {
-            touch-action: manipulation;
-            user-select: none;
-        }
-
-        *, *::before, *::after {
-            box-sizing: inherit;
         }
 
         .fluid-transition {
@@ -104,13 +46,7 @@
             will-change: transform, box-shadow, filter, background-color, color, opacity; 
         }
 
-        /* ============================================== */
-        /* LAUNCH ANIMATION STYLES */
-        /* ============================================== */
-        @-webkit-keyframes spiral-entry {
-            0% { opacity: 0; transform: perspective(1000px) scale(0.9) translateY(30px); filter: blur(10px); }
-            100% { opacity: 1; transform: perspective(1000px) scale(1) translateY(0); filter: blur(0); }
-        }
+        /* Animation */
         @keyframes spiral-entry {
             0% { opacity: 0; transform: perspective(1000px) scale(0.9) translateY(30px); filter: blur(10px); }
             100% { opacity: 1; transform: perspective(1000px) scale(1) translateY(0); filter: blur(0); }
@@ -122,22 +58,16 @@
         }
         
         #app-header.card-animation-target { animation-delay: 0.1s; }
-        #controls-card.card-animation-target { animation-delay: 0.2s; }
         #upload-card.card-animation-target { animation-delay: 0.3s; } 
         #promo-card.card-animation-target { animation-delay: 0.4s; }
 
-
-        /* ============================================== */
-        /* MAIN GLASS CARD STYLES (Updated for iOS Milky Look) */
-        /* ============================================== */
+        /* Glass Card */
         .glass-card {
-            background-color: rgba(255, 255, 255, 0.35); /* Increased transparency for milky effect */
-            -webkit-backdrop-filter: blur(80px) saturate(160%); /* Heavier blur + saturation for iOS feel */
+            background-color: rgba(255, 255, 255, 0.35);
+            -webkit-backdrop-filter: blur(80px) saturate(160%);
             backdrop-filter: blur(80px) saturate(160%); 
-            box-shadow: 
-                inset 0 0 20px rgba(255, 255, 255, 0.2), /* Subtle inner glow */
-                0 25px 50px rgba(0, 0, 0, 0.05); /* Softer shadow */
-            border: 1px solid rgba(255, 255, 255, 0.4); /* Thinner, clearer border */
+            box-shadow: inset 0 0 20px rgba(255, 255, 255, 0.2), 0 25px 50px rgba(0, 0, 0, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.4);
             border-radius: 36px;
             transform: translateZ(0);
         }
@@ -150,11 +80,8 @@
 
         .title-result-card {
             background-color: rgba(255, 255, 255, 0.35);
-            -webkit-backdrop-filter: blur(60px) saturate(160%); 
             backdrop-filter: blur(60px) saturate(160%); 
-            box-shadow: 
-                inset 0 0 10px rgba(255, 255, 255, 0.2),
-                0 15px 30px rgba(0, 0, 0, 0.05);
+            box-shadow: inset 0 0 10px rgba(255, 255, 255, 0.2), 0 15px 30px rgba(0, 0, 0, 0.05);
             border: 1px solid rgba(255, 255, 255, 0.4);
             border-radius: 36px;
             transform: translateZ(0);
@@ -162,95 +89,105 @@
 
         .title-result-card:hover {
             transform: translateY(-8px) scale(1.005) translateZ(0); 
-            box-shadow: 0 10px 30px rgba(99, 102, 241, 0.15), inset 0 0 10px rgba(255, 255, 255, 0.4);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15), inset 0 0 10px rgba(255, 255, 255, 0.4);
             border-color: rgba(255, 255, 255, 0.7);
         }
         
         .glass-card.tapped-hover,
         .title-result-card.tapped-hover {
             transform: translateY(-8px) scale(1.005) translateZ(0) !important; 
-            box-shadow: 0 10px 30px rgba(99, 102, 241, 0.15) !important; 
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15) !important; 
         }
 
-        /* Light Mode CTA Button */
+        /* --- CTA BUTTONS --- */
         .cta-button {
             transition: all 300ms cubic-bezier(0.25, 0.46, 0.45, 0.94);
-            background-color: rgba(255, 255, 255, 0.55); /* Slightly clearer */
-            color: #4F46E5;
-            -webkit-backdrop-filter: blur(30px) saturate(120%); 
-            backdrop-filter: blur(30px) saturate(120%);
-            box-shadow: 
-                inset 0 0 0 1px rgba(255, 255, 255, 0.5), 
-                0 8px 16px rgba(0, 0, 0, 0.08); 
-            will-change: transform, box-shadow, filter; 
+            /* Soft Pastel Gradient */
+            background: linear-gradient(to right, #c084fc, #f472b6, #fb923c); 
+            color: #000000; /* Black text */
+            box-shadow: none; /* No shadow */
+            will-change: transform, filter, opacity; 
+            border: none;
+            opacity: 0.4; /* Default transparency */
         }
         
         .cta-button:hover {
             transform: translateY(-4px) scale(1.02) translateZ(0);
-            background-color: rgba(255, 255, 255, 0.75);
-            box-shadow: 
-                inset 0 0 0 1px rgba(255, 255, 255, 0.8), 
-                0 12px 24px rgba(0, 0, 0, 0.12);
-            filter: brightness(1.05); 
+            opacity: 1; /* Fully opaque on hover */
+            filter: brightness(1.05); /* Slight brightness, NO glow/drop-shadow */
+            box-shadow: none; 
         }
         
         .cta-button:active {
             transform: scale(0.97) translateZ(0) !important; 
-            box-shadow: 
-                inset 0 1px 1px rgba(0, 0, 0, 0.05), 
-                0 2px 4px rgba(0, 0, 0, 0.05);
+            box-shadow: none;
             filter: brightness(0.95); 
         }
+
+        /* --- GRADIENT BORDER MASK --- */
+        .gradient-border-mask {
+            position: relative;
+            border-width: 0 !important; 
+            border-radius: 30px;
+        }
         
+        .gradient-border-mask::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            border-radius: 30px; 
+            padding: 1.5px; /* Thin border */
+            /* Soft Pastel Gradient */
+            background: linear-gradient(to right, #c084fc, #f472b6, #fb923c); 
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            pointer-events: none;
+            transition: all 500ms cubic-bezier(0.4, 0, 0.2, 1);
+            opacity: 0.4; /* Default transparency */
+        }
+        
+        .gradient-border-mask:hover::before {
+            opacity: 1; /* Fully opaque on hover */
+            /* Soft Pink Glow */
+            filter: drop-shadow(0 0 12px rgba(244, 114, 182, 0.6)); 
+        }
+
         body {
             background-color: transparent; 
             min-height: 100vh;
-            position: relative; 
-            z-index: 0; 
+            color: #374151;
             overflow-x: hidden;
-            color: #374151; /* Default to Gray 700 */
         }
 
         #fixed-background {
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh; 
-            z-index: -1; 
-            /* LIGHT MODE BACKGROUND PERMANENT */
+            top: 0; left: 0; width: 100vw; height: 100vh; z-index: -1; 
             background-image: linear-gradient(rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.2)), url('IMG_2982.png');
             background-size: cover;
             background-position: center;
-            background-repeat: no-repeat;
             background-attachment: fixed;
-            transition: background-image 500ms ease-in-out;
-            transform: translateZ(0);
-            will-change: background-image;
         }
         
         .viral-toggle-track {
-            transition: all 300ms cubic-bezier(0.25, 0.46, 0.45, 0.94);
-            box-sizing: border-box; 
-            box-shadow: inset 0 3px 6px rgba(0, 0, 0, 0.35); /* Increased shadow opacity */
+            transition: all 300ms ease;
+            /* Removed default heavy shadow to allow states to manage it */
         }
         
+        .viral-toggle-track.infused-off {
+            background-color: rgba(255, 255, 255, 0.15); /* Glassy transparent background */
+            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1), inset 0 -1px 2px rgba(255, 255, 255, 0.2); /* Subtle depth */
+            border: 1px solid rgba(255, 255, 255, 0.25); /* Subtle glass border */
+            backdrop-filter: blur(4px);
+        }
+
         .viral-toggle-track.on-glow {
-            box-shadow: 
-                inset 0 3px 6px rgba(0, 0, 0, 0.35), 
-                0 0 18px 2px rgba(0, 255, 0, 0.5); 
+            box-shadow: inset 0 3px 6px rgba(0, 0, 0, 0.2), 0 0 18px 2px rgba(0, 255, 0, 0.5); 
         }
         
         .viral-toggle-knob {
-            transition: transform 300ms cubic-bezier(0.25, 0.46, 0.45, 0.94);
-            box-shadow: 
-                inset 0 3px 3px rgba(255, 255, 255, 0.9), 
-                inset 0 -3px 3px rgba(0, 0, 0, 0.1),   
-                0 5px 10px rgba(0, 0, 0, 0.4); /* Stronger drop shadow for the button/knob */       
-        }
-        
-        #viral-toggle-zap {
-            overflow: visible !important;
+            transition: transform 300ms ease;
+            box-shadow: inset 0 3px 3px rgba(255, 255, 255, 0.9), inset 0 -3px 3px rgba(0, 0, 0, 0.1), 0 5px 10px rgba(0, 0, 0, 0.4);      
         }
         
         @keyframes icon-pop {
@@ -262,33 +199,12 @@
         .icon-pop-on {
             animation: icon-pop 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
         }
-
+        
         #viral-toggle-zap.icon-pop-on polygon {
             filter: drop-shadow(0 0 8px rgba(0, 255, 0, 0.6));
         }
 
-        /* Mobile Fixes & Active States */
-        @media (max-width: 767px) {
-            .glass-card:active,
-            .title-result-card:active {
-                transform: translateY(0px) scale(0.98) translateZ(0) !important; 
-                box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), inset 0 0 5px rgba(0, 0, 0, 0.05) !important;
-            }
-            #file-drop-area:active {
-                transform: scale(0.98) translateZ(0) !important;
-                 box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), inset 0 0 5px rgba(0, 0, 0, 0.05) !important;
-            }
-        }
-        
-        .drag-over-active {
-            border-color: #6366f1 !important; 
-            box-shadow: none !important; 
-        }
-
-        /* Utility helper classes to replace dark mode specifics */
-        .text-subtle { color: #4B5563; }
-        .text-primary { color: #4F46E5; }
-        .footer-border { border-color: rgba(255, 255, 255, 0.4); }
+        .drag-over-active { border-color: #000000 !important; }
     </style>
 </head>
 <body class="p-4 md:p-8" onload="initApp()">
@@ -302,10 +218,11 @@
                             <img src="https://manmohit2007.github.io/Manmohit2007/brand_logo.png?v=10" alt="FanPlusFollow Logo" class="w-full h-full object-contain filter drop-shadow-md">
                         </div>
                         <div class="text-left">
-                            <h1 class="text-2xl font-bold bg-clip-text text-transparent" style="background-image: linear-gradient(to right, #ec4899, #c084fc, #6366f1)">
+                            <!-- Soft Pastel Gradient Title -->
+                            <h1 class="text-2xl font-bold bg-clip-text text-transparent" style="background-image: linear-gradient(to right, #c084fc, #f472b6, #fb923c)">
                               FanPlusFollow
                             </h1>
-                            <p class="text-indigo-600 text-sm flex items-center font-medium">
+                            <p class="text-black text-sm flex items-center font-medium">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-1 h-3 w-3"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
                                 Growth AI
                             </p>
@@ -328,8 +245,8 @@
         <main>
             <div id="upload-card" class="glass-card fluid-transition p-6 rounded-[36px] mb-12 card-animation-target">
                 <div class="mb-4">
-                    <h2 class="text-2xl font-bold flex items-center gap-2 text-gray-800">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-8 w-8 text-indigo-500"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" x2="12" y1="3" y2="15"/></svg>
+                    <h2 class="text-2xl font-bold flex items-center gap-2 text-black">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-8 w-8 text-black"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" x2="12" y1="3" y2="15"/></svg>
                         Upload Your Video
                     </h2>
                 </div>
@@ -344,18 +261,19 @@
                         <div class="w-16 h-16 mb-2 sm:mb-4">
                             <img src="https://manmohit2007.github.io/Manmohit2007/brand_logo.png?v=10" alt="FanPlusFollow Logo" class="w-full h-full object-contain filter drop-shadow-md">
                         </div>
-                        <h3 class="text-xl sm:text-2xl font-bold bg-clip-text text-transparent text-center" style="background-image: linear-gradient(to right, #ec4899, #c084fc)">
+                        <!-- Soft Pastel Gradient -->
+                        <h3 class="text-xl sm:text-2xl font-bold bg-clip-text text-transparent text-center" style="background-image: linear-gradient(to right, #c084fc, #f472b6, #fb923c)">
                           Boost Your Reach With FanPlusFollow
                         </h3>
-                        <p class="text-indigo-600 mt-1 sm:mt-2 text-center max-w-md text-sm sm:text-base">
+                        <p class="text-black mt-1 sm:mt-2 text-center max-w-md text-sm sm:text-base">
                           Join the community for exclusive growth insights and advanced content tools.
                         </p>
                         <div class="mt-3 sm:mt-4 flex flex-wrap justify-center gap-4">
-                          <button class="cta-button px-6 py-3 rounded-full font-bold transition-all duration-300 ease-in-out shadow-xl transform active:scale-[0.96] active:shadow-none bg-gradient-to-r from-[#f97316]/20 via-[#ef4444]/20 to-[#c084fc]/20 hover:from-[#f97316]/80 hover:via-[#ef4444]/80 hover:to-[#818cf8]/80 backdrop-blur-3xl text-black flex items-center" onclick="playClickSound(); window.open('https://www.youtube.com/@fanplusfollow', '_blank')" onmouseenter="playHoverSound()">
+                          <button class="cta-button px-6 py-3 rounded-full font-bold transition-all duration-300 ease-in-out transform backdrop-blur-3xl flex items-center" onclick="playClickSound(); window.open('https://www.youtube.com/@fanplusfollow', '_blank')" onmouseenter="playHoverSound()">
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2 h-4 w-4"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
                             Subscribe Now
                           </button>
-                          <button class="cta-button px-6 py-3 rounded-full font-bold transition-all duration-300 ease-in-out shadow-xl transform active:scale-[0.96] active:shadow-none bg-gradient-to-r from-[#f97316]/20 via-[#ef4444]/20 to-[#c084fc]/20 hover:from-[#f97316]/80 hover:via-[#ef4444]/80 hover:to-[#818cf8]/80 backdrop-blur-3xl text-black flex items-center" onclick="playClickSound(); window.open('https://www.instagram.com/_manmohit_singh_/', '_blank')" onmouseenter="playHoverSound()">
+                          <button class="cta-button px-6 py-3 rounded-full font-bold transition-all duration-300 ease-in-out transform backdrop-blur-3xl flex items-center" onclick="playClickSound(); window.open('https://www.instagram.com/_manmohit_singh_/', '_blank')" onmouseenter="playHoverSound()">
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2 h-4 w-4"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
                             Follow Now
                           </button>
@@ -396,17 +314,21 @@
 
         const initToneJs = () => {
             if (isToneInitialized) return;
-            synth = new Tone.PolySynth(Tone.Synth, {
-                volume: 2,
-                oscillator: { type: 'sine' }, 
-                envelope: { attack: 0.01, decay: 0.15, sustain: 0.05, release: 0.3 }
-            }).toDestination();
-            hoverSynth = new Tone.Synth({
-                volume: -4,
-                oscillator: { type: 'triangle' }, 
-                envelope: { attack: 0.001, decay: 0.05, sustain: 0, release: 0.05 }
-            }).toDestination();
-            isToneInitialized = true;
+            try {
+                synth = new Tone.PolySynth(Tone.Synth, {
+                    volume: 2,
+                    oscillator: { type: 'sine' }, 
+                    envelope: { attack: 0.01, decay: 0.15, sustain: 0.05, release: 0.3 }
+                }).toDestination();
+                hoverSynth = new Tone.Synth({
+                    volume: -4,
+                    oscillator: { type: 'triangle' }, 
+                    envelope: { attack: 0.001, decay: 0.05, sustain: 0, release: 0.05 }
+                }).toDestination();
+                isToneInitialized = true;
+            } catch (e) {
+                console.error("Tone.js init failed", e);
+            }
         };
 
         const startAudioIfUnmuted = async () => {
@@ -463,7 +385,6 @@
             const label = document.getElementById('progress-label');
             const statusText = document.getElementById('processing-status');
             const isComplete = progressValue >= 100;
-            // LIGHT MODE COLORS
             const indicatorColorClass = "bg-green-600 shadow-md shadow-green-400/50";
             const finalTextColorClass = "text-green-600";
             if (indicator && label && statusText) {
@@ -503,26 +424,26 @@
             if (toggleTrack && toggleKnob && toggleZap && toggleText) {
                 toggleKnob.classList.remove('bg-white', 'bg-gray-800');
                 toggleKnob.classList.add('bg-white');
-                toggleTrack.classList.remove('bg-green-500/70', 'bg-green-400/80', 'bg-white/10', 'on-glow', 'off-shadow', 'bg-gray-300/70', 'bg-gray-700/50', 'bg-gradient-to-r', 'from-green-500', 'to-lime-400', 'from-green-600', 'to-lime-500', 'bg-gray-700', 'bg-gray-300');
+                
+                // Reset base classes to ensure clean state switching
+                toggleTrack.classList.remove('bg-green-500/70', 'bg-gray-700', 'bg-gray-300', 'bg-gradient-to-t', 'from-green-500', 'to-lime-400', 'on-glow', 'infused-off');
+                
                 if (isViralBoostEnabled) {
                     toggleTrack.classList.add('bg-gradient-to-t', 'from-green-500', 'to-lime-400', 'on-glow');
                 } else {
-                    const offTrackClass = 'bg-gray-300'; 
-                    toggleTrack.classList.add(offTrackClass);
+                    // "Infused" state: transparent/glassy instead of solid gray
+                    toggleTrack.classList.add('infused-off');
                 }
                 toggleKnob.style.transform = isViralBoostEnabled ? 'translateX(28px)' : 'translateX(0)';
-                toggleZap.classList.remove('text-green-400', 'text-green-600', 'text-gray-400', 'text-gray-500', 'icon-pop-on');
+                
+                toggleZap.classList.remove('text-green-600', 'text-gray-500', 'icon-pop-on');
                 toggleZap.style.filter = '';
                 if (isViralBoostEnabled) {
-                    const zapColorClass = 'text-green-600'; 
-                    toggleZap.classList.add(zapColorClass, 'icon-pop-on');
+                    toggleZap.classList.add('text-green-600', 'icon-pop-on');
                 } else {
-                    const zapColorClass = 'text-gray-500';
-                    toggleZap.classList.add(zapColorClass);
+                    toggleZap.classList.add('text-gray-500');
                 }
-                const textColor = 'text-black';
-                const offTextColor = 'text-gray-500';
-                toggleText.className = `text-lg font-bold transition-colors duration-300 ${isViralBoostEnabled ? textColor : offTextColor}`;
+                toggleText.className = `text-lg font-bold transition-colors duration-300 ${isViralBoostEnabled ? 'text-black' : 'text-gray-500'}`;
             }
         };
 
@@ -654,13 +575,6 @@
                 element.addEventListener('mouseenter', playHoverSound);
                 element.classList.add('has-listener'); 
             });
-            const footerLinks = document.querySelectorAll('footer a, footer p'); 
-            footerLinks.forEach(element => {
-                if (!element.classList.contains('has-listener')) {
-                    element.addEventListener('mouseenter', playHoverSound);
-                    element.classList.add('has-listener');
-                }
-            });
         };
         
         const startLaunchAnimation = () => {
@@ -674,10 +588,9 @@
             const uploadContainer = document.getElementById('upload-section-content');
             if (!uploadContainer) return;
             if (!file) {
-                // LIGHT MODE COLORS HARDCODED
                 const textColorClass = 'text-black';
-                const helperTextColorClass = 'text-indigo-600';
-                const borderColorClass = 'border-indigo-300 hover:border-indigo-500';
+                const helperTextColorClass = 'text-black';
+                const borderColorClass = 'gradient-border-mask'; 
                 uploadContainer.innerHTML = `
                     <div id="file-drop-area" class="fluid-transition w-full h-64 flex flex-col items-center justify-center text-center cursor-pointer hover:scale-[1.01]" ondragover="event.preventDefault()" onmouseenter="playHoverSound()">
                         <div id="inner-drop-div" class="w-full h-full flex flex-col items-center justify-center border-2 border-solid rounded-[30px] transition-all duration-300 ${borderColorClass}">
@@ -686,7 +599,7 @@
                             <p class="font-bold ${textColorClass}">Drag & Drop Your Video File Here</p>
                             <p class="text-sm mt-1 ${helperTextColorClass}">or click to browse the video file</p>
                             </div>
-                            <button id="select-file-btn" class="cta-button mt-4 px-6 py-3 rounded-full font-bold transition-all duration-300 ease-in-out shadow-xl transform active:scale-[0.96] active:shadow-none bg-gradient-to-r from-[#f97316]/20 via-[#ef4444]/20 to-[#c084fc]/20 hover:from-[#f97316]/80 hover:via-[#ef4444]/80 hover:to-[#818cf8]/80 backdrop-blur-3xl text-black" onmouseenter="playHoverSound()">Select File</button>
+                            <button id="select-file-btn" class="cta-button mt-4 px-6 py-3 rounded-full font-bold transition-all duration-300 ease-in-out transform backdrop-blur-3xl" onmouseenter="playHoverSound()">Select File</button>
                         </div>
                         <input type="file" id="file-upload-input" class="hidden" accept="video/*" onchange="handleFileChange(event)"/>
                     </div>`;
@@ -704,14 +617,15 @@
                     dropArea.onclick = (e) => { if(e.target === dropArea || e.target.closest('#inner-drop-div')) { playClickSound(); fileInput.click(); } };
                 }
             } else {
-                // LIGHT MODE HARDCODED
                 const textColor = 'text-gray-800';
                 const fileIconColor = 'text-green-600';
-                const fileDetailColor = 'text-indigo-600';
+                const fileDetailColor = 'text-black';
                 const statusTextColorClass = 'text-green-600';
                 const indicatorBarColorClass = 'bg-green-600 shadow-md shadow-green-400/50';
-                const startNewButtonClasses = 'bg-gray-100/70 hover:bg-gray-200/90 text-gray-700 shadow-inner shadow-black/5 shadow-lg shadow-gray-300/50';
-                const startNewIconColor = 'text-gray-700';
+                
+                const startNewButtonClasses = ''; 
+                const startNewIconColor = 'text-black'; 
+                
                 const processingArea = isProcessing || isProcessed ? `
                     <div class="w-full max-w-sm mb-4">
                         <div class="flex justify-between mb-2">
@@ -744,27 +658,28 @@
             if (isProcessed) {
                 const scoreColorClass = viralScore < 75 ? "text-red-500" : viralScore < 90 ? "text-yellow-600" : "text-green-600";
                 const scoreText = viralScore < 75 ? "Rethink your content hook for better reach." : viralScore < 90 ? "Solid performance. A few tweaks could push it higher." : "VIRAL READY! This content is primed for maximum engagement. Post ASAP.";
-                const scoreGlowStyle = 'text-shadow: none;'; // Removed heavy glow for light mode
+                const scoreGlowStyle = 'text-shadow: none;';
                 const viralScoreHTML = `
                     <div class="glass-card fluid-transition p-6 rounded-[36px] mb-12">
-                        <div class="mb-4"><h2 class="text-2xl font-bold text-indigo-800">Viral Potential Score</h2></div>
+                        <div class="mb-4"><h2 class="text-2xl font-bold text-black">Viral Potential Score</h2></div>
                         <div class="p-1">
                             <div class="flex items-center justify-between mb-4"><span class="text-5xl font-extrabold transition-colors duration-500 viral-score-text ${scoreColorClass}" style="${scoreGlowStyle}">${viralScore}%</span></div>
                             <div class="w-full bg-gray-300 rounded-full h-3">
                                 <div class="h-3 rounded-full transition-all duration-1000 ${viralScore < 75 ? "bg-red-500 shadow-md shadow-red-500/50" : viralScore < 90 ? "bg-yellow-500 shadow-md shadow-yellow-500/50" : "bg-green-500 shadow-md shadow-green-500/50"}" style="width: ${viralScore}%"></div>
                             </div>
-                            <p class="text-base font-medium text-indigo-700 mt-3">${scoreText}</p>
+                            <p class="text-base font-medium text-black mt-3">${scoreText}</p>
                         </div>
                     </div>`;
                 const titleTextColor = 'text-gray-800';
-                const regenerateButtonClasses = 'bg-gray-100/70 hover:bg-gray-200/90 text-gray-700 shadow-inner shadow-black/5 shadow-lg shadow-gray-300/50';
+                const regenerateButtonClasses = ''; 
+                
                 const copyButtonBaseClasses = "h-8 w-8 p-0 shadow-none rounded-full flex items-center justify-center active:scale-95 transition-all duration-300 ease-in-out";
-                const copyButtonDynamicClasses = "bg-transparent hover:bg-gray-300/50 text-indigo-500 hover:text-black"; 
+                const copyButtonDynamicClasses = "bg-transparent hover:bg-gray-300/50 text-black hover:text-black"; 
                 const titlesHTML = `
                     <div class="mb-12">
                         <div class="flex justify-between items-center mb-6">
                             <h2 class="text-2xl font-bold text-gray-800">Suggested Titles</h2>
-                            <button onclick="handleRegenerate()" onmouseenter="playHoverSound()" class="cta-button ${regenerateButtonClasses} backdrop-blur-xl text-sm px-4 py-2 rounded-full font-medium flex items-center">${icon('RotateCcw', `mr-2 h-3 w-3 text-gray-700`)} Regenerate</button>
+                            <button onclick="handleRegenerate()" onmouseenter="playHoverSound()" class="cta-button ${regenerateButtonClasses} backdrop-blur-xl text-sm px-4 py-2 rounded-full font-medium flex items-center">${icon('RotateCcw', `mr-2 h-3 w-3 text-black`)} Regenerate</button>
                         </div>
                         <div class="grid grid-cols-1 md:grid-cols-3 gap-6 overflow-visible">
                             ${titles.map((title, index) => `
@@ -782,13 +697,13 @@
                 const descriptionInnerBg = 'bg-gray-100/80'; 
                 const descriptionInnerBorder = 'border-gray-400/40'; 
                 const descriptionTextColor = 'text-gray-700';
-                const copyAllButtonClasses = 'bg-gray-100/70 hover:bg-gray-200/90 text-gray-700 shadow-inner shadow-black/5 shadow-lg shadow-gray-300/50';
+                const copyAllButtonClasses = ''; 
                 const descriptionHTML = `
                     <div class="glass-card fluid-transition p-6 rounded-[36px]"> 
                         <div class="mb-4">
-                            <h2 class="flex justify-between items-center text-xl sm:text-2xl font-bold text-indigo-800">
+                            <h2 class="flex justify-between items-center text-xl sm:text-2xl font-bold text-black">
                                 <span>Optimized Description & Hashtags</span>
-                                <button onclick="copyDescriptionToClipboard()" onmouseenter="playHoverSound()" class="cta-button ${copyAllButtonClasses} backdrop-blur-xl text-sm px-4 py-2 rounded-full font-medium flex items-center">${copiedIndex === 3 ? `<span class="flex items-center">${icon('Check', 'mr-2 h-4 w-4 text-green-600')} Copied!</span>` : `<span class="flex items-center">${icon('Copy', 'mr-2 h-4 w-4')} Copy All</span>`}</button>
+                                <button onclick="copyDescriptionToClipboard()" onmouseenter="playHoverSound()" class="cta-button ${copyAllButtonClasses} backdrop-blur-xl text-sm px-4 py-2 rounded-full font-medium flex items-center">${copiedIndex === 3 ? `<span class="flex items-center">${icon('Check', 'mr-2 h-4 w-4 text-black')} Copied!</span>` : `<span class="flex items-center">${icon('Copy', 'mr-2 h-4 w-4 text-black')} Copy All</span>`}</button>
                             </h2>
                         </div>
                         <div class="${descriptionInnerBg} rounded-[24px] p-4 sm:p-5 min-h-[250px] max-h-96 border ${descriptionInnerBorder} overflow-auto custom-scrollbar">
@@ -812,7 +727,6 @@
 
         const initApp = () => {
             startLaunchAnimation(); 
-            // Removed dark mode listener logic
             const resultsContainer = document.getElementById('results-section');
             if (resultsContainer) resultsContainer.classList.remove('show-results');
             updateUI();
