@@ -234,7 +234,6 @@
         .opacity-0 { opacity: 0; }
         .opacity-100 { opacity: 1; }
 
-        /* Unified small button behavior */
         .icon-btn {
             transition: transform 0.2s ease, background-color 0.2s ease, color 0.2s ease;
         }
@@ -533,10 +532,9 @@
             if (btn) {
                 const originalHTML = btn.innerHTML;
                 if (index === 3) {
-                   // Fixed width container to prevent layout shift
                    btn.innerHTML = `<span class="flex items-center justify-center w-[80px]">${icon('Check', 'mr-2 h-4 w-4 text-white')} Done</span>`;
                 } else {
-                   btn.innerHTML = icon('Check', 'h-4 w-4 text-green-400');
+                   btn.innerHTML = `<span class="flex items-center justify-center w-[70px]">${icon('Check', 'mr-2 h-4 w-4 text-white')} Done</span>`;
                 }
                 
                 setTimeout(() => {
@@ -730,7 +728,7 @@
                     <div class="p-1">
                         <div class="flex justify-between items-start mb-2">
                             <span class="text-xs font-medium px-2 py-1 rounded-full bg-pink-100 text-pink-700 border border-pink-300">Option ${index + 1}</span>
-                            <button id="copy-title-btn-${index}" onclick="copyToClipboard('${title.replace(/'/g, "\\'")}', ${index})" class="icon-btn h-8 w-8 p-0 rounded-full flex items-center justify-center transition-all duration-300 bg-transparent hover:bg-black/5 text-gray-800 hover:text-black active:scale-90 active:bg-black/10">${icon('Copy', 'h-4 w-4')}</button>
+                            <button id="copy-title-btn-${index}" onclick="copyToClipboard('${title.replace(/'/g, "\\'")}', ${index})" class="cta-button backdrop-blur-xl text-xs px-3 py-1.5 rounded-full font-medium flex items-center whitespace-nowrap flex-shrink-0 min-w-[90px]"><span class="flex items-center justify-center w-[70px]">${icon('Copy', 'mr-2 h-3.5 w-3.5 text-white')} Copy</span></button>
                         </div>
                         <p class="text-base font-medium text-gray-800 p-1">${title}</p>
                     </div>
@@ -811,7 +809,7 @@
                                     <div class="p-1">
                                         <div class="flex justify-between items-start mb-2">
                                             <span class="text-xs font-medium px-2 py-1 rounded-full bg-pink-100 text-pink-700 border border-pink-300">Option ${index + 1}</span>
-                                            <button id="copy-title-btn-${index}" onclick="copyToClipboard('${title.replace(/'/g, "\\'")}', ${index})" class="icon-btn h-8 w-8 p-0 rounded-full flex items-center justify-center transition-all duration-300 bg-transparent hover:bg-black/5 text-gray-800 hover:text-black active:scale-90 active:bg-black/10">${icon('Copy', 'h-4 w-4')}</button>
+                                            <button id="copy-title-btn-${index}" onclick="copyToClipboard('${title.replace(/'/g, "\\'")}', ${index})" class="cta-button backdrop-blur-xl text-xs px-3 py-1.5 rounded-full font-medium flex items-center whitespace-nowrap flex-shrink-0 min-w-[90px]"><span class="flex items-center justify-center w-[70px]">${icon('Copy', 'mr-2 h-3.5 w-3.5 text-white')} Copy</span></button>
                                         </div>
                                         <p class="text-base font-medium text-gray-800 p-1">${title}</p>
                                     </div>
