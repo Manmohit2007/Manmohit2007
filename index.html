@@ -527,20 +527,25 @@
             document.execCommand('copy');
             document.body.removeChild(tempElement);
             
+            // UI Feedback: Aligning Copy with Regenerate feel
+            const titlesGrid = document.getElementById('titles-grid-container');
+            const descContainer = document.getElementById('description-text-container');
+            
+            // Both containers act together for a unified AI action response
+            if (titlesGrid) titlesGrid.classList.add('opacity-0');
+            if (descContainer) descContainer.classList.add('opacity-0');
+            
+            setTimeout(() => {
+                if (titlesGrid) titlesGrid.classList.remove('opacity-0');
+                if (descContainer) descContainer.classList.remove('opacity-0');
+            }, 200);
+
             const btnId = index === 3 ? 'copy-desc-btn' : `copy-title-btn-${index}`;
             const btn = document.getElementById(btnId);
-
-            // Add visual flicker feedback like regenerate button
-            const targetContainer = index === 3 ? document.getElementById('description-text-container') : document.getElementById('titles-grid-container');
-            if (targetContainer) {
-                targetContainer.classList.add('opacity-0');
-                setTimeout(() => targetContainer.classList.remove('opacity-0'), 150);
-            }
             
             if (btn) {
                 const originalHTML = btn.innerHTML;
                 if (index === 3) {
-                   // Fixed width container to prevent layout shift
                    btn.innerHTML = `<span class="flex items-center justify-center w-[80px]">${icon('Check', 'mr-2 h-4 w-4 text-white')} Done</span>`;
                 } else {
                    btn.innerHTML = icon('Check', 'h-4 w-4 text-green-400');
