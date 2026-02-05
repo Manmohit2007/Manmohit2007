@@ -29,12 +29,10 @@
         }
 
         html {
-            /* Dark fallback color to prevent white flashes if overscroll happens */
             background-color: #1f2937; 
             scroll-behavior: smooth;
             height: 100%;
             overflow-x: hidden;
-            /* Critical: Prevents "rubber-banding" or "bounce" */
             overscroll-behavior: none;
             overscroll-behavior-y: none;
         }
@@ -95,26 +93,19 @@
 
         /* --- CTA BUTTONS --- */
         .cta-button {
-            /* Smooth spring transition for returning to default state */
-            /* key change: separate durations. Box-shadow takes 1.5s to fade out (lingering effect) */
-            transition: 
-                transform 0.6s cubic-bezier(0.34, 1.3, 0.64, 1), 
-                box-shadow 1.5s cubic-bezier(0.19, 1, 0.22, 1), 
-                filter 1.5s ease-out,
-                opacity 0.6s ease;
-
-            background: linear-gradient(to right, #a78bfa 0%, #f472b6 40%, #fca564 75%, #fca564 100%); 
-            color: #ffffff; 
-            /* Removed base shadow for a cleaner, flat look */
-            box-shadow: none; 
-            will-change: transform, filter, opacity, box-shadow; 
+            /* Fused Glass Style - No external glows */
+            background-color: rgba(0, 0, 0, 0.02);
+            box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.1), 0 1px 0 rgba(255, 255, 255, 0.2);
+            color: #1f2937; 
+            
+            transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            will-change: transform, background-color, box-shadow; 
             border: none;
-            opacity: 0.95; 
+            border-radius: 24px; 
             user-select: none;
             -webkit-user-select: none;
             touch-action: manipulation;
             cursor: pointer;
-            /* Hardware acceleration to fix jitter */
             transform: translateZ(0); 
             backface-visibility: hidden;
             -webkit-font-smoothing: subpixel-antialiased;
@@ -122,35 +113,19 @@
 
         @media (hover: hover) {
             .cta-button:hover {
-                /* Fast entry: Glow snaps in quickly */
-                transition: 
-                    transform 0.3s cubic-bezier(0.34, 1.3, 0.64, 1), 
-                    box-shadow 0.4s ease-out, 
-                    filter 0.4s ease-out;
-
-                transform: translateY(-4px) scale(1.05) translateZ(0);
-                opacity: 1; 
-                /* Fused Glass Glow: Ultra-wide diffusion to bleed into the glass cards nicely */
-                box-shadow: 
-                    0 0 30px rgba(167, 139, 250, 0.6),      /* Violet: Soft defined core */
-                    0 0 60px 20px rgba(244, 114, 182, 0.5), /* Pink: Smooth body blending */
-                    0 0 100px 40px rgba(252, 165, 100, 0.5),/* Orange: Wide atmospheric leak */
-                    0 0 160px 80px rgba(255, 150, 50, 0.15),/* Deep Orange: Ultra-wide fusion wash */
-                    inset 0 0 30px rgba(255, 255, 255, 0.6); /* Stronger Glassy Inner Highlight */
-                filter: brightness(1.1); 
+                transform: translateY(-2px) scale(1.02) translateZ(0);
+                background-color: rgba(255, 255, 255, 0.25);
+                /* Strictly inset highlights for fusion effect */
+                box-shadow: inset 0 0 15px rgba(255, 255, 255, 0.4);
+                color: #000;
             }
         }
         
         .cta-button:active {
             transform: scale(0.96) translateZ(0) !important; 
-            transition: transform 0.1s ease-out, box-shadow 0.2s ease-out; 
-            /* Condensed active state */
-            box-shadow: 
-                0 0 30px rgba(167, 139, 250, 0.5),
-                0 0 50px 15px rgba(244, 114, 182, 0.6),
-                0 0 80px 25px rgba(252, 165, 100, 0.4),
-                inset 0 0 15px rgba(255, 255, 255, 0.4);
-            filter: brightness(1.1);
+            background-color: rgba(0, 0, 0, 0.05);
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.1);
+            color: #000; 
         }
 
         body {
@@ -164,7 +139,6 @@
 
         #fixed-background {
             position: fixed;
-            /* Inset 0 anchors it to all edges immediately */
             inset: 0;
             z-index: -1; 
             background-image: linear-gradient(rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.2)), url('background.png');
@@ -172,13 +146,10 @@
             background-position: center;
             background-repeat: no-repeat;
             pointer-events: none;
-            /* Stiffening Logic: Force hardware layer & lock height */
             height: 100lvh;
             width: 100vw;
             transform: translateZ(0);
-            -webkit-transform: translateZ(0);
             backface-visibility: hidden;
-            -webkit-backface-visibility: hidden;
         }
 
         @media (min-width: 768px) {
@@ -191,31 +162,20 @@
             transition: all 400ms cubic-bezier(0.25, 0.46, 0.45, 0.94);
             border-radius: 9999px;
             cursor: pointer;
-            touch-action: manipulation;
         }
         
         .viral-toggle-track.infused-off {
             background-color: rgba(0, 0, 0, 0.02); 
-            box-shadow: 
-                inset 0 4px 8px rgba(0, 0, 0, 0.15), 
-                inset 0 1px 2px rgba(0, 0, 0, 0.06),
-                0 1px 0 rgba(255, 255, 255, 0.3); 
-            border: none; 
+            box-shadow: inset 0 4px 8px rgba(0, 0, 0, 0.15), inset 0 1px 2px rgba(0, 0, 0, 0.06), 0 1px 0 rgba(255, 255, 255, 0.3); 
         }
 
         .viral-toggle-track.on-glow {
-            box-shadow: 
-                inset 0 2px 4px rgba(0, 0, 0, 0.2), 
-                0 0 30px 8px rgba(74, 222, 128, 0.9),
-                0 0 80px 30px rgba(74, 222, 128, 0.6); 
+            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.2), 0 0 30px 8px rgba(74, 222, 128, 0.9), 0 0 80px 30px rgba(74, 222, 128, 0.6); 
         }
         
         .viral-toggle-knob {
             transition: transform 400ms cubic-bezier(0.34, 1.56, 0.64, 1); 
-            box-shadow: 
-                0 2px 5px rgba(0, 0, 0, 0.2), 
-                inset 0 -2px 2px rgba(0, 0, 0, 0.05), 
-                inset 0 2px 4px rgba(255, 255, 255, 1);      
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2), inset 0 -2px 2px rgba(0, 0, 0, 0.05), inset 0 2px 4px rgba(255, 255, 255, 1);      
         }
         
         @keyframes icon-pop {
@@ -267,6 +227,7 @@
             background-color: rgba(0, 0, 0, 0.06);
             box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1), 0 1px 0 rgba(255, 255, 255, 0.4);
             border-radius: 9999px;
+            overflow: hidden; 
         }
 
         .content-transition {
@@ -276,12 +237,19 @@
         .opacity-0 { opacity: 0; }
         .opacity-100 { opacity: 1; }
 
-        /* Unified small button behavior */
         .icon-btn {
             transition: transform 0.2s ease, background-color 0.2s ease, color 0.2s ease;
         }
         .icon-btn:active {
             transform: scale(0.92);
+        }
+
+        /* Vibrant Gradient Text styling without glow */
+        .vibrant-gradient-text {
+            background-image: linear-gradient(to right, #a78bfa 0%, #f472b6 40%, #fca564 75%, #fca564 100%);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
         }
     </style>
 </head>
@@ -296,7 +264,7 @@
                             <img src="https://manmohit2007.github.io/Manmohit2007/brand_logo.png?v=10" alt="FanPlusFollow Logo" class="w-full h-full object-contain filter drop-shadow-md">
                         </div>
                         <div class="text-left">
-                            <h1 class="text-2xl font-bold bg-clip-text text-transparent" style="background-image: linear-gradient(to right, #a78bfa 0%, #f472b6 40%, #fca564 75%, #fca564 100%)">
+                            <h1 class="text-2xl font-bold vibrant-gradient-text">
                               FanPlusFollow
                             </h1>
                             <p class="text-black text-sm flex items-center font-medium">
@@ -337,18 +305,18 @@
                         <div class="w-16 h-16 mb-2 sm:mb-4">
                             <img src="https://manmohit2007.github.io/Manmohit2007/brand_logo.png?v=10" alt="FanPlusFollow Logo" class="w-full h-full object-contain filter drop-shadow-md">
                         </div>
-                        <h3 class="text-xl sm:text-2xl font-bold bg-clip-text text-transparent text-center" style="background-image: linear-gradient(to right, #a78bfa 0%, #f472b6 40%, #fca564 75%, #fca564 100%)">
+                        <h3 class="text-xl sm:text-2xl font-bold text-center vibrant-gradient-text">
                           Boost Your Reach With FanPlusFollow
                         </h3>
                         <p class="text-black mt-1 sm:mt-2 text-center max-w-md text-sm sm:text-base opacity-70">
                           Join the community for exclusive growth insights and advanced content tools.
                         </p>
                         <div class="mt-6 -translate-y-[2px] flex flex-row justify-center gap-3 sm:gap-6 w-full max-w-sm sm:max-w-none px-1 sm:px-0">
-                          <button class="cta-button flex-1 sm:flex-none px-4 py-3 sm:px-8 sm:py-4 rounded-full font-bold transition-all duration-300 ease-in-out transform backdrop-blur-3xl flex items-center justify-center text-sm sm:text-lg" onclick="openLinkWithDelay('https://www.youtube.com/@fanplusfollow')">
+                          <button class="cta-button flex-1 sm:flex-none px-4 py-3 sm:px-8 sm:py-4 font-bold transition-all duration-300 ease-in-out transform flex items-center justify-center text-sm sm:text-lg" onclick="openLinkWithDelay('https://www.youtube.com/@fanplusfollow')">
                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-1.5 sm:mr-2 h-4 w-4 sm:h-5 sm:w-5"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
                             Subscribe
                           </button>
-                          <button class="cta-button flex-1 sm:flex-none px-4 py-3 sm:px-8 sm:py-4 rounded-full font-bold transition-all duration-300 ease-in-out transform backdrop-blur-3xl flex items-center justify-center text-sm sm:text-lg" onclick="openLinkWithDelay('https://www.instagram.com/_manmohit_singh_/')">
+                          <button class="cta-button flex-1 sm:flex-none px-4 py-3 sm:px-8 sm:py-4 font-bold transition-all duration-300 ease-in-out transform flex items-center justify-center text-sm sm:text-lg" onclick="openLinkWithDelay('https://www.instagram.com/_manmohit_sing_/')">
                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-1.5 sm:mr-2 h-4 w-4 sm:h-5 sm:w-5"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
                             Follow
                           </button>
@@ -368,13 +336,11 @@
         let isProcessed = false;
         let viralScore = 0;
         
-        // Display Versions (Truncated)
         let titles = [];
         let description = "";
         let allTitles = []; 
         let allDescriptions = []; 
         
-        // Full Versions (For Clipboard)
         let titlesFull = [];
         let descriptionFull = "";
         let allTitlesFull = [];
@@ -390,19 +356,16 @@
         const INSTAGRAM_LINK = "https://www.instagram.com/_manmohit_singh_/";
 
         const openLinkWithDelay = (url) => {
-            setTimeout(() => {
-                window.open(url, '_blank');
-            }, 200);
+            setTimeout(() => { window.open(url, '_blank'); }, 200);
         };
 
         const icon = (name, classes) => {
             const iconMap = {
                 'Upload': `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="${classes}"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" x2="12" y1="3" y2="15"/></svg>`,
-                'Play': `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="${classes}"><circle cx="12" cy="12" r="10"/><polygon points="10 8 16 12 10 16 10 8"/></svg>`,
                 'Copy': `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="${classes}"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>`,
                 'Check': `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="${classes}"><polyline points="20 6 9 17 4 12"/></svg>`,
                 'RotateCcw': `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="${classes}"><path d="M3 2v6h6"/><path d="M3 13a9 9 0 1 0 3-7.7L3 8"/></svg>`,
-                'Edit': `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="url(#pencil-gradient)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="${classes}"><defs><linearGradient id="pencil-gradient" x1="0%" y1="0%" x2="100%" y2="0%"><stop offset="0%" stop-color="#a78bfa" /><stop offset="40%" stop-color="#f472b6" /><stop offset="75%" stop-color="#fca564" /><stop offset="100%" stop-color="#fca564" /></linearGradient></defs><path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"/></svg>`,
+                'Edit': `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="${classes}"><path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"/></svg>`,
             };
             return iconMap[name] || '';
         };
@@ -413,15 +376,18 @@
             const label = document.getElementById('progress-label');
             const statusText = document.getElementById('processing-status');
             const isComplete = progressValue >= 100;
-            const indicatorColorClass = "bg-green-400 shadow-[0_0_15px_rgba(74,222,128,0.6)]";
-            const finalTextColorClass = "text-green-400 drop-shadow-[0_0_8px_rgba(74,222,128,0.8)]";
+            
+            const processingBarClass = "bg-gradient-to-r from-green-300 via-green-400 to-green-500";
+            const completeBarClass = "bg-green-400 shadow-[0_0_15px_rgba(74,222,128,0.6)]";
+            const processingTextClass = "text-gray-600";
+            const completeTextClass = "text-green-500 font-bold drop-shadow-[0_0_8px_rgba(74,222,128,0.4)]";
+
             if (indicator && label && statusText) {
                 indicator.style.width = `${progressValue}%`;
                 label.innerHTML = `${progressValue}%`;
-                label.className = `font-bold ${finalTextColorClass} transition-colors duration-500`;
-                // Updated duration-1000 to duration-200 to match the 200ms update interval
-                indicator.className = `h-2.5 rounded-full transition-all duration-200 ${indicatorColorClass}`;
-                statusText.className = `font-medium transition-colors duration-500 ${finalTextColorClass}`;
+                label.className = `font-bold transition-colors duration-500 ${isComplete ? completeTextClass : processingTextClass}`;
+                indicator.className = `h-2.5 rounded-full transition-all duration-200 ${isComplete ? completeBarClass : processingBarClass}`;
+                statusText.className = `font-medium transition-colors duration-500 ${isComplete ? completeTextClass : processingTextClass}`;
                 statusText.textContent = isComplete ? "Processing Complete" : "Processing...";
             }
         };
@@ -434,8 +400,6 @@
                     progressInterval = null;
                     setProgress(95); 
                 } else {
-                    // Optimized randomness: Updates every 200ms with varied steps (2% to 12%)
-                    // This allows it to reach ~85-95% naturally within the 3s window
                     const step = Math.floor(Math.random() * 11) + 2; 
                     const nextValue = Math.min(progressValue + step, 95);
                     setProgress(nextValue);
@@ -455,9 +419,9 @@
             const toggleZap = document.getElementById('viral-toggle-zap');
             const toggleText = document.getElementById('viral-toggle-text');
             if (toggleTrack && toggleKnob && toggleZap && toggleText) {
-                toggleKnob.classList.remove('bg-white', 'bg-gray-800');
+                toggleKnob.classList.remove('bg-white');
                 toggleKnob.classList.add('bg-white');
-                toggleTrack.classList.remove('bg-green-500/70', 'bg-gray-700', 'bg-gray-300', 'bg-gradient-to-t', 'from-green-500', 'to-lime-400', 'on-glow', 'infused-off');
+                toggleTrack.classList.remove('bg-gradient-to-t', 'from-green-400', 'to-lime-400', 'on-glow', 'infused-off');
                 if (isViralBoostEnabled) {
                     toggleTrack.classList.add('bg-gradient-to-t', 'from-green-400', 'to-lime-400', 'on-glow');
                 } else {
@@ -467,21 +431,15 @@
                 toggleZap.classList.remove('text-green-400', 'text-gray-500', 'icon-pop-on', 'drop-shadow-[0_0_5px_rgba(74,222,128,0.8)]');
                 if (isViralBoostEnabled) {
                     toggleZap.classList.add('text-green-400', 'icon-pop-on', 'drop-shadow-[0_0_5px_rgba(74,222,128,0.8)]');
-                } else {
-                    toggleZap.classList.add('text-gray-500');
-                }
+                } else { toggleZap.classList.add('text-gray-500'); }
                 toggleText.className = `text-lg font-bold transition-colors duration-300 ${isViralBoostEnabled ? 'text-black' : 'text-gray-500'}`;
             }
         };
 
         const toggleViralBoost = () => {
             isViralBoostEnabled = !isViralBoostEnabled;
-            if (isProcessed) {
-                generateViralContent(true);
-                updateUI();
-            } else {
-                updateToggleUI();
-            }
+            if (isProcessed) { generateViralContent(true); updateUI(); } 
+            else { updateToggleUI(); }
         };
 
         const handleFileChange = (event) => {
@@ -523,230 +481,123 @@
 
         const generateViralContent = (shouldUpdateScore = true) => { 
             if (!file) return;
-            const fileName = currentFileName; 
-            const fullVideoName = fileName.replace(/\.[^/.]+$/, "");
-            
-            // Truncate video name for generated titles if it's too long
-            let displayVideoName = fullVideoName;
-            if (displayVideoName.length > 25) {
-                displayVideoName = displayVideoName.substring(0, 25) + "...";
-            }
+            const fullVideoName = currentFileName.replace(/\.[^/.]+$/, "");
+            let displayVideoName = fullVideoName.length > 25 ? fullVideoName.substring(0, 25) + "..." : fullVideoName;
 
-            // Helper to generate templates based on a specific name (full or display)
             const getTemplates = (vName) => ({
                 titles: [
-                    [`🔥 ULTIMATE ${vName} Guide! (FanPlusFollow Secret)`, `📈 ${vName}: Watch How We Went VIRAL in 24 Hours!`, `🤯 You Won't BELIEVE This ${vName} Trick!`],
-                    [`🚀 ${vName} HACK: Get More Views INSTANTLY!`, `This ONE ${vName} Tip Changed Everything... (SHOCKING)`, `Stop Making ${vName} Videos Until You Watch This! 🚫`],
-                    [`The ${vName} MISTAKE Costing You Subscribers!`, `✅ ${vName} Tutorial: From 0 to 100k Views!`, `Why Your ${vName} Videos AREN'T Growing (FIXED!)`],
-                    [`🤫 The Secret ${vName} Strategy No One Talks About`, `I Tried ${vName} for 7 Days... Here's What Happened`, `WARNING: Don't Do ${vName} Without Watching This! ⚠️`],
-                    [`How to Master ${vName} in Just 10 Minutes ⏱️`, `The ONLY ${vName} Tool You'll Ever Need`, `Exposing the Truth About ${vName} (Honest Review)`]
+                    [`🔥 ULTIMATE ${vName} Guide!`, `📈 ${vName}: How We Went VIRAL!`, `🤯 You Won't BELIEVE This ${vName} Trick!`],
+                    [`🚀 ${vName} HACK: More Views NOW!`, `This ONE ${vName} Tip Changed Everything...`, `Stop Making ${vName} Videos Until You Watch This! 🚫`]
                 ],
                 descriptions: [
-                    `🎬 ${vName} - Watch this incredible video to discover amazing insights!\n\n✨ What you'll learn:\n✅ Key techniques from FanPlusFollow's viral success\n✅ Insider tips from YouTube growth experts\n✅ Step-by-step instructions for success\n\n👍 Don't forget to LIKE, COMMENT, and SUBSCRIBE to @FanPlusFollow for more amazing content!\n🔔 Turn on notifications so you never miss an update!\n\nCheck out the FanPlusFollow Channel here: ${YOUTUBE_CHANNEL_LINK}\n\nFollow Manmohit Singh on Instagram: ${INSTAGRAM_LINK}\n\n#FanPlusFollow #YouTubeGrowth #ViralVideo #ContentCreation #YouTubeTips`,
-                    `Is your ${vName} content not performing? This video REVEALS the secret sauce.\n\nIn this episode, we break down:\n1️⃣ The #1 ${vName} mistake (and how to fix it)\n2️⃣ FanPlusFollow's 3-step growth formula\n3️⃣ How to 10x your engagement overnight!\n\nDon't just make content, make content that WINS. 🏆\n\nSubscribe to @FanPlusFollow for daily growth hacks!\nFollow the journey on IG: ${INSTAGRAM_LINK}\n\n#${vName} #GrowthHacking #ContentStrategy #FanPlusFollow #ViralSecrets`,
-                    `STOP SCROLLING. ✋ If you need to master ${vName}, this is the only video you need to watch today.\n\nWe're diving deep into the strategies that top creators (and @FanPlusFollow) use to dominate the algorithm.\n\n--- LINKS ---\nFanPlusFollow YouTube: ${YOUTUBE_CHANNEL_LINK}\nManmohit's Instagram: ${INSTAGRAM_LINK}\n\nThis isn't just theory—this is a practical, step-by-step guide to making your ${vName} content go viral. Watch now and thank us later.\n\n#${vName}Guide #YouTubeAlgorithm #CreatorTips #FanPlusFollow #SubscribeNow`,
-                    `Are you struggling with ${vName}? You are not alone. Let's fix that today. 💪\n\nIn this comprehensive guide, I'm sharing the exact roadmap I used to master ${vName}.\n\n📌 TIMESTAMPS:\n0:00 Intro\n1:30 The Basics of ${vName}\n4:45 Advanced Strategies\n8:20 Common Pitfalls\n10:00 Final Verdict\n\nHit that SUBSCRIBE button to join the #FanPlusFollow community!\n📸 Instagram: ${INSTAGRAM_LINK}\n📺 YouTube: ${YOUTUBE_CHANNEL_LINK}\n\n#${vName}Tutorial #HowTo #MasterClass #FanPlusFollow #ContentMarketing`,
-                    `If you watch one video about ${vName} this year, make it this one. 🚀\n\nWe tested 50 different strategies for ${vName} so you don't have to. The results were SHOCKING.\n\nHere is what actually works in 2025:\n🔹 Strategy A: The Engagement Hack\n🔹 Strategy B: The Retention Hook\n🔹 Strategy C: The Viral Loop\n\nComment "VIRAL" below if you want Part 2! 👇\n\nConnect with us:\nIG: ${INSTAGRAM_LINK}\nYT: ${YOUTUBE_CHANNEL_LINK}\n\n#${vName}Tips #SocialMediaGrowth #ViralHacks #FanPlusFollow #2025Trends`
+                    `🎬 ${vName} - Discover amazing insights with @FanPlusFollow!\n\nCheck out: ${YOUTUBE_CHANNEL_LINK}\nFollow: ${INSTAGRAM_LINK}\n\n#FanPlusFollow #YouTubeGrowth`,
+                    `Is your ${vName} content not performing? REVEAL the secret sauce.\n\nSubscribe: @FanPlusFollow\nIG: ${INSTAGRAM_LINK}`
                 ]
             });
 
-            // Generate Display Versions (Truncated)
             const displayTemplates = getTemplates(displayVideoName);
             allTitles = displayTemplates.titles;
             allDescriptions = displayTemplates.descriptions;
-            
-            // Generate Full Versions (For Clipboard)
             const fullTemplates = getTemplates(fullVideoName);
             allTitlesFull = fullTemplates.titles;
             allDescriptionsFull = fullTemplates.descriptions;
 
-            // Set current active items
-            titles = allTitles[currentTitleSetIndex];
-            description = allDescriptions[currentDescriptionIndex];
-            
-            titlesFull = allTitlesFull[currentTitleSetIndex];
-            descriptionFull = allDescriptionsFull[currentDescriptionIndex];
+            titles = allTitles[currentTitleSetIndex % allTitles.length];
+            description = allDescriptions[currentDescriptionIndex % allDescriptions.length];
+            titlesFull = allTitlesFull[currentTitleSetIndex % allTitles.length];
+            descriptionFull = allDescriptionsFull[currentDescriptionIndex % allTitles.length];
 
             if (shouldUpdateScore) {
-                const scoreBase = isViralBoostEnabled ? 80 : 68;
-                viralScore = Math.floor(Math.random() * 18) + scoreBase; 
+                viralScore = isViralBoostEnabled ? Math.floor(Math.random() * 50) + 51 : Math.floor(Math.random() * 51);
             }
         };
 
         const handleRegenerate = () => {
             if (!file || isProcessing) return;
-            
             const titlesGrid = document.getElementById('titles-grid-container');
             const descContainer = document.getElementById('description-text-container');
-            
             if (titlesGrid) titlesGrid.classList.add('opacity-0');
             if (descContainer) descContainer.classList.add('opacity-0');
-            
             setTimeout(() => {
-                currentTitleSetIndex = (currentTitleSetIndex + 1) % allTitles.length;
-                currentDescriptionIndex = (currentDescriptionIndex + 1) % allDescriptions.length;
+                currentTitleSetIndex++; currentDescriptionIndex++;
                 generateViralContent(false); 
-                
-                updateTitlesContent();
-                updateDescriptionContent();
-                
+                updateTitlesContent(); updateDescriptionContent();
                 if (titlesGrid) titlesGrid.classList.remove('opacity-0');
                 if (descContainer) descContainer.classList.remove('opacity-0');
-                
                 attachStaticListeners(); 
             }, 300);
         };
 
-        const copyDescriptionToClipboard = () => {
-             copyToClipboard(descriptionFull, 3);
-        }
+        const copyDescriptionToClipboard = () => { copyToClipboard(descriptionFull, 3); }
 
         const copyToClipboard = (text, index) => {
-            // Logic Split: Description vs Titles
+            const tempElement = document.createElement('textarea');
+            tempElement.value = text;
+            document.body.appendChild(tempElement);
+            tempElement.select();
+            document.execCommand('copy');
+            document.body.removeChild(tempElement);
+
             if (index === 3) {
                 const descContainer = document.getElementById('description-text-container');
-                const btnId = 'copy-desc-btn';
-                const btn = document.getElementById(btnId);
-
-                // 0. Perform Copy Logic
-                const tempElement = document.createElement('textarea');
-                tempElement.value = text;
-                document.body.appendChild(tempElement);
-                tempElement.select();
-                document.execCommand('copy');
-                document.body.removeChild(tempElement);
-
-                // 1. Clear Timers to handle frequent clicks (Prevent cut-off animations)
-                if (btn && btn._iconChangeTimer) clearTimeout(btn._iconChangeTimer);
+                const btn = document.getElementById('copy-desc-btn');
                 if (btn && btn._revertTimer) clearTimeout(btn._revertTimer);
-
-                // 2. VISUAL FEEDBACK (Immediate Snap)
-                if (descContainer) {
-                    descContainer.classList.remove('opacity-0');
-                    void descContainer.offsetWidth; // Force reflow
-                    descContainer.classList.add('opacity-0');
-                }
-                
-                // 3. Animation Timeout (Matched to CSS transition)
-                const iconChangeTimer = setTimeout(() => {
-                    // Update Button Icon only
+                if (descContainer) { descContainer.classList.add('opacity-0'); }
+                setTimeout(() => {
                     if (btn) {
-                        // Hardcoded original content
-                        const originalHTML = `<span class="flex items-center">${icon('Copy', 'mr-2 h-4 w-4 text-white')} Copy</span>`;
-                        // Keep text "Copy" to prevent layout shift, just swap icon
-                        btn.innerHTML = `<span class="flex items-center">${icon('Check', 'mr-2 h-4 w-4 text-white')} Copy</span>`;
-                        
-                        // Set new revert timer
-                        btn._revertTimer = setTimeout(() => { 
-                            if (btn) btn.innerHTML = originalHTML; 
-                        }, 1000);
+                        const originalHTML = `<span class="flex items-center">${icon('Copy', 'mr-2 h-4 w-4')} Copy</span>`;
+                        btn.innerHTML = `<span class="flex items-center">${icon('Check', 'mr-2 h-4 w-4')} Copy</span>`;
+                        btn._revertTimer = setTimeout(() => { if (btn) btn.innerHTML = originalHTML; }, 1000);
                     }
-
-                    // Fade In Content
                     if (descContainer) descContainer.classList.remove('opacity-0');
                 }, 300); 
-
-                // Store timer on element
-                if (btn) btn._iconChangeTimer = iconChangeTimer;
-                
             } else {
-                // --- TITLE ANIMATION ---
-                const tempElement = document.createElement('textarea');
-                tempElement.value = text;
-                document.body.appendChild(tempElement);
-                tempElement.select();
-                document.execCommand('copy');
-                document.body.removeChild(tempElement);
-
                 const titleCard = document.getElementById(`title-card-${index}`);
-                const btnId = `copy-title-btn-${index}`;
-                const btn = document.getElementById(btnId);
-                
-                // 1. Clear Timers (Crucial for frequent clicks)
+                const btn = document.getElementById(`copy-title-btn-${index}`);
                 if (titleCard && titleCard._restoreTimer) clearTimeout(titleCard._restoreTimer);
                 if (btn && btn._revertTimer) clearTimeout(btn._revertTimer);
-
-                // 2. Immediate Active State
                 if (titleCard) {
-                    titleCard.style.transition = 'all 0.1s ease-out'; // Fast compress
+                    titleCard.style.transition = 'all 0.1s ease-out';
                     titleCard.style.transform = 'scale(0.98)';
                     titleCard.style.backgroundColor = 'rgba(74, 222, 128, 0.1)'; 
-                    titleCard.style.borderColor = 'rgba(74, 222, 128, 0.5)';
                 }
-
-                // 3. Schedule Restore & Icon Change
-                const restoreTimer = setTimeout(() => {
+                setTimeout(() => {
                     if (btn) {
-                        // FIX: Hardcoded original content
                         const originalHTML = icon('Copy', 'h-4 w-4');
                         btn.innerHTML = icon('Check', 'h-4 w-4 text-green-400');
-                        
-                        btn._revertTimer = setTimeout(() => { 
-                            if (btn) btn.innerHTML = originalHTML; 
-                        }, 1000);
+                        btn._revertTimer = setTimeout(() => { if (btn) btn.innerHTML = originalHTML; }, 1000);
                     }
                     if (titleCard) {
-                        titleCard.style.transition = 'all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1)'; // Smooth spring release
+                        titleCard.style.transition = 'all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1)';
                         titleCard.style.transform = 'scale(1)';
                         titleCard.style.backgroundColor = ''; 
-                        titleCard.style.borderColor = '';
                     }
                 }, 200); 
-
-                if (titleCard) titleCard._restoreTimer = restoreTimer;
             }
         };
 
         const resetApp = () => {
             setTimeout(() => {
-                file = null;
-                currentFileName = ""; 
-                isEditingTitle = false; 
-                isProcessing = false;
-                isProcessed = false;
-                viralScore = 0;
-                
-                titles = [];
-                description = "";
-                titlesFull = [];
-                descriptionFull = "";
-                
-                progressValue = 0;
-                currentTitleSetIndex = 0; 
-                currentDescriptionIndex = 0; 
+                file = null; currentFileName = ""; isProcessing = false; isProcessed = false;
+                viralScore = 0; titles = []; description = ""; progressValue = 0;
                 if (progressInterval) clearInterval(progressInterval);
-                const fileInput = document.getElementById('file-upload-input');
-                if (fileInput) fileInput.value = "";
-                updateUI();
-                attachStaticListeners(); 
+                updateUI(); attachStaticListeners(); 
             }, 200);
         };
 
         const attachStaticListeners = () => {
             const cards = document.querySelectorAll('.glass-card:not(.has-listener)');
-            const handleTouchHover = function(e) {
-                if (e.target.closest('button, input, textarea, a')) return;
-                const isAlreadyHovered = this.classList.contains('tapped-hover');
-                document.querySelectorAll('.glass-card').forEach(el => { if (el !== this) el.classList.remove('tapped-hover'); });
-                if (!isAlreadyHovered) this.classList.add('tapped-hover');
-                else this.classList.remove('tapped-hover');
-            };
             cards.forEach(element => {
-                element.addEventListener('touchstart', handleTouchHover, { passive: true });
+                element.addEventListener('touchstart', function() {
+                    document.querySelectorAll('.glass-card').forEach(el => { if (el !== this) el.classList.remove('tapped-hover'); });
+                    this.classList.toggle('tapped-hover');
+                }, { passive: true });
                 element.classList.add('has-listener'); 
             });
         };
         
-        const startLaunchAnimation = () => {
-            const targets = document.querySelectorAll('.card-animation-target');
-            setTimeout(() => {
-                targets.forEach(el => { el.style.animation = 'none'; el.style.opacity = '1'; el.classList.remove('card-animation-target'); });
-            }, 1800);
-        };
-        
         const renderUploadSection = () => {
             const uploadContainer = document.getElementById('upload-section-content');
-            const uploadCard = document.getElementById('upload-card'); 
             if (!uploadContainer) return;
 
             if (!file) {
@@ -754,271 +605,102 @@
                     <div id="file-drop-area" class="fluid-transition w-full h-full flex flex-col items-center justify-center text-center cursor-pointer pt-3 md:pt-2">
                         ${icon('Upload', `h-12 w-12 text-black mb-4`)}
                         <div>
-                            <p class="text-xl font-bold text-black">Drag & Drop Your Video File</p>
-                            <p class="text-black mt-1 sm:mt-2 text-sm sm:text-base opacity-70">or click to browse the video file</p>
+                            <p class="text-xl font-bold text-black">Drag & Drop Your Video</p>
                         </div>
-                        <button id="select-file-btn" class="cta-button mt-6 px-8 py-4 rounded-full font-bold transition-all duration-300 ease-in-out transform backdrop-blur-3xl text-lg flex items-center justify-center">
+                        <button id="select-file-btn" class="cta-button mt-6 px-8 py-4 font-bold transition-all duration-300 transform text-lg flex items-center justify-center">
                             ${icon('Upload', 'mr-2 h-5 w-5')} Select
                         </button>
                         <input type="file" id="file-upload-input" class="hidden" accept="video/*" onchange="handleFileChange(event)"/>
                     </div>`;
-
                 const dropArea = document.getElementById('file-drop-area');
-                let dragCounter = 0; 
-                if (dropArea && uploadCard) {
-                    dropArea.addEventListener('dragenter', (e) => { 
-                        e.preventDefault(); 
-                        dragCounter++; 
-                        uploadCard.classList.add('drag-over-active'); 
-                    });
-                    dropArea.addEventListener('dragover', (e) => { e.preventDefault(); });
-                    dropArea.addEventListener('dragleave', (e) => { 
-                        e.preventDefault(); 
-                        dragCounter--; 
-                        if (dragCounter === 0) uploadCard.classList.remove('drag-over-active'); 
-                    });
-                    dropArea.addEventListener('drop', (e) => { 
-                        e.preventDefault(); 
-                        dragCounter = 0; 
-                        uploadCard.classList.remove('drag-over-active'); 
-                        handleDrop(e); 
-                    });
-                    const selectFileBtn = document.getElementById('select-file-btn');
-                    const fileInput = document.getElementById('file-upload-input');
-                    if(selectFileBtn && fileInput) selectFileBtn.onclick = (e) => { 
-                        e.stopPropagation(); 
-                        setTimeout(() => fileInput.click(), 200); 
-                    };
-                    dropArea.onclick = (e) => { if(e.target === dropArea || e.target.closest('#file-drop-area')) { fileInput.click(); } };
-                }
+                if(dropArea) dropArea.onclick = () => document.getElementById('file-upload-input').click();
             } else {
-                const statusTextColorClass = 'text-green-400 drop-shadow-[0_0_8px_rgba(74,222,128,0.8)]';
-                const indicatorBarColorClass = 'bg-green-400 shadow-[0_0_15px_rgba(74,222,128,0.6)]';
+                const processingBarClass = "bg-gradient-to-r from-green-300 via-green-400 to-green-500";
+                const completeBarClass = "bg-green-400 shadow-[0_0_15px_rgba(74,222,128,0.6)]";
+                const statusTextColorClass = isProcessed ? "text-green-500 font-bold" : "text-gray-600";
+                const indicatorBarColorClass = isProcessed ? completeBarClass : processingBarClass;
                 
-                const processingArea = isProcessing || isProcessed ? `
-                    <div class="w-full max-w-sm mb-4">
-                        <div class="flex justify-between mb-2">
-                            <span id="processing-status" class="font-medium ${statusTextColorClass}">${isProcessed ? 'Processing Complete' : 'Processing...'}</span>
-                            <span id="progress-label" class="${statusTextColorClass} font-bold">${progressValue}%</span>
-                        </div>
-                        <div class="w-full progress-track-fused h-2.5">
-                            <!-- Updated duration-1000 to duration-200 to match simulation interval -->
-                            <div id="progress-indicator" class="h-2.5 rounded-full transition-all duration-200 ${indicatorBarColorClass}" style="width: ${progressValue}%"></div>
-                        </div>
-                    </div>
-                    ${isProcessed ? `<div class="flex gap-4 mt-6"><button onclick="resetApp()" class="cta-button backdrop-blur-xl px-6 py-3 rounded-full font-medium flex items-center relative -top-[2px]">${icon('RotateCcw', `mr-2 h-4 w-4 text-white`)} Reupload</button></div>` : ''}
-                ` : '';
-
-                let titleContentHTML = '';
-                if (isEditingTitle) {
-                    titleContentHTML = `
-                        <div class="flex-1 min-w-0 mr-2">
-                            <input type="text" id="title-edit-input" value="${currentFileName}" class="w-full bg-transparent focus:outline-none font-bold text-gray-800 py-1" onkeydown="handleTitleInputKey(event)">
-                        </div>
-                        <button onclick="saveTitleEdit()" class="icon-btn p-2 rounded-full hover:bg-black/5 transition-colors text-green-400 flex-shrink-0" title="Save">
-                            ${icon('Check', 'h-5 w-5')}
-                        </button>
-                    `;
-                } else {
-                    // Manually truncate for display to ensure it doesn't break UI even if CSS fails
-                    const displayFileName = currentFileName.length > 35 ? currentFileName.substring(0, 32) + "..." : currentFileName;
-                    titleContentHTML = `
-                        <div class="text-left overflow-hidden flex-1 min-w-0 mr-2">
-                            <p class="font-bold truncate text-gray-800" title="${currentFileName}">${displayFileName}</p>
-                            <p class="text-xs text-black opacity-60">${(file.size / (1024 * 1024)).toFixed(2)} MB</p>
-                        </div>
-                        <button onclick="enableTitleEdit()" class="icon-btn p-2 rounded-full hover:bg-black/5 transition-colors text-gray-500 hover:text-black flex-shrink-0" title="Edit Name">
-                            ${icon('Edit', 'h-6 w-6')}
-                        </button>
-                    `;
-                }
-
                 uploadContainer.innerHTML = `
                     <div class="flex flex-col items-center justify-center h-full min-h-[14rem] pt-3 md:pt-2">
-                        <div class="glass-inset-panel fluid-transition flex items-center gap-3 mb-6 p-4 w-full max-w-sm">
-                            ${titleContentHTML}
+                        <div class="glass-inset-panel flex items-center gap-3 mb-6 p-4 w-full max-w-sm">
+                            <div class="text-left flex-1 truncate"><p class="font-bold text-gray-800">${currentFileName}</p></div>
+                            <button onclick="enableTitleEdit()" class="icon-btn p-2 rounded-full hover:bg-black/5">${icon('Edit', 'h-6 w-6')}</button>
                         </div>
-                        ${processingArea}
+                        <div class="w-full max-w-sm mb-4">
+                            <div class="flex justify-between mb-2">
+                                <span id="processing-status" class="${statusTextColorClass}">${isProcessed ? 'Complete' : 'Processing...'}</span>
+                                <span id="progress-label" class="${statusTextColorClass}">${progressValue}%</span>
+                            </div>
+                            <div class="w-full progress-track-fused h-2.5">
+                                <div id="progress-indicator" class="h-2.5 rounded-full transition-all duration-200 ${indicatorBarColorClass}" style="width: ${progressValue}%"></div>
+                            </div>
+                        </div>
+                        ${isProcessed ? `<button onclick="resetApp()" class="cta-button px-6 py-3 font-bold flex items-center mt-4">${icon('RotateCcw', `mr-2 h-4 w-4`)} Reupload</button>` : ''}
                     </div>`;
-            }
-        };
-
-        const enableTitleEdit = () => {
-            isEditingTitle = true;
-            updateUI();
-            const input = document.getElementById('title-edit-input');
-            if(input) {
-                input.focus();
-                try { input.select(); } catch (e) { input.setSelectionRange(0, 9999); }
-            }
-        };
-
-        const saveTitleEdit = () => {
-            const input = document.getElementById('title-edit-input');
-            if (input) input.blur();
-            setTimeout(() => {
-                if (input && input.value.trim() !== "") {
-                    currentFileName = input.value.trim();
-                    isEditingTitle = false;
-                    if (isProcessed) {
-                        generateViralContent(true);
-                        updateUI();
-                    } else {
-                        updateUI();
-                    }
-                } else {
-                    isEditingTitle = false;
-                    updateUI();
-                }
-            }, 150);
-        };
-
-        const handleTitleInputKey = (e) => {
-            if (e.key === 'Enter') saveTitleEdit();
-            if (e.key === 'Escape') {
-                isEditingTitle = false;
-                updateUI();
             }
         };
 
         const updateTitlesContent = () => {
             const grid = document.getElementById('titles-grid-container');
             if (!grid) return;
-            // Map over the display titles 'titles', but use 'titlesFull[index]' for the copy action
             grid.innerHTML = titles.map((title, index) => {
-                // Ensure we use the full version for copying, escaped correctly
-                const copyText = titlesFull[index] ? titlesFull[index].replace(/'/g, "\\'") : title.replace(/'/g, "\\'");
-                
+                const copyText = titlesFull[index].replace(/'/g, "\\'");
                 return `
-                <div id="title-card-${index}" class="glass-inset-panel interactive fluid-transition p-4">
-                    <div class="p-1">
-                        <div class="flex justify-between items-start mb-2">
-                            <span class="text-xs font-medium px-2 py-1 rounded-full bg-pink-100 text-pink-700 border border-pink-300">Option ${index + 1}</span>
-                            <button id="copy-title-btn-${index}" onclick="copyToClipboard('${copyText}', ${index})" class="icon-btn h-8 w-8 p-0 rounded-full flex items-center justify-center transition-all duration-300 bg-transparent hover:bg-black/5 text-gray-800 hover:text-black active:scale-90 active:bg-black/10 relative -top-[2px]">${icon('Copy', 'h-4 w-4')}</button>
-                        </div>
-                        <p class="text-base font-medium text-gray-800 p-1">${title}</p>
+                <div id="title-card-${index}" class="glass-inset-panel interactive p-4">
+                    <div class="flex justify-between items-start mb-2">
+                        <span class="text-xs font-medium px-2 py-1 rounded-full bg-pink-100 text-pink-700">Option ${index + 1}</span>
+                        <button id="copy-title-btn-${index}" onclick="copyToClipboard('${copyText}', ${index})" class="icon-btn h-8 w-8 flex items-center justify-center">${icon('Copy', 'h-4 w-4')}</button>
                     </div>
+                    <p class="text-base font-medium text-gray-800 p-1">${title}</p>
                 </div>`;
             }).join('');
         };
 
         const updateDescriptionContent = () => {
             const container = document.getElementById('description-text-container');
-            if (!container) return;
-            container.innerHTML = `<pre class="whitespace-pre-wrap text-xs sm:text-sm font-mono text-gray-700 leading-relaxed">${description}</pre>`;
+            if (container) container.innerHTML = `<pre class="whitespace-pre-wrap text-sm font-mono text-gray-700">${description}</pre>`;
         };
 
         const renderResults = () => {
             const resultsContainer = document.getElementById('results-section');
-            if (!resultsContainer) return;
-            if (isProcessed) {
-                if (resultsContainer.querySelector('#viral-score-card')) {
-                    const scoreTextEl = resultsContainer.querySelector('.viral-score-text');
-                    const scoreBarEl = resultsContainer.querySelector('.viral-score-bar');
-                    const scoreMsgEl = resultsContainer.querySelector('.viral-score-msg');
-                    
-                    const scoreColorClass = viralScore < 75 ? "text-red-500" : viralScore < 90 ? "text-yellow-500" : "text-green-400";
-                    const scoreBgClass = viralScore < 75 ? "bg-red-500" : viralScore < 90 ? "bg-yellow-500" : "bg-green-400";
-                    const scoreShadowClass = viralScore < 75 ? "shadow-[0_0_15px_rgba(239,68,68,0.6)]" : viralScore < 90 ? "shadow-[0_0_15px_rgba(234,179,8,0.6)]" : "shadow-[0_0_15px_rgba(74,222,128,0.6)]";
-                    const scoreMsg = viralScore < 75 ? "Rethink your content hook for better reach." : viralScore < 90 ? "Solid Performance. A few tweaks could push it higher." : "Viral Ready. This content is primed for maximum engagement.";
-                    
-                    if (scoreTextEl) {
-                        scoreTextEl.className = `text-5xl font-extrabold transition-colors duration-500 viral-score-text ${scoreColorClass}`;
-                        scoreTextEl.textContent = `${viralScore}%`;
-                        let scoreGlowStyle = '';
-                        if (viralScore < 75) scoreGlowStyle = '0 0 30px rgba(239, 68, 68, 0.6)'; 
-                        else if (viralScore < 90) scoreGlowStyle = '0 0 30px rgba(234, 179, 8, 0.6)'; 
-                        else scoreGlowStyle = '0 0 30px rgba(74, 222, 128, 0.8)';
-                        scoreTextEl.style.textShadow = scoreGlowStyle;
-                    }
-                    if (scoreBarEl) {
-                        scoreBarEl.className = `h-3 rounded-full transition-all duration-1000 viral-score-bar ${scoreBgClass} ${scoreShadowClass}`;
-                        scoreBarEl.style.width = `${viralScore}%`;
-                    }
-                    if (scoreMsgEl) scoreMsgEl.textContent = scoreMsg;
-
-                    updateTitlesContent();
-                    updateDescriptionContent();
-                    return;
-                }
-
-                const scoreColorClass = viralScore < 75 ? "text-red-500" : viralScore < 90 ? "text-yellow-500" : "text-green-400";
-                const scoreBgClass = viralScore < 75 ? "bg-red-500" : viralScore < 90 ? "bg-yellow-500" : "bg-green-400";
-                const scoreShadowClass = viralScore < 75 ? "shadow-[0_0_15px_rgba(239,68,68,0.6)]" : viralScore < 90 ? "shadow-[0_0_15px_rgba(234,179,8,0.6)]" : "shadow-[0_0_15px_rgba(74,222,128,0.6)]";
-                const scoreMsg = viralScore < 75 ? "Rethink your content hook for better reach." : viralScore < 90 ? "Solid Performance. A few tweaks could push it higher." : "Viral Ready. This content is primed for maximum engagement.";
-                
-                let scoreGlowStyle = '';
-                if (viralScore < 75) scoreGlowStyle = 'text-shadow: 0 0 30px rgba(239, 68, 68, 0.6);'; 
-                else if (viralScore < 90) scoreGlowStyle = 'text-shadow: 0 0 30px rgba(234, 179, 8, 0.6);'; 
-                else scoreGlowStyle = 'text-shadow: 0 0 30px rgba(74, 222, 128, 0.8);'; 
-                
-                const viralScoreHTML = `
-                    <div id="viral-score-card" class="glass-card fluid-transition p-6 rounded-[36px] mb-12">
-                        <div class="mb-4"><h2 class="text-2xl font-bold text-black">Viral Potential</h2></div>
-                        <div class="p-1">
-                            <div class="flex items-center justify-between mb-4"><span class="text-5xl font-extrabold transition-colors duration-500 viral-score-text ${scoreColorClass}" style="${scoreGlowStyle}">${viralScore}%</span></div>
-                            <div class="w-full progress-track-fused h-3">
-                                <div class="viral-score-bar h-3 rounded-full transition-all duration-1000 ${scoreBgClass} ${scoreShadowClass}" style="width: ${viralScore}%"></div>
-                            </div>
-                            <p class="viral-score-msg text-base font-medium text-black mt-3">${scoreMsg}</p>
-                        </div>
-                    </div>`;
-
-                const titlesHTML = `
-                    <div id="titles-card" class="glass-card fluid-transition p-6 rounded-[36px] mb-12">
-                        <div class="flex justify-between items-center mb-6">
-                            <h2 class="text-2xl font-bold text-black">Titles</h2>
-                            <button onclick="handleRegenerate()" class="cta-button backdrop-blur-xl text-sm px-4 py-2 rounded-full font-medium flex items-center whitespace-nowrap flex-shrink-0 relative -top-[2px]"><span class="flex items-center">${icon('RotateCcw', `mr-2 h-4 w-4 text-white`)} Regenerate</span></button>
-                        </div>
-                        <div id="titles-grid-container" class="grid grid-cols-1 md:grid-cols-3 gap-6 overflow-visible content-transition opacity-100">
-                            ${titles.map((title, index) => {
-                                const copyText = titlesFull[index] ? titlesFull[index].replace(/'/g, "\\'") : title.replace(/'/g, "\\'");
-                                return `
-                                <div id="title-card-${index}" class="glass-inset-panel interactive fluid-transition p-4">
-                                    <div class="p-1">
-                                        <div class="flex justify-between items-start mb-2">
-                                            <span class="text-xs font-medium px-2 py-1 rounded-full bg-pink-100 text-pink-700 border border-pink-300">Option ${index + 1}</span>
-                                            <button id="copy-title-btn-${index}" onclick="copyToClipboard('${copyText}', ${index})" class="icon-btn h-8 w-8 p-0 rounded-full flex items-center justify-center transition-all duration-300 bg-transparent hover:bg-black/5 text-gray-800 hover:text-black active:scale-90 active:bg-black/10 relative -top-[2px]">${icon('Copy', 'h-4 w-4')}</button>
-                                        </div>
-                                        <p class="text-base font-medium text-gray-800 p-1">${title}</p>
-                                    </div>
-                                </div>`;
-                            }).join('')}
-                        </div>
-                    </div>`;
-                
-                const descriptionHTML = `
-                    <div id="description-card" class="glass-card fluid-transition p-6 rounded-[36px]"> 
-                        <div class="mb-4">
-                            <h2 class="flex justify-between items-center text-2xl font-bold text-black">
-                                <span class="truncate mr-2">Description</span>
-                                <button id="copy-desc-btn" onclick="copyDescriptionToClipboard()" class="cta-button backdrop-blur-xl text-sm px-4 py-2 rounded-full font-medium flex items-center whitespace-nowrap flex-shrink-0 relative -top-[2px]"><span class="flex items-center">${icon('Copy', 'mr-2 h-4 w-4 text-white')} Copy</span></button>
-                            </h2>
-                        </div>
-                        <div id="description-text-container" class="glass-inset-panel p-4 sm:p-5 min-h-[250px] max-h-96 overflow-auto custom-scrollbar content-transition opacity-100">
-                            <pre class="whitespace-pre-wrap text-xs sm:text-sm font-mono text-gray-700 leading-relaxed">${description}</pre>
-                        </div>
-                    </div>`;
-                
-                resultsContainer.innerHTML = viralScoreHTML + titlesHTML + descriptionHTML;
-                setTimeout(() => resultsContainer.classList.add('show-results'), 50);
-            } else {
-                resultsContainer.innerHTML = '';
-                resultsContainer.classList.remove('show-results');
-            }
+            if (!resultsContainer || !isProcessed) { if(resultsContainer) resultsContainer.innerHTML = ''; return; }
+            
+            const isRed = viralScore <= 40; const isYellow = viralScore > 40 && viralScore <= 80;
+            const scoreColorClass = isRed ? "text-red-500" : isYellow ? "text-yellow-500" : "text-green-400";
+            const scoreBgClass = isRed ? "bg-red-500" : isYellow ? "bg-yellow-500" : "bg-green-400";
+            const scoreMsg = isRed ? "Rethink your hook." : isYellow ? "Solid performance." : "Viral ready.";
+            
+            resultsContainer.innerHTML = `
+                <div id="viral-score-card" class="glass-card p-6 rounded-[36px] mb-12">
+                    <h2 class="text-2xl font-bold mb-4">Viral Potential</h2>
+                    <div class="flex items-center justify-between mb-4"><span class="text-5xl font-extrabold ${scoreColorClass}">${viralScore}%</span></div>
+                    <div class="w-full progress-track-fused h-3">
+                        <div class="h-3 rounded-full transition-all duration-1000 ${scoreBgClass}" style="width: ${viralScore}%"></div>
+                    </div>
+                    <p class="text-black mt-3 font-medium">${scoreMsg}</p>
+                </div>
+                <div class="glass-card p-6 rounded-[36px] mb-12">
+                    <div class="flex justify-between items-center mb-6">
+                        <h2 class="text-2xl font-bold">Titles</h2>
+                        <button onclick="handleRegenerate()" class="cta-button text-sm px-4 py-2 font-bold flex items-center">${icon('RotateCcw', `mr-2 h-4 w-4`)} Regenerate</button>
+                    </div>
+                    <div id="titles-grid-container" class="grid grid-cols-1 md:grid-cols-3 gap-6 transition-opacity duration-300"></div>
+                </div>
+                <div class="glass-card p-6 rounded-[36px]"> 
+                    <div class="flex justify-between items-center mb-4">
+                        <h2 class="text-2xl font-bold">Description</h2>
+                        <button id="copy-desc-btn" onclick="copyDescriptionToClipboard()" class="cta-button text-sm px-4 py-2 font-bold flex items-center">${icon('Copy', 'mr-2 h-4 w-4')} Copy</button>
+                    </div>
+                    <div id="description-text-container" class="glass-inset-panel p-4 max-h-96 overflow-auto"></div>
+                </div>`;
+            updateTitlesContent(); updateDescriptionContent();
         };
 
-        const updateUI = () => {
-            updateToggleUI(); 
-            renderUploadSection();
-            if(file && (isProcessing || isProcessed)) setProgress(progressValue);
-            renderResults();
-        };
-
-        const initApp = () => {
-            startLaunchAnimation(); 
-            updateUI();
-            attachStaticListeners();
+        const updateUI = () => { updateToggleUI(); renderUploadSection(); renderResults(); };
+        const initApp = () => { 
+            const targets = document.querySelectorAll('.card-animation-target');
+            setTimeout(() => targets.forEach(el => { el.style.animation = 'none'; el.style.opacity = '1'; }), 1800);
+            updateUI(); attachStaticListeners(); 
         };
     </script>
 </body>
