@@ -566,7 +566,7 @@
                             <p class="text-xl font-bold text-black">Drag & Drop Your Video File Here</p>
                             <p class="text-black mt-1 sm:mt-2 text-sm sm:text-base opacity-70">or click to browse the video file</p>
                         </div>
-                        <button id="select-file-btn" class="cta-button mt-6 px-8 py-4 rounded-full font-bold transition-all duration-300 ease-in-out transform backdrop-blur-3xl text-lg">Select File</button>
+                        <button id="select-file-btn" class="cta-button mt-6 px-8 py-4 rounded-full font-bold transition-all duration-300 ease-in-out transform backdrop-blur-3xl text-lg">Select</button>
                         <input type="file" id="file-upload-input" class="hidden" accept="video/*" onchange="handleFileChange(event)"/>
                     </div>`;
 
@@ -613,7 +613,7 @@
                             <div id="progress-indicator" class="h-2.5 rounded-full transition-all duration-1000 ${indicatorBarColorClass}" style="width: ${progressValue}%"></div>
                         </div>
                     </div>
-                    ${isProcessed ? `<div class="flex gap-4 mt-6"><button onclick="resetApp()" class="cta-button backdrop-blur-xl px-6 py-3 rounded-full font-medium flex items-center">${icon('RotateCcw', `mr-2 h-4 w-4 text-white`)} Start New Video</button></div>` : ''}
+                    ${isProcessed ? `<div class="flex gap-4 mt-6"><button onclick="resetApp()" class="cta-button backdrop-blur-xl px-6 py-3 rounded-full font-medium flex items-center">${icon('RotateCcw', `mr-2 h-4 w-4 text-white`)} Reupload</button></div>` : ''}
                 ` : '';
 
                 let titleContentHTML = '';
@@ -731,7 +731,7 @@
                         <div class="mb-4">
                             <h2 class="flex justify-between items-center text-2xl font-bold text-black">
                                 <span class="truncate mr-2">Description</span>
-                                <button onclick="copyDescriptionToClipboard()" class="cta-button backdrop-blur-xl text-sm px-4 py-2 rounded-full font-medium flex items-center whitespace-nowrap flex-shrink-0">${copiedIndex === 3 ? `<span class="flex items-center">${icon('Check', 'mr-2 h-4 w-4 text-white')} Copied!</span>` : `<span class="flex items-center">${icon('Copy', 'mr-2 h-4 w-4 text-white')} Copy All</span>`}</button>
+                                <button onclick="copyDescriptionToClipboard()" class="cta-button backdrop-blur-xl text-sm px-4 py-2 rounded-full font-medium flex items-center whitespace-nowrap flex-shrink-0">${copiedIndex === 3 ? `<span class="flex items-center">${icon('Check', 'mr-2 h-4 w-4 text-white')} Copied!</span>` : `<span class="flex items-center">${icon('Copy', 'mr-2 h-4 w-4 text-white')} Copy</span>`}</button>
                             </h2>
                         </div>
                         <div class="glass-inset-panel p-4 sm:p-5 min-h-[250px] max-h-96 overflow-auto custom-scrollbar">
