@@ -44,19 +44,14 @@
             margin: 0;
             padding: 0;
             overscroll-behavior: none;
-            /* Enable CSS :active states on iOS */
             cursor: pointer;
         }
 
         /* --- STIFF STATIC BACKGROUND --- */
         #fixed-background {
             position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            width: 100vw;
-            height: 100vh;
+            top: 0; left: 0; right: 0; bottom: 0;
+            width: 100vw; height: 100vh;
             z-index: -1; 
             background-image: linear-gradient(rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.2)), url('background.png');
             background-size: cover;
@@ -74,14 +69,6 @@
             }
         }
 
-        /* Custom Scrollbar */
-        ::-webkit-scrollbar { width: 8px; height: 8px; }
-        ::-webkit-scrollbar-track { background: transparent; }
-        ::-webkit-scrollbar-thumb {
-            background-color: rgba(0, 0, 0, 0.2);
-            border-radius: 20px;
-        }
-
         .fluid-transition {
             transition: all 400ms cubic-bezier(0.25, 0.46, 0.45, 0.94);
             will-change: transform, box-shadow, filter, background-color, color, opacity; 
@@ -89,18 +76,18 @@
 
         /* Entry Animation */
         @keyframes spiral-entry {
-            0% { opacity: 0; transform: perspective(1000px) scale(0.9) translateY(30px); filter: blur(10px); }
+            0% { opacity: 0; transform: perspective(1000px) scale(0.95) translateY(20px); filter: blur(10px); }
             100% { opacity: 1; transform: perspective(1000px) scale(1) translateY(0); filter: blur(0); }
         }
         
         .card-animation-target {
-            animation: spiral-entry 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            animation: spiral-entry 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
             opacity: 0; 
         }
         
         #app-header.card-animation-target { animation-delay: 0.1s; }
-        #upload-card.card-animation-target { animation-delay: 0.3s; } 
-        #promo-card.card-animation-target { animation-delay: 0.4s; }
+        #upload-card.card-animation-target { animation-delay: 0.2s; } 
+        #promo-card.card-animation-target { animation-delay: 0.3s; }
 
         /* Glass Card Base Style */
         .glass-card {
@@ -115,31 +102,32 @@
 
         /* --- CTA BUTTONS --- */
         .cta-button {
-            background-color: rgba(0, 0, 0, 0.02);
-            box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.1), 0 1px 0 rgba(255, 255, 255, 0.2);
+            background-color: rgba(0, 0, 0, 0.03);
+            box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.08), 0 1px 0 rgba(255, 255, 255, 0.2);
             color: #000000; 
-            transition: all 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            transition: transform 0.1s cubic-bezier(0.25, 0.46, 0.45, 0.94), background-color 0.2s ease;
             border: none;
             border-radius: 24px; 
             user-select: none;
             cursor: pointer;
             outline: none;
+            -webkit-tap-highlight-color: transparent;
         }
 
+        /* Removed white hover highlight for cleaner touch response */
         @media (hover: hover) {
             .cta-button:hover {
-                transform: translateY(-2px) scale(1.02);
-                background-color: rgba(255, 255, 255, 0.25);
-                box-shadow: inset 0 0 15px rgba(255, 255, 255, 0.4);
+                transform: translateY(-1px);
+                background-color: rgba(0, 0, 0, 0.05);
             }
         }
         
-        /* Tactical Feedback for Tap/Click */
+        /* Tactical Feedback for Tap/Click - Responsive & Snappy */
         .cta-button:active {
-            transform: scale(0.94) translateY(1px) !important; 
-            background-color: rgba(0, 0, 0, 0.08) !important;
-            box-shadow: inset 0 4px 8px rgba(0, 0, 0, 0.15);
-            transition: all 0.1s ease;
+            transform: scale(0.92) translateY(2px) !important; 
+            background-color: rgba(0, 0, 0, 0.12) !important;
+            box-shadow: inset 0 4px 10px rgba(0, 0, 0, 0.2);
+            transition: transform 0.05s ease;
         }
 
         .glass-inset-panel {
@@ -147,26 +135,21 @@
             box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.1), 0 1px 0 rgba(255, 255, 255, 0.2);
             border-radius: 24px;
             border: none;
-            transition: all 0.2s ease;
+            transition: all 0.15s ease;
+            -webkit-tap-highlight-color: transparent;
         }
 
         .glass-inset-panel.interactive {
             cursor: pointer;
         }
 
+        /* Tactile feedback for cards/panels */
         .glass-inset-panel.interactive:active {
-            transform: scale(0.97);
-            background-color: rgba(0, 0, 0, 0.08);
+            transform: scale(0.96);
+            background-color: rgba(0, 0, 0, 0.1);
         }
 
-        @media (hover: hover) {
-            .glass-inset-panel.interactive:hover {
-                background-color: rgba(255, 255, 255, 0.25);
-                box-shadow: inset 0 0 15px rgba(255, 255, 255, 0.4);
-            }
-        }
-
-        /* Fade in for text content only */
+        /* Fade in for text content */
         .fade-in-text {
             animation: fadeInText 0.4s cubic-bezier(0.4, 0, 0.2, 1) forwards;
         }
@@ -178,13 +161,14 @@
         .text-fade-out {
             opacity: 0 !important;
             transform: translateY(-4px) !important;
-            transition: opacity 0.25s ease, transform 0.25s ease !important;
+            transition: opacity 0.2s ease, transform 0.2s ease !important;
         }
 
         /* Feedback for clicked titles */
         .copy-pulse {
-            background-color: rgba(74, 222, 128, 0.2) !important;
-            transform: scale(0.95) !important;
+            background-color: rgba(74, 222, 128, 0.25) !important;
+            transform: scale(0.94) !important;
+            transition: all 0.1s ease;
         }
 
         .header-icon { height: 4rem; width: 4rem; object-fit: contain; }
@@ -192,9 +176,9 @@
         .shorts-icon { height: 3.8rem; width: 3.8rem; object-fit: contain; }
 
         @media (min-width: 640px) {
-            .header-icon { height: 5.5rem; width: 5.5rem; }
-            .share-icon { height: 4.5rem; width: 4.5rem; }
-            .shorts-icon { height: 4.8rem; width: 4.8rem; }
+            .header-icon { height: 5rem; width: 5rem; }
+            .share-icon { height: 4.2rem; width: 4.2rem; }
+            .shorts-icon { height: 4.5rem; width: 4.5rem; }
         }
     </style>
 </head>
@@ -205,30 +189,29 @@
             <header id="app-header" class="glass-card fluid-transition px-4 py-2 sm:px-6 sm:py-3 flex flex-row items-center justify-between card-animation-target">
                 <div class="flex items-center space-x-3 sm:space-x-4">
                     <div class="w-12 h-12 sm:w-16 sm:h-16">
-                        <img src="https://manmohit2007.github.io/Manmohit2007/brand_logo.png?v=10" alt="FanPlusFollow Logo" class="w-full h-full object-contain filter drop-shadow-md">
+                        <img src="https://manmohit2007.github.io/Manmohit2007/brand_logo.png?v=10" alt="Logo" class="w-full h-full object-contain filter drop-shadow-sm">
                     </div>
                     <div class="text-left">
                         <h1 class="text-lg sm:text-2xl font-bold text-black leading-tight">FanPlusFollow</h1>
-                        <p class="text-black text-xs sm:text-sm flex items-center font-bold">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-1 h-3 w-3"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
-                            Growth AI
+                        <p class="text-black text-[10px] sm:text-xs flex items-center font-bold opacity-70">
+                            GROWTH AI ENGINE
                         </p>
                     </div>
                 </div>
                 <div class="flex-shrink-0">
-                    <img src="https://manmohit2007.github.io/Manmohit2007/youtube.png" alt="YouTube" class="w-14 h-14 sm:w-24 sm:h-24 object-contain">
+                    <img src="https://manmohit2007.github.io/Manmohit2007/youtube.png" alt="YouTube" class="w-14 h-14 sm:w-20 sm:h-20 object-contain">
                 </div>
             </header>
         </div>
         <main>
-            <div id="upload-card" class="glass-card fluid-transition p-6 rounded-[36px] mb-12 card-animation-target">
+            <div id="upload-card" class="glass-card fluid-transition p-6 rounded-[36px] mb-8 sm:mb-12 card-animation-target">
                 <div class="mb-4">
-                    <h2 class="text-xl sm:text-2xl font-bold flex items-center gap-3 sm:gap-6 text-black">
+                    <h2 class="text-xl sm:text-2xl font-bold flex items-center gap-3 text-black">
                         <img src="https://manmohit2007.github.io/Manmohit2007/share.png" alt="Share" class="share-icon">
                         Upload Video
                     </h2>
                 </div>
-                <div class="p-1 min-h-[12rem] sm:min-h-[16rem]" id="upload-section-content"></div>
+                <div class="p-1 min-h-[10rem] sm:min-h-[14rem]" id="upload-section-content"></div>
             </div>
             <div id="results-section"></div>
         </main>
@@ -236,11 +219,11 @@
             <div id="promo-card" class="glass-card fluid-transition p-6 sm:p-8 max-w-4xl mx-auto card-animation-target"> 
                 <div class="p-1">
                     <div class="flex flex-col items-center">
-                        <div class="w-16 h-16 mb-4">
-                            <img src="https://manmohit2007.github.io/Manmohit2007/brand_logo.png?v=10" alt="FanPlusFollow Logo" class="w-full h-full object-contain filter drop-shadow-md">
+                        <div class="w-14 h-14 mb-4">
+                            <img src="https://manmohit2007.github.io/Manmohit2007/brand_logo.png?v=10" alt="Logo" class="w-full h-full object-contain filter drop-shadow-md">
                         </div>
-                        <h3 class="text-xl sm:text-2xl font-bold text-center text-black">Boost Your Reach With FanPlusFollow</h3>
-                        <p class="text-black mt-2 text-center max-w-md text-sm sm:text-base font-bold">Join the community for exclusive growth insights.</p>
+                        <h3 class="text-xl sm:text-2xl font-bold text-center text-black">Boost Your Reach Today</h3>
+                        <p class="text-black mt-2 text-center max-w-md text-sm sm:text-base font-bold opacity-80">Join the community for exclusive growth insights.</p>
                         <div class="mt-8 flex flex-row justify-center gap-3 sm:gap-6 w-full max-w-sm sm:max-w-none">
                           <button class="cta-button flex-1 sm:flex-none px-4 py-3 sm:px-8 sm:py-4 font-bold flex items-center justify-center text-sm sm:text-lg" onclick="openLinkWithDelay('https://www.youtube.com/@fanplusfollow')">
                             Subscribe
@@ -256,7 +239,6 @@
     </div>
 
     <script>
-        // --- GLOBAL STATE ---
         let file = null;
         let currentFileName = ""; 
         let isProcessing = false;
@@ -300,21 +282,21 @@
             setTimeout(() => {
                 generateViralContent(); 
                 isProcessing = false; isProcessed = true; updateUI(); 
-            }, 2000);
+            }, 1800);
         };
 
         const generateViralContent = () => { 
             if (!file) return;
             const fullVideoName = currentFileName.replace(/\.[^/.]+$/, "");
-            let displayVideoName = fullVideoName.length > 25 ? fullVideoName.substring(0, 25) + "..." : fullVideoName;
+            let displayVideoName = fullVideoName.length > 20 ? fullVideoName.substring(0, 20) + "..." : fullVideoName;
             const getTemplates = (vName) => ({
                 titles: [
-                    [`🔥 ULTIMATE ${vName} Guide!`, `📈 ${vName}: How We Went VIRAL!`, `🤯 This ${vName} Trick is Insane!`],
-                    [`🚀 ${vName} HACK: More Views NOW!`, `💡 This ONE ${vName} Tip Changed Everything...`, `🚫 Stop Making ${vName} Videos!`],
+                    [`🔥 ULTIMATE ${vName} Guide!`, `📈 ${vName}: How We Went VIRAL!`, `🤯 This ${vName} Hack is Insane!`],
+                    [`🚀 ${vName} HACK: More Views!`, `💡 One ${vName} Tip That Works...`, `🚫 Stop Making Bad ${vName} Videos!`],
                 ],
                 descriptions: [
-                    `🎬 ${vName} - Discover amazing insights with @FanPlusFollow!\n\n📺 YouTube: ${YOUTUBE_CHANNEL_LINK}\n📸 Instagram: ${INSTAGRAM_LINK}\n\n#FanPlusFollow #ViralTips`,
-                    `✨ The secret to ${vName} is finally revealed. \n\n🔗 Subscribe: ${YOUTUBE_CHANNEL_LINK}\n📸 Follow: ${INSTAGRAM_LINK}`
+                    `🎬 ${vName} - Creator insights with @FanPlusFollow!\n\n📺 YouTube: ${YOUTUBE_CHANNEL_LINK}\n📸 Instagram: ${INSTAGRAM_LINK}\n\n#GrowthAI #ViralTips`,
+                    `✨ The secret to ${vName} revealed. \n\n🔗 Subscribe: ${YOUTUBE_CHANNEL_LINK}\n📸 Follow: ${INSTAGRAM_LINK}`
                 ]
             });
             const displayTemplates = getTemplates(displayVideoName);
@@ -327,11 +309,12 @@
 
         const handleRegenerate = () => {
             if (!file || isProcessing) return;
-            document.querySelectorAll('.fade-in-text').forEach(el => el.classList.add('text-fade-out'));
+            const elements = document.querySelectorAll('#results-section .fade-in-text');
+            elements.forEach(el => el.classList.add('text-fade-out'));
             setTimeout(() => {
                 currentTitleSetIndex++; currentDescriptionIndex++;
                 generateViralContent(); updateTitlesContent(); updateDescriptionContent();
-            }, 250);
+            }, 200);
         };
 
         const copyToClipboard = (text, index) => {
@@ -346,7 +329,7 @@
                 const btn = document.getElementById('copy-desc-btn');
                 const originalHTML = btn.innerHTML;
                 btn.innerHTML = `<span class="flex items-center">${icon('Check', 'mr-2 h-4 w-4')} Copied</span>`;
-                setTimeout(() => { if (btn) btn.innerHTML = originalHTML; }, 1500);
+                setTimeout(() => { if (btn) btn.innerHTML = originalHTML; }, 1200);
             } else {
                 const card = document.getElementById(`title-card-${index}`);
                 const originalText = titles[index];
@@ -357,7 +340,7 @@
                         card.classList.remove('copy-pulse');
                         card.querySelector('p').textContent = originalText;
                     }
-                }, 1000);
+                }, 800);
             }
         };
 
@@ -368,21 +351,21 @@
             if (!file) {
                 container.innerHTML = `
                     <div id="file-drop-area" class="w-full h-full flex flex-col items-center justify-center text-center cursor-pointer pt-3">
-                        ${icon('Upload', 'h-10 w-10 mb-4')}
-                        <p class="text-lg font-bold">Drag & Drop Your Video</p>
-                        <button class="cta-button mt-6 px-8 py-4 font-bold text-lg">Select File</button>
+                        <div class="mb-4 opacity-40">${icon('Upload', 'h-12 w-12')}</div>
+                        <p class="text-lg font-bold opacity-70">Drag & Drop Your Video</p>
+                        <button class="cta-button mt-6 px-10 py-4 font-bold text-lg">Select File</button>
                         <input type="file" id="file-upload-input" class="hidden" accept="video/*" onchange="handleFileChange(event)"/>
                     </div>`;
                 document.getElementById('file-drop-area').onclick = () => document.getElementById('file-upload-input').click();
             } else {
                 container.innerHTML = `
                     <div class="flex flex-col items-center justify-center h-full">
-                        <div class="glass-inset-panel flex items-center p-4 w-full max-w-sm truncate mb-6"><p class="font-bold">${currentFileName}</p></div>
+                        <div class="glass-inset-panel flex items-center p-4 w-full max-w-sm truncate mb-6"><p class="font-bold text-black/80">${currentFileName}</p></div>
                         <div class="flex items-center gap-2 mb-4 font-bold">
                             ${!isProcessed ? icon('Loader', 'h-5 w-5') : icon('Check', 'h-5 w-5')}
-                            <span>${isProcessed ? 'Analysis Complete' : 'Analyzing Video...'}</span>
+                            <span class="opacity-80">${isProcessed ? 'Analysis Complete' : 'Analyzing Video...'}</span>
                         </div>
-                        ${isProcessed ? `<button onclick="resetApp()" class="cta-button px-6 py-3 font-bold mt-4">Reupload</button>` : ''}
+                        ${isProcessed ? `<button onclick="resetApp()" class="cta-button px-8 py-3 font-bold mt-4">Reupload</button>` : ''}
                     </div>`;
             }
         };
@@ -392,20 +375,20 @@
             if (!grid) return;
             grid.innerHTML = titles.map((title, index) => `
                 <div id="title-card-${index}" class="glass-inset-panel interactive p-4" onclick="copyToClipboard('${titlesFull[index].replace(/'/g, "\\'")}', ${index})">
-                    <p class="text-sm sm:text-base font-bold text-black py-2 fade-in-text">${title}</p>
+                    <p class="text-sm sm:text-base font-bold text-black/90 py-2 fade-in-text">${title}</p>
                 </div>`).join('');
         };
 
         const updateDescriptionContent = () => {
             const container = document.getElementById('description-text-container');
-            if (container) container.innerHTML = `<pre class="whitespace-pre-wrap text-xs sm:text-sm font-bold text-black fade-in-text text-left">${description}</pre>`;
+            if (container) container.innerHTML = `<pre class="whitespace-pre-wrap text-xs sm:text-sm font-bold text-black/90 fade-in-text text-left">${description}</pre>`;
         };
 
         const renderResults = () => {
             const container = document.getElementById('results-section');
             if (!isProcessed) { container.innerHTML = ''; return; }
             container.innerHTML = `
-                <div class="glass-card p-4 sm:p-6 rounded-[36px] mb-12">
+                <div class="glass-card p-4 sm:p-6 rounded-[36px] mb-8 sm:mb-12">
                     <div class="flex justify-between items-center mb-6">
                         <h2 class="text-lg sm:text-2xl font-bold flex items-center gap-3"><img src="https://manmohit2007.github.io/Manmohit2007/like.png" class="header-icon"> Titles</h2>
                         <button onclick="handleRegenerate()" class="cta-button text-xs sm:text-sm px-4 py-2 font-bold flex items-center">${icon('RotateCcw', 'mr-2 h-4 w-4')} Regenerate</button>
