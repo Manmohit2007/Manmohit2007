@@ -169,10 +169,24 @@
             transform: scale(0.98);
         }
 
-        /* Header Icon Styling */
+        /* Standardized Section Icons */
         .header-icon {
-            height: 1.5rem;
-            width: auto;
+            height: 5.5rem;
+            width: 5.5rem;
+            object-fit: contain;
+        }
+
+        /* Specific Share Icon override */
+        .share-icon {
+            height: 4.5rem;
+            width: 4.5rem;
+            object-fit: contain;
+        }
+
+        /* Specific Shorts Icon override (a little bit smaller) */
+        .shorts-icon {
+            height: 4.8rem;
+            width: 4.8rem;
             object-fit: contain;
         }
     </style>
@@ -184,16 +198,13 @@
             <header id="app-header" class="glass-card fluid-transition p-6 flex flex-col sm:flex-row items-center justify-between flex-1 card-animation-target">
                 <div class="flex items-center">
                     <div class="flex items-center space-x-4">
-                        <div class="w-16 h-16">
+                        <div class="w-16 h-16 sm:w-20 sm:h-20">
                             <img src="https://manmohit2007.github.io/Manmohit2007/brand_logo.png?v=10" alt="FanPlusFollow Logo" class="w-full h-full object-contain filter drop-shadow-md">
                         </div>
                         <div class="text-left">
-                            <div class="flex items-center gap-2">
-                                <h1 class="text-2xl font-bold text-black">
-                                  FanPlusFollow
-                                </h1>
-                                <img src="https://manmohit2007.github.io/Manmohit2007/youtube.png" alt="YouTube" class="h-6 w-auto object-contain" onerror="this.style.display='none'">
-                            </div>
+                            <h1 class="text-2xl font-bold text-black">
+                              FanPlusFollow
+                            </h1>
                             <p class="text-black text-sm flex items-center font-bold">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-1 h-3 w-3"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
                                 Growth AI
@@ -201,13 +212,17 @@
                         </div>
                     </div>
                 </div>
+                <!-- YouTube Icon -->
+                <div class="mt-4 sm:mt-0">
+                    <img src="https://manmohit2007.github.io/Manmohit2007/youtube.png" alt="YouTube" class="w-20 h-20 sm:w-28 sm:h-28 object-contain" onerror="this.style.display='none'">
+                </div>
             </header>
         </div>
         <main>
             <div id="upload-card" class="glass-card fluid-transition p-6 rounded-[36px] mb-12 card-animation-target">
                 <div class="mb-4">
-                    <h2 class="text-2xl font-bold flex items-center gap-3 text-black">
-                        <img src="https://manmohit2007.github.io/Manmohit2007/share.png" alt="Share" class="header-icon" onerror="this.style.display='none'">
+                    <h2 class="text-2xl font-bold flex items-center gap-6 text-black">
+                        <img src="https://manmohit2007.github.io/Manmohit2007/share.png" alt="Share" class="share-icon" onerror="this.style.display='none'">
                         Upload Video
                     </h2>
                 </div>
@@ -376,7 +391,7 @@
                 const textEl = card.querySelector('p');
                 
                 card.classList.add('copy-pulse');
-                textEl.innerHTML = `<span class="flex items-center gap-1">${icon('Check', 'h-4 w-4')} Copied!</span>`;
+                textEl.innerHTML = `<span class="flex items-center gap-1">${icon('Check', 'h-4 w-4')} Copied</span>`;
                 
                 setTimeout(() => { 
                     if (card) {
@@ -463,7 +478,7 @@
                 <div>
                     <div class="glass-card p-6 rounded-[36px] mb-12">
                         <div class="flex justify-between items-center mb-6">
-                            <h2 class="text-2xl font-bold flex items-center gap-3 text-black">
+                            <h2 class="text-2xl font-bold flex items-center gap-6 text-black">
                                 <img src="https://manmohit2007.github.io/Manmohit2007/like.png" alt="Like" class="header-icon" onerror="this.style.display='none'">
                                 Titles
                             </h2>
@@ -473,8 +488,8 @@
                     </div>
                     <div class="glass-card p-6 rounded-[36px]"> 
                         <div class="flex justify-between items-center mb-4">
-                            <h2 class="text-2xl font-bold flex items-center gap-3 text-black">
-                                <img src="https://manmohit2007.github.io/Manmohit2007/shorts.png" alt="Shorts" class="header-icon" onerror="this.style.display='none'">
+                            <h2 class="text-2xl font-bold flex items-center gap-6 text-black">
+                                <img src="https://manmohit2007.github.io/Manmohit2007/shorts.png" alt="Shorts" class="shorts-icon" onerror="this.style.display='none'">
                                 Description
                             </h2>
                             <button id="copy-desc-btn" onclick="copyToClipboard(descriptionFull, 3)" class="cta-button text-sm px-4 py-2 font-bold flex items-center">${icon('Copy', 'mr-2 h-4 w-4')} Copy</button>
