@@ -29,12 +29,14 @@
         }
 
         html {
-            /* Removed background-color to stop white/grey showing on overscroll */
+            /* Dark fallback color to prevent white flashes if overscroll happens */
+            background-color: #1f2937; 
             scroll-behavior: smooth;
             height: 100%;
             overflow-x: hidden;
-            /* Critical: Prevents "rubber-banding" or "bounce" that reveals whitespace */
+            /* Critical: Prevents "rubber-banding" or "bounce" */
             overscroll-behavior: none;
+            overscroll-behavior-y: none;
         }
 
         /* Custom Scrollbar */
@@ -131,26 +133,25 @@
             min-height: 100vh;
             color: #374151;
             overflow-x: hidden;
-            /* Ensures body also doesn't trigger scroll chaining */
             overscroll-behavior: none;
+            overscroll-behavior-y: none;
         }
 
         #fixed-background {
             position: fixed;
-            /* Using inset: 0 forces it to all four corners */
             top: 0; 
             left: 0;
-            right: 0;
-            bottom: 0;
+            width: 100vw;
+            /* 100lvh = Large Viewport Height. Ensures it doesn't jump when address bar shows/hides */
+            height: 100vh; 
+            height: 100lvh; 
             z-index: -1; 
             background-image: linear-gradient(rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.2)), url('background.png');
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
             pointer-events: none;
-            /* Performance optimization for fixed backgrounds */
-            transform: translateZ(0);
-            will-change: transform;
+            /* Removed transforms to prevent sync jitters on mobile */
         }
 
         @media (min-width: 768px) {
