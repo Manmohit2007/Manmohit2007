@@ -235,6 +235,17 @@
         
         .opacity-0 { opacity: 0; }
         .opacity-100 { opacity: 1; }
+
+        /* Animation for copying */
+        @keyframes success-pop {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+
+        .success-animation {
+            animation: success-pop 0.3s ease-out forwards;
+        }
     </style>
 </head>
 <body class="p-4 md:p-8" onload="initApp()">
@@ -528,15 +539,22 @@
             const btn = document.getElementById(btnId);
             
             if (btn) {
+                // Add pop animation class
+                btn.classList.add('success-animation');
                 const originalHTML = btn.innerHTML;
+                
                 if (index === 3) {
-                   btn.innerHTML = `<span class="flex items-center">${icon('Check', 'mr-2 h-4 w-4 text-white')} Done</span>`;
+                   // For description copy btn, we preserve width to avoid jitter
+                   btn.innerHTML = `<span class="flex items-center justify-center w-[80px]">${icon('Check', 'mr-2 h-4 w-4 text-white')} Done</span>`;
                 } else {
                    btn.innerHTML = icon('Check', 'h-4 w-4 text-green-400');
                 }
                 
                 setTimeout(() => {
-                    if (btn) btn.innerHTML = originalHTML;
+                    if (btn) {
+                        btn.innerHTML = originalHTML;
+                        btn.classList.remove('success-animation');
+                    }
                 }, 1000);
             }
         };
@@ -822,7 +840,7 @@
                         <div class="mb-4">
                             <h2 class="flex justify-between items-center text-2xl font-bold text-black">
                                 <span class="truncate mr-2">Description</span>
-                                <button id="copy-desc-btn" onclick="copyDescriptionToClipboard()" class="cta-button backdrop-blur-xl text-sm px-4 py-2 rounded-full font-medium flex items-center whitespace-nowrap flex-shrink-0"><span class="flex items-center">${icon('Copy', 'mr-2 h-4 w-4 text-white')} Copy</span></button>
+                                <button id="copy-desc-btn" onclick="copyDescriptionToClipboard()" class="cta-button backdrop-blur-xl text-sm px-4 py-2 rounded-full font-medium flex items-center whitespace-nowrap flex-shrink-0 min-w-[110px]"><span class="flex items-center justify-center w-[80px]">${icon('Copy', 'mr-2 h-4 w-4 text-white')} Copy</span></button>
                             </h2>
                         </div>
                         <div id="description-text-container" class="glass-inset-panel p-4 sm:p-5 min-h-[250px] max-h-96 overflow-auto custom-scrollbar content-transition opacity-100">
