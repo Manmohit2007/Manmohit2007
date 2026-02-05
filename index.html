@@ -118,10 +118,12 @@
             .cta-button:hover {
                 transform: translateY(-4px) scale(1.05) translateZ(0);
                 opacity: 1; 
-                /* Pure Glow: Colored shadows only */
+                /* Boosted Orange: Added distinct deep orange layers to the mix */
                 box-shadow: 
-                    0 20px 40px -5px rgba(244, 114, 182, 0.5),
-                    0 10px 20px -3px rgba(252, 165, 100, 0.5),
+                    0 0 35px rgba(167, 139, 250, 0.5),      /* Violet: Soft base */
+                    0 0 60px 20px rgba(244, 114, 182, 0.6), /* Pink: Bridging */
+                    0 0 80px 30px rgba(252, 165, 100, 0.7), /* Orange: Stronger Intensity */
+                    0 0 110px 45px rgba(255, 150, 50, 0.4), /* Deep Orange: Wide outer leak */
                     inset 0 0 20px rgba(255, 255, 255, 0.4);
                 filter: brightness(1.1); 
             }
@@ -130,9 +132,11 @@
         .cta-button:active {
             transform: scale(0.96) translateZ(0) !important; 
             transition: transform 0.1s ease-out; 
-            /* Smooth Active Glow for Touch */
+            /* Active state with orange presence */
             box-shadow: 
-                0 0 25px rgba(244, 114, 182, 0.6), 
+                0 0 30px rgba(167, 139, 250, 0.4),
+                0 0 50px 10px rgba(244, 114, 182, 0.6),
+                0 0 70px 20px rgba(252, 165, 100, 0.5), /* Added Orange here too */
                 inset 0 0 10px rgba(255, 255, 255, 0.3);
             filter: brightness(1.1);
         }
