@@ -517,29 +517,29 @@
         }
 
         const copyToClipboard = (text, index) => {
-            const tempElement = document.createElement('textarea');
-            tempElement.value = text;
-            document.body.appendChild(tempElement);
-            tempElement.select();
-            document.execCommand('copy');
-            document.body.removeChild(tempElement);
-            
-            const btnId = index === 3 ? 'copy-desc-btn' : `copy-title-btn-${index}`;
-            const btn = document.getElementById(btnId);
-            
             // Logic Split: Description vs Titles
             if (index === 3) {
-                // --- DESCRIPTION ANIMATION (Matched to Regenerate) ---
                 const descContainer = document.getElementById('description-text-container');
-                
-                // Fade Out Content (Matches Regenerate behavior)
+                const btnId = 'copy-desc-btn';
+                const btn = document.getElementById(btnId);
+
+                // 1. VISUAL FEEDBACK FIRST (Immediate Snap)
                 if (descContainer) descContainer.classList.add('opacity-0');
+
+                // 2. Perform Copy Logic (Hidden)
+                const tempElement = document.createElement('textarea');
+                tempElement.value = text;
+                document.body.appendChild(tempElement);
+                tempElement.select();
+                document.execCommand('copy');
+                document.body.removeChild(tempElement);
                 
+                // 3. Animation Timeout (Matched to CSS transition)
                 setTimeout(() => {
-                    // Update Button Icon only (Keep text "Copy" stable, like Regenerate keeps "Regenerate")
+                    // Update Button Icon only
                     if (btn) {
                         const originalHTML = btn.innerHTML;
-                        // Swap icon to check, but keep text "Copy" to prevent layout shift
+                        // Keep text "Copy" to prevent layout shift, just swap icon
                         btn.innerHTML = `<span class="flex items-center">${icon('Check', 'mr-2 h-4 w-4 text-white')} Copy</span>`;
                         setTimeout(() => { if (btn) btn.innerHTML = originalHTML; }, 1000);
                     }
@@ -549,26 +549,32 @@
                 }, 300); 
                 
             } else {
-                // --- TITLE ANIMATION (Subtle Pulse/Flash on specific card) ---
+                // --- TITLE ANIMATION ---
+                // For titles, we can copy first since it's a smaller payload and the animation style is different
+                const tempElement = document.createElement('textarea');
+                tempElement.value = text;
+                document.body.appendChild(tempElement);
+                tempElement.select();
+                document.execCommand('copy');
+                document.body.removeChild(tempElement);
+
                 const titleCard = document.getElementById(`title-card-${index}`);
+                const btnId = `copy-title-btn-${index}`;
+                const btn = document.getElementById(btnId);
                 
-                // Quick flash effect
                 if (titleCard) {
                     titleCard.style.transition = 'all 0.2s cubic-bezier(0.4, 0, 0.2, 1)';
                     titleCard.style.transform = 'scale(0.98)';
-                    titleCard.style.backgroundColor = 'rgba(74, 222, 128, 0.1)'; // Slight green tint
+                    titleCard.style.backgroundColor = 'rgba(74, 222, 128, 0.1)'; 
                     titleCard.style.borderColor = 'rgba(74, 222, 128, 0.5)';
                 }
 
                 setTimeout(() => {
-                    // Change Button State
                     if (btn) {
                         const originalHTML = btn.innerHTML;
                         btn.innerHTML = icon('Check', 'h-4 w-4 text-green-400');
                         setTimeout(() => { if (btn) btn.innerHTML = originalHTML; }, 1000);
                     }
-                    
-                    // Reset Card Style
                     if (titleCard) {
                         titleCard.style.transform = 'scale(1)';
                         titleCard.style.backgroundColor = ''; 
