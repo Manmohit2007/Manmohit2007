@@ -148,19 +148,21 @@
 
         #fixed-background {
             position: fixed;
-            top: 0; 
-            left: 0;
-            width: 100vw;
-            /* 100lvh = Large Viewport Height. Ensures it doesn't jump when address bar shows/hides */
-            height: 100vh; 
-            height: 100lvh; 
+            /* Inset 0 anchors it to all edges immediately */
+            inset: 0;
             z-index: -1; 
             background-image: linear-gradient(rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.2)), url('background.png');
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
             pointer-events: none;
-            /* Removed transforms to prevent sync jitters on mobile */
+            /* Stiffening Logic: Force hardware layer & lock height */
+            height: 100lvh;
+            width: 100vw;
+            transform: translateZ(0);
+            -webkit-transform: translateZ(0);
+            backface-visibility: hidden;
+            -webkit-backface-visibility: hidden;
         }
 
         @media (min-width: 768px) {
@@ -401,7 +403,8 @@
                 indicator.style.width = `${progressValue}%`;
                 label.innerHTML = `${progressValue}%`;
                 label.className = `font-bold ${finalTextColorClass} transition-colors duration-500`;
-                indicator.className = `h-2.5 rounded-full transition-all duration-1000 ${indicatorColorClass}`;
+                // Updated duration-1000 to duration-200 to match the 200ms update interval
+                indicator.className = `h-2.5 rounded-full transition-all duration-200 ${indicatorColorClass}`;
                 statusText.className = `font-medium transition-colors duration-500 ${finalTextColorClass}`;
                 statusText.textContent = isComplete ? "Processing Complete" : "Processing...";
             }
@@ -415,9 +418,13 @@
                     progressInterval = null;
                     setProgress(95); 
                 } else {
-                    setProgress(progressValue + Math.floor(Math.random() * 10) + 1);
+                    // Optimized randomness: Updates every 200ms with varied steps (2% to 12%)
+                    // This allows it to reach ~85-95% naturally within the 3s window
+                    const step = Math.floor(Math.random() * 11) + 2; 
+                    const nextValue = Math.min(progressValue + step, 95);
+                    setProgress(nextValue);
                 }
-            }, 500);
+            }, 200);
         };
 
         const stopProgressSimulation = () => {
@@ -751,7 +758,8 @@
                             <span id="progress-label" class="${statusTextColorClass} font-bold">${progressValue}%</span>
                         </div>
                         <div class="w-full progress-track-fused h-2.5">
-                            <div id="progress-indicator" class="h-2.5 rounded-full transition-all duration-1000 ${indicatorBarColorClass}" style="width: ${progressValue}%"></div>
+                            <!-- Updated duration-1000 to duration-200 to match simulation interval -->
+                            <div id="progress-indicator" class="h-2.5 rounded-full transition-all duration-200 ${indicatorBarColorClass}" style="width: ${progressValue}%"></div>
                         </div>
                     </div>
                     ${isProcessed ? `<div class="flex gap-4 mt-6"><button onclick="resetApp()" class="cta-button backdrop-blur-xl px-6 py-3 rounded-full font-medium flex items-center relative -top-[2px]">${icon('RotateCcw', `mr-2 h-4 w-4 text-white`)} Reupload</button></div>` : ''}
