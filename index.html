@@ -40,9 +40,6 @@
             background-color: rgba(155, 155, 155, 0.2);
             border-radius: 20px;
         }
-        ::-webkit-scrollbar-corner {
-            background: transparent;
-        }
 
         .fluid-transition {
             transition: all 400ms cubic-bezier(0.25, 0.46, 0.45, 0.94);
@@ -228,7 +225,7 @@
         }
 
         .content-transition {
-            transition: opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: opacity 300ms cubic-bezier(0.4, 0, 0.2, 1);
         }
         
         .opacity-0 { opacity: 0; }
@@ -527,30 +524,18 @@
             document.execCommand('copy');
             document.body.removeChild(tempElement);
             
-            // OPTIMIZED: Unified AI pulse effect across ALL result cards
-            // This prevents the "behaving independently" issue and makes them work together
+            // UI Feedback: Aligning Copy feedback with Regenerate feel (300ms duration)
             const titlesGrid = document.getElementById('titles-grid-container');
             const descContainer = document.getElementById('description-text-container');
             
-            if (titlesGrid) {
-                titlesGrid.style.transition = 'opacity 100ms ease';
-                titlesGrid.classList.add('opacity-30');
-            }
-            if (descContainer) {
-                descContainer.style.transition = 'opacity 100ms ease';
-                descContainer.classList.add('opacity-30');
-            }
+            // Both containers perform a unified pulse to feel like a single responsive AI action
+            if (titlesGrid) titlesGrid.classList.add('opacity-0');
+            if (descContainer) descContainer.classList.add('opacity-0');
             
             setTimeout(() => {
-                if (titlesGrid) {
-                    titlesGrid.style.transition = 'opacity 200ms ease';
-                    titlesGrid.classList.remove('opacity-30');
-                }
-                if (descContainer) {
-                    descContainer.style.transition = 'opacity 200ms ease';
-                    descContainer.classList.remove('opacity-30');
-                }
-            }, 100);
+                if (titlesGrid) titlesGrid.classList.remove('opacity-0');
+                if (descContainer) descContainer.classList.remove('opacity-0');
+            }, 300);
 
             const btnId = index === 3 ? 'copy-desc-btn' : `copy-title-btn-${index}`;
             const btn = document.getElementById(btnId);
@@ -558,8 +543,8 @@
             if (btn) {
                 const originalHTML = btn.innerHTML;
                 if (index === 3) {
-                   // Ensure width is locked to avoid card jitter
-                   btn.innerHTML = `<span class="flex items-center justify-center w-[80px]">${icon('Check', 'mr-2 h-4 w-4 text-white')} Done</span>`;
+                   // Using a fixed width wrapper for 'Done' state to prevent layout jumps/glass card shifting
+                   btn.innerHTML = `<span class="flex items-center justify-center min-w-[80px]">${icon('Check', 'mr-2 h-4 w-4 text-white')} Done</span>`;
                 } else {
                    btn.innerHTML = icon('Check', 'h-4 w-4 text-green-400');
                 }
@@ -849,7 +834,7 @@
                         <div class="mb-4">
                             <h2 class="flex justify-between items-center text-2xl font-bold text-black">
                                 <span class="truncate mr-2">Description</span>
-                                <button id="copy-desc-btn" onclick="copyDescriptionToClipboard()" class="cta-button backdrop-blur-xl text-sm px-4 py-2 rounded-full font-medium flex items-center whitespace-nowrap flex-shrink-0 min-w-[110px]"><span class="flex items-center justify-center w-[80px]">${icon('Copy', 'mr-2 h-4 w-4 text-white')} Copy</span></button>
+                                <button id="copy-desc-btn" onclick="copyDescriptionToClipboard()" class="cta-button backdrop-blur-xl text-sm px-4 py-2 rounded-full font-medium flex items-center whitespace-nowrap flex-shrink-0 min-w-[110px]"><span class="flex items-center justify-center min-w-[80px]">${icon('Copy', 'mr-2 h-4 w-4 text-white')} Copy</span></button>
                             </h2>
                         </div>
                         <div id="description-text-container" class="glass-inset-panel p-4 sm:p-5 min-h-[250px] max-h-96 overflow-auto custom-scrollbar content-transition opacity-100">
