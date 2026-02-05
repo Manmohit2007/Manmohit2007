@@ -96,7 +96,13 @@
         /* --- CTA BUTTONS --- */
         .cta-button {
             /* Smooth spring transition for returning to default state */
-            transition: all 0.6s cubic-bezier(0.34, 1.3, 0.64, 1);
+            /* key change: separate durations. Box-shadow takes 1.5s to fade out (lingering effect) */
+            transition: 
+                transform 0.6s cubic-bezier(0.34, 1.3, 0.64, 1), 
+                box-shadow 1.5s cubic-bezier(0.19, 1, 0.22, 1), 
+                filter 1.5s ease-out,
+                opacity 0.6s ease;
+
             background: linear-gradient(to right, #a78bfa 0%, #f472b6 40%, #fca564 75%, #fca564 100%); 
             color: #ffffff; 
             /* Removed base shadow for a cleaner, flat look */
@@ -116,28 +122,34 @@
 
         @media (hover: hover) {
             .cta-button:hover {
+                /* Fast entry: Glow snaps in quickly */
+                transition: 
+                    transform 0.3s cubic-bezier(0.34, 1.3, 0.64, 1), 
+                    box-shadow 0.4s ease-out, 
+                    filter 0.4s ease-out;
+
                 transform: translateY(-4px) scale(1.05) translateZ(0);
                 opacity: 1; 
-                /* Boosted Orange: Added distinct deep orange layers to the mix */
+                /* Fused Glass Glow: Ultra-wide diffusion to bleed into the glass cards nicely */
                 box-shadow: 
-                    0 0 35px rgba(167, 139, 250, 0.5),      /* Violet: Soft base */
-                    0 0 60px 20px rgba(244, 114, 182, 0.6), /* Pink: Bridging */
-                    0 0 80px 30px rgba(252, 165, 100, 0.7), /* Orange: Stronger Intensity */
-                    0 0 110px 45px rgba(255, 150, 50, 0.4), /* Deep Orange: Wide outer leak */
-                    inset 0 0 20px rgba(255, 255, 255, 0.4);
+                    0 0 30px rgba(167, 139, 250, 0.6),      /* Violet: Soft defined core */
+                    0 0 60px 20px rgba(244, 114, 182, 0.5), /* Pink: Smooth body blending */
+                    0 0 100px 40px rgba(252, 165, 100, 0.5),/* Orange: Wide atmospheric leak */
+                    0 0 160px 80px rgba(255, 150, 50, 0.15),/* Deep Orange: Ultra-wide fusion wash */
+                    inset 0 0 30px rgba(255, 255, 255, 0.6); /* Stronger Glassy Inner Highlight */
                 filter: brightness(1.1); 
             }
         }
         
         .cta-button:active {
             transform: scale(0.96) translateZ(0) !important; 
-            transition: transform 0.1s ease-out; 
-            /* Active state with orange presence */
+            transition: transform 0.1s ease-out, box-shadow 0.2s ease-out; 
+            /* Condensed active state */
             box-shadow: 
-                0 0 30px rgba(167, 139, 250, 0.4),
-                0 0 50px 10px rgba(244, 114, 182, 0.6),
-                0 0 70px 20px rgba(252, 165, 100, 0.5), /* Added Orange here too */
-                inset 0 0 10px rgba(255, 255, 255, 0.3);
+                0 0 30px rgba(167, 139, 250, 0.5),
+                0 0 50px 15px rgba(244, 114, 182, 0.6),
+                0 0 80px 25px rgba(252, 165, 100, 0.4),
+                inset 0 0 15px rgba(255, 255, 255, 0.4);
             filter: brightness(1.1);
         }
 
@@ -596,34 +608,49 @@
                 const btnId = 'copy-desc-btn';
                 const btn = document.getElementById(btnId);
 
-                // 1. VISUAL FEEDBACK FIRST (Immediate Snap)
-                if (descContainer) descContainer.classList.add('opacity-0');
-
-                // 2. Perform Copy Logic (Hidden)
+                // 0. Perform Copy Logic
                 const tempElement = document.createElement('textarea');
                 tempElement.value = text;
                 document.body.appendChild(tempElement);
                 tempElement.select();
                 document.execCommand('copy');
                 document.body.removeChild(tempElement);
+
+                // 1. Clear Timers to handle frequent clicks (Prevent cut-off animations)
+                if (btn && btn._iconChangeTimer) clearTimeout(btn._iconChangeTimer);
+                if (btn && btn._revertTimer) clearTimeout(btn._revertTimer);
+
+                // 2. VISUAL FEEDBACK (Immediate Snap)
+                if (descContainer) {
+                    descContainer.classList.remove('opacity-0');
+                    void descContainer.offsetWidth; // Force reflow
+                    descContainer.classList.add('opacity-0');
+                }
                 
                 // 3. Animation Timeout (Matched to CSS transition)
-                setTimeout(() => {
+                const iconChangeTimer = setTimeout(() => {
                     // Update Button Icon only
                     if (btn) {
-                        const originalHTML = btn.innerHTML;
+                        // Hardcoded original content
+                        const originalHTML = `<span class="flex items-center">${icon('Copy', 'mr-2 h-4 w-4 text-white')} Copy</span>`;
                         // Keep text "Copy" to prevent layout shift, just swap icon
                         btn.innerHTML = `<span class="flex items-center">${icon('Check', 'mr-2 h-4 w-4 text-white')} Copy</span>`;
-                        setTimeout(() => { if (btn) btn.innerHTML = originalHTML; }, 1000);
+                        
+                        // Set new revert timer
+                        btn._revertTimer = setTimeout(() => { 
+                            if (btn) btn.innerHTML = originalHTML; 
+                        }, 1000);
                     }
 
                     // Fade In Content
                     if (descContainer) descContainer.classList.remove('opacity-0');
                 }, 300); 
+
+                // Store timer on element
+                if (btn) btn._iconChangeTimer = iconChangeTimer;
                 
             } else {
                 // --- TITLE ANIMATION ---
-                // For titles, we can copy first since it's a smaller payload and the animation style is different
                 const tempElement = document.createElement('textarea');
                 tempElement.value = text;
                 document.body.appendChild(tempElement);
@@ -635,25 +662,38 @@
                 const btnId = `copy-title-btn-${index}`;
                 const btn = document.getElementById(btnId);
                 
+                // 1. Clear Timers (Crucial for frequent clicks)
+                if (titleCard && titleCard._restoreTimer) clearTimeout(titleCard._restoreTimer);
+                if (btn && btn._revertTimer) clearTimeout(btn._revertTimer);
+
+                // 2. Immediate Active State
                 if (titleCard) {
-                    titleCard.style.transition = 'all 0.2s cubic-bezier(0.4, 0, 0.2, 1)';
+                    titleCard.style.transition = 'all 0.1s ease-out'; // Fast compress
                     titleCard.style.transform = 'scale(0.98)';
                     titleCard.style.backgroundColor = 'rgba(74, 222, 128, 0.1)'; 
                     titleCard.style.borderColor = 'rgba(74, 222, 128, 0.5)';
                 }
 
-                setTimeout(() => {
+                // 3. Schedule Restore & Icon Change
+                const restoreTimer = setTimeout(() => {
                     if (btn) {
-                        const originalHTML = btn.innerHTML;
+                        // FIX: Hardcoded original content
+                        const originalHTML = icon('Copy', 'h-4 w-4');
                         btn.innerHTML = icon('Check', 'h-4 w-4 text-green-400');
-                        setTimeout(() => { if (btn) btn.innerHTML = originalHTML; }, 1000);
+                        
+                        btn._revertTimer = setTimeout(() => { 
+                            if (btn) btn.innerHTML = originalHTML; 
+                        }, 1000);
                     }
                     if (titleCard) {
+                        titleCard.style.transition = 'all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1)'; // Smooth spring release
                         titleCard.style.transform = 'scale(1)';
                         titleCard.style.backgroundColor = ''; 
                         titleCard.style.borderColor = '';
                     }
                 }, 200); 
+
+                if (titleCard) titleCard._restoreTimer = restoreTimer;
             }
         };
 
