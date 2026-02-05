@@ -268,7 +268,6 @@
             <div id="upload-card" class="glass-card fluid-transition p-6 rounded-[36px] mb-12 card-animation-target">
                 <div class="mb-4">
                     <h2 class="text-2xl font-bold flex items-center gap-2 text-black">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-8 w-8 text-black"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" x2="12" y1="3" y2="15"/></svg>
                         Upload Video
                     </h2>
                 </div>
@@ -572,7 +571,9 @@
                             <p class="text-xl font-bold text-black">Drag & Drop Your Video File Here</p>
                             <p class="text-black mt-1 sm:mt-2 text-sm sm:text-base opacity-70">or click to browse the video file</p>
                         </div>
-                        <button id="select-file-btn" class="cta-button mt-6 px-8 py-4 rounded-full font-bold transition-all duration-300 ease-in-out transform backdrop-blur-3xl text-lg">Select</button>
+                        <button id="select-file-btn" class="cta-button mt-6 px-8 py-4 rounded-full font-bold transition-all duration-300 ease-in-out transform backdrop-blur-3xl text-lg flex items-center justify-center">
+                            ${icon('Upload', 'mr-2 h-5 w-5')} Select
+                        </button>
                         <input type="file" id="file-upload-input" class="hidden" accept="video/*" onchange="handleFileChange(event)"/>
                     </div>`;
 
