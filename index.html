@@ -113,11 +113,9 @@
         }
         
         .cta-button:active {
-            transform: scale(0.92) translateZ(0) !important; 
-            transition: transform 0.05s ease-out, opacity 0.05s ease-out; 
+            transform: scale(0.94) translateZ(0) !important; 
+            transition: transform 0.1s ease-out; 
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-            filter: brightness(1.2); 
-            opacity: 1; 
         }
 
         body {
@@ -180,7 +178,7 @@
         
         @keyframes icon-pop {
             0% { transform: scale(0.8); opacity: 0.5; }
-            70% { transform: scale(1.15); opacity: 1; }
+            70% { transform: scale(1.1); opacity: 1; }
             100% { transform: scale(1); opacity: 1; }
         }
 
@@ -236,15 +234,12 @@
         .opacity-0 { opacity: 0; }
         .opacity-100 { opacity: 1; }
 
-        /* Animation for copying */
-        @keyframes success-pop {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.1); }
-            100% { transform: scale(1); }
+        /* Unified small button behavior */
+        .icon-btn {
+            transition: transform 0.2s ease, background-color 0.2s ease, color 0.2s ease;
         }
-
-        .success-animation {
-            animation: success-pop 0.3s ease-out forwards;
+        .icon-btn:active {
+            transform: scale(0.92);
         }
     </style>
 </head>
@@ -502,7 +497,6 @@
             const titlesGrid = document.getElementById('titles-grid-container');
             const descContainer = document.getElementById('description-text-container');
             
-            // Start fade out animation
             if (titlesGrid) titlesGrid.classList.add('opacity-0');
             if (descContainer) descContainer.classList.add('opacity-0');
             
@@ -511,11 +505,9 @@
                 currentDescriptionIndex = (currentDescriptionIndex + 1) % allDescriptions.length;
                 generateViralContent(false); 
                 
-                // Update specific elements instead of full re-render
                 updateTitlesContent();
                 updateDescriptionContent();
                 
-                // End fade out animation
                 if (titlesGrid) titlesGrid.classList.remove('opacity-0');
                 if (descContainer) descContainer.classList.remove('opacity-0');
                 
@@ -539,22 +531,16 @@
             const btn = document.getElementById(btnId);
             
             if (btn) {
-                // Add pop animation class
-                btn.classList.add('success-animation');
                 const originalHTML = btn.innerHTML;
-                
                 if (index === 3) {
-                   // For description copy btn, we preserve width to avoid jitter
+                   // Fixed width container to prevent layout shift
                    btn.innerHTML = `<span class="flex items-center justify-center w-[80px]">${icon('Check', 'mr-2 h-4 w-4 text-white')} Done</span>`;
                 } else {
                    btn.innerHTML = icon('Check', 'h-4 w-4 text-green-400');
                 }
                 
                 setTimeout(() => {
-                    if (btn) {
-                        btn.innerHTML = originalHTML;
-                        btn.classList.remove('success-animation');
-                    }
+                    if (btn) btn.innerHTML = originalHTML;
                 }, 1000);
             }
         };
@@ -672,7 +658,7 @@
                         <div class="flex-1 min-w-0 mr-2">
                             <input type="text" id="title-edit-input" value="${currentFileName}" class="w-full bg-transparent focus:outline-none font-bold text-gray-800 py-1" onkeydown="handleTitleInputKey(event)">
                         </div>
-                        <button onclick="saveTitleEdit()" class="p-2 rounded-full hover:bg-black/5 transition-colors text-green-400 flex-shrink-0" title="Save">
+                        <button onclick="saveTitleEdit()" class="icon-btn p-2 rounded-full hover:bg-black/5 transition-colors text-green-400 flex-shrink-0" title="Save">
                             ${icon('Check', 'h-5 w-5')}
                         </button>
                     `;
@@ -682,7 +668,7 @@
                             <p class="font-bold truncate text-gray-800">${currentFileName}</p>
                             <p class="text-xs text-black opacity-60">${(file.size / (1024 * 1024)).toFixed(2)} MB</p>
                         </div>
-                        <button onclick="enableTitleEdit()" class="p-2 rounded-full hover:bg-black/5 transition-colors text-gray-500 hover:text-black flex-shrink-0" title="Edit Name">
+                        <button onclick="enableTitleEdit()" class="icon-btn p-2 rounded-full hover:bg-black/5 transition-colors text-gray-500 hover:text-black flex-shrink-0" title="Edit Name">
                             ${icon('Edit', 'h-6 w-6')}
                         </button>
                     `;
@@ -744,7 +730,7 @@
                     <div class="p-1">
                         <div class="flex justify-between items-start mb-2">
                             <span class="text-xs font-medium px-2 py-1 rounded-full bg-pink-100 text-pink-700 border border-pink-300">Option ${index + 1}</span>
-                            <button id="copy-title-btn-${index}" onclick="copyToClipboard('${title.replace(/'/g, "\\'")}', ${index})" class="h-8 w-8 p-0 rounded-full flex items-center justify-center transition-all duration-300 bg-transparent hover:bg-black/5 text-gray-800 hover:text-black active:scale-90 active:bg-black/10">${icon('Copy', 'h-4 w-4')}</button>
+                            <button id="copy-title-btn-${index}" onclick="copyToClipboard('${title.replace(/'/g, "\\'")}', ${index})" class="icon-btn h-8 w-8 p-0 rounded-full flex items-center justify-center transition-all duration-300 bg-transparent hover:bg-black/5 text-gray-800 hover:text-black active:scale-90 active:bg-black/10">${icon('Copy', 'h-4 w-4')}</button>
                         </div>
                         <p class="text-base font-medium text-gray-800 p-1">${title}</p>
                     </div>
@@ -761,7 +747,6 @@
             const resultsContainer = document.getElementById('results-section');
             if (!resultsContainer) return;
             if (isProcessed) {
-                // If already shown, we don't want to rebuild the whole structure to avoid flicker/jitter
                 if (resultsContainer.querySelector('#viral-score-card')) {
                     const scoreTextEl = resultsContainer.querySelector('.viral-score-text');
                     const scoreBarEl = resultsContainer.querySelector('.viral-score-bar');
@@ -792,7 +777,6 @@
                     return;
                 }
 
-                // Initial build of results section
                 const scoreColorClass = viralScore < 75 ? "text-red-500" : viralScore < 90 ? "text-yellow-500" : "text-green-400";
                 const scoreBgClass = viralScore < 75 ? "bg-red-500" : viralScore < 90 ? "bg-yellow-500" : "bg-green-400";
                 const scoreShadowClass = viralScore < 75 ? "shadow-[0_0_15px_rgba(239,68,68,0.6)]" : viralScore < 90 ? "shadow-[0_0_15px_rgba(234,179,8,0.6)]" : "shadow-[0_0_15px_rgba(74,222,128,0.6)]";
@@ -827,7 +811,7 @@
                                     <div class="p-1">
                                         <div class="flex justify-between items-start mb-2">
                                             <span class="text-xs font-medium px-2 py-1 rounded-full bg-pink-100 text-pink-700 border border-pink-300">Option ${index + 1}</span>
-                                            <button id="copy-title-btn-${index}" onclick="copyToClipboard('${title.replace(/'/g, "\\'")}', ${index})" class="h-8 w-8 p-0 rounded-full flex items-center justify-center transition-all duration-300 bg-transparent hover:bg-black/5 text-gray-800 hover:text-black active:scale-90 active:bg-black/10">${icon('Copy', 'h-4 w-4')}</button>
+                                            <button id="copy-title-btn-${index}" onclick="copyToClipboard('${title.replace(/'/g, "\\'")}', ${index})" class="icon-btn h-8 w-8 p-0 rounded-full flex items-center justify-center transition-all duration-300 bg-transparent hover:bg-black/5 text-gray-800 hover:text-black active:scale-90 active:bg-black/10">${icon('Copy', 'h-4 w-4')}</button>
                                         </div>
                                         <p class="text-base font-medium text-gray-800 p-1">${title}</p>
                                     </div>
