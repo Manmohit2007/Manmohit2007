@@ -34,7 +34,6 @@
             height: 100%;
             width: 100%;
             overflow-x: hidden;
-            /* Prevent scrolling bounce effects that move the background */
             overscroll-behavior: none;
         }
 
@@ -45,6 +44,8 @@
             margin: 0;
             padding: 0;
             overscroll-behavior: none;
+            /* Enable CSS :active states on iOS */
+            cursor: pointer;
         }
 
         /* --- STIFF STATIC BACKGROUND --- */
@@ -62,7 +63,6 @@
             background-position: center;
             background-repeat: no-repeat;
             pointer-events: none;
-            /* Prevent pixel shifting and force hardware acceleration */
             transform: translateZ(0);
             backface-visibility: hidden;
             will-change: transform;
@@ -81,7 +81,6 @@
             background-color: rgba(0, 0, 0, 0.2);
             border-radius: 20px;
         }
-        ::-webkit-scrollbar-corner { background: transparent; }
 
         .fluid-transition {
             transition: all 400ms cubic-bezier(0.25, 0.46, 0.45, 0.94);
@@ -112,7 +111,6 @@
             border: 1px solid rgba(255, 255, 255, 0.5);
             border-radius: 36px;
             transform: translateZ(0);
-            touch-action: manipulation;
         }
 
         /* --- CTA BUTTONS --- */
@@ -120,11 +118,12 @@
             background-color: rgba(0, 0, 0, 0.02);
             box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.1), 0 1px 0 rgba(255, 255, 255, 0.2);
             color: #000000; 
-            transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            transition: all 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
             border: none;
             border-radius: 24px; 
             user-select: none;
             cursor: pointer;
+            outline: none;
         }
 
         @media (hover: hover) {
@@ -135,9 +134,12 @@
             }
         }
         
+        /* Tactical Feedback for Tap/Click */
         .cta-button:active {
-            transform: scale(0.96); 
-            background-color: rgba(0, 0, 0, 0.05);
+            transform: scale(0.94) translateY(1px) !important; 
+            background-color: rgba(0, 0, 0, 0.08) !important;
+            box-shadow: inset 0 4px 8px rgba(0, 0, 0, 0.15);
+            transition: all 0.1s ease;
         }
 
         .glass-inset-panel {
@@ -145,11 +147,16 @@
             box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.1), 0 1px 0 rgba(255, 255, 255, 0.2);
             border-radius: 24px;
             border: none;
+            transition: all 0.2s ease;
         }
 
         .glass-inset-panel.interactive {
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             cursor: pointer;
+        }
+
+        .glass-inset-panel.interactive:active {
+            transform: scale(0.97);
+            background-color: rgba(0, 0, 0, 0.08);
         }
 
         @media (hover: hover) {
@@ -174,34 +181,15 @@
             transition: opacity 0.25s ease, transform 0.25s ease !important;
         }
 
-        .icon-btn {
-            color: #000000;
-        }
-
         /* Feedback for clicked titles */
         .copy-pulse {
             background-color: rgba(74, 222, 128, 0.2) !important;
-            transform: scale(0.98);
+            transform: scale(0.95) !important;
         }
 
-        /* Standardized Section Icons - Optimized for Mobile */
-        .header-icon {
-            height: 4rem;
-            width: 4rem;
-            object-fit: contain;
-        }
-
-        .share-icon {
-            height: 3.5rem;
-            width: 3.5rem;
-            object-fit: contain;
-        }
-
-        .shorts-icon {
-            height: 3.8rem;
-            width: 3.8rem;
-            object-fit: contain;
-        }
+        .header-icon { height: 4rem; width: 4rem; object-fit: contain; }
+        .share-icon { height: 3.5rem; width: 3.5rem; object-fit: contain; }
+        .shorts-icon { height: 3.8rem; width: 3.8rem; object-fit: contain; }
 
         @media (min-width: 640px) {
             .header-icon { height: 5.5rem; width: 5.5rem; }
@@ -210,28 +198,25 @@
         }
     </style>
 </head>
-<body class="p-4 md:p-8" onload="initApp()">
+<body class="p-4 md:p-8" onload="initApp()" ontouchstart="">
     <div id="fixed-background"></div>
     <div class="max-w-4xl mx-auto">
-        <div class="mb-12">
-            <header id="app-header" class="glass-card fluid-transition p-4 sm:p-6 flex flex-row items-center justify-between card-animation-target">
+        <div class="mb-6 sm:mb-8">
+            <header id="app-header" class="glass-card fluid-transition px-4 py-2 sm:px-6 sm:py-3 flex flex-row items-center justify-between card-animation-target">
                 <div class="flex items-center space-x-3 sm:space-x-4">
-                    <div class="w-12 h-12 sm:w-20 sm:h-20">
+                    <div class="w-12 h-12 sm:w-16 sm:h-16">
                         <img src="https://manmohit2007.github.io/Manmohit2007/brand_logo.png?v=10" alt="FanPlusFollow Logo" class="w-full h-full object-contain filter drop-shadow-md">
                     </div>
                     <div class="text-left">
-                        <h1 class="text-lg sm:text-2xl font-bold text-black leading-tight">
-                          FanPlusFollow
-                        </h1>
+                        <h1 class="text-lg sm:text-2xl font-bold text-black leading-tight">FanPlusFollow</h1>
                         <p class="text-black text-xs sm:text-sm flex items-center font-bold">
                             <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-1 h-3 w-3"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
                             Growth AI
                         </p>
                     </div>
                 </div>
-                <!-- YouTube Icon always on right -->
                 <div class="flex-shrink-0">
-                    <img src="https://manmohit2007.github.io/Manmohit2007/youtube.png" alt="YouTube" class="w-16 h-16 sm:w-28 sm:h-28 object-contain" onerror="this.style.display='none'">
+                    <img src="https://manmohit2007.github.io/Manmohit2007/youtube.png" alt="YouTube" class="w-14 h-14 sm:w-24 sm:h-24 object-contain">
                 </div>
             </header>
         </div>
@@ -239,7 +224,7 @@
             <div id="upload-card" class="glass-card fluid-transition p-6 rounded-[36px] mb-12 card-animation-target">
                 <div class="mb-4">
                     <h2 class="text-xl sm:text-2xl font-bold flex items-center gap-3 sm:gap-6 text-black">
-                        <img src="https://manmohit2007.github.io/Manmohit2007/share.png" alt="Share" class="share-icon" onerror="this.style.display='none'">
+                        <img src="https://manmohit2007.github.io/Manmohit2007/share.png" alt="Share" class="share-icon">
                         Upload Video
                     </h2>
                 </div>
@@ -254,19 +239,13 @@
                         <div class="w-16 h-16 mb-4">
                             <img src="https://manmohit2007.github.io/Manmohit2007/brand_logo.png?v=10" alt="FanPlusFollow Logo" class="w-full h-full object-contain filter drop-shadow-md">
                         </div>
-                        <h3 class="text-xl sm:text-2xl font-bold text-center text-black">
-                          Boost Your Reach With FanPlusFollow
-                        </h3>
-                        <p class="text-black mt-2 text-center max-w-md text-sm sm:text-base font-bold">
-                          Join the community for exclusive growth insights and advanced content tools.
-                        </p>
+                        <h3 class="text-xl sm:text-2xl font-bold text-center text-black">Boost Your Reach With FanPlusFollow</h3>
+                        <p class="text-black mt-2 text-center max-w-md text-sm sm:text-base font-bold">Join the community for exclusive growth insights.</p>
                         <div class="mt-8 flex flex-row justify-center gap-3 sm:gap-6 w-full max-w-sm sm:max-w-none">
                           <button class="cta-button flex-1 sm:flex-none px-4 py-3 sm:px-8 sm:py-4 font-bold flex items-center justify-center text-sm sm:text-lg" onclick="openLinkWithDelay('https://www.youtube.com/@fanplusfollow')">
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-1.5 sm:mr-2 h-4 w-4 sm:h-5 sm:w-5"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
                             Subscribe
                           </button>
                           <button class="cta-button flex-1 sm:flex-none px-4 py-3 sm:px-8 sm:py-4 font-bold flex items-center justify-center text-sm sm:text-lg" onclick="openLinkWithDelay('https://www.instagram.com/_manmohit_sing_/')">
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-1.5 sm:mr-2 h-4 w-4 sm:h-5 sm:w-5"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
                             Follow
                           </button>
                         </div>
@@ -282,12 +261,10 @@
         let currentFileName = ""; 
         let isProcessing = false;
         let isProcessed = false;
-        
         let titles = [];
         let description = "";
         let titlesFull = [];
         let descriptionFull = "";
-
         let currentTitleSetIndex = 0;
         let currentDescriptionIndex = 0;
 
@@ -295,7 +272,7 @@
         const INSTAGRAM_LINK = "https://www.instagram.com/_manmohit_singh_/";
 
         const openLinkWithDelay = (url) => {
-            setTimeout(() => { window.open(url, '_blank'); }, 200);
+            setTimeout(() => { window.open(url, '_blank'); }, 100);
         };
 
         const icon = (name, classes) => {
@@ -319,43 +296,29 @@
         };
 
         const processFile = () => {
-            isProcessing = true;
-            isProcessed = false;
-            updateUI(); 
-            
+            isProcessing = true; isProcessed = false; updateUI(); 
             setTimeout(() => {
                 generateViralContent(); 
-                isProcessing = false;
-                isProcessed = true;
-                updateUI(); 
-            }, 2500);
+                isProcessing = false; isProcessed = true; updateUI(); 
+            }, 2000);
         };
 
         const generateViralContent = () => { 
             if (!file) return;
             const fullVideoName = currentFileName.replace(/\.[^/.]+$/, "");
             let displayVideoName = fullVideoName.length > 25 ? fullVideoName.substring(0, 25) + "..." : fullVideoName;
-
             const getTemplates = (vName) => ({
                 titles: [
-                    [`🔥 ULTIMATE ${vName} Guide!`, `📈 ${vName}: How We Went VIRAL!`, `🤯 You Won't BELIEVE This ${vName} Trick!`],
-                    [`🚀 ${vName} HACK: More Views NOW!`, `💡 This ONE ${vName} Tip Changed Everything...`, `🚫 Stop Making ${vName} Videos! Watch This!`],
-                    [`✨ I Found the Secret to ${vName} (Works)`, `🌐 Why ${vName} is Taking Over the Internet`, `💎 7 Insane ${vName} Hacks You Need ASAP`],
-                    [`⏰ Master ${vName} in Under 5 Minutes`, `🕵️ The Truth About ${vName} (Watch Now)`, `🧪 Testing Viral ${vName} Myths: Real or Fake?`],
-                    [`📢 Everything I Wish I Knew About ${vName}`, `🤔 Is ${vName} Overrated? Let's Find Out.`, `⚠️ Don't Make These ${vName} Mistakes!`]
+                    [`🔥 ULTIMATE ${vName} Guide!`, `📈 ${vName}: How We Went VIRAL!`, `🤯 This ${vName} Trick is Insane!`],
+                    [`🚀 ${vName} HACK: More Views NOW!`, `💡 This ONE ${vName} Tip Changed Everything...`, `🚫 Stop Making ${vName} Videos!`],
                 ],
                 descriptions: [
-                    `🎬 ${vName} - Discover amazing insights with @FanPlusFollow!\n\nIn this video, we dive deep into the strategies that actually work for creators. Don't forget to subscribe for more growth tips!\n\n📺 YouTube: ${YOUTUBE_CHANNEL_LINK}\n📸 Instagram: ${INSTAGRAM_LINK}\n\n#FanPlusFollow #YouTubeGrowth #ViralTips #ContentCreator #SEO #GrowthMindset`,
-                    `✨ The secret to ${vName} is finally revealed. We break down the algorithm-friendly ways to boost your reach today. Join the community!\n\n🔗 Subscribe: ${YOUTUBE_CHANNEL_LINK}\n🔗 Follow Me: ${INSTAGRAM_LINK}\n\n#${vName} #GrowthHacking #SuccessTips #VideoMarketing #Trending #CreatorEconomy`,
-                    `🚀 Ready to go viral? This ${vName} breakdown covers everything from the basics to advanced hacks for high retention. \n\n🔔 Subscribe for daily creator insights: ${YOUTUBE_CHANNEL_LINK}\n📸 Instagram: ${INSTAGRAM_LINK}\n\n#YouTubeHacks #DigitalMarketing #Algorithm #ViralVideo #Strategy #ContentStrategy`,
-                    `❌ Stop making common ${vName} mistakes and start seeing real results. This guide is built for creators who want to win in 2024.\n\n👉 Join the squad: ${YOUTUBE_CHANNEL_LINK}\n📸 Instagram: ${INSTAGRAM_LINK}\n\n#CreatorTips #OnlineBusiness #Engagement #Growth #FanPlusFollow #MarketingTips`,
-                    `🌐 The landscape of ${vName} is changing fast. Here is how you stay ahead of the curve and keep your audience hooked. \n\n✅ Support the channel: ${YOUTUBE_CHANNEL_LINK}\n📸 Let's connect: ${INSTAGRAM_LINK}\n\n#FutureOfContent #${vName}Guide #CreatorTips #Algorithm #PassiveIncome #SocialMediaMarketing`
+                    `🎬 ${vName} - Discover amazing insights with @FanPlusFollow!\n\n📺 YouTube: ${YOUTUBE_CHANNEL_LINK}\n📸 Instagram: ${INSTAGRAM_LINK}\n\n#FanPlusFollow #ViralTips`,
+                    `✨ The secret to ${vName} is finally revealed. \n\n🔗 Subscribe: ${YOUTUBE_CHANNEL_LINK}\n📸 Follow: ${INSTAGRAM_LINK}`
                 ]
             });
-
             const displayTemplates = getTemplates(displayVideoName);
             const fullTemplates = getTemplates(fullVideoName);
-
             titles = displayTemplates.titles[currentTitleSetIndex % displayTemplates.titles.length];
             description = displayTemplates.descriptions[currentDescriptionIndex % displayTemplates.descriptions.length];
             titlesFull = fullTemplates.titles[currentTitleSetIndex % fullTemplates.titles.length];
@@ -364,26 +327,10 @@
 
         const handleRegenerate = () => {
             if (!file || isProcessing) return;
-            
-            const titleContainer = document.getElementById('titles-grid-container');
-            const descContainer = document.getElementById('description-text-container');
-            
-            if (titleContainer) {
-                const titleTexts = titleContainer.querySelectorAll('p');
-                titleTexts.forEach(el => el.classList.add('text-fade-out'));
-            }
-            if (descContainer) {
-                const pre = descContainer.querySelector('pre');
-                if (pre) pre.classList.add('text-fade-out');
-            }
-            
+            document.querySelectorAll('.fade-in-text').forEach(el => el.classList.add('text-fade-out'));
             setTimeout(() => {
-                currentTitleSetIndex++; 
-                currentDescriptionIndex++;
-                generateViralContent(); 
-                updateTitlesContent(); 
-                updateDescriptionContent();
-                attachStaticListeners(); 
+                currentTitleSetIndex++; currentDescriptionIndex++;
+                generateViralContent(); updateTitlesContent(); updateDescriptionContent();
             }, 250);
         };
 
@@ -397,69 +344,45 @@
 
             if (index === 3) {
                 const btn = document.getElementById('copy-desc-btn');
-                const originalHTML = `<span class="flex items-center">${icon('Copy', 'mr-2 h-4 w-4')} Copy</span>`;
-                btn.innerHTML = `<span class="flex items-center">${icon('Check', 'mr-2 h-4 w-4 text-black')} Copied</span>`;
+                const originalHTML = btn.innerHTML;
+                btn.innerHTML = `<span class="flex items-center">${icon('Check', 'mr-2 h-4 w-4')} Copied</span>`;
                 setTimeout(() => { if (btn) btn.innerHTML = originalHTML; }, 1500);
             } else {
                 const card = document.getElementById(`title-card-${index}`);
                 const originalText = titles[index];
-                const textEl = card.querySelector('p');
-                
                 card.classList.add('copy-pulse');
-                textEl.innerHTML = `<span class="flex items-center gap-1">${icon('Check', 'h-4 w-4')} Copied</span>`;
-                
+                card.querySelector('p').innerHTML = `<span class="flex items-center gap-1">${icon('Check', 'h-4 w-4')} Copied</span>`;
                 setTimeout(() => { 
                     if (card) {
                         card.classList.remove('copy-pulse');
-                        textEl.textContent = originalText;
+                        card.querySelector('p').textContent = originalText;
                     }
                 }, 1000);
             }
         };
 
-        const resetApp = () => {
-            file = null; currentFileName = ""; isProcessing = false; isProcessed = false;
-            updateUI(); attachStaticListeners(); 
-        };
+        const resetApp = () => { file = null; currentFileName = ""; isProcessing = false; isProcessed = false; updateUI(); };
 
-        const attachStaticListeners = () => {
-            const cards = document.querySelectorAll('.glass-card:not(.has-listener)');
-            cards.forEach(element => {
-                element.classList.add('has-listener'); 
-            });
-        };
-        
         const renderUploadSection = () => {
-            const uploadContainer = document.getElementById('upload-section-content');
-            if (!uploadContainer) return;
-
+            const container = document.getElementById('upload-section-content');
             if (!file) {
-                uploadContainer.innerHTML = `
-                    <div id="file-drop-area" class="fluid-transition w-full h-full flex flex-col items-center justify-center text-center cursor-pointer pt-3 md:pt-2">
-                        <div class="fade-in-text flex flex-col items-center">
-                            ${icon('Upload', `h-10 w-10 sm:h-12 sm:w-12 text-black mb-4`)}
-                            <div>
-                                <p class="text-lg sm:text-xl font-bold text-black">Drag & Drop Your Video</p>
-                            </div>
-                            <button id="select-file-btn" class="cta-button mt-6 px-6 py-3 sm:px-8 sm:py-4 font-bold transition-all duration-300 transform text-base sm:text-lg flex items-center justify-center">
-                                ${icon('Upload', 'mr-2 h-5 w-5')} Select
-                            </button>
-                        </div>
+                container.innerHTML = `
+                    <div id="file-drop-area" class="w-full h-full flex flex-col items-center justify-center text-center cursor-pointer pt-3">
+                        ${icon('Upload', 'h-10 w-10 mb-4')}
+                        <p class="text-lg font-bold">Drag & Drop Your Video</p>
+                        <button class="cta-button mt-6 px-8 py-4 font-bold text-lg">Select File</button>
                         <input type="file" id="file-upload-input" class="hidden" accept="video/*" onchange="handleFileChange(event)"/>
                     </div>`;
-                const dropArea = document.getElementById('file-drop-area');
-                if(dropArea) dropArea.onclick = () => document.getElementById('file-upload-input').click();
+                document.getElementById('file-drop-area').onclick = () => document.getElementById('file-upload-input').click();
             } else {
-                uploadContainer.innerHTML = `
-                    <div class="flex flex-col items-center justify-center h-full pt-3 md:pt-2">
-                        <div class="glass-inset-panel flex items-center gap-3 mb-6 p-4 w-full max-w-sm">
-                            <div class="text-left flex-1 truncate"><p class="font-bold text-black fade-in-text text-sm sm:text-base">${currentFileName}</p></div>
+                container.innerHTML = `
+                    <div class="flex flex-col items-center justify-center h-full">
+                        <div class="glass-inset-panel flex items-center p-4 w-full max-w-sm truncate mb-6"><p class="font-bold">${currentFileName}</p></div>
+                        <div class="flex items-center gap-2 mb-4 font-bold">
+                            ${!isProcessed ? icon('Loader', 'h-5 w-5') : icon('Check', 'h-5 w-5')}
+                            <span>${isProcessed ? 'Analysis Complete' : 'Analyzing Video...'}</span>
                         </div>
-                        <div class="flex items-center gap-2 mb-4 fade-in-text">
-                            ${!isProcessed ? icon('Loader', 'h-5 w-5') : icon('Check', 'h-5 w-5 text-black')}
-                            <span class="font-bold text-black text-sm sm:text-base">${isProcessed ? 'Analysis Complete' : 'Analyzing Video Content...'}</span>
-                        </div>
-                        ${isProcessed ? `<button onclick="resetApp()" class="cta-button px-6 py-3 font-bold flex items-center mt-4 fade-in-text text-sm sm:text-base">${icon('RotateCcw', `mr-2 h-4 w-4`)} Reupload</button>` : ''}
+                        ${isProcessed ? `<button onclick="resetApp()" class="cta-button px-6 py-3 font-bold mt-4">Reupload</button>` : ''}
                     </div>`;
             }
         };
@@ -467,60 +390,40 @@
         const updateTitlesContent = () => {
             const grid = document.getElementById('titles-grid-container');
             if (!grid) return;
-            grid.innerHTML = titles.map((title, index) => {
-                const copyText = titlesFull[index].replace(/'/g, "\\'");
-                return `
-                <div id="title-card-${index}" 
-                     class="glass-inset-panel interactive p-4 text-left flex flex-col h-full"
-                     onclick="copyToClipboard('${copyText}', ${index})">
-                    <p class="text-sm sm:text-base font-bold text-black py-2 leading-snug flex-grow fade-in-text">${title}</p>
-                </div>`;
-            }).join('');
+            grid.innerHTML = titles.map((title, index) => `
+                <div id="title-card-${index}" class="glass-inset-panel interactive p-4" onclick="copyToClipboard('${titlesFull[index].replace(/'/g, "\\'")}', ${index})">
+                    <p class="text-sm sm:text-base font-bold text-black py-2 fade-in-text">${title}</p>
+                </div>`).join('');
         };
 
         const updateDescriptionContent = () => {
             const container = document.getElementById('description-text-container');
-            if (container) {
-                container.innerHTML = `<pre class="whitespace-pre-wrap text-xs sm:text-sm font-bold text-black fade-in-text text-left">${description}</pre>`;
-            }
+            if (container) container.innerHTML = `<pre class="whitespace-pre-wrap text-xs sm:text-sm font-bold text-black fade-in-text text-left">${description}</pre>`;
         };
 
         const renderResults = () => {
-            const resultsContainer = document.getElementById('results-section');
-            if (!resultsContainer || !isProcessed) { if(resultsContainer) resultsContainer.innerHTML = ''; return; }
-            
-            resultsContainer.innerHTML = `
-                <div>
-                    <div class="glass-card p-4 sm:p-6 rounded-[36px] mb-12">
-                        <div class="flex justify-between items-center mb-6">
-                            <h2 class="text-lg sm:text-2xl font-bold flex items-center gap-3 sm:gap-4 text-black">
-                                <img src="https://manmohit2007.github.io/Manmohit2007/like.png" alt="Like" class="header-icon" onerror="this.style.display='none'">
-                                Titles
-                            </h2>
-                            <button onclick="handleRegenerate()" class="cta-button text-xs sm:text-sm px-3 py-2 sm:px-4 sm:py-2 font-bold flex items-center">${icon('RotateCcw', `mr-1 sm:mr-2 h-3 w-3 sm:h-4 sm:w-4`)} Regenerate</button>
-                        </div>
-                        <div id="titles-grid-container" class="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6"></div>
+            const container = document.getElementById('results-section');
+            if (!isProcessed) { container.innerHTML = ''; return; }
+            container.innerHTML = `
+                <div class="glass-card p-4 sm:p-6 rounded-[36px] mb-12">
+                    <div class="flex justify-between items-center mb-6">
+                        <h2 class="text-lg sm:text-2xl font-bold flex items-center gap-3"><img src="https://manmohit2007.github.io/Manmohit2007/like.png" class="header-icon"> Titles</h2>
+                        <button onclick="handleRegenerate()" class="cta-button text-xs sm:text-sm px-4 py-2 font-bold flex items-center">${icon('RotateCcw', 'mr-2 h-4 w-4')} Regenerate</button>
                     </div>
-                    <div class="glass-card p-4 sm:p-6 rounded-[36px]"> 
-                        <div class="flex justify-between items-center mb-4">
-                            <h2 class="text-lg sm:text-2xl font-bold flex items-center gap-3 sm:gap-4 text-black">
-                                <img src="https://manmohit2007.github.io/Manmohit2007/shorts.png" alt="Shorts" class="shorts-icon" onerror="this.style.display='none'">
-                                Description
-                            </h2>
-                            <button id="copy-desc-btn" onclick="copyToClipboard(descriptionFull, 3)" class="cta-button text-xs sm:text-sm px-3 py-2 sm:px-4 sm:py-2 font-bold flex items-center">${icon('Copy', 'mr-1 sm:mr-2 h-3 w-3 sm:h-4 sm:w-4')} Copy</button>
-                        </div>
-                        <div id="description-text-container" class="glass-inset-panel p-4 max-h-96 overflow-auto"></div>
+                    <div id="titles-grid-container" class="grid grid-cols-1 md:grid-cols-3 gap-4"></div>
+                </div>
+                <div class="glass-card p-4 sm:p-6 rounded-[36px]">
+                    <div class="flex justify-between items-center mb-4">
+                        <h2 class="text-lg sm:text-2xl font-bold flex items-center gap-3"><img src="https://manmohit2007.github.io/Manmohit2007/shorts.png" class="shorts-icon"> Description</h2>
+                        <button id="copy-desc-btn" onclick="copyToClipboard(descriptionFull, 3)" class="cta-button text-xs sm:text-sm px-4 py-2 font-bold flex items-center">${icon('Copy', 'mr-2 h-4 w-4')} Copy</button>
                     </div>
+                    <div id="description-text-container" class="glass-inset-panel p-4 max-h-96 overflow-auto"></div>
                 </div>`;
             updateTitlesContent(); updateDescriptionContent();
         };
 
         const updateUI = () => { renderUploadSection(); renderResults(); };
-        const initApp = () => { 
-            const targets = document.querySelectorAll('.card-animation-target');
-            setTimeout(() => targets.forEach(el => { el.style.animation = 'none'; el.style.opacity = '1'; }), 1500);
-            updateUI(); attachStaticListeners(); 
-        };
+        const initApp = () => { updateUI(); };
     </script>
 </body>
 </html>
