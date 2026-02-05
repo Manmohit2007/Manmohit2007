@@ -183,24 +183,24 @@
         <div class="mb-6 sm:mb-8">
             <header id="app-header" class="glass-card fluid-transition px-4 py-4 sm:px-6 sm:py-5 flex flex-row items-center justify-between card-animation-target">
                 <div class="flex items-center space-x-3 sm:space-x-4">
-                    <div class="w-12 h-12 sm:w-16 sm:h-16">
+                    <div class="w-16 h-16 sm:w-20 sm:h-20">
                         <img src="https://manmohit2007.github.io/Manmohit2007/brand_logo.png?v=10" alt="Logo" class="w-full h-full object-contain filter drop-shadow-sm">
                     </div>
                     <div class="text-left">
-                        <h1 class="text-xl sm:text-2xl font-bold text-black leading-tight">FanPlusFollow</h1>
+                        <h1 class="text-2xl sm:text-3xl font-bold text-black leading-tight">FanPlusFollow</h1>
                     </div>
                 </div>
                 <div class="flex-shrink-0">
-                    <img src="https://manmohit2007.github.io/Manmohit2007/youtube.png" alt="YouTube" class="w-14 h-14 sm:w-20 sm:h-20 object-contain">
+                    <img src="https://manmohit2007.github.io/Manmohit2007/youtube.png" alt="YouTube" class="w-16 h-16 sm:w-24 sm:h-24 object-contain">
                 </div>
             </header>
         </div>
         <main>
             <div id="upload-card" class="glass-card fluid-transition p-6 rounded-[36px] mb-8 sm:mb-12 card-animation-target">
                 <div class="mb-4">
-                    <h2 class="text-xl sm:text-2xl font-bold flex items-center gap-3 text-black">
+                    <h2 class="text-2xl sm:text-3xl font-bold flex items-center gap-3 text-black">
                         <img src="https://manmohit2007.github.io/Manmohit2007/share.png" alt="Share" class="share-icon">
-                        Upload Video
+                        <span class="relative -top-[2px]">Upload Video</span>
                     </h2>
                 </div>
                 <div class="p-1 min-h-[10rem] sm:min-h-[14rem]" id="upload-section-content"></div>
@@ -211,10 +211,10 @@
             <div id="promo-card" class="glass-card fluid-transition p-6 sm:p-8 max-w-4xl mx-auto card-animation-target"> 
                 <div class="p-1">
                     <div class="flex flex-col items-center">
-                        <div class="w-14 h-14 mb-4">
+                        <div class="w-16 h-16 sm:w-20 sm:h-20 mb-4">
                             <img src="https://manmohit2007.github.io/Manmohit2007/brand_logo.png?v=10" alt="Logo" class="w-full h-full object-contain filter drop-shadow-md">
                         </div>
-                        <h3 class="text-xl sm:text-2xl font-bold text-center text-black">Boost Your Reach Today</h3>
+                        <h3 class="text-2xl sm:text-3xl font-bold text-center text-black">Boost Your Reach Today</h3>
                         <p class="text-black mt-2 text-center max-w-md text-sm sm:text-base font-bold opacity-80">Join the community for exclusive growth insights.</p>
                         <div class="mt-8 flex flex-row justify-center gap-3 sm:gap-6 w-full max-w-sm sm:max-w-none">
                           <button class="cta-button flex-1 sm:flex-none px-4 py-3 sm:px-8 sm:py-4 font-bold flex items-center justify-center text-sm sm:text-lg" onclick="openLinkWithDelay('https://www.youtube.com/@fanplusfollow')">
@@ -353,7 +353,7 @@
                 document.getElementById('file-drop-area').onclick = () => document.getElementById('file-upload-input').click();
             } else {
                 container.innerHTML = `
-                    <div class="flex flex-col items-center justify-center h-full w-full pt-10">
+                    <div class="flex flex-col items-center justify-center h-full w-full pt-5 sm:pt-10">
                         <div class="w-full max-w-md mb-6 px-2 sm:px-0">
                             <div 
                                 class="glass-inset-panel flex items-center px-5 py-3 w-full ${isProcessed ? 'interactive cursor-pointer' : ''}" 
@@ -392,14 +392,14 @@
             container.innerHTML = `
                 <div class="glass-card p-4 sm:p-6 rounded-[36px] mb-8 sm:mb-12">
                     <div class="flex justify-between items-center mb-6">
-                        <h2 class="text-lg sm:text-2xl font-bold flex items-center gap-3"><img src="https://manmohit2007.github.io/Manmohit2007/like.png" class="header-icon"> Titles</h2>
+                        <h2 class="text-2xl sm:text-3xl font-bold flex items-center gap-3"><img src="https://manmohit2007.github.io/Manmohit2007/like.png" class="header-icon"> Titles</h2>
                         <button onclick="handleRegenerate()" class="cta-button text-xs sm:text-sm px-4 py-2 font-bold flex items-center">${icon('RotateCcw', 'mr-2 h-4 w-4')} Regenerate</button>
                     </div>
                     <div id="titles-grid-container" class="grid grid-cols-1 md:grid-cols-3 gap-4"></div>
                 </div>
                 <div class="glass-card p-4 sm:p-6 rounded-[36px]">
                     <div class="flex justify-between items-center mb-4">
-                        <h2 class="text-lg sm:text-2xl font-bold flex items-center gap-3"><img src="https://manmohit2007.github.io/Manmohit2007/shorts.png" class="shorts-icon"> Description</h2>
+                        <h2 class="text-2xl sm:text-3xl font-bold flex items-center gap-3"><img src="https://manmohit2007.github.io/Manmohit2007/shorts.png" class="shorts-icon"> Description</h2>
                         <button id="copy-desc-btn" onclick="copyToClipboard(descriptionFull, 3)" class="cta-button text-xs sm:text-sm px-4 py-2 font-bold flex items-center">${icon('Copy', 'mr-2 h-4 w-4')} Copy</button>
                     </div>
                     <div id="description-text-container" class="glass-inset-panel p-4 max-h-96 overflow-auto"></div>
