@@ -12,7 +12,7 @@
 
     <!-- Standard Meta Tags -->
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, viewport-fit=cover">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <meta name="color-scheme" content="only light">
     <title>FanPlusFollow - Growth AI</title>
     <meta name="description" content="Growth AI for Content Creators. Boost your reach with advanced tools.">
@@ -29,11 +29,12 @@
         }
 
         html {
-            background-color: #EBF1F7; /* Fallback color */
+            /* Removed background-color to stop white/grey showing on overscroll */
             scroll-behavior: smooth;
-            /* Prevent horizontal scroll which causes side lashes */
-            overflow-x: hidden; 
-            width: 100%;
+            height: 100%;
+            overflow-x: hidden;
+            /* Critical: Prevents "rubber-banding" or "bounce" that reveals whitespace */
+            overscroll-behavior: none;
         }
 
         /* Custom Scrollbar */
@@ -83,13 +84,6 @@
                 box-shadow: 0 15px 40px rgba(0, 0, 0, 0.08), inset 0 0 50px rgba(255, 255, 255, 0.5);
                 border-color: rgba(255, 255, 255, 0.7);
             }
-            
-            .cta-button:hover {
-                transform: translateY(-4px) scale(1.02) translateZ(0);
-                opacity: 1; 
-                box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1); 
-                filter: brightness(1.15); 
-            }
         }
 
         .glass-card:active {
@@ -99,7 +93,7 @@
 
         /* --- CTA BUTTONS --- */
         .cta-button {
-            transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.2s ease-out, filter 0.2s ease, box-shadow 0.2s ease;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             background: linear-gradient(to right, #a78bfa 0%, #f472b6 40%, #fca564 75%, #fca564 100%); 
             color: #ffffff; 
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); 
@@ -112,13 +106,24 @@
             cursor: pointer;
             transform: translateZ(0); 
         }
+
+        @media (hover: hover) {
+            .cta-button:hover {
+                transform: translateY(-4px) scale(1.05) translateZ(0);
+                opacity: 1; 
+                box-shadow: 
+                    0 20px 35px -5px rgba(244, 114, 182, 0.6),
+                    0 10px 15px -3px rgba(252, 165, 100, 0.5),
+                    inset 0 0 20px rgba(255, 255, 255, 0.3);
+                filter: brightness(1.15) contrast(1.05); 
+            }
+        }
         
-        /* Optimized Active State for Touch Devices (iPad/Mobile) */
         .cta-button:active {
             transform: scale(0.95) translateZ(0) !important; 
             transition: transform 0.1s ease-out; 
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-            filter: brightness(1.2) saturate(1.1); /* Brighter pop on press */
+            box-shadow: 0 5px 15px rgba(244, 114, 182, 0.4);
+            filter: brightness(1.05);
         }
 
         body {
@@ -126,32 +131,26 @@
             min-height: 100vh;
             color: #374151;
             overflow-x: hidden;
-            width: 100%;
-            margin: 0;
-            padding: 0;
+            /* Ensures body also doesn't trigger scroll chaining */
+            overscroll-behavior: none;
         }
 
-        /* Background Fix:
-           1. Use left:0/right:0 instead of width: 100vw to avoid scrollbar width causing horizontal overflow.
-           2. Use height: 100dvh (Dynamic Viewport Height) to properly handle mobile address bars.
-           3. Add will-change to prevent flicker.
-        */
         #fixed-background {
             position: fixed;
+            /* Using inset: 0 forces it to all four corners */
             top: 0; 
-            left: 0; 
-            right: 0; 
-            bottom: 0; 
-            height: 100vh;      /* Fallback for older browsers */
-            height: 100dvh;     /* Modern mobile fix */
-            width: 100%;
+            left: 0;
+            right: 0;
+            bottom: 0;
             z-index: -1; 
             background-image: linear-gradient(rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.2)), url('background.png');
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
             pointer-events: none;
-            will-change: transform; 
+            /* Performance optimization for fixed backgrounds */
+            transform: translateZ(0);
+            will-change: transform;
         }
 
         @media (min-width: 768px) {
@@ -260,8 +259,8 @@
 </head>
 <body class="p-4 md:p-8" onload="initApp()">
     <div id="fixed-background"></div>
-    <div class="max-w-6xl mx-auto transition-all duration-300">
-        <div class="flex flex-col md:flex-row gap-6 md:gap-12 mb-8 md:mb-12">
+    <div class="max-w-4xl mx-auto">
+        <div class="flex flex-col md:flex-row gap-12 mb-12">
             <header id="app-header" class="glass-card fluid-transition p-6 flex flex-col sm:flex-row items-center justify-between flex-1 card-animation-target sm:order-first">
                 <div class="flex items-center mb-4 sm:mb-0">
                     <div class="flex items-center space-x-4">
@@ -293,7 +292,7 @@
             </header>
         </div>
         <main>
-            <div id="upload-card" class="glass-card fluid-transition p-6 rounded-[36px] mb-8 md:mb-12 card-animation-target">
+            <div id="upload-card" class="glass-card fluid-transition p-6 rounded-[36px] mb-12 card-animation-target">
                 <div class="mb-4">
                     <h2 class="text-2xl font-bold flex items-center gap-2 text-black">
                         Upload Video
@@ -829,7 +828,7 @@
                 const copyText = titlesFull[index] ? titlesFull[index].replace(/'/g, "\\'") : title.replace(/'/g, "\\'");
                 
                 return `
-                <div id="title-card-${index}" class="glass-inset-panel interactive fluid-transition p-4 flex flex-col justify-between h-full">
+                <div id="title-card-${index}" class="glass-inset-panel interactive fluid-transition p-4">
                     <div class="p-1">
                         <div class="flex justify-between items-start mb-2">
                             <span class="text-xs font-medium px-2 py-1 rounded-full bg-pink-100 text-pink-700 border border-pink-300">Option ${index + 1}</span>
@@ -891,10 +890,8 @@
                 else if (viralScore < 90) scoreGlowStyle = 'text-shadow: 0 0 30px rgba(234, 179, 8, 0.6);'; 
                 else scoreGlowStyle = 'text-shadow: 0 0 30px rgba(74, 222, 128, 0.8);'; 
                 
-                // DESKTOP LAYOUT ADJUSTMENTS
-                // Viral Score Card
                 const viralScoreHTML = `
-                    <div id="viral-score-card" class="glass-card fluid-transition p-6 rounded-[36px] h-full flex flex-col justify-center">
+                    <div id="viral-score-card" class="glass-card fluid-transition p-6 rounded-[36px] mb-12">
                         <div class="mb-4"><h2 class="text-2xl font-bold text-black">Viral Potential</h2></div>
                         <div class="p-1">
                             <div class="flex items-center justify-between mb-4"><span class="text-5xl font-extrabold transition-colors duration-500 viral-score-text ${scoreColorClass}" style="${scoreGlowStyle}">${viralScore}%</span></div>
@@ -905,18 +902,17 @@
                         </div>
                     </div>`;
 
-                // Titles Card
                 const titlesHTML = `
-                    <div id="titles-card" class="glass-card fluid-transition p-6 rounded-[36px] h-full flex flex-col">
+                    <div id="titles-card" class="glass-card fluid-transition p-6 rounded-[36px] mb-12">
                         <div class="flex justify-between items-center mb-6">
                             <h2 class="text-2xl font-bold text-black">Titles</h2>
                             <button onclick="handleRegenerate()" class="cta-button backdrop-blur-xl text-sm px-4 py-2 rounded-full font-medium flex items-center whitespace-nowrap flex-shrink-0 relative -top-[2px]"><span class="flex items-center">${icon('RotateCcw', `mr-2 h-4 w-4 text-white`)} Regenerate</span></button>
                         </div>
-                        <div id="titles-grid-container" class="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6 overflow-visible content-transition opacity-100 flex-1">
+                        <div id="titles-grid-container" class="grid grid-cols-1 md:grid-cols-3 gap-6 overflow-visible content-transition opacity-100">
                             ${titles.map((title, index) => {
                                 const copyText = titlesFull[index] ? titlesFull[index].replace(/'/g, "\\'") : title.replace(/'/g, "\\'");
                                 return `
-                                <div id="title-card-${index}" class="glass-inset-panel interactive fluid-transition p-4 flex flex-col justify-between h-full">
+                                <div id="title-card-${index}" class="glass-inset-panel interactive fluid-transition p-4">
                                     <div class="p-1">
                                         <div class="flex justify-between items-start mb-2">
                                             <span class="text-xs font-medium px-2 py-1 rounded-full bg-pink-100 text-pink-700 border border-pink-300">Option ${index + 1}</span>
@@ -929,9 +925,8 @@
                         </div>
                     </div>`;
                 
-                // Description Card
                 const descriptionHTML = `
-                    <div id="description-card" class="glass-card fluid-transition p-6 rounded-[36px] mb-12"> 
+                    <div id="description-card" class="glass-card fluid-transition p-6 rounded-[36px]"> 
                         <div class="mb-4">
                             <h2 class="flex justify-between items-center text-2xl font-bold text-black">
                                 <span class="truncate mr-2">Description</span>
@@ -943,15 +938,7 @@
                         </div>
                     </div>`;
                 
-                // Use a Grid Layout for Desktop: Score (left) + Titles (right), Description (bottom)
-                resultsContainer.innerHTML = `
-                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-8">
-                        <div class="lg:col-span-1 h-full">${viralScoreHTML}</div>
-                        <div class="lg:col-span-2 h-full">${titlesHTML}</div>
-                    </div>
-                    ${descriptionHTML}
-                `;
-                
+                resultsContainer.innerHTML = viralScoreHTML + titlesHTML + descriptionHTML;
                 setTimeout(() => resultsContainer.classList.add('show-results'), 50);
             } else {
                 resultsContainer.innerHTML = '';
