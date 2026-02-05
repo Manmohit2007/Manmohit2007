@@ -323,10 +323,19 @@
         let isProcessing = false;
         let isProcessed = false;
         let viralScore = 0;
+        
+        // Display Versions (Truncated)
         let titles = [];
         let description = "";
         let allTitles = []; 
         let allDescriptions = []; 
+        
+        // Full Versions (For Clipboard)
+        let titlesFull = [];
+        let descriptionFull = "";
+        let allTitlesFull = [];
+        let allDescriptionsFull = [];
+
         let currentTitleSetIndex = 0;
         let currentDescriptionIndex = 0;
         let isViralBoostEnabled = true; 
@@ -466,29 +475,49 @@
         const generateViralContent = (shouldUpdateScore = true) => { 
             if (!file) return;
             const fileName = currentFileName; 
-            let videoName = fileName.replace(/\.[^/.]+$/, "");
-
+            const fullVideoName = fileName.replace(/\.[^/.]+$/, "");
+            
             // Truncate video name for generated titles if it's too long
-            if (videoName.length > 25) {
-                videoName = videoName.substring(0, 25) + "...";
+            let displayVideoName = fullVideoName;
+            if (displayVideoName.length > 25) {
+                displayVideoName = displayVideoName.substring(0, 25) + "...";
             }
 
-            allTitles = [
-                [`🔥 ULTIMATE ${videoName} Guide! (FanPlusFollow Secret)`, `📈 ${videoName}: Watch How We Went VIRAL in 24 Hours!`, `🤯 You Won't BELIEVE This ${videoName} Trick!`],
-                [`🚀 ${videoName} HACK: Get More Views INSTANTLY!`, `This ONE ${videoName} Tip Changed Everything... (SHOCKING)`, `Stop Making ${videoName} Videos Until You Watch This! 🚫`],
-                [`The ${videoName} MISTAKE Costing You Subscribers!`, `✅ ${videoName} Tutorial: From 0 to 100k Views!`, `Why Your ${videoName} Videos AREN'T Growing (FIXED!)`],
-                [`🤫 The Secret ${videoName} Strategy No One Talks About`, `I Tried ${videoName} for 7 Days... Here's What Happened`, `WARNING: Don't Do ${videoName} Without Watching This! ⚠️`],
-                [`How to Master ${videoName} in Just 10 Minutes ⏱️`, `The ONLY ${videoName} Tool You'll Ever Need`, `Exposing the Truth About ${videoName} (Honest Review)`]
-            ];
-            allDescriptions = [
-                `🎬 ${videoName} - Watch this incredible video to discover amazing insights!\n\n✨ What you'll learn:\n✅ Key techniques from FanPlusFollow's viral success\n✅ Insider tips from YouTube growth experts\n✅ Step-by-step instructions for success\n\n👍 Don't forget to LIKE, COMMENT, and SUBSCRIBE to @FanPlusFollow for more amazing content!\n🔔 Turn on notifications so you never miss an update!\n\nCheck out the FanPlusFollow Channel here: ${YOUTUBE_CHANNEL_LINK}\n\nFollow Manmohit Singh on Instagram: ${INSTAGRAM_LINK}\n\n#FanPlusFollow #YouTubeGrowth #ViralVideo #ContentCreation #YouTubeTips`,
-                `Is your ${videoName} content not performing? This video REVEALS the secret sauce.\n\nIn this episode, we break down:\n1️⃣ The #1 ${videoName} mistake (and how to fix it)\n2️⃣ FanPlusFollow's 3-step growth formula\n3️⃣ How to 10x your engagement overnight!\n\nDon't just make content, make content that WINS. 🏆\n\nSubscribe to @FanPlusFollow for daily growth hacks!\nFollow the journey on IG: ${INSTAGRAM_LINK}\n\n#${videoName} #GrowthHacking #ContentStrategy #FanPlusFollow #ViralSecrets`,
-                `STOP SCROLLING. ✋ If you need to master ${videoName}, this is the only video you need to watch today.\n\nWe're diving deep into the strategies that top creators (and @FanPlusFollow) use to dominate the algorithm.\n\n--- LINKS ---\nFanPlusFollow YouTube: ${YOUTUBE_CHANNEL_LINK}\nManmohit's Instagram: ${INSTAGRAM_LINK}\n\nThis isn't just theory—this is a practical, step-by-step guide to making your ${videoName} content go viral. Watch now and thank us later.\n\n#${videoName}Guide #YouTubeAlgorithm #CreatorTips #FanPlusFollow #SubscribeNow`,
-                `Are you struggling with ${videoName}? You are not alone. Let's fix that today. 💪\n\nIn this comprehensive guide, I'm sharing the exact roadmap I used to master ${videoName}.\n\n📌 TIMESTAMPS:\n0:00 Intro\n1:30 The Basics of ${videoName}\n4:45 Advanced Strategies\n8:20 Common Pitfalls\n10:00 Final Verdict\n\nHit that SUBSCRIBE button to join the #FanPlusFollow community!\n📸 Instagram: ${INSTAGRAM_LINK}\n📺 YouTube: ${YOUTUBE_CHANNEL_LINK}\n\n#${videoName}Tutorial #HowTo #MasterClass #FanPlusFollow #ContentMarketing`,
-                `If you watch one video about ${videoName} this year, make it this one. 🚀\n\nWe tested 50 different strategies for ${videoName} so you don't have to. The results were SHOCKING.\n\nHere is what actually works in 2025:\n🔹 Strategy A: The Engagement Hack\n🔹 Strategy B: The Retention Hook\n🔹 Strategy C: The Viral Loop\n\nComment "VIRAL" below if you want Part 2! 👇\n\nConnect with us:\nIG: ${INSTAGRAM_LINK}\nYT: ${YOUTUBE_CHANNEL_LINK}\n\n#${videoName}Tips #SocialMediaGrowth #ViralHacks #FanPlusFollow #2025Trends`
-            ];
+            // Helper to generate templates based on a specific name (full or display)
+            const getTemplates = (vName) => ({
+                titles: [
+                    [`🔥 ULTIMATE ${vName} Guide! (FanPlusFollow Secret)`, `📈 ${vName}: Watch How We Went VIRAL in 24 Hours!`, `🤯 You Won't BELIEVE This ${vName} Trick!`],
+                    [`🚀 ${vName} HACK: Get More Views INSTANTLY!`, `This ONE ${vName} Tip Changed Everything... (SHOCKING)`, `Stop Making ${vName} Videos Until You Watch This! 🚫`],
+                    [`The ${vName} MISTAKE Costing You Subscribers!`, `✅ ${vName} Tutorial: From 0 to 100k Views!`, `Why Your ${vName} Videos AREN'T Growing (FIXED!)`],
+                    [`🤫 The Secret ${vName} Strategy No One Talks About`, `I Tried ${vName} for 7 Days... Here's What Happened`, `WARNING: Don't Do ${vName} Without Watching This! ⚠️`],
+                    [`How to Master ${vName} in Just 10 Minutes ⏱️`, `The ONLY ${vName} Tool You'll Ever Need`, `Exposing the Truth About ${vName} (Honest Review)`]
+                ],
+                descriptions: [
+                    `🎬 ${vName} - Watch this incredible video to discover amazing insights!\n\n✨ What you'll learn:\n✅ Key techniques from FanPlusFollow's viral success\n✅ Insider tips from YouTube growth experts\n✅ Step-by-step instructions for success\n\n👍 Don't forget to LIKE, COMMENT, and SUBSCRIBE to @FanPlusFollow for more amazing content!\n🔔 Turn on notifications so you never miss an update!\n\nCheck out the FanPlusFollow Channel here: ${YOUTUBE_CHANNEL_LINK}\n\nFollow Manmohit Singh on Instagram: ${INSTAGRAM_LINK}\n\n#FanPlusFollow #YouTubeGrowth #ViralVideo #ContentCreation #YouTubeTips`,
+                    `Is your ${vName} content not performing? This video REVEALS the secret sauce.\n\nIn this episode, we break down:\n1️⃣ The #1 ${vName} mistake (and how to fix it)\n2️⃣ FanPlusFollow's 3-step growth formula\n3️⃣ How to 10x your engagement overnight!\n\nDon't just make content, make content that WINS. 🏆\n\nSubscribe to @FanPlusFollow for daily growth hacks!\nFollow the journey on IG: ${INSTAGRAM_LINK}\n\n#${vName} #GrowthHacking #ContentStrategy #FanPlusFollow #ViralSecrets`,
+                    `STOP SCROLLING. ✋ If you need to master ${vName}, this is the only video you need to watch today.\n\nWe're diving deep into the strategies that top creators (and @FanPlusFollow) use to dominate the algorithm.\n\n--- LINKS ---\nFanPlusFollow YouTube: ${YOUTUBE_CHANNEL_LINK}\nManmohit's Instagram: ${INSTAGRAM_LINK}\n\nThis isn't just theory—this is a practical, step-by-step guide to making your ${vName} content go viral. Watch now and thank us later.\n\n#${vName}Guide #YouTubeAlgorithm #CreatorTips #FanPlusFollow #SubscribeNow`,
+                    `Are you struggling with ${vName}? You are not alone. Let's fix that today. 💪\n\nIn this comprehensive guide, I'm sharing the exact roadmap I used to master ${vName}.\n\n📌 TIMESTAMPS:\n0:00 Intro\n1:30 The Basics of ${vName}\n4:45 Advanced Strategies\n8:20 Common Pitfalls\n10:00 Final Verdict\n\nHit that SUBSCRIBE button to join the #FanPlusFollow community!\n📸 Instagram: ${INSTAGRAM_LINK}\n📺 YouTube: ${YOUTUBE_CHANNEL_LINK}\n\n#${vName}Tutorial #HowTo #MasterClass #FanPlusFollow #ContentMarketing`,
+                    `If you watch one video about ${vName} this year, make it this one. 🚀\n\nWe tested 50 different strategies for ${vName} so you don't have to. The results were SHOCKING.\n\nHere is what actually works in 2025:\n🔹 Strategy A: The Engagement Hack\n🔹 Strategy B: The Retention Hook\n🔹 Strategy C: The Viral Loop\n\nComment "VIRAL" below if you want Part 2! 👇\n\nConnect with us:\nIG: ${INSTAGRAM_LINK}\nYT: ${YOUTUBE_CHANNEL_LINK}\n\n#${vName}Tips #SocialMediaGrowth #ViralHacks #FanPlusFollow #2025Trends`
+                ]
+            });
+
+            // Generate Display Versions (Truncated)
+            const displayTemplates = getTemplates(displayVideoName);
+            allTitles = displayTemplates.titles;
+            allDescriptions = displayTemplates.descriptions;
+            
+            // Generate Full Versions (For Clipboard)
+            const fullTemplates = getTemplates(fullVideoName);
+            allTitlesFull = fullTemplates.titles;
+            allDescriptionsFull = fullTemplates.descriptions;
+
+            // Set current active items
             titles = allTitles[currentTitleSetIndex];
             description = allDescriptions[currentDescriptionIndex];
+            
+            titlesFull = allTitlesFull[currentTitleSetIndex];
+            descriptionFull = allDescriptionsFull[currentDescriptionIndex];
+
             if (shouldUpdateScore) {
                 const scoreBase = isViralBoostEnabled ? 80 : 68;
                 viralScore = Math.floor(Math.random() * 18) + scoreBase; 
@@ -520,7 +549,7 @@
         };
 
         const copyDescriptionToClipboard = () => {
-             copyToClipboard(description, 3);
+             copyToClipboard(descriptionFull, 3);
         }
 
         const copyToClipboard = (text, index) => {
@@ -599,8 +628,12 @@
                 isProcessing = false;
                 isProcessed = false;
                 viralScore = 0;
+                
                 titles = [];
                 description = "";
+                titlesFull = [];
+                descriptionFull = "";
+                
                 progressValue = 0;
                 currentTitleSetIndex = 0; 
                 currentDescriptionIndex = 0; 
@@ -773,16 +806,22 @@
         const updateTitlesContent = () => {
             const grid = document.getElementById('titles-grid-container');
             if (!grid) return;
-            grid.innerHTML = titles.map((title, index) => `
+            // Map over the display titles 'titles', but use 'titlesFull[index]' for the copy action
+            grid.innerHTML = titles.map((title, index) => {
+                // Ensure we use the full version for copying, escaped correctly
+                const copyText = titlesFull[index] ? titlesFull[index].replace(/'/g, "\\'") : title.replace(/'/g, "\\'");
+                
+                return `
                 <div id="title-card-${index}" class="glass-inset-panel interactive fluid-transition p-4">
                     <div class="p-1">
                         <div class="flex justify-between items-start mb-2">
                             <span class="text-xs font-medium px-2 py-1 rounded-full bg-pink-100 text-pink-700 border border-pink-300">Option ${index + 1}</span>
-                            <button id="copy-title-btn-${index}" onclick="copyToClipboard('${title.replace(/'/g, "\\'")}', ${index})" class="icon-btn h-8 w-8 p-0 rounded-full flex items-center justify-center transition-all duration-300 bg-transparent hover:bg-black/5 text-gray-800 hover:text-black active:scale-90 active:bg-black/10">${icon('Copy', 'h-4 w-4')}</button>
+                            <button id="copy-title-btn-${index}" onclick="copyToClipboard('${copyText}', ${index})" class="icon-btn h-8 w-8 p-0 rounded-full flex items-center justify-center transition-all duration-300 bg-transparent hover:bg-black/5 text-gray-800 hover:text-black active:scale-90 active:bg-black/10">${icon('Copy', 'h-4 w-4')}</button>
                         </div>
                         <p class="text-base font-medium text-gray-800 p-1">${title}</p>
                     </div>
-                </div>`).join('');
+                </div>`;
+            }).join('');
         };
 
         const updateDescriptionContent = () => {
@@ -854,16 +893,19 @@
                             <button onclick="handleRegenerate()" class="cta-button backdrop-blur-xl text-sm px-4 py-2 rounded-full font-medium flex items-center whitespace-nowrap flex-shrink-0"><span class="flex items-center">${icon('RotateCcw', `mr-2 h-4 w-4 text-white`)} Regenerate</span></button>
                         </div>
                         <div id="titles-grid-container" class="grid grid-cols-1 md:grid-cols-3 gap-6 overflow-visible content-transition opacity-100">
-                            ${titles.map((title, index) => `
+                            ${titles.map((title, index) => {
+                                const copyText = titlesFull[index] ? titlesFull[index].replace(/'/g, "\\'") : title.replace(/'/g, "\\'");
+                                return `
                                 <div id="title-card-${index}" class="glass-inset-panel interactive fluid-transition p-4">
                                     <div class="p-1">
                                         <div class="flex justify-between items-start mb-2">
                                             <span class="text-xs font-medium px-2 py-1 rounded-full bg-pink-100 text-pink-700 border border-pink-300">Option ${index + 1}</span>
-                                            <button id="copy-title-btn-${index}" onclick="copyToClipboard('${title.replace(/'/g, "\\'")}', ${index})" class="icon-btn h-8 w-8 p-0 rounded-full flex items-center justify-center transition-all duration-300 bg-transparent hover:bg-black/5 text-gray-800 hover:text-black active:scale-90 active:bg-black/10">${icon('Copy', 'h-4 w-4')}</button>
+                                            <button id="copy-title-btn-${index}" onclick="copyToClipboard('${copyText}', ${index})" class="icon-btn h-8 w-8 p-0 rounded-full flex items-center justify-center transition-all duration-300 bg-transparent hover:bg-black/5 text-gray-800 hover:text-black active:scale-90 active:bg-black/10">${icon('Copy', 'h-4 w-4')}</button>
                                         </div>
                                         <p class="text-base font-medium text-gray-800 p-1">${title}</p>
                                     </div>
-                                </div>`).join('')}
+                                </div>`;
+                            }).join('')}
                         </div>
                     </div>`;
                 
