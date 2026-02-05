@@ -524,36 +524,57 @@
             document.execCommand('copy');
             document.body.removeChild(tempElement);
             
-            // OPTIMIZED: Synchronized weighting to match Regenerate button feel
-            const titlesGrid = document.getElementById('titles-grid-container');
-            const descContainer = document.getElementById('description-text-container');
             const btnId = index === 3 ? 'copy-desc-btn' : `copy-title-btn-${index}`;
             const btn = document.getElementById(btnId);
             
-            // 1. Trigger fade-out (300ms transition starts)
-            if (titlesGrid) titlesGrid.classList.add('opacity-0');
-            if (descContainer) descContainer.classList.add('opacity-0');
-            
-            // 2. Wait 300ms (peak of fade) before swapping button state and starting fade-in
-            setTimeout(() => {
-                // Change button state only when hidden to reveal it during fade-in
-                if (btn) {
-                    const originalHTML = btn.innerHTML;
-                    if (index === 3) {
-                       btn.innerHTML = `<span class="flex items-center justify-center min-w-[80px]">${icon('Check', 'mr-2 h-4 w-4 text-white')} Done</span>`;
-                    } else {
-                       btn.innerHTML = icon('Check', 'h-4 w-4 text-green-400');
+            // Logic Split: Description vs Titles
+            if (index === 3) {
+                // --- DESCRIPTION ANIMATION (Full Fade) ---
+                const descContainer = document.getElementById('description-text-container');
+                
+                // Fade Out
+                if (descContainer) descContainer.classList.add('opacity-0');
+                
+                setTimeout(() => {
+                    // Change Button State
+                    if (btn) {
+                        const originalHTML = btn.innerHTML;
+                        btn.innerHTML = `<span class="flex items-center justify-center min-w-[80px]">${icon('Check', 'mr-2 h-4 w-4 text-white')} Done</span>`;
+                        setTimeout(() => { if (btn) btn.innerHTML = originalHTML; }, 1000);
                     }
-                    
-                    setTimeout(() => {
-                        if (btn) btn.innerHTML = originalHTML;
-                    }, 1000);
+
+                    // Fade In
+                    if (descContainer) descContainer.classList.remove('opacity-0');
+                }, 300); // Slower transition for large text block
+                
+            } else {
+                // --- TITLE ANIMATION (Subtle Pulse/Flash on specific card) ---
+                const titleCard = document.getElementById(`title-card-${index}`);
+                
+                // Quick flash effect
+                if (titleCard) {
+                    titleCard.style.transition = 'all 0.2s cubic-bezier(0.4, 0, 0.2, 1)';
+                    titleCard.style.transform = 'scale(0.98)';
+                    titleCard.style.backgroundColor = 'rgba(74, 222, 128, 0.1)'; // Slight green tint
+                    titleCard.style.borderColor = 'rgba(74, 222, 128, 0.5)';
                 }
 
-                // Trigger fade-in
-                if (titlesGrid) titlesGrid.classList.remove('opacity-0');
-                if (descContainer) descContainer.classList.remove('opacity-0');
-            }, 300);
+                setTimeout(() => {
+                    // Change Button State
+                    if (btn) {
+                        const originalHTML = btn.innerHTML;
+                        btn.innerHTML = icon('Check', 'h-4 w-4 text-green-400');
+                        setTimeout(() => { if (btn) btn.innerHTML = originalHTML; }, 1000);
+                    }
+                    
+                    // Reset Card Style
+                    if (titleCard) {
+                        titleCard.style.transform = 'scale(1)';
+                        titleCard.style.backgroundColor = ''; 
+                        titleCard.style.borderColor = '';
+                    }
+                }, 200); // Faster, snappier response for list items
+            }
         };
 
         const resetApp = () => {
@@ -737,7 +758,7 @@
             const grid = document.getElementById('titles-grid-container');
             if (!grid) return;
             grid.innerHTML = titles.map((title, index) => `
-                <div class="glass-inset-panel interactive fluid-transition p-4">
+                <div id="title-card-${index}" class="glass-inset-panel interactive fluid-transition p-4">
                     <div class="p-1">
                         <div class="flex justify-between items-start mb-2">
                             <span class="text-xs font-medium px-2 py-1 rounded-full bg-pink-100 text-pink-700 border border-pink-300">Option ${index + 1}</span>
@@ -818,7 +839,7 @@
                         </div>
                         <div id="titles-grid-container" class="grid grid-cols-1 md:grid-cols-3 gap-6 overflow-visible content-transition opacity-100">
                             ${titles.map((title, index) => `
-                                <div class="glass-inset-panel interactive fluid-transition p-4">
+                                <div id="title-card-${index}" class="glass-inset-panel interactive fluid-transition p-4">
                                     <div class="p-1">
                                         <div class="flex justify-between items-start mb-2">
                                             <span class="text-xs font-medium px-2 py-1 rounded-full bg-pink-100 text-pink-700 border border-pink-300">Option ${index + 1}</span>
