@@ -32,9 +32,46 @@
             background-color: #1f2937; 
             scroll-behavior: smooth;
             height: 100%;
+            width: 100%;
             overflow-x: hidden;
+            /* Prevent scrolling bounce effects that move the background */
             overscroll-behavior: none;
-            overscroll-behavior-y: none;
+        }
+
+        body {
+            background-color: transparent; 
+            min-height: 100vh;
+            color: #000000;
+            margin: 0;
+            padding: 0;
+            overscroll-behavior: none;
+        }
+
+        /* --- STIFF STATIC BACKGROUND --- */
+        #fixed-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: -1; 
+            background-image: linear-gradient(rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.2)), url('background.png');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            pointer-events: none;
+            /* Prevent pixel shifting and force hardware acceleration */
+            transform: translateZ(0);
+            backface-visibility: hidden;
+            will-change: transform;
+        }
+
+        @media (min-width: 768px) {
+            #fixed-background {
+                background-image: linear-gradient(rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.2)), url('landscape.png');
+            }
         }
 
         /* Custom Scrollbar */
@@ -103,28 +140,6 @@
             background-color: rgba(0, 0, 0, 0.05);
         }
 
-        body {
-            background-color: transparent; 
-            min-height: 100vh;
-            color: #000000;
-        }
-
-        #fixed-background {
-            position: fixed;
-            inset: 0;
-            z-index: -1; 
-            background-image: linear-gradient(rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.2)), url('background.png');
-            background-size: cover;
-            background-position: center;
-            pointer-events: none;
-        }
-
-        @media (min-width: 768px) {
-            #fixed-background {
-                background-image: linear-gradient(rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.2)), url('landscape.png');
-            }
-        }
-
         .glass-inset-panel {
             background-color: rgba(0, 0, 0, 0.04);
             box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.1), 0 1px 0 rgba(255, 255, 255, 0.2);
@@ -169,81 +184,83 @@
             transform: scale(0.98);
         }
 
-        /* Standardized Section Icons */
+        /* Standardized Section Icons - Optimized for Mobile */
         .header-icon {
-            height: 5.5rem;
-            width: 5.5rem;
+            height: 4rem;
+            width: 4rem;
             object-fit: contain;
         }
 
-        /* Specific Share Icon override */
         .share-icon {
-            height: 4.5rem;
-            width: 4.5rem;
+            height: 3.5rem;
+            width: 3.5rem;
             object-fit: contain;
         }
 
-        /* Specific Shorts Icon override (a little bit smaller) */
         .shorts-icon {
-            height: 4.8rem;
-            width: 4.8rem;
+            height: 3.8rem;
+            width: 3.8rem;
             object-fit: contain;
+        }
+
+        @media (min-width: 640px) {
+            .header-icon { height: 5.5rem; width: 5.5rem; }
+            .share-icon { height: 4.5rem; width: 4.5rem; }
+            .shorts-icon { height: 4.8rem; width: 4.8rem; }
         }
     </style>
 </head>
 <body class="p-4 md:p-8" onload="initApp()">
     <div id="fixed-background"></div>
     <div class="max-w-4xl mx-auto">
-        <div class="flex flex-col md:flex-row gap-12 mb-12">
-            <header id="app-header" class="glass-card fluid-transition p-6 flex flex-col sm:flex-row items-center justify-between flex-1 card-animation-target">
-                <div class="flex items-center">
-                    <div class="flex items-center space-x-4">
-                        <div class="w-16 h-16 sm:w-20 sm:h-20">
-                            <img src="https://manmohit2007.github.io/Manmohit2007/brand_logo.png?v=10" alt="FanPlusFollow Logo" class="w-full h-full object-contain filter drop-shadow-md">
-                        </div>
-                        <div class="text-left">
-                            <h1 class="text-2xl font-bold text-black">
-                              FanPlusFollow
-                            </h1>
-                            <p class="text-black text-sm flex items-center font-bold">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-1 h-3 w-3"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
-                                Growth AI
-                            </p>
-                        </div>
+        <div class="mb-12">
+            <header id="app-header" class="glass-card fluid-transition p-4 sm:p-6 flex flex-row items-center justify-between card-animation-target">
+                <div class="flex items-center space-x-3 sm:space-x-4">
+                    <div class="w-12 h-12 sm:w-20 sm:h-20">
+                        <img src="https://manmohit2007.github.io/Manmohit2007/brand_logo.png?v=10" alt="FanPlusFollow Logo" class="w-full h-full object-contain filter drop-shadow-md">
+                    </div>
+                    <div class="text-left">
+                        <h1 class="text-lg sm:text-2xl font-bold text-black leading-tight">
+                          FanPlusFollow
+                        </h1>
+                        <p class="text-black text-xs sm:text-sm flex items-center font-bold">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-1 h-3 w-3"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                            Growth AI
+                        </p>
                     </div>
                 </div>
-                <!-- YouTube Icon -->
-                <div class="mt-4 sm:mt-0">
-                    <img src="https://manmohit2007.github.io/Manmohit2007/youtube.png" alt="YouTube" class="w-20 h-20 sm:w-28 sm:h-28 object-contain" onerror="this.style.display='none'">
+                <!-- YouTube Icon always on right -->
+                <div class="flex-shrink-0">
+                    <img src="https://manmohit2007.github.io/Manmohit2007/youtube.png" alt="YouTube" class="w-16 h-16 sm:w-28 sm:h-28 object-contain" onerror="this.style.display='none'">
                 </div>
             </header>
         </div>
         <main>
             <div id="upload-card" class="glass-card fluid-transition p-6 rounded-[36px] mb-12 card-animation-target">
                 <div class="mb-4">
-                    <h2 class="text-2xl font-bold flex items-center gap-6 text-black">
+                    <h2 class="text-xl sm:text-2xl font-bold flex items-center gap-3 sm:gap-6 text-black">
                         <img src="https://manmohit2007.github.io/Manmohit2007/share.png" alt="Share" class="share-icon" onerror="this.style.display='none'">
                         Upload Video
                     </h2>
                 </div>
-                <div class="p-1 min-h-[16rem]" id="upload-section-content"></div>
+                <div class="p-1 min-h-[12rem] sm:min-h-[16rem]" id="upload-section-content"></div>
             </div>
             <div id="results-section"></div>
         </main>
-        <div class="mt-12 w-full px-0 sm:px-4">
-            <div id="promo-card" class="glass-card fluid-transition p-4 sm:p-6 max-w-4xl mx-auto card-animation-target"> 
+        <div class="mt-12 w-full">
+            <div id="promo-card" class="glass-card fluid-transition p-6 sm:p-8 max-w-4xl mx-auto card-animation-target"> 
                 <div class="p-1">
                     <div class="flex flex-col items-center">
-                        <div class="w-16 h-16 mb-2 sm:mb-4">
+                        <div class="w-16 h-16 mb-4">
                             <img src="https://manmohit2007.github.io/Manmohit2007/brand_logo.png?v=10" alt="FanPlusFollow Logo" class="w-full h-full object-contain filter drop-shadow-md">
                         </div>
                         <h3 class="text-xl sm:text-2xl font-bold text-center text-black">
                           Boost Your Reach With FanPlusFollow
                         </h3>
-                        <p class="text-black mt-1 sm:mt-2 text-center max-w-md text-sm sm:text-base font-bold">
+                        <p class="text-black mt-2 text-center max-w-md text-sm sm:text-base font-bold">
                           Join the community for exclusive growth insights and advanced content tools.
                         </p>
-                        <div class="mt-6 flex flex-row justify-center gap-3 sm:gap-6 w-full max-w-sm sm:max-w-none px-1">
+                        <div class="mt-8 flex flex-row justify-center gap-3 sm:gap-6 w-full max-w-sm sm:max-w-none">
                           <button class="cta-button flex-1 sm:flex-none px-4 py-3 sm:px-8 sm:py-4 font-bold flex items-center justify-center text-sm sm:text-lg" onclick="openLinkWithDelay('https://www.youtube.com/@fanplusfollow')">
                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-1.5 sm:mr-2 h-4 w-4 sm:h-5 sm:w-5"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
                             Subscribe
@@ -364,10 +381,8 @@
                 currentTitleSetIndex++; 
                 currentDescriptionIndex++;
                 generateViralContent(); 
-                
                 updateTitlesContent(); 
                 updateDescriptionContent();
-                
                 attachStaticListeners(); 
             }, 250);
         };
@@ -422,11 +437,11 @@
                 uploadContainer.innerHTML = `
                     <div id="file-drop-area" class="fluid-transition w-full h-full flex flex-col items-center justify-center text-center cursor-pointer pt-3 md:pt-2">
                         <div class="fade-in-text flex flex-col items-center">
-                            ${icon('Upload', `h-12 w-12 text-black mb-4`)}
+                            ${icon('Upload', `h-10 w-10 sm:h-12 sm:w-12 text-black mb-4`)}
                             <div>
-                                <p class="text-xl font-bold text-black">Drag & Drop Your Video</p>
+                                <p class="text-lg sm:text-xl font-bold text-black">Drag & Drop Your Video</p>
                             </div>
-                            <button id="select-file-btn" class="cta-button mt-6 px-8 py-4 font-bold transition-all duration-300 transform text-lg flex items-center justify-center">
+                            <button id="select-file-btn" class="cta-button mt-6 px-6 py-3 sm:px-8 sm:py-4 font-bold transition-all duration-300 transform text-base sm:text-lg flex items-center justify-center">
                                 ${icon('Upload', 'mr-2 h-5 w-5')} Select
                             </button>
                         </div>
@@ -436,15 +451,15 @@
                 if(dropArea) dropArea.onclick = () => document.getElementById('file-upload-input').click();
             } else {
                 uploadContainer.innerHTML = `
-                    <div class="flex flex-col items-center justify-center h-full min-h-[14rem] pt-3 md:pt-2">
+                    <div class="flex flex-col items-center justify-center h-full pt-3 md:pt-2">
                         <div class="glass-inset-panel flex items-center gap-3 mb-6 p-4 w-full max-w-sm">
-                            <div class="text-left flex-1 truncate"><p class="font-bold text-black fade-in-text">${currentFileName}</p></div>
+                            <div class="text-left flex-1 truncate"><p class="font-bold text-black fade-in-text text-sm sm:text-base">${currentFileName}</p></div>
                         </div>
                         <div class="flex items-center gap-2 mb-4 fade-in-text">
                             ${!isProcessed ? icon('Loader', 'h-5 w-5') : icon('Check', 'h-5 w-5 text-black')}
-                            <span class="font-bold text-black">${isProcessed ? 'Analysis Complete' : 'Analyzing Video Content...'}</span>
+                            <span class="font-bold text-black text-sm sm:text-base">${isProcessed ? 'Analysis Complete' : 'Analyzing Video Content...'}</span>
                         </div>
-                        ${isProcessed ? `<button onclick="resetApp()" class="cta-button px-6 py-3 font-bold flex items-center mt-4 fade-in-text">${icon('RotateCcw', `mr-2 h-4 w-4`)} Reupload</button>` : ''}
+                        ${isProcessed ? `<button onclick="resetApp()" class="cta-button px-6 py-3 font-bold flex items-center mt-4 fade-in-text text-sm sm:text-base">${icon('RotateCcw', `mr-2 h-4 w-4`)} Reupload</button>` : ''}
                     </div>`;
             }
         };
@@ -458,7 +473,7 @@
                 <div id="title-card-${index}" 
                      class="glass-inset-panel interactive p-4 text-left flex flex-col h-full"
                      onclick="copyToClipboard('${copyText}', ${index})">
-                    <p class="text-base font-bold text-black px-2 py-4 leading-snug flex-grow fade-in-text">${title}</p>
+                    <p class="text-sm sm:text-base font-bold text-black py-2 leading-snug flex-grow fade-in-text">${title}</p>
                 </div>`;
             }).join('');
         };
@@ -466,7 +481,7 @@
         const updateDescriptionContent = () => {
             const container = document.getElementById('description-text-container');
             if (container) {
-                container.innerHTML = `<pre class="whitespace-pre-wrap text-sm font-bold text-black fade-in-text">${description}</pre>`;
+                container.innerHTML = `<pre class="whitespace-pre-wrap text-xs sm:text-sm font-bold text-black fade-in-text text-left">${description}</pre>`;
             }
         };
 
@@ -476,23 +491,23 @@
             
             resultsContainer.innerHTML = `
                 <div>
-                    <div class="glass-card p-6 rounded-[36px] mb-12">
+                    <div class="glass-card p-4 sm:p-6 rounded-[36px] mb-12">
                         <div class="flex justify-between items-center mb-6">
-                            <h2 class="text-2xl font-bold flex items-center gap-6 text-black">
+                            <h2 class="text-lg sm:text-2xl font-bold flex items-center gap-3 sm:gap-4 text-black">
                                 <img src="https://manmohit2007.github.io/Manmohit2007/like.png" alt="Like" class="header-icon" onerror="this.style.display='none'">
                                 Titles
                             </h2>
-                            <button onclick="handleRegenerate()" class="cta-button text-sm px-4 py-2 font-bold flex items-center">${icon('RotateCcw', `mr-2 h-4 w-4`)} Regenerate</button>
+                            <button onclick="handleRegenerate()" class="cta-button text-xs sm:text-sm px-3 py-2 sm:px-4 sm:py-2 font-bold flex items-center">${icon('RotateCcw', `mr-1 sm:mr-2 h-3 w-3 sm:h-4 sm:w-4`)} Regenerate</button>
                         </div>
-                        <div id="titles-grid-container" class="grid grid-cols-1 md:grid-cols-3 gap-6"></div>
+                        <div id="titles-grid-container" class="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6"></div>
                     </div>
-                    <div class="glass-card p-6 rounded-[36px]"> 
+                    <div class="glass-card p-4 sm:p-6 rounded-[36px]"> 
                         <div class="flex justify-between items-center mb-4">
-                            <h2 class="text-2xl font-bold flex items-center gap-6 text-black">
+                            <h2 class="text-lg sm:text-2xl font-bold flex items-center gap-3 sm:gap-4 text-black">
                                 <img src="https://manmohit2007.github.io/Manmohit2007/shorts.png" alt="Shorts" class="shorts-icon" onerror="this.style.display='none'">
                                 Description
                             </h2>
-                            <button id="copy-desc-btn" onclick="copyToClipboard(descriptionFull, 3)" class="cta-button text-sm px-4 py-2 font-bold flex items-center">${icon('Copy', 'mr-2 h-4 w-4')} Copy</button>
+                            <button id="copy-desc-btn" onclick="copyToClipboard(descriptionFull, 3)" class="cta-button text-xs sm:text-sm px-3 py-2 sm:px-4 sm:py-2 font-bold flex items-center">${icon('Copy', 'mr-1 sm:mr-2 h-3 w-3 sm:h-4 sm:w-4')} Copy</button>
                         </div>
                         <div id="description-text-container" class="glass-inset-panel p-4 max-h-96 overflow-auto"></div>
                     </div>
