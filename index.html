@@ -674,7 +674,7 @@
 
             if (!file) {
                 uploadContainer.innerHTML = `
-                    <div id="file-drop-area" class="fluid-transition w-full h-full flex flex-col items-center justify-center text-center cursor-pointer pt-3">
+                    <div id="file-drop-area" class="fluid-transition w-full h-full flex flex-col items-center justify-center text-center cursor-pointer pt-3 md:pt-2">
                         ${icon('Upload', `h-12 w-12 text-black mb-4`)}
                         <div>
                             <p class="text-xl font-bold text-black">Drag & Drop Your Video File</p>
@@ -756,7 +756,7 @@
                 }
 
                 uploadContainer.innerHTML = `
-                    <div class="flex flex-col items-center justify-center h-full min-h-[14rem] pt-3">
+                    <div class="flex flex-col items-center justify-center h-full min-h-[14rem] pt-3 md:pt-2">
                         <div class="glass-inset-panel fluid-transition flex items-center gap-3 mb-6 p-4 w-full max-w-sm">
                             ${titleContentHTML}
                         </div>
