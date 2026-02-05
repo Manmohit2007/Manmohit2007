@@ -529,23 +529,24 @@
             
             // Logic Split: Description vs Titles
             if (index === 3) {
-                // --- DESCRIPTION ANIMATION (Full Fade) ---
+                // --- DESCRIPTION ANIMATION (Matched to Regenerate) ---
                 const descContainer = document.getElementById('description-text-container');
                 
-                // Fade Out
+                // Fade Out Content (Matches Regenerate behavior)
                 if (descContainer) descContainer.classList.add('opacity-0');
                 
                 setTimeout(() => {
-                    // Change Button State
+                    // Update Button Icon only (Keep text "Copy" stable, like Regenerate keeps "Regenerate")
                     if (btn) {
                         const originalHTML = btn.innerHTML;
-                        btn.innerHTML = `<span class="flex items-center justify-center min-w-[80px]">${icon('Check', 'mr-2 h-4 w-4 text-white')} Done</span>`;
+                        // Swap icon to check, but keep text "Copy" to prevent layout shift
+                        btn.innerHTML = `<span class="flex items-center">${icon('Check', 'mr-2 h-4 w-4 text-white')} Copy</span>`;
                         setTimeout(() => { if (btn) btn.innerHTML = originalHTML; }, 1000);
                     }
 
-                    // Fade In
+                    // Fade In Content
                     if (descContainer) descContainer.classList.remove('opacity-0');
-                }, 300); // Slower transition for large text block
+                }, 300); 
                 
             } else {
                 // --- TITLE ANIMATION (Subtle Pulse/Flash on specific card) ---
@@ -573,7 +574,7 @@
                         titleCard.style.backgroundColor = ''; 
                         titleCard.style.borderColor = '';
                     }
-                }, 200); // Faster, snappier response for list items
+                }, 200); 
             }
         };
 
@@ -856,7 +857,7 @@
                         <div class="mb-4">
                             <h2 class="flex justify-between items-center text-2xl font-bold text-black">
                                 <span class="truncate mr-2">Description</span>
-                                <button id="copy-desc-btn" onclick="copyDescriptionToClipboard()" class="cta-button backdrop-blur-xl text-sm px-4 py-2 rounded-full font-medium flex items-center whitespace-nowrap flex-shrink-0 min-w-[110px]"><span class="flex items-center justify-center min-w-[80px]">${icon('Copy', 'mr-2 h-4 w-4 text-white')} Copy</span></button>
+                                <button id="copy-desc-btn" onclick="copyDescriptionToClipboard()" class="cta-button backdrop-blur-xl text-sm px-4 py-2 rounded-full font-medium flex items-center whitespace-nowrap flex-shrink-0"><span class="flex items-center">${icon('Copy', 'mr-2 h-4 w-4 text-white')} Copy</span></button>
                             </h2>
                         </div>
                         <div id="description-text-container" class="glass-inset-panel p-4 sm:p-5 min-h-[250px] max-h-96 overflow-auto custom-scrollbar content-transition opacity-100">
