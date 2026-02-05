@@ -228,6 +228,13 @@
             box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1), 0 1px 0 rgba(255, 255, 255, 0.4);
             border-radius: 9999px;
         }
+
+        .content-transition {
+            transition: opacity 0.3s ease-in-out;
+        }
+        
+        .opacity-0 { opacity: 0; }
+        .opacity-100 { opacity: 1; }
     </style>
 </head>
 <body class="p-4 md:p-8" onload="initApp()">
@@ -407,8 +414,12 @@
 
         const toggleViralBoost = () => {
             isViralBoostEnabled = !isViralBoostEnabled;
-            if (isProcessed) generateViralContent(true);
-            updateUI();
+            if (isProcessed) {
+                generateViralContent(true);
+                updateUI();
+            } else {
+                updateToggleUI();
+            }
         };
 
         const handleFileChange = (event) => {
@@ -475,15 +486,30 @@
         };
 
         const handleRegenerate = () => {
-            if (file) {
-                setTimeout(() => {
-                    currentTitleSetIndex = (currentTitleSetIndex + 1) % allTitles.length;
-                    currentDescriptionIndex = (currentDescriptionIndex + 1) % allDescriptions.length;
-                    generateViralContent(false); 
-                    updateUI();
-                    attachStaticListeners(); 
-                }, 200);
-            }
+            if (!file || isProcessing) return;
+            
+            const titlesGrid = document.getElementById('titles-grid-container');
+            const descContainer = document.getElementById('description-text-container');
+            
+            // Start fade out animation
+            if (titlesGrid) titlesGrid.classList.add('opacity-0');
+            if (descContainer) descContainer.classList.add('opacity-0');
+            
+            setTimeout(() => {
+                currentTitleSetIndex = (currentTitleSetIndex + 1) % allTitles.length;
+                currentDescriptionIndex = (currentDescriptionIndex + 1) % allDescriptions.length;
+                generateViralContent(false); 
+                
+                // Update specific elements instead of full re-render
+                updateTitlesContent();
+                updateDescriptionContent();
+                
+                // End fade out animation
+                if (titlesGrid) titlesGrid.classList.remove('opacity-0');
+                if (descContainer) descContainer.classList.remove('opacity-0');
+                
+                attachStaticListeners(); 
+            }, 300);
         };
 
         const copyDescriptionToClipboard = () => {
@@ -671,8 +697,12 @@
                 if (input && input.value.trim() !== "") {
                     currentFileName = input.value.trim();
                     isEditingTitle = false;
-                    if (isProcessed) generateViralContent(true);
-                    updateUI();
+                    if (isProcessed) {
+                        generateViralContent(true);
+                        updateUI();
+                    } else {
+                        updateUI();
+                    }
                 } else {
                     isEditingTitle = false;
                     updateUI();
@@ -688,12 +718,67 @@
             }
         };
 
+        const updateTitlesContent = () => {
+            const grid = document.getElementById('titles-grid-container');
+            if (!grid) return;
+            grid.innerHTML = titles.map((title, index) => `
+                <div class="glass-inset-panel interactive fluid-transition p-4">
+                    <div class="p-1">
+                        <div class="flex justify-between items-start mb-2">
+                            <span class="text-xs font-medium px-2 py-1 rounded-full bg-pink-100 text-pink-700 border border-pink-300">Option ${index + 1}</span>
+                            <button id="copy-title-btn-${index}" onclick="copyToClipboard('${title.replace(/'/g, "\\'")}', ${index})" class="h-8 w-8 p-0 rounded-full flex items-center justify-center transition-all duration-300 bg-transparent hover:bg-black/5 text-gray-800 hover:text-black active:scale-90 active:bg-black/10">${icon('Copy', 'h-4 w-4')}</button>
+                        </div>
+                        <p class="text-base font-medium text-gray-800 p-1">${title}</p>
+                    </div>
+                </div>`).join('');
+        };
+
+        const updateDescriptionContent = () => {
+            const container = document.getElementById('description-text-container');
+            if (!container) return;
+            container.innerHTML = `<pre class="whitespace-pre-wrap text-xs sm:text-sm font-mono text-gray-700 leading-relaxed">${description}</pre>`;
+        };
+
         const renderResults = () => {
             const resultsContainer = document.getElementById('results-section');
             if (!resultsContainer) return;
             if (isProcessed) {
+                // If already shown, we don't want to rebuild the whole structure to avoid flicker/jitter
+                if (resultsContainer.querySelector('#viral-score-card')) {
+                    const scoreTextEl = resultsContainer.querySelector('.viral-score-text');
+                    const scoreBarEl = resultsContainer.querySelector('.viral-score-bar');
+                    const scoreMsgEl = resultsContainer.querySelector('.viral-score-msg');
+                    
+                    const scoreColorClass = viralScore < 75 ? "text-red-500" : viralScore < 90 ? "text-yellow-500" : "text-green-400";
+                    const scoreBgClass = viralScore < 75 ? "bg-red-500" : viralScore < 90 ? "bg-yellow-500" : "bg-green-400";
+                    const scoreShadowClass = viralScore < 75 ? "shadow-[0_0_15px_rgba(239,68,68,0.6)]" : viralScore < 90 ? "shadow-[0_0_15px_rgba(234,179,8,0.6)]" : "shadow-[0_0_15px_rgba(74,222,128,0.6)]";
+                    const scoreMsg = viralScore < 75 ? "Rethink your content hook for better reach." : viralScore < 90 ? "Solid performance. A few tweaks could push it higher." : "VIRAL READY! This content is primed for maximum engagement. Post ASAP.";
+                    
+                    if (scoreTextEl) {
+                        scoreTextEl.className = `text-5xl font-extrabold transition-colors duration-500 viral-score-text ${scoreColorClass}`;
+                        scoreTextEl.textContent = `${viralScore}%`;
+                        let scoreGlowStyle = '';
+                        if (viralScore < 75) scoreGlowStyle = '0 0 30px rgba(239, 68, 68, 0.6)'; 
+                        else if (viralScore < 90) scoreGlowStyle = '0 0 30px rgba(234, 179, 8, 0.6)'; 
+                        else scoreGlowStyle = '0 0 30px rgba(74, 222, 128, 0.8)';
+                        scoreTextEl.style.textShadow = scoreGlowStyle;
+                    }
+                    if (scoreBarEl) {
+                        scoreBarEl.className = `h-3 rounded-full transition-all duration-1000 viral-score-bar ${scoreBgClass} ${scoreShadowClass}`;
+                        scoreBarEl.style.width = `${viralScore}%`;
+                    }
+                    if (scoreMsgEl) scoreMsgEl.textContent = scoreMsg;
+
+                    updateTitlesContent();
+                    updateDescriptionContent();
+                    return;
+                }
+
+                // Initial build of results section
                 const scoreColorClass = viralScore < 75 ? "text-red-500" : viralScore < 90 ? "text-yellow-500" : "text-green-400";
-                const scoreText = viralScore < 75 ? "Rethink your content hook for better reach." : viralScore < 90 ? "Solid performance. A few tweaks could push it higher." : "VIRAL READY! This content is primed for maximum engagement. Post ASAP.";
+                const scoreBgClass = viralScore < 75 ? "bg-red-500" : viralScore < 90 ? "bg-yellow-500" : "bg-green-400";
+                const scoreShadowClass = viralScore < 75 ? "shadow-[0_0_15px_rgba(239,68,68,0.6)]" : viralScore < 90 ? "shadow-[0_0_15px_rgba(234,179,8,0.6)]" : "shadow-[0_0_15px_rgba(74,222,128,0.6)]";
+                const scoreMsg = viralScore < 75 ? "Rethink your content hook for better reach." : viralScore < 90 ? "Solid performance. A few tweaks could push it higher." : "VIRAL READY! This content is primed for maximum engagement. Post ASAP.";
                 
                 let scoreGlowStyle = '';
                 if (viralScore < 75) scoreGlowStyle = 'text-shadow: 0 0 30px rgba(239, 68, 68, 0.6);'; 
@@ -701,24 +786,24 @@
                 else scoreGlowStyle = 'text-shadow: 0 0 30px rgba(74, 222, 128, 0.8);'; 
                 
                 const viralScoreHTML = `
-                    <div class="glass-card fluid-transition p-6 rounded-[36px] mb-12">
+                    <div id="viral-score-card" class="glass-card fluid-transition p-6 rounded-[36px] mb-12">
                         <div class="mb-4"><h2 class="text-2xl font-bold text-black">Viral Potential</h2></div>
                         <div class="p-1">
                             <div class="flex items-center justify-between mb-4"><span class="text-5xl font-extrabold transition-colors duration-500 viral-score-text ${scoreColorClass}" style="${scoreGlowStyle}">${viralScore}%</span></div>
                             <div class="w-full progress-track-fused h-3">
-                                <div class="h-3 rounded-full transition-all duration-1000 ${viralScore < 75 ? "bg-red-500 shadow-[0_0_15px_rgba(239,68,68,0.6)]" : viralScore < 90 ? "bg-yellow-500 shadow-[0_0_15px_rgba(234,179,8,0.6)]" : "bg-green-400 shadow-[0_0_15px_rgba(74,222,128,0.6)]"}" style="width: ${viralScore}%"></div>
+                                <div class="viral-score-bar h-3 rounded-full transition-all duration-1000 ${scoreBgClass} ${scoreShadowClass}" style="width: ${viralScore}%"></div>
                             </div>
-                            <p class="text-base font-medium text-black mt-3">${scoreText}</p>
+                            <p class="viral-score-msg text-base font-medium text-black mt-3">${scoreMsg}</p>
                         </div>
                     </div>`;
 
                 const titlesHTML = `
-                    <div class="glass-card fluid-transition p-6 rounded-[36px] mb-12">
+                    <div id="titles-card" class="glass-card fluid-transition p-6 rounded-[36px] mb-12">
                         <div class="flex justify-between items-center mb-6">
                             <h2 class="text-2xl font-bold text-black">Titles</h2>
                             <button onclick="handleRegenerate()" class="cta-button backdrop-blur-xl text-sm px-4 py-2 rounded-full font-medium flex items-center whitespace-nowrap flex-shrink-0"><span class="flex items-center">${icon('RotateCcw', `mr-2 h-4 w-4 text-white`)} Regenerate</span></button>
                         </div>
-                        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 overflow-visible">
+                        <div id="titles-grid-container" class="grid grid-cols-1 md:grid-cols-3 gap-6 overflow-visible content-transition opacity-100">
                             ${titles.map((title, index) => `
                                 <div class="glass-inset-panel interactive fluid-transition p-4">
                                     <div class="p-1">
@@ -733,24 +818,20 @@
                     </div>`;
                 
                 const descriptionHTML = `
-                    <div class="glass-card fluid-transition p-6 rounded-[36px]"> 
+                    <div id="description-card" class="glass-card fluid-transition p-6 rounded-[36px]"> 
                         <div class="mb-4">
                             <h2 class="flex justify-between items-center text-2xl font-bold text-black">
                                 <span class="truncate mr-2">Description</span>
                                 <button id="copy-desc-btn" onclick="copyDescriptionToClipboard()" class="cta-button backdrop-blur-xl text-sm px-4 py-2 rounded-full font-medium flex items-center whitespace-nowrap flex-shrink-0"><span class="flex items-center">${icon('Copy', 'mr-2 h-4 w-4 text-white')} Copy</span></button>
                             </h2>
                         </div>
-                        <div class="glass-inset-panel p-4 sm:p-5 min-h-[250px] max-h-96 overflow-auto custom-scrollbar">
+                        <div id="description-text-container" class="glass-inset-panel p-4 sm:p-5 min-h-[250px] max-h-96 overflow-auto custom-scrollbar content-transition opacity-100">
                             <pre class="whitespace-pre-wrap text-xs sm:text-sm font-mono text-gray-700 leading-relaxed">${description}</pre>
                         </div>
                     </div>`;
                 
-                if (!resultsContainer.classList.contains('show-results')) {
-                    resultsContainer.innerHTML = viralScoreHTML + titlesHTML + descriptionHTML;
-                    setTimeout(() => resultsContainer.classList.add('show-results'), 50);
-                } else {
-                    resultsContainer.innerHTML = viralScoreHTML + titlesHTML + descriptionHTML;
-                }
+                resultsContainer.innerHTML = viralScoreHTML + titlesHTML + descriptionHTML;
+                setTimeout(() => resultsContainer.classList.add('show-results'), 50);
             } else {
                 resultsContainer.innerHTML = '';
                 resultsContainer.classList.remove('show-results');
