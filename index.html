@@ -14,8 +14,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <meta name="color-scheme" content="only light">
-    <title>FanPlusFollow - Growth AI</title>
-    <meta name="description" content="Growth AI for Content Creators. Boost your reach with advanced tools.">
+    <title>FanPlusFollow</title>
+    <meta name="description" content="Tools for Content Creators. Boost your reach with advanced insights.">
 
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
@@ -114,7 +114,6 @@
             -webkit-tap-highlight-color: transparent;
         }
 
-        /* Removed white hover highlight for cleaner touch response */
         @media (hover: hover) {
             .cta-button:hover {
                 transform: translateY(-1px);
@@ -122,7 +121,6 @@
             }
         }
         
-        /* Tactical Feedback for Tap/Click - Responsive & Snappy */
         .cta-button:active {
             transform: scale(0.92) translateY(2px) !important; 
             background-color: rgba(0, 0, 0, 0.12) !important;
@@ -143,13 +141,11 @@
             cursor: pointer;
         }
 
-        /* Tactile feedback for cards/panels */
         .glass-inset-panel.interactive:active {
             transform: scale(0.96);
             background-color: rgba(0, 0, 0, 0.1);
         }
 
-        /* Fade in for text content */
         .fade-in-text {
             animation: fadeInText 0.4s cubic-bezier(0.4, 0, 0.2, 1) forwards;
         }
@@ -164,7 +160,6 @@
             transition: opacity 0.2s ease, transform 0.2s ease !important;
         }
 
-        /* Feedback for clicked titles */
         .copy-pulse {
             background-color: rgba(74, 222, 128, 0.25) !important;
             transform: scale(0.94) !important;
@@ -186,16 +181,13 @@
     <div id="fixed-background"></div>
     <div class="max-w-4xl mx-auto">
         <div class="mb-6 sm:mb-8">
-            <header id="app-header" class="glass-card fluid-transition px-4 py-2 sm:px-6 sm:py-3 flex flex-row items-center justify-between card-animation-target">
+            <header id="app-header" class="glass-card fluid-transition px-4 py-4 sm:px-6 sm:py-5 flex flex-row items-center justify-between card-animation-target">
                 <div class="flex items-center space-x-3 sm:space-x-4">
                     <div class="w-12 h-12 sm:w-16 sm:h-16">
                         <img src="https://manmohit2007.github.io/Manmohit2007/brand_logo.png?v=10" alt="Logo" class="w-full h-full object-contain filter drop-shadow-sm">
                     </div>
                     <div class="text-left">
-                        <h1 class="text-lg sm:text-2xl font-bold text-black leading-tight">FanPlusFollow</h1>
-                        <p class="text-black text-[10px] sm:text-xs flex items-center font-bold opacity-70">
-                            GROWTH AI ENGINE
-                        </p>
+                        <h1 class="text-xl sm:text-2xl font-bold text-black leading-tight">FanPlusFollow</h1>
                     </div>
                 </div>
                 <div class="flex-shrink-0">
@@ -291,18 +283,20 @@
             let displayVideoName = fullVideoName.length > 20 ? fullVideoName.substring(0, 20) + "..." : fullVideoName;
             const getTemplates = (vName) => ({
                 titles: [
-                    [`🔥 ULTIMATE ${vName} Guide!`, `📈 ${vName}: How We Went VIRAL!`, `🤯 This ${vName} Hack is Insane!`],
-                    [`🚀 ${vName} HACK: More Views!`, `💡 One ${vName} Tip That Works...`, `🚫 Stop Making Bad ${vName} Videos!`],
+                    [`🔥 ULTIMATE ${vName} Guide! #fanplusfollow`, `📈 ${vName}: How We Went VIRAL! #fanplusfollow`, `🤯 This ${vName} Hack is Insane! #fanplusfollow`],
+                    [`🚀 ${vName} HACK: More Views! #fanplusfollow`, `💡 One ${vName} Tip That Works... #fanplusfollow`, `🚫 Stop Making Bad ${vName} Videos! #fanplusfollow`],
                 ],
                 descriptions: [
-                    `🎬 ${vName} - Creator insights with @FanPlusFollow!\n\n📺 YouTube: ${YOUTUBE_CHANNEL_LINK}\n📸 Instagram: ${INSTAGRAM_LINK}\n\n#GrowthAI #ViralTips`,
-                    `✨ The secret to ${vName} revealed. \n\n🔗 Subscribe: ${YOUTUBE_CHANNEL_LINK}\n📸 Follow: ${INSTAGRAM_LINK}`
+                    `🚀 Unlock the full potential of ${vName} with this comprehensive guide! Whether you're a beginner or a pro, these insights will help you skyrocket your engagement.\n\n📌 IN THIS VIDEO:\n0:00 - Intro\n1:45 - Why ${vName} Matters\n4:20 - Step-by-Step Strategy\n8:15 - Secret Hack Revealed\n10:30 - Final Thoughts\n\n💡 JOIN THE CREATOR COMMUNITY:\nSubscribe here: ${YOUTUBE_CHANNEL_LINK}\nFollow on IG: ${INSTAGRAM_LINK}\n\n👇 QUESTION OF THE DAY:\nWhat's your biggest challenge with ${vName}? Let me know in the comments!\n\n#${vName.replace(/\s+/g, '')} #ContentStrategy #GrowthTips #FanPlusFollow`,
+                    
+                    `😱 You won't believe how much ${vName} can change your channel! I tested this strategy for 30 days and the results were SHOCKING.\n\n🔥 RESOURCES MENTIONED:\n- Creator Tools: [Link]\n- Analytics Guide: [Link]\n\n✅ STAY CONNECTED:\n📸 Instagram: ${INSTAGRAM_LINK}\n📺 YouTube: ${YOUTUBE_CHANNEL_LINK}\n\n✨ If you enjoyed this video, please hit that LIKE button and SUBSCRIBE for more daily tips!\n\n#Viral #Trending #CreatorEconomy #${vName.replace(/\s+/g, '')}`
                 ]
             });
             const displayTemplates = getTemplates(displayVideoName);
             const fullTemplates = getTemplates(fullVideoName);
             titles = displayTemplates.titles[currentTitleSetIndex % displayTemplates.titles.length];
-            description = displayTemplates.descriptions[currentDescriptionIndex % displayTemplates.descriptions.length];
+            // Use full template for description preview to avoid awkward truncation in long text
+            description = fullTemplates.descriptions[currentDescriptionIndex % fullTemplates.descriptions.length];
             titlesFull = fullTemplates.titles[currentTitleSetIndex % fullTemplates.titles.length];
             descriptionFull = fullTemplates.descriptions[currentDescriptionIndex % fullTemplates.descriptions.length];
         };
@@ -350,22 +344,30 @@
             const container = document.getElementById('upload-section-content');
             if (!file) {
                 container.innerHTML = `
-                    <div id="file-drop-area" class="w-full h-full flex flex-col items-center justify-center text-center cursor-pointer pt-3">
-                        <div class="mb-4 opacity-40">${icon('Upload', 'h-12 w-12')}</div>
-                        <p class="text-lg font-bold opacity-70">Drag & Drop Your Video</p>
+                    <div id="file-drop-area" class="w-full h-full flex flex-col items-center justify-center text-center cursor-pointer pb-4">
+                        <div class="mb-4">${icon('Upload', 'h-12 w-12')}</div>
+                        <p class="text-lg font-bold text-black">Drag & Drop Your Video</p>
                         <button class="cta-button mt-6 px-10 py-4 font-bold text-lg">Select File</button>
                         <input type="file" id="file-upload-input" class="hidden" accept="video/*" onchange="handleFileChange(event)"/>
                     </div>`;
                 document.getElementById('file-drop-area').onclick = () => document.getElementById('file-upload-input').click();
             } else {
                 container.innerHTML = `
-                    <div class="flex flex-col items-center justify-center h-full">
-                        <div class="glass-inset-panel flex items-center p-4 w-full max-w-sm truncate mb-6"><p class="font-bold text-black/80">${currentFileName}</p></div>
-                        <div class="flex items-center gap-2 mb-4 font-bold">
+                    <div class="flex flex-col items-center justify-center h-full w-full pt-10">
+                        <div class="w-full max-w-md mb-6 px-2 sm:px-0">
+                            <div 
+                                class="glass-inset-panel flex items-center px-5 py-3 w-full ${isProcessed ? 'interactive cursor-pointer' : ''}" 
+                                ${isProcessed ? 'onclick="resetApp()"' : ''}
+                            >
+                                <p class="font-bold text-black/80 truncate text-center w-full flex items-center justify-center gap-2">
+                                    ${currentFileName}
+                                </p>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-2 mb-2 font-bold">
                             ${!isProcessed ? icon('Loader', 'h-5 w-5') : icon('Check', 'h-5 w-5')}
                             <span class="opacity-80">${isProcessed ? 'Analysis Complete' : 'Analyzing Video...'}</span>
                         </div>
-                        ${isProcessed ? `<button onclick="resetApp()" class="cta-button px-8 py-3 font-bold mt-4">Reupload</button>` : ''}
                     </div>`;
             }
         };
