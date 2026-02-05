@@ -368,7 +368,7 @@
                 label.className = `font-bold ${finalTextColorClass} transition-colors duration-500`;
                 indicator.className = `h-2.5 rounded-full transition-all duration-1000 ${indicatorColorClass}`;
                 statusText.className = `font-medium transition-colors duration-500 ${finalTextColorClass}`;
-                statusText.textContent = isComplete ? "Processing Complete!" : "Analyzing content and generating titles...";
+                statusText.textContent = isComplete ? "Processing Complete" : "Processing...";
             }
         };
 
@@ -682,7 +682,7 @@
                 const processingArea = isProcessing || isProcessed ? `
                     <div class="w-full max-w-sm mb-4">
                         <div class="flex justify-between mb-2">
-                            <span id="processing-status" class="font-medium ${statusTextColorClass}">${isProcessed ? 'Processing Complete!' : 'Analyzing content and generating titles...'}</span>
+                            <span id="processing-status" class="font-medium ${statusTextColorClass}">${isProcessed ? 'Processing Complete' : 'Processing...'}</span>
                             <span id="progress-label" class="${statusTextColorClass} font-bold">${progressValue}%</span>
                         </div>
                         <div class="w-full progress-track-fused h-2.5">
@@ -795,7 +795,7 @@
                     const scoreColorClass = viralScore < 75 ? "text-red-500" : viralScore < 90 ? "text-yellow-500" : "text-green-400";
                     const scoreBgClass = viralScore < 75 ? "bg-red-500" : viralScore < 90 ? "bg-yellow-500" : "bg-green-400";
                     const scoreShadowClass = viralScore < 75 ? "shadow-[0_0_15px_rgba(239,68,68,0.6)]" : viralScore < 90 ? "shadow-[0_0_15px_rgba(234,179,8,0.6)]" : "shadow-[0_0_15px_rgba(74,222,128,0.6)]";
-                    const scoreMsg = viralScore < 75 ? "Rethink your content hook for better reach." : viralScore < 90 ? "Solid performance. A few tweaks could push it higher." : "VIRAL READY! This content is primed for maximum engagement.";
+                    const scoreMsg = viralScore < 75 ? "Rethink your content hook for better reach." : viralScore < 90 ? "Solid Performance. A few tweaks could push it higher." : "Viral Ready. This content is primed for maximum engagement.";
                     
                     if (scoreTextEl) {
                         scoreTextEl.className = `text-5xl font-extrabold transition-colors duration-500 viral-score-text ${scoreColorClass}`;
@@ -820,7 +820,7 @@
                 const scoreColorClass = viralScore < 75 ? "text-red-500" : viralScore < 90 ? "text-yellow-500" : "text-green-400";
                 const scoreBgClass = viralScore < 75 ? "bg-red-500" : viralScore < 90 ? "bg-yellow-500" : "bg-green-400";
                 const scoreShadowClass = viralScore < 75 ? "shadow-[0_0_15px_rgba(239,68,68,0.6)]" : viralScore < 90 ? "shadow-[0_0_15px_rgba(234,179,8,0.6)]" : "shadow-[0_0_15px_rgba(74,222,128,0.6)]";
-                const scoreMsg = viralScore < 75 ? "Rethink your content hook for better reach." : viralScore < 90 ? "Solid performance. A few tweaks could push it higher." : "VIRAL READY! This content is primed for maximum engagement.";
+                const scoreMsg = viralScore < 75 ? "Rethink your content hook for better reach." : viralScore < 90 ? "Solid Performance. A few tweaks could push it higher." : "Viral Ready. This content is primed for maximum engagement.";
                 
                 let scoreGlowStyle = '';
                 if (viralScore < 75) scoreGlowStyle = 'text-shadow: 0 0 30px rgba(239, 68, 68, 0.6);'; 
