@@ -41,7 +41,7 @@
         ::-webkit-scrollbar { width: 8px; height: 8px; }
         ::-webkit-scrollbar-track { background: transparent; }
         ::-webkit-scrollbar-thumb {
-            background-color: rgba(155, 155, 155, 0.2);
+            background-color: rgba(0, 0, 0, 0.2);
             border-radius: 20px;
         }
         ::-webkit-scrollbar-corner { background: transparent; }
@@ -51,7 +51,7 @@
             will-change: transform, box-shadow, filter, background-color, color, opacity; 
         }
 
-        /* Animation */
+        /* Entry Animation */
         @keyframes spiral-entry {
             0% { opacity: 0; transform: perspective(1000px) scale(0.9) translateY(30px); filter: blur(10px); }
             100% { opacity: 1; transform: perspective(1000px) scale(1) translateY(0); filter: blur(0); }
@@ -78,63 +78,35 @@
             touch-action: manipulation;
         }
 
-        @media (hover: hover) {
-            .glass-card:hover {
-                transform: translateY(-4px) scale(1.002) translateZ(0); 
-                box-shadow: 0 15px 40px rgba(0, 0, 0, 0.08), inset 0 0 50px rgba(255, 255, 255, 0.5);
-                border-color: rgba(255, 255, 255, 0.7);
-            }
-        }
-
-        .glass-card:active {
-            transform: scale(0.98) translateZ(0) !important;
-            transition-duration: 100ms;
-        }
-
         /* --- CTA BUTTONS --- */
         .cta-button {
-            /* Fused Glass Style - No external glows */
             background-color: rgba(0, 0, 0, 0.02);
             box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.1), 0 1px 0 rgba(255, 255, 255, 0.2);
-            color: #1f2937; 
-            
+            color: #000000; 
             transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-            will-change: transform, background-color, box-shadow; 
             border: none;
             border-radius: 24px; 
             user-select: none;
-            -webkit-user-select: none;
-            touch-action: manipulation;
             cursor: pointer;
-            transform: translateZ(0); 
-            backface-visibility: hidden;
-            -webkit-font-smoothing: subpixel-antialiased;
         }
 
         @media (hover: hover) {
             .cta-button:hover {
-                transform: translateY(-2px) scale(1.02) translateZ(0);
+                transform: translateY(-2px) scale(1.02);
                 background-color: rgba(255, 255, 255, 0.25);
-                /* Strictly inset highlights for fusion effect */
                 box-shadow: inset 0 0 15px rgba(255, 255, 255, 0.4);
-                color: #000;
             }
         }
         
         .cta-button:active {
-            transform: scale(0.96) translateZ(0) !important; 
+            transform: scale(0.96); 
             background-color: rgba(0, 0, 0, 0.05);
-            box-shadow: inset 0 2px 4px rgba(0,0,0,0.1);
-            color: #000; 
         }
 
         body {
             background-color: transparent; 
             min-height: 100vh;
-            color: #374151;
-            overflow-x: hidden;
-            overscroll-behavior: none;
-            overscroll-behavior-y: none;
+            color: #000000;
         }
 
         #fixed-background {
@@ -144,12 +116,7 @@
             background-image: linear-gradient(rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.2)), url('background.png');
             background-size: cover;
             background-position: center;
-            background-repeat: no-repeat;
             pointer-events: none;
-            height: 100lvh;
-            width: 100vw;
-            transform: translateZ(0);
-            backface-visibility: hidden;
         }
 
         @media (min-width: 768px) {
@@ -157,63 +124,17 @@
                 background-image: linear-gradient(rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.2)), url('landscape.png');
             }
         }
-        
-        .viral-toggle-track {
-            transition: all 400ms cubic-bezier(0.25, 0.46, 0.45, 0.94);
-            border-radius: 9999px;
-            cursor: pointer;
-        }
-        
-        .viral-toggle-track.infused-off {
-            background-color: rgba(0, 0, 0, 0.02); 
-            box-shadow: inset 0 4px 8px rgba(0, 0, 0, 0.15), inset 0 1px 2px rgba(0, 0, 0, 0.06), 0 1px 0 rgba(255, 255, 255, 0.3); 
-        }
-
-        .viral-toggle-track.on-glow {
-            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.2), 0 0 30px 8px rgba(74, 222, 128, 0.9), 0 0 80px 30px rgba(74, 222, 128, 0.6); 
-        }
-        
-        .viral-toggle-knob {
-            transition: transform 400ms cubic-bezier(0.34, 1.56, 0.64, 1); 
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2), inset 0 -2px 2px rgba(0, 0, 0, 0.05), inset 0 2px 4px rgba(255, 255, 255, 1);      
-        }
-        
-        @keyframes icon-pop {
-            0% { transform: scale(0.8); opacity: 0.5; }
-            70% { transform: scale(1.1); opacity: 1; }
-            100% { transform: scale(1); opacity: 1; }
-        }
-
-        .icon-pop-on {
-            animation: icon-pop 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
-        }
-        
-        #viral-toggle-zap.icon-pop-on polygon {
-            filter: drop-shadow(0 0 12px rgba(74, 222, 128, 0.9));
-        }
-
-        .drag-over-active { 
-            background-color: rgba(255, 255, 255, 0.25) !important;
-            transform: scale(1.02) translateY(-4px) !important;
-            box-shadow: 0 20px 60px rgba(255, 255, 255, 0.3), inset 0 0 60px rgba(255, 255, 255, 0.6) !important;
-            border-color: rgba(255, 255, 255, 1) !important;
-        }
-
-        .toggle-click-area {
-            cursor: pointer;
-            user-select: none;
-            -webkit-user-select: none;
-        }
 
         .glass-inset-panel {
-            background-color: rgba(0, 0, 0, 0.02);
+            background-color: rgba(0, 0, 0, 0.04);
             box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.1), 0 1px 0 rgba(255, 255, 255, 0.2);
             border-radius: 24px;
             border: none;
         }
 
         .glass-inset-panel.interactive {
-            transition: background-color 0.3s ease, box-shadow 0.3s ease;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            cursor: pointer;
         }
 
         @media (hover: hover) {
@@ -223,33 +144,36 @@
             }
         }
 
-        .progress-track-fused {
-            background-color: rgba(0, 0, 0, 0.06);
-            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1), 0 1px 0 rgba(255, 255, 255, 0.4);
-            border-radius: 9999px;
-            overflow: hidden; 
+        /* Fade in for text content only */
+        .fade-in-text {
+            animation: fadeInText 0.4s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+        }
+        @keyframes fadeInText {
+            from { opacity: 0; transform: translateY(4px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
-        .content-transition {
-            transition: opacity 300ms cubic-bezier(0.4, 0, 0.2, 1);
+        .text-fade-out {
+            opacity: 0 !important;
+            transform: translateY(-4px) !important;
+            transition: opacity 0.25s ease, transform 0.25s ease !important;
         }
-        
-        .opacity-0 { opacity: 0; }
-        .opacity-100 { opacity: 1; }
 
         .icon-btn {
-            transition: transform 0.2s ease, background-color 0.2s ease, color 0.2s ease;
-        }
-        .icon-btn:active {
-            transform: scale(0.92);
+            color: #000000;
         }
 
-        /* Vibrant Gradient Text styling without glow */
-        .vibrant-gradient-text {
-            background-image: linear-gradient(to right, #a78bfa 0%, #f472b6 40%, #fca564 75%, #fca564 100%);
-            background-clip: text;
-            -webkit-background-clip: text;
-            color: transparent;
+        /* Feedback for clicked titles */
+        .copy-pulse {
+            background-color: rgba(74, 222, 128, 0.2) !important;
+            transform: scale(0.98);
+        }
+
+        /* Header Icon Styling */
+        .header-icon {
+            height: 1.5rem;
+            width: auto;
+            object-fit: contain;
         }
     </style>
 </head>
@@ -257,31 +181,23 @@
     <div id="fixed-background"></div>
     <div class="max-w-4xl mx-auto">
         <div class="flex flex-col md:flex-row gap-12 mb-12">
-            <header id="app-header" class="glass-card fluid-transition p-6 flex flex-col sm:flex-row items-center justify-between flex-1 card-animation-target sm:order-first">
-                <div class="flex items-center mb-4 sm:mb-0">
+            <header id="app-header" class="glass-card fluid-transition p-6 flex flex-col sm:flex-row items-center justify-between flex-1 card-animation-target">
+                <div class="flex items-center">
                     <div class="flex items-center space-x-4">
                         <div class="w-16 h-16">
                             <img src="https://manmohit2007.github.io/Manmohit2007/brand_logo.png?v=10" alt="FanPlusFollow Logo" class="w-full h-full object-contain filter drop-shadow-md">
                         </div>
                         <div class="text-left">
-                            <h1 class="text-2xl font-bold vibrant-gradient-text">
-                              FanPlusFollow
-                            </h1>
-                            <p class="text-black text-sm flex items-center font-medium">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-1 h-3 w-3"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                            <div class="flex items-center gap-2">
+                                <h1 class="text-2xl font-bold text-black">
+                                  FanPlusFollow
+                                </h1>
+                                <img src="https://manmohit2007.github.io/Manmohit2007/youtube.png" alt="YouTube" class="h-6 w-auto object-contain" onerror="this.style.display='none'">
+                            </div>
+                            <p class="text-black text-sm flex items-center font-bold">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-1 h-3 w-3"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
                                 Growth AI
                             </p>
-                        </div>
-                    </div>
-                </div>
-                <div class="flex flex-col sm:flex-row items-center gap-3">
-                    <div class="flex items-center space-x-3 toggle-click-area p-2 rounded-xl transition-colors" onclick="toggleViralBoost()">
-                        <svg id="viral-toggle-zap" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-6 w-6 transition-colors duration-300 overflow-visible text-green-400 icon-pop-on drop-shadow-[0_0_5px_rgba(74,222,128,0.8)]"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
-                        <span id="viral-toggle-text" class="text-lg font-bold transition-colors duration-300 text-black">
-                            Viral Mode
-                        </span>
-                        <div id="viral-toggle-track" class="viral-toggle-track w-16 h-9 flex items-center rounded-full p-1 transition-all duration-300 backdrop-blur-3xl touch-none bg-gradient-to-t from-green-400 to-lime-400 on-glow">
-                          <div id="viral-toggle-knob" class="w-7 h-7 rounded-full transform transition-transform duration-300 viral-toggle-knob bg-white" style="transform: translateX(28px);"></div>
                         </div>
                     </div>
                 </div>
@@ -290,7 +206,8 @@
         <main>
             <div id="upload-card" class="glass-card fluid-transition p-6 rounded-[36px] mb-12 card-animation-target">
                 <div class="mb-4">
-                    <h2 class="text-2xl font-bold flex items-center gap-2 text-black">
+                    <h2 class="text-2xl font-bold flex items-center gap-3 text-black">
+                        <img src="https://manmohit2007.github.io/Manmohit2007/share.png" alt="Share" class="header-icon" onerror="this.style.display='none'">
                         Upload Video
                     </h2>
                 </div>
@@ -305,19 +222,19 @@
                         <div class="w-16 h-16 mb-2 sm:mb-4">
                             <img src="https://manmohit2007.github.io/Manmohit2007/brand_logo.png?v=10" alt="FanPlusFollow Logo" class="w-full h-full object-contain filter drop-shadow-md">
                         </div>
-                        <h3 class="text-xl sm:text-2xl font-bold text-center vibrant-gradient-text">
+                        <h3 class="text-xl sm:text-2xl font-bold text-center text-black">
                           Boost Your Reach With FanPlusFollow
                         </h3>
-                        <p class="text-black mt-1 sm:mt-2 text-center max-w-md text-sm sm:text-base opacity-70">
+                        <p class="text-black mt-1 sm:mt-2 text-center max-w-md text-sm sm:text-base font-bold">
                           Join the community for exclusive growth insights and advanced content tools.
                         </p>
-                        <div class="mt-6 -translate-y-[2px] flex flex-row justify-center gap-3 sm:gap-6 w-full max-w-sm sm:max-w-none px-1 sm:px-0">
-                          <button class="cta-button flex-1 sm:flex-none px-4 py-3 sm:px-8 sm:py-4 font-bold transition-all duration-300 ease-in-out transform flex items-center justify-center text-sm sm:text-lg" onclick="openLinkWithDelay('https://www.youtube.com/@fanplusfollow')">
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-1.5 sm:mr-2 h-4 w-4 sm:h-5 sm:w-5"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                        <div class="mt-6 flex flex-row justify-center gap-3 sm:gap-6 w-full max-w-sm sm:max-w-none px-1">
+                          <button class="cta-button flex-1 sm:flex-none px-4 py-3 sm:px-8 sm:py-4 font-bold flex items-center justify-center text-sm sm:text-lg" onclick="openLinkWithDelay('https://www.youtube.com/@fanplusfollow')">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-1.5 sm:mr-2 h-4 w-4 sm:h-5 sm:w-5"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
                             Subscribe
                           </button>
-                          <button class="cta-button flex-1 sm:flex-none px-4 py-3 sm:px-8 sm:py-4 font-bold transition-all duration-300 ease-in-out transform flex items-center justify-center text-sm sm:text-lg" onclick="openLinkWithDelay('https://www.instagram.com/_manmohit_sing_/')">
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-1.5 sm:mr-2 h-4 w-4 sm:h-5 sm:w-5"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                          <button class="cta-button flex-1 sm:flex-none px-4 py-3 sm:px-8 sm:py-4 font-bold flex items-center justify-center text-sm sm:text-lg" onclick="openLinkWithDelay('https://www.instagram.com/_manmohit_sing_/')">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-1.5 sm:mr-2 h-4 w-4 sm:h-5 sm:w-5"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
                             Follow
                           </button>
                         </div>
@@ -331,26 +248,16 @@
         // --- GLOBAL STATE ---
         let file = null;
         let currentFileName = ""; 
-        let isEditingTitle = false; 
         let isProcessing = false;
         let isProcessed = false;
-        let viralScore = 0;
         
         let titles = [];
         let description = "";
-        let allTitles = []; 
-        let allDescriptions = []; 
-        
         let titlesFull = [];
         let descriptionFull = "";
-        let allTitlesFull = [];
-        let allDescriptionsFull = [];
 
         let currentTitleSetIndex = 0;
         let currentDescriptionIndex = 0;
-        let isViralBoostEnabled = true; 
-        let progressValue = 0;
-        let progressInterval = null;
 
         const YOUTUBE_CHANNEL_LINK = "https://www.youtube.com/@fanplusfollow";
         const INSTAGRAM_LINK = "https://www.instagram.com/_manmohit_singh_/";
@@ -361,85 +268,13 @@
 
         const icon = (name, classes) => {
             const iconMap = {
-                'Upload': `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="${classes}"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" x2="12" y1="3" y2="15"/></svg>`,
-                'Copy': `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="${classes}"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>`,
-                'Check': `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="${classes}"><polyline points="20 6 9 17 4 12"/></svg>`,
-                'RotateCcw': `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="${classes}"><path d="M3 2v6h6"/><path d="M3 13a9 9 0 1 0 3-7.7L3 8"/></svg>`,
-                'Edit': `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="${classes}"><path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"/></svg>`,
+                'Upload': `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="${classes}"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" x2="12" y1="3" y2="15"/></svg>`,
+                'Copy': `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="${classes}"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>`,
+                'Check': `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="${classes}"><polyline points="20 6 9 17 4 12"/></svg>`,
+                'RotateCcw': `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="${classes}"><path d="M3 2v6h6"/><path d="M3 13a9 9 0 1 0 3-7.7L3 8"/></svg>`,
+                'Loader': `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="animate-spin ${classes}"><path d="M12 2v4"/><path d="M12 18v4"/><path d="M4.93 4.93l2.83 2.83"/><path d="M16.24 16.24l2.83 2.83"/><path d="M2 12h4"/><path d="M18 12h4"/><path d="M4.93 19.07l2.83-2.83"/><path d="M16.24 7.76l2.83-2.83"/></svg>`
             };
             return iconMap[name] || '';
-        };
-        
-        const setProgress = (value) => {
-            progressValue = value;
-            const indicator = document.getElementById('progress-indicator');
-            const label = document.getElementById('progress-label');
-            const statusText = document.getElementById('processing-status');
-            const isComplete = progressValue >= 100;
-            
-            const processingBarClass = "bg-gradient-to-r from-green-300 via-green-400 to-green-500";
-            const completeBarClass = "bg-green-400 shadow-[0_0_15px_rgba(74,222,128,0.6)]";
-            const processingTextClass = "text-gray-600";
-            const completeTextClass = "text-green-500 font-bold drop-shadow-[0_0_8px_rgba(74,222,128,0.4)]";
-
-            if (indicator && label && statusText) {
-                indicator.style.width = `${progressValue}%`;
-                label.innerHTML = `${progressValue}%`;
-                label.className = `font-bold transition-colors duration-500 ${isComplete ? completeTextClass : processingTextClass}`;
-                indicator.className = `h-2.5 rounded-full transition-all duration-200 ${isComplete ? completeBarClass : processingBarClass}`;
-                statusText.className = `font-medium transition-colors duration-500 ${isComplete ? completeTextClass : processingTextClass}`;
-                statusText.textContent = isComplete ? "Processing Complete" : "Processing...";
-            }
-        };
-
-        const startProgressSimulation = () => {
-            if (progressInterval) clearInterval(progressInterval);
-            progressInterval = setInterval(() => {
-                if (progressValue >= 95) {
-                    clearInterval(progressInterval);
-                    progressInterval = null;
-                    setProgress(95); 
-                } else {
-                    const step = Math.floor(Math.random() * 11) + 2; 
-                    const nextValue = Math.min(progressValue + step, 95);
-                    setProgress(nextValue);
-                }
-            }, 200);
-        };
-
-        const stopProgressSimulation = () => {
-            if (progressInterval) clearInterval(progressInterval);
-            progressInterval = null;
-            setProgress(100);
-        };
-
-        const updateToggleUI = () => {
-            const toggleTrack = document.getElementById('viral-toggle-track');
-            const toggleKnob = document.getElementById('viral-toggle-knob');
-            const toggleZap = document.getElementById('viral-toggle-zap');
-            const toggleText = document.getElementById('viral-toggle-text');
-            if (toggleTrack && toggleKnob && toggleZap && toggleText) {
-                toggleKnob.classList.remove('bg-white');
-                toggleKnob.classList.add('bg-white');
-                toggleTrack.classList.remove('bg-gradient-to-t', 'from-green-400', 'to-lime-400', 'on-glow', 'infused-off');
-                if (isViralBoostEnabled) {
-                    toggleTrack.classList.add('bg-gradient-to-t', 'from-green-400', 'to-lime-400', 'on-glow');
-                } else {
-                    toggleTrack.classList.add('infused-off');
-                }
-                toggleKnob.style.transform = isViralBoostEnabled ? 'translateX(28px)' : 'translateX(0)';
-                toggleZap.classList.remove('text-green-400', 'text-gray-500', 'icon-pop-on', 'drop-shadow-[0_0_5px_rgba(74,222,128,0.8)]');
-                if (isViralBoostEnabled) {
-                    toggleZap.classList.add('text-green-400', 'icon-pop-on', 'drop-shadow-[0_0_5px_rgba(74,222,128,0.8)]');
-                } else { toggleZap.classList.add('text-gray-500'); }
-                toggleText.className = `text-lg font-bold transition-colors duration-300 ${isViralBoostEnabled ? 'text-black' : 'text-gray-500'}`;
-            }
-        };
-
-        const toggleViralBoost = () => {
-            isViralBoostEnabled = !isViralBoostEnabled;
-            if (isProcessed) { generateViralContent(true); updateUI(); } 
-            else { updateToggleUI(); }
         };
 
         const handleFileChange = (event) => {
@@ -451,35 +286,20 @@
             }
         };
 
-        const handleDrop = (event) => {
-            event.preventDefault();
-            const droppedFile = event.dataTransfer.files?.[0];
-            if (droppedFile && droppedFile.type.startsWith("video/")) {
-                file = droppedFile;
-                currentFileName = file.name; 
-                processFile();
-            }
-        };
-
         const processFile = () => {
             isProcessing = true;
             isProcessed = false;
-            currentTitleSetIndex = 0; 
-            currentDescriptionIndex = 0; 
-            updateUI();
-            startProgressSimulation();
+            updateUI(); 
+            
             setTimeout(() => {
-                stopProgressSimulation();
-                setTimeout(() => {
-                    generateViralContent(true); 
-                    isProcessing = false;
-                    isProcessed = true;
-                    updateUI(); 
-                }, 500);
-            }, 3000);
+                generateViralContent(); 
+                isProcessing = false;
+                isProcessed = true;
+                updateUI(); 
+            }, 2500);
         };
 
-        const generateViralContent = (shouldUpdateScore = true) => { 
+        const generateViralContent = () => { 
             if (!file) return;
             const fullVideoName = currentFileName.replace(/\.[^/.]+$/, "");
             let displayVideoName = fullVideoName.length > 25 ? fullVideoName.substring(0, 25) + "..." : fullVideoName;
@@ -487,48 +307,55 @@
             const getTemplates = (vName) => ({
                 titles: [
                     [`🔥 ULTIMATE ${vName} Guide!`, `📈 ${vName}: How We Went VIRAL!`, `🤯 You Won't BELIEVE This ${vName} Trick!`],
-                    [`🚀 ${vName} HACK: More Views NOW!`, `This ONE ${vName} Tip Changed Everything...`, `Stop Making ${vName} Videos Until You Watch This! 🚫`]
+                    [`🚀 ${vName} HACK: More Views NOW!`, `💡 This ONE ${vName} Tip Changed Everything...`, `🚫 Stop Making ${vName} Videos! Watch This!`],
+                    [`✨ I Found the Secret to ${vName} (Works)`, `🌐 Why ${vName} is Taking Over the Internet`, `💎 7 Insane ${vName} Hacks You Need ASAP`],
+                    [`⏰ Master ${vName} in Under 5 Minutes`, `🕵️ The Truth About ${vName} (Watch Now)`, `🧪 Testing Viral ${vName} Myths: Real or Fake?`],
+                    [`📢 Everything I Wish I Knew About ${vName}`, `🤔 Is ${vName} Overrated? Let's Find Out.`, `⚠️ Don't Make These ${vName} Mistakes!`]
                 ],
                 descriptions: [
-                    `🎬 ${vName} - Discover amazing insights with @FanPlusFollow!\n\nCheck out: ${YOUTUBE_CHANNEL_LINK}\nFollow: ${INSTAGRAM_LINK}\n\n#FanPlusFollow #YouTubeGrowth`,
-                    `Is your ${vName} content not performing? REVEAL the secret sauce.\n\nSubscribe: @FanPlusFollow\nIG: ${INSTAGRAM_LINK}`
+                    `🎬 ${vName} - Discover amazing insights with @FanPlusFollow!\n\nIn this video, we dive deep into the strategies that actually work for creators. Don't forget to subscribe for more growth tips!\n\n📺 YouTube: ${YOUTUBE_CHANNEL_LINK}\n📸 Instagram: ${INSTAGRAM_LINK}\n\n#FanPlusFollow #YouTubeGrowth #ViralTips #ContentCreator #SEO #GrowthMindset`,
+                    `✨ The secret to ${vName} is finally revealed. We break down the algorithm-friendly ways to boost your reach today. Join the community!\n\n🔗 Subscribe: ${YOUTUBE_CHANNEL_LINK}\n🔗 Follow Me: ${INSTAGRAM_LINK}\n\n#${vName} #GrowthHacking #SuccessTips #VideoMarketing #Trending #CreatorEconomy`,
+                    `🚀 Ready to go viral? This ${vName} breakdown covers everything from the basics to advanced hacks for high retention. \n\n🔔 Subscribe for daily creator insights: ${YOUTUBE_CHANNEL_LINK}\n📸 Instagram: ${INSTAGRAM_LINK}\n\n#YouTubeHacks #DigitalMarketing #Algorithm #ViralVideo #Strategy #ContentStrategy`,
+                    `❌ Stop making common ${vName} mistakes and start seeing real results. This guide is built for creators who want to win in 2024.\n\n👉 Join the squad: ${YOUTUBE_CHANNEL_LINK}\n📸 Instagram: ${INSTAGRAM_LINK}\n\n#CreatorTips #OnlineBusiness #Engagement #Growth #FanPlusFollow #MarketingTips`,
+                    `🌐 The landscape of ${vName} is changing fast. Here is how you stay ahead of the curve and keep your audience hooked. \n\n✅ Support the channel: ${YOUTUBE_CHANNEL_LINK}\n📸 Let's connect: ${INSTAGRAM_LINK}\n\n#FutureOfContent #${vName}Guide #CreatorTips #Algorithm #PassiveIncome #SocialMediaMarketing`
                 ]
             });
 
             const displayTemplates = getTemplates(displayVideoName);
-            allTitles = displayTemplates.titles;
-            allDescriptions = displayTemplates.descriptions;
             const fullTemplates = getTemplates(fullVideoName);
-            allTitlesFull = fullTemplates.titles;
-            allDescriptionsFull = fullTemplates.descriptions;
 
-            titles = allTitles[currentTitleSetIndex % allTitles.length];
-            description = allDescriptions[currentDescriptionIndex % allDescriptions.length];
-            titlesFull = allTitlesFull[currentTitleSetIndex % allTitles.length];
-            descriptionFull = allDescriptionsFull[currentDescriptionIndex % allTitles.length];
-
-            if (shouldUpdateScore) {
-                viralScore = isViralBoostEnabled ? Math.floor(Math.random() * 50) + 51 : Math.floor(Math.random() * 51);
-            }
+            titles = displayTemplates.titles[currentTitleSetIndex % displayTemplates.titles.length];
+            description = displayTemplates.descriptions[currentDescriptionIndex % displayTemplates.descriptions.length];
+            titlesFull = fullTemplates.titles[currentTitleSetIndex % fullTemplates.titles.length];
+            descriptionFull = fullTemplates.descriptions[currentDescriptionIndex % fullTemplates.descriptions.length];
         };
 
         const handleRegenerate = () => {
             if (!file || isProcessing) return;
-            const titlesGrid = document.getElementById('titles-grid-container');
+            
+            const titleContainer = document.getElementById('titles-grid-container');
             const descContainer = document.getElementById('description-text-container');
-            if (titlesGrid) titlesGrid.classList.add('opacity-0');
-            if (descContainer) descContainer.classList.add('opacity-0');
+            
+            if (titleContainer) {
+                const titleTexts = titleContainer.querySelectorAll('p');
+                titleTexts.forEach(el => el.classList.add('text-fade-out'));
+            }
+            if (descContainer) {
+                const pre = descContainer.querySelector('pre');
+                if (pre) pre.classList.add('text-fade-out');
+            }
+            
             setTimeout(() => {
-                currentTitleSetIndex++; currentDescriptionIndex++;
-                generateViralContent(false); 
-                updateTitlesContent(); updateDescriptionContent();
-                if (titlesGrid) titlesGrid.classList.remove('opacity-0');
-                if (descContainer) descContainer.classList.remove('opacity-0');
+                currentTitleSetIndex++; 
+                currentDescriptionIndex++;
+                generateViralContent(); 
+                
+                updateTitlesContent(); 
+                updateDescriptionContent();
+                
                 attachStaticListeners(); 
-            }, 300);
+            }, 250);
         };
-
-        const copyDescriptionToClipboard = () => { copyToClipboard(descriptionFull, 3); }
 
         const copyToClipboard = (text, index) => {
             const tempElement = document.createElement('textarea');
@@ -539,59 +366,35 @@
             document.body.removeChild(tempElement);
 
             if (index === 3) {
-                const descContainer = document.getElementById('description-text-container');
                 const btn = document.getElementById('copy-desc-btn');
-                if (btn && btn._revertTimer) clearTimeout(btn._revertTimer);
-                if (descContainer) { descContainer.classList.add('opacity-0'); }
-                setTimeout(() => {
-                    if (btn) {
-                        const originalHTML = `<span class="flex items-center">${icon('Copy', 'mr-2 h-4 w-4')} Copy</span>`;
-                        btn.innerHTML = `<span class="flex items-center">${icon('Check', 'mr-2 h-4 w-4')} Copy</span>`;
-                        btn._revertTimer = setTimeout(() => { if (btn) btn.innerHTML = originalHTML; }, 1000);
-                    }
-                    if (descContainer) descContainer.classList.remove('opacity-0');
-                }, 300); 
+                const originalHTML = `<span class="flex items-center">${icon('Copy', 'mr-2 h-4 w-4')} Copy</span>`;
+                btn.innerHTML = `<span class="flex items-center">${icon('Check', 'mr-2 h-4 w-4 text-black')} Copied</span>`;
+                setTimeout(() => { if (btn) btn.innerHTML = originalHTML; }, 1500);
             } else {
-                const titleCard = document.getElementById(`title-card-${index}`);
-                const btn = document.getElementById(`copy-title-btn-${index}`);
-                if (titleCard && titleCard._restoreTimer) clearTimeout(titleCard._restoreTimer);
-                if (btn && btn._revertTimer) clearTimeout(btn._revertTimer);
-                if (titleCard) {
-                    titleCard.style.transition = 'all 0.1s ease-out';
-                    titleCard.style.transform = 'scale(0.98)';
-                    titleCard.style.backgroundColor = 'rgba(74, 222, 128, 0.1)'; 
-                }
-                setTimeout(() => {
-                    if (btn) {
-                        const originalHTML = icon('Copy', 'h-4 w-4');
-                        btn.innerHTML = icon('Check', 'h-4 w-4 text-green-400');
-                        btn._revertTimer = setTimeout(() => { if (btn) btn.innerHTML = originalHTML; }, 1000);
+                const card = document.getElementById(`title-card-${index}`);
+                const originalText = titles[index];
+                const textEl = card.querySelector('p');
+                
+                card.classList.add('copy-pulse');
+                textEl.innerHTML = `<span class="flex items-center gap-1">${icon('Check', 'h-4 w-4')} Copied!</span>`;
+                
+                setTimeout(() => { 
+                    if (card) {
+                        card.classList.remove('copy-pulse');
+                        textEl.textContent = originalText;
                     }
-                    if (titleCard) {
-                        titleCard.style.transition = 'all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1)';
-                        titleCard.style.transform = 'scale(1)';
-                        titleCard.style.backgroundColor = ''; 
-                    }
-                }, 200); 
+                }, 1000);
             }
         };
 
         const resetApp = () => {
-            setTimeout(() => {
-                file = null; currentFileName = ""; isProcessing = false; isProcessed = false;
-                viralScore = 0; titles = []; description = ""; progressValue = 0;
-                if (progressInterval) clearInterval(progressInterval);
-                updateUI(); attachStaticListeners(); 
-            }, 200);
+            file = null; currentFileName = ""; isProcessing = false; isProcessed = false;
+            updateUI(); attachStaticListeners(); 
         };
 
         const attachStaticListeners = () => {
             const cards = document.querySelectorAll('.glass-card:not(.has-listener)');
             cards.forEach(element => {
-                element.addEventListener('touchstart', function() {
-                    document.querySelectorAll('.glass-card').forEach(el => { if (el !== this) el.classList.remove('tapped-hover'); });
-                    this.classList.toggle('tapped-hover');
-                }, { passive: true });
                 element.classList.add('has-listener'); 
             });
         };
@@ -603,39 +406,30 @@
             if (!file) {
                 uploadContainer.innerHTML = `
                     <div id="file-drop-area" class="fluid-transition w-full h-full flex flex-col items-center justify-center text-center cursor-pointer pt-3 md:pt-2">
-                        ${icon('Upload', `h-12 w-12 text-black mb-4`)}
-                        <div>
-                            <p class="text-xl font-bold text-black">Drag & Drop Your Video</p>
+                        <div class="fade-in-text flex flex-col items-center">
+                            ${icon('Upload', `h-12 w-12 text-black mb-4`)}
+                            <div>
+                                <p class="text-xl font-bold text-black">Drag & Drop Your Video</p>
+                            </div>
+                            <button id="select-file-btn" class="cta-button mt-6 px-8 py-4 font-bold transition-all duration-300 transform text-lg flex items-center justify-center">
+                                ${icon('Upload', 'mr-2 h-5 w-5')} Select
+                            </button>
                         </div>
-                        <button id="select-file-btn" class="cta-button mt-6 px-8 py-4 font-bold transition-all duration-300 transform text-lg flex items-center justify-center">
-                            ${icon('Upload', 'mr-2 h-5 w-5')} Select
-                        </button>
                         <input type="file" id="file-upload-input" class="hidden" accept="video/*" onchange="handleFileChange(event)"/>
                     </div>`;
                 const dropArea = document.getElementById('file-drop-area');
                 if(dropArea) dropArea.onclick = () => document.getElementById('file-upload-input').click();
             } else {
-                const processingBarClass = "bg-gradient-to-r from-green-300 via-green-400 to-green-500";
-                const completeBarClass = "bg-green-400 shadow-[0_0_15px_rgba(74,222,128,0.6)]";
-                const statusTextColorClass = isProcessed ? "text-green-500 font-bold" : "text-gray-600";
-                const indicatorBarColorClass = isProcessed ? completeBarClass : processingBarClass;
-                
                 uploadContainer.innerHTML = `
                     <div class="flex flex-col items-center justify-center h-full min-h-[14rem] pt-3 md:pt-2">
                         <div class="glass-inset-panel flex items-center gap-3 mb-6 p-4 w-full max-w-sm">
-                            <div class="text-left flex-1 truncate"><p class="font-bold text-gray-800">${currentFileName}</p></div>
-                            <button onclick="enableTitleEdit()" class="icon-btn p-2 rounded-full hover:bg-black/5">${icon('Edit', 'h-6 w-6')}</button>
+                            <div class="text-left flex-1 truncate"><p class="font-bold text-black fade-in-text">${currentFileName}</p></div>
                         </div>
-                        <div class="w-full max-w-sm mb-4">
-                            <div class="flex justify-between mb-2">
-                                <span id="processing-status" class="${statusTextColorClass}">${isProcessed ? 'Complete' : 'Processing...'}</span>
-                                <span id="progress-label" class="${statusTextColorClass}">${progressValue}%</span>
-                            </div>
-                            <div class="w-full progress-track-fused h-2.5">
-                                <div id="progress-indicator" class="h-2.5 rounded-full transition-all duration-200 ${indicatorBarColorClass}" style="width: ${progressValue}%"></div>
-                            </div>
+                        <div class="flex items-center gap-2 mb-4 fade-in-text">
+                            ${!isProcessed ? icon('Loader', 'h-5 w-5') : icon('Check', 'h-5 w-5 text-black')}
+                            <span class="font-bold text-black">${isProcessed ? 'Analysis Complete' : 'Analyzing Video Content...'}</span>
                         </div>
-                        ${isProcessed ? `<button onclick="resetApp()" class="cta-button px-6 py-3 font-bold flex items-center mt-4">${icon('RotateCcw', `mr-2 h-4 w-4`)} Reupload</button>` : ''}
+                        ${isProcessed ? `<button onclick="resetApp()" class="cta-button px-6 py-3 font-bold flex items-center mt-4 fade-in-text">${icon('RotateCcw', `mr-2 h-4 w-4`)} Reupload</button>` : ''}
                     </div>`;
             }
         };
@@ -646,60 +440,55 @@
             grid.innerHTML = titles.map((title, index) => {
                 const copyText = titlesFull[index].replace(/'/g, "\\'");
                 return `
-                <div id="title-card-${index}" class="glass-inset-panel interactive p-4">
-                    <div class="flex justify-between items-start mb-2">
-                        <span class="text-xs font-medium px-2 py-1 rounded-full bg-pink-100 text-pink-700">Option ${index + 1}</span>
-                        <button id="copy-title-btn-${index}" onclick="copyToClipboard('${copyText}', ${index})" class="icon-btn h-8 w-8 flex items-center justify-center">${icon('Copy', 'h-4 w-4')}</button>
-                    </div>
-                    <p class="text-base font-medium text-gray-800 p-1">${title}</p>
+                <div id="title-card-${index}" 
+                     class="glass-inset-panel interactive p-4 text-left flex flex-col h-full"
+                     onclick="copyToClipboard('${copyText}', ${index})">
+                    <p class="text-base font-bold text-black px-2 py-4 leading-snug flex-grow fade-in-text">${title}</p>
                 </div>`;
             }).join('');
         };
 
         const updateDescriptionContent = () => {
             const container = document.getElementById('description-text-container');
-            if (container) container.innerHTML = `<pre class="whitespace-pre-wrap text-sm font-mono text-gray-700">${description}</pre>`;
+            if (container) {
+                container.innerHTML = `<pre class="whitespace-pre-wrap text-sm font-bold text-black fade-in-text">${description}</pre>`;
+            }
         };
 
         const renderResults = () => {
             const resultsContainer = document.getElementById('results-section');
             if (!resultsContainer || !isProcessed) { if(resultsContainer) resultsContainer.innerHTML = ''; return; }
             
-            const isRed = viralScore <= 40; const isYellow = viralScore > 40 && viralScore <= 80;
-            const scoreColorClass = isRed ? "text-red-500" : isYellow ? "text-yellow-500" : "text-green-400";
-            const scoreBgClass = isRed ? "bg-red-500" : isYellow ? "bg-yellow-500" : "bg-green-400";
-            const scoreMsg = isRed ? "Rethink your hook." : isYellow ? "Solid performance." : "Viral ready.";
-            
             resultsContainer.innerHTML = `
-                <div id="viral-score-card" class="glass-card p-6 rounded-[36px] mb-12">
-                    <h2 class="text-2xl font-bold mb-4">Viral Potential</h2>
-                    <div class="flex items-center justify-between mb-4"><span class="text-5xl font-extrabold ${scoreColorClass}">${viralScore}%</span></div>
-                    <div class="w-full progress-track-fused h-3">
-                        <div class="h-3 rounded-full transition-all duration-1000 ${scoreBgClass}" style="width: ${viralScore}%"></div>
+                <div>
+                    <div class="glass-card p-6 rounded-[36px] mb-12">
+                        <div class="flex justify-between items-center mb-6">
+                            <h2 class="text-2xl font-bold flex items-center gap-3 text-black">
+                                <img src="https://manmohit2007.github.io/Manmohit2007/like.png" alt="Like" class="header-icon" onerror="this.style.display='none'">
+                                Titles
+                            </h2>
+                            <button onclick="handleRegenerate()" class="cta-button text-sm px-4 py-2 font-bold flex items-center">${icon('RotateCcw', `mr-2 h-4 w-4`)} Regenerate</button>
+                        </div>
+                        <div id="titles-grid-container" class="grid grid-cols-1 md:grid-cols-3 gap-6"></div>
                     </div>
-                    <p class="text-black mt-3 font-medium">${scoreMsg}</p>
-                </div>
-                <div class="glass-card p-6 rounded-[36px] mb-12">
-                    <div class="flex justify-between items-center mb-6">
-                        <h2 class="text-2xl font-bold">Titles</h2>
-                        <button onclick="handleRegenerate()" class="cta-button text-sm px-4 py-2 font-bold flex items-center">${icon('RotateCcw', `mr-2 h-4 w-4`)} Regenerate</button>
+                    <div class="glass-card p-6 rounded-[36px]"> 
+                        <div class="flex justify-between items-center mb-4">
+                            <h2 class="text-2xl font-bold flex items-center gap-3 text-black">
+                                <img src="https://manmohit2007.github.io/Manmohit2007/shorts.png" alt="Shorts" class="header-icon" onerror="this.style.display='none'">
+                                Description
+                            </h2>
+                            <button id="copy-desc-btn" onclick="copyToClipboard(descriptionFull, 3)" class="cta-button text-sm px-4 py-2 font-bold flex items-center">${icon('Copy', 'mr-2 h-4 w-4')} Copy</button>
+                        </div>
+                        <div id="description-text-container" class="glass-inset-panel p-4 max-h-96 overflow-auto"></div>
                     </div>
-                    <div id="titles-grid-container" class="grid grid-cols-1 md:grid-cols-3 gap-6 transition-opacity duration-300"></div>
-                </div>
-                <div class="glass-card p-6 rounded-[36px]"> 
-                    <div class="flex justify-between items-center mb-4">
-                        <h2 class="text-2xl font-bold">Description</h2>
-                        <button id="copy-desc-btn" onclick="copyDescriptionToClipboard()" class="cta-button text-sm px-4 py-2 font-bold flex items-center">${icon('Copy', 'mr-2 h-4 w-4')} Copy</button>
-                    </div>
-                    <div id="description-text-container" class="glass-inset-panel p-4 max-h-96 overflow-auto"></div>
                 </div>`;
             updateTitlesContent(); updateDescriptionContent();
         };
 
-        const updateUI = () => { updateToggleUI(); renderUploadSection(); renderResults(); };
+        const updateUI = () => { renderUploadSection(); renderResults(); };
         const initApp = () => { 
             const targets = document.querySelectorAll('.card-animation-target');
-            setTimeout(() => targets.forEach(el => { el.style.animation = 'none'; el.style.opacity = '1'; }), 1800);
+            setTimeout(() => targets.forEach(el => { el.style.animation = 'none'; el.style.opacity = '1'; }), 1500);
             updateUI(); attachStaticListeners(); 
         };
     </script>
