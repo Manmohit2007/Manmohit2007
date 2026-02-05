@@ -524,35 +524,36 @@
             document.execCommand('copy');
             document.body.removeChild(tempElement);
             
-            // UI Feedback: Aligning Copy feedback with Regenerate feel (300ms duration)
+            // OPTIMIZED: Synchronized weighting to match Regenerate button feel
             const titlesGrid = document.getElementById('titles-grid-container');
             const descContainer = document.getElementById('description-text-container');
-            
-            // Both containers perform a unified pulse to feel like a single responsive AI action
-            if (titlesGrid) titlesGrid.classList.add('opacity-0');
-            if (descContainer) descContainer.classList.add('opacity-0');
-            
-            setTimeout(() => {
-                if (titlesGrid) titlesGrid.classList.remove('opacity-0');
-                if (descContainer) descContainer.classList.remove('opacity-0');
-            }, 300);
-
             const btnId = index === 3 ? 'copy-desc-btn' : `copy-title-btn-${index}`;
             const btn = document.getElementById(btnId);
             
-            if (btn) {
-                const originalHTML = btn.innerHTML;
-                if (index === 3) {
-                   // Using a fixed width wrapper for 'Done' state to prevent layout jumps/glass card shifting
-                   btn.innerHTML = `<span class="flex items-center justify-center min-w-[80px]">${icon('Check', 'mr-2 h-4 w-4 text-white')} Done</span>`;
-                } else {
-                   btn.innerHTML = icon('Check', 'h-4 w-4 text-green-400');
+            // 1. Trigger fade-out (300ms transition starts)
+            if (titlesGrid) titlesGrid.classList.add('opacity-0');
+            if (descContainer) descContainer.classList.add('opacity-0');
+            
+            // 2. Wait 300ms (peak of fade) before swapping button state and starting fade-in
+            setTimeout(() => {
+                // Change button state only when hidden to reveal it during fade-in
+                if (btn) {
+                    const originalHTML = btn.innerHTML;
+                    if (index === 3) {
+                       btn.innerHTML = `<span class="flex items-center justify-center min-w-[80px]">${icon('Check', 'mr-2 h-4 w-4 text-white')} Done</span>`;
+                    } else {
+                       btn.innerHTML = icon('Check', 'h-4 w-4 text-green-400');
+                    }
+                    
+                    setTimeout(() => {
+                        if (btn) btn.innerHTML = originalHTML;
+                    }, 1000);
                 }
-                
-                setTimeout(() => {
-                    if (btn) btn.innerHTML = originalHTML;
-                }, 1000);
-            }
+
+                // Trigger fade-in
+                if (titlesGrid) titlesGrid.classList.remove('opacity-0');
+                if (descContainer) descContainer.classList.remove('opacity-0');
+            }, 300);
         };
 
         const resetApp = () => {
