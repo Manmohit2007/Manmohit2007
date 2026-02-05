@@ -40,6 +40,7 @@
             background-color: rgba(155, 155, 155, 0.2);
             border-radius: 20px;
         }
+        ::-webkit-scrollbar-corner { background: transparent; }
 
         .fluid-transition {
             transition: all 400ms cubic-bezier(0.25, 0.46, 0.45, 0.94);
@@ -523,28 +524,10 @@
                 const btnId = 'copy-desc-btn';
                 const btn = document.getElementById(btnId);
 
-                // --- INSTANT VISUAL FEEDBACK (T=0) ---
-                // Update button immediately to match the "spring" feel of the click
-                if (btn) {
-                    const originalHTML = btn.innerHTML;
-                    // Lock width to prevent layout shift during swap
-                    btn.style.width = btn.offsetWidth + 'px';
-                    // Swap to checkmark instantly
-                    btn.innerHTML = `<span class="flex items-center">${icon('Check', 'mr-2 h-4 w-4 text-white')} Copy</span>`;
-                    
-                    // Revert after 1.5s
-                    setTimeout(() => { 
-                        if (btn) {
-                            btn.innerHTML = originalHTML;
-                            btn.style.width = ''; // Unlock width
-                        }
-                    }, 1500);
-                }
-
-                // Start Content Fade Out immediately (ripple effect)
+                // 1. VISUAL FEEDBACK FIRST (Immediate Snap)
                 if (descContainer) descContainer.classList.add('opacity-0');
 
-                // Perform Copy Logic (Hidden)
+                // 2. Perform Copy Logic (Hidden)
                 const tempElement = document.createElement('textarea');
                 tempElement.value = text;
                 document.body.appendChild(tempElement);
@@ -552,8 +535,17 @@
                 document.execCommand('copy');
                 document.body.removeChild(tempElement);
                 
-                // Fade In Content (after 300ms matches CSS transition)
+                // 3. Animation Timeout (Matched to CSS transition)
                 setTimeout(() => {
+                    // Update Button Icon only
+                    if (btn) {
+                        const originalHTML = btn.innerHTML;
+                        // Keep text "Copy" to prevent layout shift, just swap icon
+                        btn.innerHTML = `<span class="flex items-center">${icon('Check', 'mr-2 h-4 w-4 text-white')} Copy</span>`;
+                        setTimeout(() => { if (btn) btn.innerHTML = originalHTML; }, 1000);
+                    }
+
+                    // Fade In Content
                     if (descContainer) descContainer.classList.remove('opacity-0');
                 }, 300); 
                 
