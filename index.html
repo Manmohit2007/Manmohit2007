@@ -98,7 +98,8 @@
 
         /* --- CTA BUTTONS --- */
         .cta-button {
-            transition: transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.4s ease-out, filter 0.3s ease, box-shadow 0.4s ease;
+            /* Reduced reaction time from 0.6s/0.4s to 0.3s/0.2s for a snappier feel */
+            transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.2s ease-out, filter 0.2s ease, box-shadow 0.2s ease;
             background: linear-gradient(to right, #a78bfa 0%, #f472b6 40%, #fca564 75%, #fca564 100%); 
             color: #ffffff; 
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); 
@@ -505,7 +506,8 @@
             setTimeout(() => {
                 copiedIndex = index;
                 updateUI(); 
-                setTimeout(() => { copiedIndex = null; updateUI(); }, 2000);
+                // Feedback duration reduced to 1000ms
+                setTimeout(() => { copiedIndex = null; updateUI(); }, 1000);
             }, 150);
         };
 
@@ -731,7 +733,7 @@
                         <div class="mb-4">
                             <h2 class="flex justify-between items-center text-2xl font-bold text-black">
                                 <span class="truncate mr-2">Description</span>
-                                <button onclick="copyDescriptionToClipboard()" class="cta-button backdrop-blur-xl text-sm px-4 py-2 rounded-full font-medium flex items-center whitespace-nowrap flex-shrink-0">${copiedIndex === 3 ? `<span class="flex items-center">${icon('Check', 'mr-2 h-4 w-4 text-white')} Copied!</span>` : `<span class="flex items-center">${icon('Copy', 'mr-2 h-4 w-4 text-white')} Copy</span>`}</button>
+                                <button onclick="copyDescriptionToClipboard()" class="cta-button backdrop-blur-xl text-sm px-4 py-2 rounded-full font-medium flex items-center whitespace-nowrap flex-shrink-0">${copiedIndex === 3 ? `<span class="flex items-center">${icon('Check', 'mr-2 h-4 w-4 text-white')} Done</span>` : `<span class="flex items-center">${icon('Copy', 'mr-2 h-4 w-4 text-white')} Copy</span>`}</button>
                             </h2>
                         </div>
                         <div class="glass-inset-panel p-4 sm:p-5 min-h-[250px] max-h-96 overflow-auto custom-scrollbar">
