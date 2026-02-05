@@ -523,10 +523,28 @@
                 const btnId = 'copy-desc-btn';
                 const btn = document.getElementById(btnId);
 
-                // 1. VISUAL FEEDBACK FIRST (Immediate Snap)
+                // --- INSTANT VISUAL FEEDBACK (T=0) ---
+                // Update button immediately to match the "spring" feel of the click
+                if (btn) {
+                    const originalHTML = btn.innerHTML;
+                    // Lock width to prevent layout shift during swap
+                    btn.style.width = btn.offsetWidth + 'px';
+                    // Swap to checkmark instantly
+                    btn.innerHTML = `<span class="flex items-center">${icon('Check', 'mr-2 h-4 w-4 text-white')} Copy</span>`;
+                    
+                    // Revert after 1.5s
+                    setTimeout(() => { 
+                        if (btn) {
+                            btn.innerHTML = originalHTML;
+                            btn.style.width = ''; // Unlock width
+                        }
+                    }, 1500);
+                }
+
+                // Start Content Fade Out immediately (ripple effect)
                 if (descContainer) descContainer.classList.add('opacity-0');
 
-                // 2. Perform Copy Logic (Hidden)
+                // Perform Copy Logic (Hidden)
                 const tempElement = document.createElement('textarea');
                 tempElement.value = text;
                 document.body.appendChild(tempElement);
@@ -534,17 +552,8 @@
                 document.execCommand('copy');
                 document.body.removeChild(tempElement);
                 
-                // 3. Animation Timeout (Matched to CSS transition)
+                // Fade In Content (after 300ms matches CSS transition)
                 setTimeout(() => {
-                    // Update Button Icon only
-                    if (btn) {
-                        const originalHTML = btn.innerHTML;
-                        // Keep text "Copy" to prevent layout shift, just swap icon
-                        btn.innerHTML = `<span class="flex items-center">${icon('Check', 'mr-2 h-4 w-4 text-white')} Copy</span>`;
-                        setTimeout(() => { if (btn) btn.innerHTML = originalHTML; }, 1000);
-                    }
-
-                    // Fade In Content
                     if (descContainer) descContainer.classList.remove('opacity-0');
                 }, 300); 
                 
@@ -794,7 +803,7 @@
                     const scoreColorClass = viralScore < 75 ? "text-red-500" : viralScore < 90 ? "text-yellow-500" : "text-green-400";
                     const scoreBgClass = viralScore < 75 ? "bg-red-500" : viralScore < 90 ? "bg-yellow-500" : "bg-green-400";
                     const scoreShadowClass = viralScore < 75 ? "shadow-[0_0_15px_rgba(239,68,68,0.6)]" : viralScore < 90 ? "shadow-[0_0_15px_rgba(234,179,8,0.6)]" : "shadow-[0_0_15px_rgba(74,222,128,0.6)]";
-                    const scoreMsg = viralScore < 75 ? "Rethink your content hook for better reach." : viralScore < 90 ? "Solid performance. A few tweaks could push it higher." : "VIRAL READY! This content is primed for maximum engagement. Post ASAP.";
+                    const scoreMsg = viralScore < 75 ? "Rethink your content hook for better reach." : viralScore < 90 ? "Solid performance. A few tweaks could push it higher." : "VIRAL READY! This content is primed for maximum engagement.";
                     
                     if (scoreTextEl) {
                         scoreTextEl.className = `text-5xl font-extrabold transition-colors duration-500 viral-score-text ${scoreColorClass}`;
@@ -819,7 +828,7 @@
                 const scoreColorClass = viralScore < 75 ? "text-red-500" : viralScore < 90 ? "text-yellow-500" : "text-green-400";
                 const scoreBgClass = viralScore < 75 ? "bg-red-500" : viralScore < 90 ? "bg-yellow-500" : "bg-green-400";
                 const scoreShadowClass = viralScore < 75 ? "shadow-[0_0_15px_rgba(239,68,68,0.6)]" : viralScore < 90 ? "shadow-[0_0_15px_rgba(234,179,8,0.6)]" : "shadow-[0_0_15px_rgba(74,222,128,0.6)]";
-                const scoreMsg = viralScore < 75 ? "Rethink your content hook for better reach." : viralScore < 90 ? "Solid performance. A few tweaks could push it higher." : "VIRAL READY! This content is primed for maximum engagement. Post ASAP.";
+                const scoreMsg = viralScore < 75 ? "Rethink your content hook for better reach." : viralScore < 90 ? "Solid performance. A few tweaks could push it higher." : "VIRAL READY! This content is primed for maximum engagement.";
                 
                 let scoreGlowStyle = '';
                 if (viralScore < 75) scoreGlowStyle = 'text-shadow: 0 0 30px rgba(239, 68, 68, 0.6);'; 
