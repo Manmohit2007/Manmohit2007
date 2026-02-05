@@ -466,7 +466,13 @@
         const generateViralContent = (shouldUpdateScore = true) => { 
             if (!file) return;
             const fileName = currentFileName; 
-            const videoName = fileName.replace(/\.[^/.]+$/, "");
+            let videoName = fileName.replace(/\.[^/.]+$/, "");
+
+            // Truncate video name for generated titles if it's too long
+            if (videoName.length > 25) {
+                videoName = videoName.substring(0, 25) + "...";
+            }
+
             allTitles = [
                 [`🔥 ULTIMATE ${videoName} Guide! (FanPlusFollow Secret)`, `📈 ${videoName}: Watch How We Went VIRAL in 24 Hours!`, `🤯 You Won't BELIEVE This ${videoName} Trick!`],
                 [`🚀 ${videoName} HACK: Get More Views INSTANTLY!`, `This ONE ${videoName} Tip Changed Everything... (SHOCKING)`, `Stop Making ${videoName} Videos Until You Watch This! 🚫`],
@@ -703,9 +709,11 @@
                         </button>
                     `;
                 } else {
+                    // Manually truncate for display to ensure it doesn't break UI even if CSS fails
+                    const displayFileName = currentFileName.length > 35 ? currentFileName.substring(0, 32) + "..." : currentFileName;
                     titleContentHTML = `
                         <div class="text-left overflow-hidden flex-1 min-w-0 mr-2">
-                            <p class="font-bold truncate text-gray-800">${currentFileName}</p>
+                            <p class="font-bold truncate text-gray-800" title="${currentFileName}">${displayFileName}</p>
                             <p class="text-xs text-black opacity-60">${(file.size / (1024 * 1024)).toFixed(2)} MB</p>
                         </div>
                         <button onclick="enableTitleEdit()" class="icon-btn p-2 rounded-full hover:bg-black/5 transition-colors text-gray-500 hover:text-black flex-shrink-0" title="Edit Name">
