@@ -222,10 +222,10 @@
                         <h3 class="text-2xl sm:text-3xl font-bold text-center text-black -mt-8 sm:-mt-9">Boost Your Reach Today</h3>
                         <p class="text-black mt-1 text-center max-w-md text-xs sm:text-sm font-bold opacity-80 leading-tight">Join the community for exclusive growth insights.</p>
                         <div class="mt-4 sm:mt-6 flex flex-row w-full max-w-md sm:max-w-lg justify-center gap-[18px] sm:gap-[30.6px] px-2 sm:px-0">
-                          <button class="cta-button flex-1 sm:flex-none sm:w-40 px-4 py-4 font-bold flex items-center justify-center text-lg sm:text-lg" onclick="openLinkWithDelay('https://www.youtube.com/@fanplusfollow')">
+                          <button class="cta-button flex-1 sm:flex-none sm:w-40 px-4 py-4 font-bold flex items-center justify-center text-lg sm:text-lg" onclick="openLinkWithDelay('https://www.youtube.com/@fanplusfollow')" style="border-radius: 22px;">
                             Subscribe
                           </button>
-                          <button class="cta-button flex-1 sm:flex-none sm:w-40 px-4 py-4 font-bold flex items-center justify-center text-lg sm:text-lg" onclick="openLinkWithDelay('https://www.instagram.com/_manmohit_singh_/')">
+                          <button class="cta-button flex-1 sm:flex-none sm:w-40 px-4 py-4 font-bold flex items-center justify-center text-lg sm:text-lg" onclick="openLinkWithDelay('https://www.instagram.com/_manmohit_singh_/')" style="border-radius: 22px;">
                             Follow
                           </button>
                         </div>
@@ -360,7 +360,7 @@
                     <div id="file-drop-area" class="w-full h-full flex flex-col items-center justify-center text-center cursor-pointer pb-4">
                         <div class="mb-4">${icon('Upload', 'h-12 w-12')}</div>
                         <p class="text-lg font-bold text-black">Upload Your Video File Here</p>
-                        <button class="cta-button mt-6 px-10 py-4 font-bold text-lg">Select File</button>
+                        <button class="cta-button mt-6 px-10 py-4 font-bold text-lg" style="border-radius: 22px;">Select File</button>
                         <input type="file" id="file-upload-input" class="hidden" accept="video/*" onchange="handleFileChange(event)"/>
                     </div>`;
                 document.getElementById('file-drop-area').onclick = () => document.getElementById('file-upload-input').click();
@@ -406,14 +406,14 @@
                 <div class="glass-card p-4 sm:p-6 rounded-[36px] mb-8 sm:mb-12">
                     <div class="flex justify-between items-center mb-6 gap-2">
                         <h2 class="text-2xl sm:text-3xl font-bold flex items-center gap-2 sm:gap-3"><img src="https://manmohit2007.github.io/Manmohit2007/like.png" class="header-icon"> Titles</h2>
-                        <button onclick="handleRegenerate()" class="cta-button text-xs sm:text-sm px-3 py-2 sm:px-4 sm:py-2 font-bold flex items-center shrink-0">${icon('RotateCcw', 'mr-1 sm:mr-2 h-3 w-3 sm:h-4 sm:w-4')} Regenerate</button>
+                        <button onclick="handleRegenerate()" class="cta-button text-xs sm:text-sm px-3 py-2 sm:px-4 sm:py-2 font-bold flex items-center shrink-0" style="border-radius: 15px;">${icon('RotateCcw', 'mr-1 sm:mr-2 h-3 w-3 sm:h-4 sm:w-4')} Regenerate</button>
                     </div>
                     <div id="titles-grid-container" class="grid grid-cols-1 md:grid-cols-3 gap-4"></div>
                 </div>
                 <div class="glass-card p-4 sm:p-6 rounded-[36px]">
                     <div class="flex justify-between items-center mb-4 gap-2">
                         <h2 class="text-2xl sm:text-3xl font-bold flex items-center gap-2 sm:gap-3"><img src="https://manmohit2007.github.io/Manmohit2007/shorts.png" class="shorts-icon"> Description</h2>
-                        <button id="copy-desc-btn" onclick="copyToClipboard(descriptionFull, 3)" class="cta-button text-xs sm:text-sm px-3 py-2 sm:px-4 sm:py-2 font-bold flex items-center shrink-0">${icon('Copy', 'mr-1 sm:mr-2 h-3 w-3 sm:h-4 sm:w-4')} Copy</button>
+                        <button id="copy-desc-btn" onclick="copyToClipboard(descriptionFull, 3)" class="cta-button text-xs sm:text-sm px-3 py-2 sm:px-4 sm:py-2 font-bold flex items-center shrink-0" style="border-radius: 15px;">${icon('Copy', 'mr-1 sm:mr-2 h-3 w-3 sm:h-4 sm:w-4')} Copy</button>
                     </div>
                     <div id="description-text-container" class="glass-inset-panel p-4 max-h-96 overflow-auto"></div>
                 </div>`;
