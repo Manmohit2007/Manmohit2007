@@ -437,7 +437,7 @@
 
         const updateDescriptionContent = () => {
             const container = document.getElementById('description-text-container');
-            if (container) container.innerHTML = `<pre class="whitespace-pre-wrap text-xs sm:text-sm font-bold text-black/90 fade-in-text text-left">${description}</pre>`;
+            if (container) container.innerHTML = `<div class="whitespace-pre-wrap break-words text-xs sm:text-sm font-bold text-black/90 fade-in-text text-left w-full font-sans leading-relaxed">${description}</div>`;
         };
 
         const renderResults = () => {
