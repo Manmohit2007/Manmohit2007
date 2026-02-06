@@ -421,6 +421,9 @@
                 // Description Box Copy Logic
                 const container = document.getElementById('description-text-container');
                 if (container) {
+                    // FIX: Temporarily disable transition to prevent iPad jitter during layout changes
+                    container.style.transition = 'none';
+
                     // Lock height to prevent collapse during animation
                     const currentHeight = container.offsetHeight;
                     container.style.height = `${currentHeight}px`;
@@ -453,6 +456,7 @@
                                 container.style.flexDirection = '';
                                 container.style.justifyContent = '';
                                 container.style.height = ''; // Unlock height to allow natural resizing if content changes
+                                container.style.transition = ''; // Restore transitions
                                 
                                 // Re-render clean HTML
                                 container.innerHTML = `<div class="whitespace-pre-wrap break-words text-xs sm:text-sm font-bold text-black/90 fade-in-text text-left w-full font-sans leading-relaxed pointer-events-none">${description}</div>`;
@@ -469,6 +473,9 @@
                 const card = document.getElementById(`title-card-${index}`);
                 const originalText = titles[index];
                 if (card) {
+                    // FIX: Temporarily disable transition on the card container
+                    card.style.transition = 'none';
+                    
                     const p = card.querySelector('p');
                     
                     // 1. Fade Out Original Text
@@ -493,6 +500,8 @@
                                 p.classList.remove('text-fade-out');
                                 void p.offsetWidth; // Trigger reflow
                                 p.classList.add('fade-in-text');
+                                
+                                card.style.transition = ''; // Restore transitions
                                 
                                 if (done) done(); // Unlock UI
                             }, 200);
@@ -576,7 +585,7 @@
                         <h2 class="text-2xl sm:text-3xl font-bold flex items-center gap-2 sm:gap-3"><img src="https://manmohit2007.github.io/Manmohit2007/like.png" class="header-icon"> Titles</h2>
                         <button onclick="handleRegenerateTitlesClick(this)" class="cta-button text-xs sm:text-sm px-3 py-2 sm:px-4 sm:py-2 font-bold flex items-center shrink-0" style="border-radius: 14px;">${icon('RotateCcw', 'mr-1 sm:mr-2 h-3 w-3 sm:h-4 sm:w-4')} Regenerate</button>
                     </div>
-                    <div id="titles-grid-container" class="grid grid-cols-1 md:grid-cols-3 gap-4"></div>
+                    <div id="titles-grid-container" class="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6"></div>
                 </div>
                 <div class="glass-card p-4 sm:p-6 rounded-[36px]">
                     <div class="flex justify-between items-center mb-4 gap-2">
