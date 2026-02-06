@@ -148,6 +148,11 @@
             background-color: rgba(0, 0, 0, 0.1);
         }
 
+        /* Subtler animation for the large description box to prevent jarring zoom */
+        #description-text-container.interactive.active-state {
+            transform: scale(0.99);
+        }
+
         .fade-in-text {
             animation: fadeInText 0.4s cubic-bezier(0.4, 0, 0.2, 1) forwards;
         }
