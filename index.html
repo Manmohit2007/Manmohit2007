@@ -275,8 +275,12 @@
             animateAndExecute(element, () => window.open(url, '_blank'));
         };
 
-        const handleRegenerateClick = (element) => {
-            animateAndExecute(element, handleRegenerate);
+        const handleRegenerateTitlesClick = (element) => {
+            animateAndExecute(element, regenerateTitles);
+        };
+
+        const handleRegenerateDescriptionClick = (element) => {
+            animateAndExecute(element, regenerateDescription);
         };
 
         const handleCopyClick = (element, text, index) => {
@@ -330,7 +334,7 @@
                 descriptions: [
                     `🚀 Unlock the full potential of ${vName} with this comprehensive guide! Whether you're a beginner or a pro, these insights will help you skyrocket your engagement.\n\n📌 IN THIS VIDEO:\n0:00 - Intro\n1:45 - Why ${vName} Matters\n4:20 - Step-by-Step Strategy\n8:15 - Secret Hack Revealed\n10:30 - Final Thoughts\n\n💡 JOIN THE CREATOR COMMUNITY:\nSubscribe here: ${YOUTUBE_CHANNEL_LINK}\nFollow on IG: ${INSTAGRAM_LINK}\n\n👇 QUESTION OF THE DAY:\nWhat's your biggest challenge with ${vName}? Let me know in the comments!\n\n#${vName.replace(/\s+/g, '')} #ContentStrategy #GrowthTips #FanPlusFollow`,
                     
-                    `😱 You won't believe how much ${vName} can change your channel! I tested this strategy for 30 days and the results were SHOCKING.\n\n🔥 RESOURCES MENTIONED:\n- Creator Tools: [Link]\n- Analytics Guide: [Link]\n\n✅ STAY CONNECTED:\n📸 Instagram: ${INSTAGRAM_LINK}\n📺 YouTube: ${YOUTUBE_CHANNEL_LINK}\n\n✨ If you enjoyed this video, please hit that LIKE button and SUBSCRIBE for more daily tips!\n\n#Viral #Trending #CreatorEconomy #${vName.replace(/\s+/g, '')}`,
+                    `😱 You won't believe how much ${vName} can change your channel! I tested this strategy for 30 days and the results were SHOCKING.\n\n🔥 WHAT TO EXPECT:\n- 🎥 Real results from this method\n- 📈 Actionable steps you can take today\n- 🤫 The secret to consistency\n\n✅ STAY CONNECTED:\n📸 Instagram: ${INSTAGRAM_LINK}\n📺 YouTube: ${YOUTUBE_CHANNEL_LINK}\n\n✨ If you enjoyed this video, please hit that LIKE button and SUBSCRIBE for more daily tips!\n\n#Viral #Trending #CreatorEconomy #${vName.replace(/\s+/g, '')}`,
 
                     `⚡ Want to master ${vName} in record time? This video breaks down exactly what you need to know to get results FAST.\n\nWe cover:\n✅ The basics of ${vName}\n✅ Advanced tips for maximum reach\n✅ Common pitfalls to avoid\n\nDon't forget to LIKE and SUBSCRIBE if you found this helpful! It supports the channel and helps us bring you more value.\n\n🔗 Follow for daily updates:\nIG: ${INSTAGRAM_LINK}\nYT: ${YOUTUBE_CHANNEL_LINK}\n\n#${vName.replace(/\s+/g, '')} #QuickTips #SocialMediaGrowth #FanPlusFollow`,
 
@@ -347,14 +351,33 @@
             descriptionFull = fullTemplates.descriptions[currentDescriptionIndex % fullTemplates.descriptions.length];
         };
 
-        const handleRegenerate = () => {
+        const regenerateTitles = () => {
             if (!file || isProcessing) return;
-            const elements = document.querySelectorAll('#results-section .fade-in-text');
+            const elements = document.querySelectorAll('#titles-grid-container .fade-in-text');
             elements.forEach(el => el.classList.add('text-fade-out'));
             setTimeout(() => {
-                currentTitleSetIndex++; currentDescriptionIndex++;
-                generateViralContent(); updateTitlesContent(); updateDescriptionContent();
+                currentTitleSetIndex++;
+                generateViralContent(); 
+                updateTitlesContent(); 
             }, 200);
+        };
+
+        const regenerateDescription = () => {
+            if (!file || isProcessing) return;
+            const container = document.getElementById('description-text-container');
+            const textEl = container ? container.querySelector('.fade-in-text') : null;
+            if (textEl) textEl.classList.add('text-fade-out');
+            setTimeout(() => {
+                currentDescriptionIndex++;
+                generateViralContent(); 
+                updateDescriptionContent();
+            }, 200);
+        };
+
+        // Keeping handleRegenerate for legacy or if needed, though now split
+        const handleRegenerate = () => {
+            currentTitleSetIndex++; currentDescriptionIndex++;
+            generateViralContent(); updateTitlesContent(); updateDescriptionContent();
         };
 
         const copyToClipboard = (text, index) => {
@@ -366,21 +389,45 @@
             document.body.removeChild(tempElement);
 
             if (index === 3) {
-                const btn = document.getElementById('copy-desc-btn');
-                const originalHTML = btn.innerHTML;
-                btn.innerHTML = `<span class="flex items-center">${icon('Check', 'mr-2 h-4 w-4')} Copied</span>`;
-                setTimeout(() => { if (btn) btn.innerHTML = originalHTML; }, 1200);
+                // Description Box Copy Logic
+                const container = document.getElementById('description-text-container');
+                if (container) {
+                    // Lock height to prevent collapse
+                    const currentHeight = container.offsetHeight;
+                    container.style.height = `${currentHeight}px`;
+                    container.style.display = 'flex';
+                    container.style.flexDirection = 'column';
+                    container.style.justifyContent = 'center';
+                    
+                    const originalContent = container.innerHTML;
+                    
+                    container.classList.add('copy-pulse');
+                    container.innerHTML = `<span class="flex items-center justify-center gap-1 w-full h-full font-bold text-black/80">${icon('Check', 'h-5 w-5')} Copied</span>`;
+                    
+                    setTimeout(() => { 
+                        container.classList.remove('copy-pulse');
+                        container.innerHTML = originalContent;
+                        // Reset layout styles
+                        container.style.height = '';
+                        container.style.display = '';
+                        container.style.flexDirection = '';
+                        container.style.justifyContent = '';
+                    }, 800);
+                }
             } else {
+                // Title Cards Logic
                 const card = document.getElementById(`title-card-${index}`);
                 const originalText = titles[index];
-                card.classList.add('copy-pulse');
-                card.querySelector('p').innerHTML = `<span class="flex items-center justify-center gap-1 w-full">${icon('Check', 'h-4 w-4')} Copied</span>`;
-                setTimeout(() => { 
-                    if (card) {
-                        card.classList.remove('copy-pulse');
-                        card.querySelector('p').textContent = originalText;
-                    }
-                }, 800);
+                if (card) {
+                    card.classList.add('copy-pulse');
+                    card.querySelector('p').innerHTML = `<span class="flex items-center justify-center gap-1 w-full">${icon('Check', 'h-4 w-4')} Copied</span>`;
+                    setTimeout(() => { 
+                        if (card) {
+                            card.classList.remove('copy-pulse');
+                            card.querySelector('p').textContent = originalText;
+                        }
+                    }, 800);
+                }
             }
         };
 
@@ -437,7 +484,13 @@
 
         const updateDescriptionContent = () => {
             const container = document.getElementById('description-text-container');
-            if (container) container.innerHTML = `<div class="whitespace-pre-wrap break-words text-xs sm:text-sm font-bold text-black/90 fade-in-text text-left w-full font-sans leading-relaxed">${description}</div>`;
+            // Added interactive class and onclick handler here
+            if (container) {
+                container.setAttribute('onclick', `handleCopyClick(this, descriptionFull, 3)`);
+                // Fixed height (h-[500px]) to accommodate large descriptions without layout shift
+                container.className = "glass-inset-panel p-4 interactive cursor-pointer h-[500px] overflow-y-auto";
+                container.innerHTML = `<div class="whitespace-pre-wrap break-words text-xs sm:text-sm font-bold text-black/90 fade-in-text text-left w-full font-sans leading-relaxed pointer-events-none">${description}</div>`;
+            }
         };
 
         const renderResults = () => {
@@ -447,16 +500,17 @@
                 <div class="glass-card p-4 sm:p-6 rounded-[36px] mb-8 sm:mb-12">
                     <div class="flex justify-between items-center mb-6 gap-2">
                         <h2 class="text-2xl sm:text-3xl font-bold flex items-center gap-2 sm:gap-3"><img src="https://manmohit2007.github.io/Manmohit2007/like.png" class="header-icon"> Titles</h2>
-                        <button onclick="handleRegenerateClick(this)" class="cta-button text-xs sm:text-sm px-3 py-2 sm:px-4 sm:py-2 font-bold flex items-center shrink-0" style="border-radius: 14px;">${icon('RotateCcw', 'mr-1 sm:mr-2 h-3 w-3 sm:h-4 sm:w-4')} Regenerate</button>
+                        <button onclick="handleRegenerateTitlesClick(this)" class="cta-button text-xs sm:text-sm px-3 py-2 sm:px-4 sm:py-2 font-bold flex items-center shrink-0" style="border-radius: 14px;">${icon('RotateCcw', 'mr-1 sm:mr-2 h-3 w-3 sm:h-4 sm:w-4')} Regenerate</button>
                     </div>
                     <div id="titles-grid-container" class="grid grid-cols-1 md:grid-cols-3 gap-4"></div>
                 </div>
                 <div class="glass-card p-4 sm:p-6 rounded-[36px]">
                     <div class="flex justify-between items-center mb-4 gap-2">
                         <h2 class="text-2xl sm:text-3xl font-bold flex items-center gap-2 sm:gap-3"><img src="https://manmohit2007.github.io/Manmohit2007/shorts.png" class="shorts-icon"> Description</h2>
-                        <button id="copy-desc-btn" onclick="handleCopyClick(this, descriptionFull, 3)" class="cta-button text-xs sm:text-sm px-3 py-2 sm:px-4 sm:py-2 font-bold flex items-center shrink-0" style="border-radius: 14px;">${icon('Copy', 'mr-1 sm:mr-2 h-3 w-3 sm:h-4 sm:w-4')} Copy</button>
+                        <button onclick="handleRegenerateDescriptionClick(this)" class="cta-button text-xs sm:text-sm px-3 py-2 sm:px-4 sm:py-2 font-bold flex items-center shrink-0" style="border-radius: 14px;">${icon('RotateCcw', 'mr-1 sm:mr-2 h-3 w-3 sm:h-4 sm:w-4')} Regenerate</button>
                     </div>
-                    <div id="description-text-container" class="glass-inset-panel p-4"></div>
+                    <!-- Added fixed height class here as well for initial render -->
+                    <div id="description-text-container" class="glass-inset-panel p-4 interactive cursor-pointer h-[500px] overflow-y-auto"></div>
                 </div>`;
             updateTitlesContent(); updateDescriptionContent();
         };
