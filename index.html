@@ -171,6 +171,13 @@
         .share-icon { height: 3.2rem; width: 3.2rem; object-fit: contain; } 
         .shorts-icon { height: 3.5rem; width: 3.5rem; object-fit: contain; } 
 
+        /* Drag over effect */
+        .drag-over {
+            background-color: rgba(0, 0, 0, 0.08) !important;
+            transform: scale(1.02);
+            border: 2px dashed rgba(0, 0, 0, 0.2);
+        }
+
         @media (min-width: 640px) {
             .header-icon { height: 5rem; width: 5rem; }
             .share-icon { height: 4.2rem; width: 4.2rem; }
@@ -266,7 +273,7 @@
         };
 
         const handleFileChange = (event) => {
-            const selectedFile = event.target.files?.[0];
+            const selectedFile = event.target.files ? event.target.files[0] : null;
             if (selectedFile && selectedFile.type.startsWith("video/")) {
                 file = selectedFile;
                 currentFileName = file.name; 
@@ -353,17 +360,54 @@
 
         const resetApp = () => { file = null; currentFileName = ""; isProcessing = false; isProcessed = false; updateUI(); };
 
+        /* Drag and Drop Helpers */
+        const handleDragOver = (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            const area = document.getElementById('file-drop-area');
+            if (area) area.classList.add('drag-over');
+        };
+
+        const handleDragLeave = (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            const area = document.getElementById('file-drop-area');
+            if (area) area.classList.remove('drag-over');
+        };
+
+        const handleDrop = (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            const area = document.getElementById('file-drop-area');
+            if (area) area.classList.remove('drag-over');
+            
+            const files = e.dataTransfer.files;
+            if (files && files.length > 0) {
+                const droppedFile = files[0];
+                if (droppedFile.type.startsWith("video/")) {
+                    file = droppedFile;
+                    currentFileName = file.name;
+                    processFile();
+                }
+            }
+        };
+
         const renderUploadSection = () => {
             const container = document.getElementById('upload-section-content');
             if (!file) {
                 container.innerHTML = `
-                    <div id="file-drop-area" class="w-full h-full flex flex-col items-center justify-center text-center cursor-pointer pb-4">
-                        <div class="mb-4">${icon('Upload', 'h-12 w-12')}</div>
-                        <p class="text-lg font-bold text-black">Drag & Drop Your Video</p>
-                        <button class="cta-button mt-6 px-10 py-4 font-bold text-lg">Select File</button>
+                    <div id="file-drop-area" 
+                        class="w-full h-full flex flex-col items-center justify-center text-center cursor-pointer pb-4 fluid-transition"
+                        onclick="document.getElementById('file-upload-input').click()"
+                        ondragover="handleDragOver(event)"
+                        ondragleave="handleDragLeave(event)"
+                        ondrop="handleDrop(event)"
+                    >
+                        <div class="mb-4 pointer-events-none">${icon('Upload', 'h-12 w-12')}</div>
+                        <p class="text-lg font-bold text-black pointer-events-none">Drag & Drop Your Video</p>
+                        <button class="cta-button mt-6 px-10 py-4 font-bold text-lg pointer-events-none">Select File</button>
                         <input type="file" id="file-upload-input" class="hidden" accept="video/*" onchange="handleFileChange(event)"/>
                     </div>`;
-                document.getElementById('file-drop-area').onclick = () => document.getElementById('file-upload-input').click();
             } else {
                 container.innerHTML = `
                     <div class="flex flex-col items-center justify-center h-full w-full pt-4 sm:pt-10">
