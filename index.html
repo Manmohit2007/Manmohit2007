@@ -522,8 +522,8 @@
             // Added interactive class and onclick handler here
             if (container) {
                 container.setAttribute('onclick', `handleCopyClick(this, descriptionFull, 3)`);
-                // Responsive fixed height: taller on mobile (30rem), shorter on desktop (22rem)
-                container.className = "glass-inset-panel p-4 interactive cursor-pointer h-[30rem] sm:h-[22rem] overflow-y-auto";
+                // Removed fixed height and overflow to fit content naturally
+                container.className = "glass-inset-panel p-4 interactive cursor-pointer";
                 container.innerHTML = `<div class="whitespace-pre-wrap break-words text-xs sm:text-sm font-bold text-black/90 fade-in-text text-left w-full font-sans leading-relaxed pointer-events-none">${description}</div>`;
             }
         };
@@ -544,8 +544,8 @@
                         <h2 class="text-2xl sm:text-3xl font-bold flex items-center gap-2 sm:gap-3"><img src="https://manmohit2007.github.io/Manmohit2007/shorts.png" class="shorts-icon"> Description</h2>
                         <button onclick="handleRegenerateDescriptionClick(this)" class="cta-button text-xs sm:text-sm px-3 py-2 sm:px-4 sm:py-2 font-bold flex items-center shrink-0" style="border-radius: 14px;">${icon('RotateCcw', 'mr-1 sm:mr-2 h-3 w-3 sm:h-4 sm:w-4')} Regenerate</button>
                     </div>
-                    <!-- Responsive fixed height here as well -->
-                    <div id="description-text-container" class="glass-inset-panel p-4 interactive cursor-pointer h-[30rem] sm:h-[22rem] overflow-y-auto"></div>
+                    <!-- Removed fixed height classes -->
+                    <div id="description-text-container" class="glass-inset-panel p-4 interactive cursor-pointer"></div>
                 </div>`;
             updateTitlesContent(); updateDescriptionContent();
         };
