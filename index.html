@@ -148,11 +148,8 @@
             background-color: rgba(0, 0, 0, 0.1);
         }
 
-        /* Subtler animation for the large description box to prevent jarring zoom */
-        #description-text-container.interactive.active-state {
-            transform: scale(0.98);
-        }
-
+        /* REMOVED: Custom subtler animation for description box to match title box animation (0.96) */
+        
         .fade-in-text {
             animation: fadeInText 0.4s cubic-bezier(0.4, 0, 0.2, 1) forwards;
         }
@@ -203,7 +200,8 @@
                     <div class="w-[57px] h-[57px] sm:w-[84px] sm:h-[84px] flex-shrink-0 relative left-[5.3px] sm:left-[5.3px]">
                         <img src="https://manmohit2007.github.io/Manmohit2007/brand_logo.png?v=10" alt="Logo" class="w-full h-full object-contain filter drop-shadow-sm">
                     </div>
-                    <div class="text-left min-w-0 relative left-[2.6px] sm:left-[5.3px]">
+                    <!-- Increased left offset from 2.6px to 6px to create more space -->
+                    <div class="text-left min-w-0 relative left-[6px] sm:left-[5.3px]">
                         <h1 class="text-xl sm:text-3xl font-bold text-black leading-tight truncate">FanPlusFollow</h1>
                     </div>
                 </div>
@@ -218,10 +216,10 @@
         <main>
             <div id="upload-card" class="glass-card fluid-transition p-6 rounded-[36px] mb-8 sm:mb-12 card-animation-target">
                 <div class="mb-4">
-                    <!-- Updated gap to gap-1 sm:gap-2 and text offset to -left-[6px] -->
+                    <!-- Adjusted text offset from -left-[6px] to -left-[2px] to reduce closeness -->
                     <h2 class="text-xl sm:text-3xl font-bold flex items-center gap-1 sm:gap-2 text-black">
                         <img src="https://manmohit2007.github.io/Manmohit2007/share.png" alt="Share" class="share-icon">
-                        <span class="relative -top-[2px] -left-[6px]">Upload Video</span>
+                        <span class="relative -top-[2px] -left-[2px]">Upload Video</span>
                     </h2>
                 </div>
                 <div class="p-1 min-h-[10rem] sm:min-h-[14rem]" id="upload-section-content"></div>
@@ -593,15 +591,15 @@
             container.innerHTML = `
                 <div class="glass-card p-4 sm:p-6 rounded-[36px] mb-8 sm:mb-12">
                     <div class="flex justify-between items-center mb-6 gap-2">
-                        <!-- Updated gap to gap-1 sm:gap-2 and text offset to -left-[6px] -->
-                        <h2 class="text-xl sm:text-3xl font-bold flex items-center gap-1 sm:gap-2"><img src="https://manmohit2007.github.io/Manmohit2007/like.png" class="header-icon"> <span class="relative -left-[6px]">Titles</span></h2>
+                        <!-- Adjusted text offset from -left-[6px] to -left-[9px] to bring closer to Like PNG -->
+                        <h2 class="text-xl sm:text-3xl font-bold flex items-center gap-1 sm:gap-2"><img src="https://manmohit2007.github.io/Manmohit2007/like.png" class="header-icon"> <span class="relative -left-[9px]">Titles</span></h2>
                         <button onclick="handleRegenerateTitlesClick(this)" class="cta-button text-xs sm:text-sm px-3 py-2 sm:px-4 sm:py-2 font-bold flex items-center shrink-0" style="border-radius: 14px;">${icon('RotateCcw', 'mr-1 sm:mr-2 h-3 w-3 sm:h-4 sm:w-4')} Regenerate</button>
                     </div>
                     <div id="titles-grid-container" class="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6"></div>
                 </div>
                 <div class="glass-card p-4 sm:p-6 rounded-[36px]">
                     <div class="flex justify-between items-center mb-4 gap-2">
-                        <!-- Updated gap to gap-1 sm:gap-2 and text offset to -left-[6px] -->
+                        <!-- Description looks okay as per user request, keeping -left-[6px] -->
                         <h2 class="text-xl sm:text-3xl font-bold flex items-center gap-1 sm:gap-2"><img src="https://manmohit2007.github.io/Manmohit2007/shorts.png" class="shorts-icon"> <span class="relative -left-[6px]">Description</span></h2>
                         <button onclick="handleRegenerateDescriptionClick(this)" class="cta-button text-xs sm:text-sm px-3 py-2 sm:px-4 sm:py-2 font-bold flex items-center shrink-0" style="border-radius: 14px;">${icon('RotateCcw', 'mr-1 sm:mr-2 h-3 w-3 sm:h-4 sm:w-4')} Regenerate</button>
                     </div>
