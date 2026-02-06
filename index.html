@@ -382,8 +382,7 @@
                         container.style.display = 'flex';
                         container.style.flexDirection = 'column';
                         container.style.justifyContent = 'center';
-                        // Updated to medium size: text-lg sm:text-xl with appropriate icon size
-                        container.innerHTML = `<span class="flex items-center justify-center gap-2 w-full font-bold text-black/80 fade-in-text text-lg sm:text-xl">${icon('Check', 'h-5 w-5 sm:h-7 sm:w-7')} Copied</span>`;
+                        container.innerHTML = `<span class="flex items-center justify-center gap-2 w-full font-bold text-black/80 fade-in-text text-base sm:text-lg">${icon('Check', 'h-5 w-5 sm:h-6 sm:w-6')} Copied</span>`;
                         setTimeout(() => { 
                             const span = container.querySelector('span');
                             if (span) span.classList.add('text-fade-out');
@@ -391,7 +390,7 @@
                                 container.style.display = '';
                                 container.style.height = ''; 
                                 container.style.transition = ''; 
-                                container.innerHTML = `<div class="whitespace-pre-wrap break-words text-xs sm:text-sm font-bold text-black/90 fade-in-text text-left w-full font-sans leading-relaxed pointer-events-none">${description}</div>`;
+                                container.innerHTML = `<div class="whitespace-pre-wrap break-words text-sm sm:text-base font-bold text-black/90 fade-in-text text-left w-full leading-normal pointer-events-none">${description}</div>`;
                                 if (done) done(); 
                             }, 200); 
                         }, 800); 
@@ -406,7 +405,7 @@
                     p.classList.add('text-fade-out');
                     setTimeout(() => {
                         p.classList.remove('text-fade-out');
-                        p.innerHTML = `<span class="flex items-center justify-center gap-1 w-full fade-in-text">${icon('Check', 'h-4 w-4')} Copied</span>`;
+                        p.innerHTML = `<span class="flex items-center justify-center gap-2 w-full font-bold text-black/80 fade-in-text text-base sm:text-lg">${icon('Check', 'h-5 w-5 sm:h-6 sm:w-6')} Copied</span>`;
                         setTimeout(() => { 
                             const span = p.querySelector('span');
                             if (span) span.classList.add('text-fade-out');
@@ -448,8 +447,8 @@
                             </div>
                         </div>
                         <div class="relative inline-flex items-center justify-center mb-2 font-bold left-[5.3px]">
-                            <div class="absolute right-full top-1/2 -translate-y-1/2 pr-2 flex items-center">${!isProcessed ? icon('Loader', 'h-5 w-5') : icon('Check', 'h-5 w-5')}</div>
-                            <span class="opacity-80">${isProcessed ? 'Analysis Complete' : 'Analyzing Video...'}</span>
+                            <div class="absolute right-full top-1/2 -translate-y-1/2 pr-2 flex items-center">${!isProcessed ? icon('Loader', 'h-5 w-5 sm:h-6 sm:w-6') : icon('Check', 'h-5 w-5 sm:h-6 sm:w-6')}</div>
+                            <span class="opacity-80 text-lg">${isProcessed ? 'Analysis Complete' : 'Analyzing Video...'}</span>
                         </div>
                     </div>`;
             }
@@ -469,7 +468,7 @@
             if (container) {
                 container.setAttribute('onclick', `handleCopyClick(this, descriptionFull, 3)`);
                 container.className = "glass-inset-panel p-4 interactive cursor-pointer h-[32rem] sm:h-[25rem] overflow-hidden";
-                container.innerHTML = `<div class="whitespace-pre-wrap break-words text-xs sm:text-sm font-bold text-black/90 fade-in-text text-left w-full font-sans leading-relaxed pointer-events-none">${description}</div>`;
+                container.innerHTML = `<div class="whitespace-pre-wrap break-words text-sm sm:text-base font-bold text-black/90 fade-in-text text-left w-full leading-normal pointer-events-none">${description}</div>`;
             }
         };
 
