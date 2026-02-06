@@ -450,8 +450,8 @@
                         container.style.flexDirection = 'column';
                         container.style.justifyContent = 'center';
                         
-                        // 3. Show "Copied" with Fade In
-                        container.innerHTML = `<span class="flex items-center justify-center gap-1 w-full font-bold text-black/80 fade-in-text">${icon('Check', 'h-5 w-5')} Copied</span>`;
+                        // 3. Show "Copied" with Fade In - Increased size by 2pt (sm -> lg)
+                        container.innerHTML = `<span class="flex items-center justify-center gap-1 w-full font-bold text-black/80 fade-in-text text-sm sm:text-lg">${icon('Check', 'h-6 w-6')} Copied</span>`;
                         
                         setTimeout(() => { 
                             // 4. Fade Out "Copied"
