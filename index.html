@@ -250,6 +250,7 @@
         let currentFileName = ""; 
         let isProcessing = false;
         let isProcessed = false;
+        let isUIBusy = false; // New global flag to prevent race conditions
         let titles = [];
         let description = "";
         let titlesFull = [];
@@ -262,6 +263,9 @@
 
         // --- ANIMATION HELPER ---
         const animateAndExecute = (element, action) => {
+            if (isUIBusy) return; // Guard: Prevent interaction if busy
+            isUIBusy = true;      // Lock
+            
             // Determine active class based on element type
             const activeClass = element.classList.contains('cta-button') ? 'active-manual' : 'active-state';
             
@@ -276,29 +280,36 @@
                 // Step 4: Wait for release animation
                 setTimeout(() => {
                     // Step 5: Execute Action
-                    action();
+                    // Pass a "done" callback to unlock the UI
+                    action(() => { isUIBusy = false; }); 
                 }, 150); 
             }, 100); 
         };
 
         const handleExternalLink = (element, url) => {
-            animateAndExecute(element, () => window.open(url, '_blank'));
+            animateAndExecute(element, (done) => { 
+                window.open(url, '_blank');
+                done(); // Unlock immediately
+            });
         };
 
         const handleRegenerateTitlesClick = (element) => {
-            animateAndExecute(element, regenerateTitles);
+            animateAndExecute(element, (done) => regenerateTitles(done));
         };
 
         const handleRegenerateDescriptionClick = (element) => {
-            animateAndExecute(element, regenerateDescription);
+            animateAndExecute(element, (done) => regenerateDescription(done));
         };
 
         const handleCopyClick = (element, text, index) => {
-            animateAndExecute(element, () => copyToClipboard(text, index));
+            animateAndExecute(element, (done) => copyToClipboard(text, index, done));
         };
 
         const handleResetClick = (element) => {
-            animateAndExecute(element, resetApp);
+            animateAndExecute(element, (done) => { 
+                resetApp(); 
+                done(); 
+            });
         };
 
         const icon = (name, classes) => {
@@ -361,19 +372,26 @@
             descriptionFull = fullTemplates.descriptions[currentDescriptionIndex % fullTemplates.descriptions.length];
         };
 
-        const regenerateTitles = () => {
-            if (!file || isProcessing) return;
+        const regenerateTitles = (done) => {
+            if (!file || isProcessing) {
+                if (done) done();
+                return;
+            }
             const elements = document.querySelectorAll('#titles-grid-container .fade-in-text');
             elements.forEach(el => el.classList.add('text-fade-out'));
             setTimeout(() => {
                 currentTitleSetIndex++;
                 generateViralContent(); 
                 updateTitlesContent(); 
+                if (done) done();
             }, 200);
         };
 
-        const regenerateDescription = () => {
-            if (!file || isProcessing) return;
+        const regenerateDescription = (done) => {
+            if (!file || isProcessing) {
+                if (done) done();
+                return;
+            }
             const container = document.getElementById('description-text-container');
             const textEl = container ? container.querySelector('.fade-in-text') : null;
             if (textEl) textEl.classList.add('text-fade-out');
@@ -381,6 +399,7 @@
                 currentDescriptionIndex++;
                 generateViralContent(); 
                 updateDescriptionContent();
+                if (done) done();
             }, 200);
         };
 
@@ -390,7 +409,7 @@
             generateViralContent(); updateTitlesContent(); updateDescriptionContent();
         };
 
-        const copyToClipboard = (text, index) => {
+        const copyToClipboard = (text, index, done) => {
             const tempElement = document.createElement('textarea');
             tempElement.value = text;
             document.body.appendChild(tempElement);
@@ -412,9 +431,6 @@
                     if (contentDiv) contentDiv.classList.add('text-fade-out');
 
                     setTimeout(() => {
-                        // We don't need to capture originalHTML here because it contains the 'text-fade-out' class.
-                        // We will regenerate clean HTML using the global 'description' variable.
-                        
                         // 2. Prepare Container for Centered "Copied" Message
                         container.style.display = 'flex';
                         container.style.flexDirection = 'column';
@@ -438,12 +454,15 @@
                                 container.style.justifyContent = '';
                                 container.style.height = ''; // Unlock height to allow natural resizing if content changes
                                 
-                                // Re-render clean HTML to ensure 'text-fade-out' is gone and 'fade-in-text' triggers fresh
+                                // Re-render clean HTML
                                 container.innerHTML = `<div class="whitespace-pre-wrap break-words text-xs sm:text-sm font-bold text-black/90 fade-in-text text-left w-full font-sans leading-relaxed pointer-events-none">${description}</div>`;
                                 
+                                if (done) done(); // Unlock UI
                             }, 200); // Wait for fade out
                         }, 800); // Display duration
                     }, 200); // Wait for original text fade out
+                } else {
+                    if (done) done();
                 }
             } else {
                 // Title Cards Logic
@@ -474,9 +493,13 @@
                                 p.classList.remove('text-fade-out');
                                 void p.offsetWidth; // Trigger reflow
                                 p.classList.add('fade-in-text');
+                                
+                                if (done) done(); // Unlock UI
                             }, 200);
                         }, 800);
                     }, 200);
+                } else {
+                    if (done) done();
                 }
             }
         };
@@ -497,8 +520,9 @@
                 document.getElementById('file-drop-area').onclick = () => {
                     const btn = document.querySelector('#file-drop-area .cta-button');
                     if (btn) {
-                        animateAndExecute(btn, () => {
+                        animateAndExecute(btn, (done) => {
                             document.getElementById('file-upload-input').click();
+                            done(); // Unlock immediately after opening file dialog
                         });
                     }
                 };
@@ -537,9 +561,8 @@
             // Added interactive class and onclick handler here
             if (container) {
                 container.setAttribute('onclick', `handleCopyClick(this, descriptionFull, 3)`);
-                // Fixed height to fit longest description exactly: mobile (29rem), desktop (24rem)
-                // Changed overflow-y-auto to overflow-hidden to completely disable scrolling
-                container.className = "glass-inset-panel p-4 interactive cursor-pointer h-[29rem] sm:h-[24rem] overflow-hidden";
+                // Increased height to h-[31rem] (mobile) and h-[26rem] (desktop) for bottom symmetry
+                container.className = "glass-inset-panel p-4 interactive cursor-pointer h-[31rem] sm:h-[26rem] overflow-hidden";
                 container.innerHTML = `<div class="whitespace-pre-wrap break-words text-xs sm:text-sm font-bold text-black/90 fade-in-text text-left w-full font-sans leading-relaxed pointer-events-none">${description}</div>`;
             }
         };
@@ -560,8 +583,8 @@
                         <h2 class="text-2xl sm:text-3xl font-bold flex items-center gap-2 sm:gap-3"><img src="https://manmohit2007.github.io/Manmohit2007/shorts.png" class="shorts-icon"> Description</h2>
                         <button onclick="handleRegenerateDescriptionClick(this)" class="cta-button text-xs sm:text-sm px-3 py-2 sm:px-4 sm:py-2 font-bold flex items-center shrink-0" style="border-radius: 14px;">${icon('RotateCcw', 'mr-1 sm:mr-2 h-3 w-3 sm:h-4 sm:w-4')} Regenerate</button>
                     </div>
-                    <!-- Updated class to overflow-hidden -->
-                    <div id="description-text-container" class="glass-inset-panel p-4 interactive cursor-pointer h-[29rem] sm:h-[24rem] overflow-hidden"></div>
+                    <!-- Updated fixed height classes here as well -->
+                    <div id="description-text-container" class="glass-inset-panel p-4 interactive cursor-pointer h-[31rem] sm:h-[26rem] overflow-hidden"></div>
                 </div>`;
             updateTitlesContent(); updateDescriptionContent();
         };
