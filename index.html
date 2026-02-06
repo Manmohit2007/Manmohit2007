@@ -402,6 +402,10 @@
                 // Description Box Copy Logic
                 const container = document.getElementById('description-text-container');
                 if (container) {
+                    // Lock height to prevent collapse during animation
+                    const currentHeight = container.offsetHeight;
+                    container.style.height = `${currentHeight}px`;
+
                     const contentDiv = container.querySelector('div');
                     
                     // 1. Fade Out Original Text
@@ -432,6 +436,7 @@
                                 container.style.display = '';
                                 container.style.flexDirection = '';
                                 container.style.justifyContent = '';
+                                container.style.height = ''; // Unlock height to allow natural resizing if content changes
                                 
                                 // Re-render clean HTML to ensure 'text-fade-out' is gone and 'fade-in-text' triggers fresh
                                 container.innerHTML = `<div class="whitespace-pre-wrap break-words text-xs sm:text-sm font-bold text-black/90 fade-in-text text-left w-full font-sans leading-relaxed pointer-events-none">${description}</div>`;
@@ -532,8 +537,9 @@
             // Added interactive class and onclick handler here
             if (container) {
                 container.setAttribute('onclick', `handleCopyClick(this, descriptionFull, 3)`);
-                // Fixed height to fit longest description (mobile: 34rem, desktop: 24rem) and hidden scrollbar
-                container.className = "glass-inset-panel p-4 interactive cursor-pointer h-[34rem] sm:h-[24rem] overflow-y-auto no-scrollbar";
+                // Fixed height to fit longest description exactly: mobile (29rem), desktop (24rem)
+                // Changed overflow-y-auto to overflow-hidden to completely disable scrolling
+                container.className = "glass-inset-panel p-4 interactive cursor-pointer h-[29rem] sm:h-[24rem] overflow-hidden";
                 container.innerHTML = `<div class="whitespace-pre-wrap break-words text-xs sm:text-sm font-bold text-black/90 fade-in-text text-left w-full font-sans leading-relaxed pointer-events-none">${description}</div>`;
             }
         };
@@ -554,8 +560,8 @@
                         <h2 class="text-2xl sm:text-3xl font-bold flex items-center gap-2 sm:gap-3"><img src="https://manmohit2007.github.io/Manmohit2007/shorts.png" class="shorts-icon"> Description</h2>
                         <button onclick="handleRegenerateDescriptionClick(this)" class="cta-button text-xs sm:text-sm px-3 py-2 sm:px-4 sm:py-2 font-bold flex items-center shrink-0" style="border-radius: 14px;">${icon('RotateCcw', 'mr-1 sm:mr-2 h-3 w-3 sm:h-4 sm:w-4')} Regenerate</button>
                     </div>
-                    <!-- Added fixed height classes and no-scrollbar -->
-                    <div id="description-text-container" class="glass-inset-panel p-4 interactive cursor-pointer h-[34rem] sm:h-[24rem] overflow-y-auto no-scrollbar"></div>
+                    <!-- Updated class to overflow-hidden -->
+                    <div id="description-text-container" class="glass-inset-panel p-4 interactive cursor-pointer h-[29rem] sm:h-[24rem] overflow-hidden"></div>
                 </div>`;
             updateTitlesContent(); updateDescriptionContent();
         };
