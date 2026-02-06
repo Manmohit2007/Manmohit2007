@@ -382,6 +382,7 @@
                         container.style.display = 'flex';
                         container.style.flexDirection = 'column';
                         container.style.justifyContent = 'center';
+                        // Updated to medium size: text-lg sm:text-xl with appropriate icon size
                         container.innerHTML = `<span class="flex items-center justify-center gap-2 w-full font-bold text-black/80 fade-in-text text-lg sm:text-xl">${icon('Check', 'h-5 w-5 sm:h-7 sm:w-7')} Copied</span>`;
                         setTimeout(() => { 
                             const span = container.querySelector('span');
@@ -405,8 +406,7 @@
                     p.classList.add('text-fade-out');
                     setTimeout(() => {
                         p.classList.remove('text-fade-out');
-                        // Updated title cards to use the same medium size feedback
-                        p.innerHTML = `<span class="flex items-center justify-center gap-2 w-full font-bold text-black/80 fade-in-text text-lg sm:text-xl">${icon('Check', 'h-5 w-5 sm:h-7 sm:w-7')} Copied</span>`;
+                        p.innerHTML = `<span class="flex items-center justify-center gap-1 w-full fade-in-text">${icon('Check', 'h-4 w-4')} Copied</span>`;
                         setTimeout(() => { 
                             const span = p.querySelector('span');
                             if (span) span.classList.add('text-fade-out');
