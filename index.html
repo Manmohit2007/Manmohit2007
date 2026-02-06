@@ -392,41 +392,76 @@
                 // Description Box Copy Logic
                 const container = document.getElementById('description-text-container');
                 if (container) {
-                    // Lock height to prevent collapse
-                    const currentHeight = container.offsetHeight;
-                    container.style.height = `${currentHeight}px`;
-                    container.style.display = 'flex';
-                    container.style.flexDirection = 'column';
-                    container.style.justifyContent = 'center';
+                    const contentDiv = container.querySelector('div');
                     
-                    const originalContent = container.innerHTML;
-                    
-                    container.classList.add('copy-pulse');
-                    container.innerHTML = `<span class="flex items-center justify-center gap-1 w-full h-full font-bold text-black/80">${icon('Check', 'h-5 w-5')} Copied</span>`;
-                    
-                    setTimeout(() => { 
-                        container.classList.remove('copy-pulse');
-                        container.innerHTML = originalContent;
-                        // Reset layout styles
-                        container.style.height = '';
-                        container.style.display = '';
-                        container.style.flexDirection = '';
-                        container.style.justifyContent = '';
-                    }, 800);
+                    // 1. Fade Out Original Text
+                    if (contentDiv) contentDiv.classList.add('text-fade-out');
+
+                    setTimeout(() => {
+                        // We don't need to capture originalHTML here because it contains the 'text-fade-out' class.
+                        // We will regenerate clean HTML using the global 'description' variable.
+                        
+                        // 2. Prepare Container for Centered "Copied" Message
+                        container.style.display = 'flex';
+                        container.style.flexDirection = 'column';
+                        container.style.justifyContent = 'center';
+                        
+                        // 3. Show "Copied" with Fade In
+                        container.innerHTML = `<span class="flex items-center justify-center gap-1 w-full font-bold text-black/80 fade-in-text">${icon('Check', 'h-5 w-5')} Copied</span>`;
+                        
+                        setTimeout(() => { 
+                            // 4. Fade Out "Copied"
+                            const span = container.querySelector('span');
+                            if (span) {
+                                span.classList.remove('fade-in-text');
+                                span.classList.add('text-fade-out');
+                            }
+                            
+                            setTimeout(() => {
+                                // 5. Restore Original Content
+                                container.style.display = '';
+                                container.style.flexDirection = '';
+                                container.style.justifyContent = '';
+                                
+                                // Re-render clean HTML to ensure 'text-fade-out' is gone and 'fade-in-text' triggers fresh
+                                container.innerHTML = `<div class="whitespace-pre-wrap break-words text-xs sm:text-sm font-bold text-black/90 fade-in-text text-left w-full font-sans leading-relaxed pointer-events-none">${description}</div>`;
+                                
+                            }, 200); // Wait for fade out
+                        }, 800); // Display duration
+                    }, 200); // Wait for original text fade out
                 }
             } else {
                 // Title Cards Logic
                 const card = document.getElementById(`title-card-${index}`);
                 const originalText = titles[index];
                 if (card) {
-                    card.classList.add('copy-pulse');
-                    card.querySelector('p').innerHTML = `<span class="flex items-center justify-center gap-1 w-full">${icon('Check', 'h-4 w-4')} Copied</span>`;
-                    setTimeout(() => { 
-                        if (card) {
-                            card.classList.remove('copy-pulse');
-                            card.querySelector('p').textContent = originalText;
-                        }
-                    }, 800);
+                    const p = card.querySelector('p');
+                    
+                    // 1. Fade Out Original Text
+                    p.classList.add('text-fade-out');
+
+                    setTimeout(() => {
+                        // 2. Show "Copied" with Fade In
+                        p.classList.remove('text-fade-out');
+                        p.innerHTML = `<span class="flex items-center justify-center gap-1 w-full fade-in-text">${icon('Check', 'h-4 w-4')} Copied</span>`;
+                        
+                        setTimeout(() => { 
+                            // 3. Fade Out "Copied"
+                            const span = p.querySelector('span');
+                            if (span) {
+                                span.classList.remove('fade-in-text');
+                                span.classList.add('text-fade-out');
+                            }
+
+                            setTimeout(() => {
+                                // 4. Restore Original Text
+                                p.textContent = originalText;
+                                p.classList.remove('text-fade-out');
+                                void p.offsetWidth; // Trigger reflow
+                                p.classList.add('fade-in-text');
+                            }, 200);
+                        }, 800);
+                    }, 200);
                 }
             }
         };
@@ -487,8 +522,8 @@
             // Added interactive class and onclick handler here
             if (container) {
                 container.setAttribute('onclick', `handleCopyClick(this, descriptionFull, 3)`);
-                // Fixed height (h-[500px]) to accommodate large descriptions without layout shift
-                container.className = "glass-inset-panel p-4 interactive cursor-pointer h-[500px] overflow-y-auto";
+                // Responsive fixed height: taller on mobile (30rem), shorter on desktop (22rem)
+                container.className = "glass-inset-panel p-4 interactive cursor-pointer h-[30rem] sm:h-[22rem] overflow-y-auto";
                 container.innerHTML = `<div class="whitespace-pre-wrap break-words text-xs sm:text-sm font-bold text-black/90 fade-in-text text-left w-full font-sans leading-relaxed pointer-events-none">${description}</div>`;
             }
         };
@@ -509,8 +544,8 @@
                         <h2 class="text-2xl sm:text-3xl font-bold flex items-center gap-2 sm:gap-3"><img src="https://manmohit2007.github.io/Manmohit2007/shorts.png" class="shorts-icon"> Description</h2>
                         <button onclick="handleRegenerateDescriptionClick(this)" class="cta-button text-xs sm:text-sm px-3 py-2 sm:px-4 sm:py-2 font-bold flex items-center shrink-0" style="border-radius: 14px;">${icon('RotateCcw', 'mr-1 sm:mr-2 h-3 w-3 sm:h-4 sm:w-4')} Regenerate</button>
                     </div>
-                    <!-- Added fixed height class here as well for initial render -->
-                    <div id="description-text-container" class="glass-inset-panel p-4 interactive cursor-pointer h-[500px] overflow-y-auto"></div>
+                    <!-- Responsive fixed height here as well -->
+                    <div id="description-text-container" class="glass-inset-panel p-4 interactive cursor-pointer h-[30rem] sm:h-[22rem] overflow-y-auto"></div>
                 </div>`;
             updateTitlesContent(); updateDescriptionContent();
         };
