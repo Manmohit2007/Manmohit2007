@@ -121,7 +121,8 @@
             }
         }
         
-        .cta-button:active {
+        .cta-button:active,
+        .cta-button.active-manual {
             transform: scale(0.92) translateY(2px) !important; 
             background-color: rgba(0, 0, 0, 0.12) !important;
             box-shadow: inset 0 4px 10px rgba(0, 0, 0, 0.2);
@@ -131,7 +132,7 @@
         .glass-inset-panel {
             background-color: rgba(0, 0, 0, 0.04);
             box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.1), 0 1px 0 rgba(255, 255, 255, 0.2);
-            border-radius: 18px;
+            border-radius: 20px;
             border: none;
             transition: all 0.15s ease;
             -webkit-tap-highlight-color: transparent;
@@ -141,7 +142,8 @@
             cursor: pointer;
         }
 
-        .glass-inset-panel.interactive:active {
+        .glass-inset-panel.interactive:active,
+        .glass-inset-panel.interactive.active-state {
             transform: scale(0.96);
             background-color: rgba(0, 0, 0, 0.1);
         }
@@ -161,7 +163,6 @@
         }
 
         .copy-pulse {
-            background-color: rgba(74, 222, 128, 0.25) !important;
             transform: scale(0.94) !important;
             transition: all 0.1s ease;
         }
@@ -222,10 +223,10 @@
                         <h3 class="text-2xl sm:text-3xl font-bold text-center text-black -mt-8 sm:-mt-9">Boost Your Reach Today</h3>
                         <p class="text-black mt-1 text-center max-w-md text-xs sm:text-sm font-bold opacity-80 leading-tight">Join the community for exclusive growth insights.</p>
                         <div class="mt-4 sm:mt-6 flex flex-row w-full max-w-md sm:max-w-lg justify-center gap-[18px] sm:gap-[30.6px] px-2 sm:px-0">
-                          <button class="cta-button flex-1 sm:flex-none sm:w-40 px-4 py-4 font-bold flex items-center justify-center text-lg sm:text-lg" onclick="openLinkWithDelay('https://www.youtube.com/@fanplusfollow')">
+                          <button class="cta-button flex-1 sm:flex-none sm:w-40 px-4 py-4 font-bold flex items-center justify-center text-lg sm:text-lg" onclick="handleExternalLink(this, 'https://www.youtube.com/@fanplusfollow')">
                             Subscribe
                           </button>
-                          <button class="cta-button flex-1 sm:flex-none sm:w-40 px-4 py-4 font-bold flex items-center justify-center text-lg sm:text-lg" onclick="openLinkWithDelay('https://www.instagram.com/_manmohit_singh_/')">
+                          <button class="cta-button flex-1 sm:flex-none sm:w-40 px-4 py-4 font-bold flex items-center justify-center text-lg sm:text-lg" onclick="handleExternalLink(this, 'https://www.instagram.com/_manmohit_singh_/')">
                             Follow
                           </button>
                         </div>
@@ -250,8 +251,41 @@
         const YOUTUBE_CHANNEL_LINK = "https://www.youtube.com/@fanplusfollow";
         const INSTAGRAM_LINK = "https://www.instagram.com/_manmohit_singh_/";
 
-        const openLinkWithDelay = (url) => {
-            setTimeout(() => { window.open(url, '_blank'); }, 100);
+        // --- ANIMATION HELPER ---
+        const animateAndExecute = (element, action) => {
+            // Determine active class based on element type
+            const activeClass = element.classList.contains('cta-button') ? 'active-manual' : 'active-state';
+            
+            // Step 1: Press In
+            element.classList.add(activeClass);
+            
+            // Step 2: Wait briefly
+            setTimeout(() => {
+                // Step 3: Release Out
+                element.classList.remove(activeClass);
+                
+                // Step 4: Wait for release animation
+                setTimeout(() => {
+                    // Step 5: Execute Action
+                    action();
+                }, 150); 
+            }, 100); 
+        };
+
+        const handleExternalLink = (element, url) => {
+            animateAndExecute(element, () => window.open(url, '_blank'));
+        };
+
+        const handleRegenerateClick = (element) => {
+            animateAndExecute(element, handleRegenerate);
+        };
+
+        const handleCopyClick = (element, text, index) => {
+            animateAndExecute(element, () => copyToClipboard(text, index));
+        };
+
+        const handleResetClick = (element) => {
+            animateAndExecute(element, resetApp);
         };
 
         const icon = (name, classes) => {
@@ -341,7 +375,7 @@
                 const card = document.getElementById(`title-card-${index}`);
                 const originalText = titles[index];
                 card.classList.add('copy-pulse');
-                card.querySelector('p').innerHTML = `<span class="flex items-center gap-1">${icon('Check', 'h-4 w-4')} Copied</span>`;
+                card.querySelector('p').innerHTML = `<span class="flex items-center justify-center gap-1 w-full">${icon('Check', 'h-4 w-4')} Copied</span>`;
                 setTimeout(() => { 
                     if (card) {
                         card.classList.remove('copy-pulse');
@@ -360,19 +394,27 @@
                     <div id="file-drop-area" class="w-full h-full flex flex-col items-center justify-center text-center cursor-pointer pb-4">
                         <div class="mb-4">${icon('Upload', 'h-12 w-12')}</div>
                         <p class="text-lg font-bold text-black">Upload Your Video File Here</p>
-                        <button class="cta-button mt-6 px-6 py-4 font-bold text-lg">Select File</button>
-                        <input type="file" id="file-upload-input" class="hidden" accept="video/*" onchange="handleFileChange(event)"/>
+                        <button class="cta-button mt-6 px-6 py-4 font-bold text-lg pointer-events-none">Select File</button>
+                        <input type="file" id="file-upload-input" class="hidden" accept="video/*" onchange="handleFileChange(event)" onclick="event.stopPropagation()"/>
                     </div>`;
-                document.getElementById('file-drop-area').onclick = () => document.getElementById('file-upload-input').click();
+                
+                document.getElementById('file-drop-area').onclick = () => {
+                    const btn = document.querySelector('#file-drop-area .cta-button');
+                    if (btn) {
+                        animateAndExecute(btn, () => {
+                            document.getElementById('file-upload-input').click();
+                        });
+                    }
+                };
             } else {
                 container.innerHTML = `
                     <div class="flex flex-col items-center justify-center h-full w-full pt-4 sm:pt-10">
-                        <div class="w-full max-w-md mb-6 px-2 sm:px-0">
+                        <div class="w-auto mb-6 px-2 max-w-full">
                             <div 
-                                class="glass-inset-panel flex items-center px-5 py-3 w-full ${isProcessed ? 'interactive cursor-pointer' : ''}" 
-                                ${isProcessed ? 'onclick="resetApp()"' : ''}
+                                class="glass-inset-panel inline-flex items-center justify-center px-6 py-4 ${isProcessed ? 'interactive cursor-pointer' : ''}" 
+                                ${isProcessed ? 'onclick="handleResetClick(this)"' : ''}
                             >
-                                <p class="font-bold text-black/80 truncate text-center w-full flex items-center justify-center gap-2">
+                                <p class="font-bold text-black/80 truncate text-center gap-2 max-w-[70vw] sm:max-w-lg">
                                     ${currentFileName}
                                 </p>
                             </div>
@@ -389,7 +431,7 @@
             const grid = document.getElementById('titles-grid-container');
             if (!grid) return;
             grid.innerHTML = titles.map((title, index) => `
-                <div id="title-card-${index}" class="glass-inset-panel interactive p-4" onclick="copyToClipboard('${titlesFull[index].replace(/'/g, "\\'")}', ${index})">
+                <div id="title-card-${index}" class="glass-inset-panel interactive p-4 flex flex-col justify-center" onclick="handleCopyClick(this, '${titlesFull[index].replace(/'/g, "\\'")}', ${index})">
                     <p class="text-sm sm:text-base font-bold text-black/90 py-2 fade-in-text">${title}</p>
                 </div>`).join('');
         };
@@ -406,14 +448,14 @@
                 <div class="glass-card p-4 sm:p-6 rounded-[36px] mb-8 sm:mb-12">
                     <div class="flex justify-between items-center mb-6 gap-2">
                         <h2 class="text-2xl sm:text-3xl font-bold flex items-center gap-2 sm:gap-3"><img src="https://manmohit2007.github.io/Manmohit2007/like.png" class="header-icon"> Titles</h2>
-                        <button onclick="handleRegenerate()" class="cta-button text-xs sm:text-sm px-3 py-2 sm:px-4 sm:py-2 font-bold flex items-center shrink-0" style="border-radius: 14px;">${icon('RotateCcw', 'mr-1 sm:mr-2 h-3 w-3 sm:h-4 sm:w-4')} Regenerate</button>
+                        <button onclick="handleRegenerateClick(this)" class="cta-button text-xs sm:text-sm px-3 py-2 sm:px-4 sm:py-2 font-bold flex items-center shrink-0" style="border-radius: 14px;">${icon('RotateCcw', 'mr-1 sm:mr-2 h-3 w-3 sm:h-4 sm:w-4')} Regenerate</button>
                     </div>
                     <div id="titles-grid-container" class="grid grid-cols-1 md:grid-cols-3 gap-4"></div>
                 </div>
                 <div class="glass-card p-4 sm:p-6 rounded-[36px]">
                     <div class="flex justify-between items-center mb-4 gap-2">
                         <h2 class="text-2xl sm:text-3xl font-bold flex items-center gap-2 sm:gap-3"><img src="https://manmohit2007.github.io/Manmohit2007/shorts.png" class="shorts-icon"> Description</h2>
-                        <button id="copy-desc-btn" onclick="copyToClipboard(descriptionFull, 3)" class="cta-button text-xs sm:text-sm px-3 py-2 sm:px-4 sm:py-2 font-bold flex items-center shrink-0" style="border-radius: 14px;">${icon('Copy', 'mr-1 sm:mr-2 h-3 w-3 sm:h-4 sm:w-4')} Copy</button>
+                        <button id="copy-desc-btn" onclick="handleCopyClick(this, descriptionFull, 3)" class="cta-button text-xs sm:text-sm px-3 py-2 sm:px-4 sm:py-2 font-bold flex items-center shrink-0" style="border-radius: 14px;">${icon('Copy', 'mr-1 sm:mr-2 h-3 w-3 sm:h-4 sm:w-4')} Copy</button>
                     </div>
                     <div id="description-text-container" class="glass-inset-panel p-4 max-h-96 overflow-auto"></div>
                 </div>`;
