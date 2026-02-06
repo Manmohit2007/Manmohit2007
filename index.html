@@ -360,7 +360,7 @@
                     <div id="file-drop-area" class="w-full h-full flex flex-col items-center justify-center text-center cursor-pointer pb-4">
                         <div class="mb-4">${icon('Upload', 'h-12 w-12')}</div>
                         <p class="text-lg font-bold text-black">Upload Your Video File Here</p>
-                        <button class="cta-button mt-6 px-10 py-4 font-bold text-lg">Select File</button>
+                        <button class="cta-button mt-6 px-6 py-4 font-bold text-lg">Select File</button>
                         <input type="file" id="file-upload-input" class="hidden" accept="video/*" onchange="handleFileChange(event)"/>
                     </div>`;
                 document.getElementById('file-drop-area').onclick = () => document.getElementById('file-upload-input').click();
