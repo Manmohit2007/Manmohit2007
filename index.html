@@ -166,9 +166,10 @@
             transition: all 0.1s ease;
         }
 
-        .header-icon { height: 4rem; width: 4rem; object-fit: contain; }
-        .share-icon { height: 3.5rem; width: 3.5rem; object-fit: contain; }
-        .shorts-icon { height: 3.8rem; width: 3.8rem; object-fit: contain; }
+        /* Updated Icon Sizes for Small Screens */
+        .header-icon { height: 3rem; width: 3rem; object-fit: contain; }
+        .share-icon { height: 2.5rem; width: 2.5rem; object-fit: contain; }
+        .shorts-icon { height: 2.8rem; width: 2.8rem; object-fit: contain; }
 
         @media (min-width: 640px) {
             .header-icon { height: 5rem; width: 5rem; }
@@ -191,14 +192,15 @@
                     </div>
                 </div>
                 <div class="flex-shrink-0">
-                    <img src="https://manmohit2007.github.io/Manmohit2007/youtube.png" alt="YouTube" class="w-[80px] h-[80px] sm:w-[116px] sm:h-[116px] object-contain">
+                    <!-- Optimized YouTube icon size for small screens -->
+                    <img src="https://manmohit2007.github.io/Manmohit2007/youtube.png" alt="YouTube" class="w-16 h-16 sm:w-[116px] sm:h-[116px] object-contain">
                 </div>
             </header>
         </div>
         <main>
             <div id="upload-card" class="glass-card fluid-transition p-6 rounded-[36px] mb-8 sm:mb-12 card-animation-target">
                 <div class="mb-4">
-                    <h2 class="text-2xl sm:text-3xl font-bold flex items-center gap-3 text-black">
+                    <h2 class="text-xl sm:text-3xl font-bold flex items-center gap-2 sm:gap-3 text-black">
                         <img src="https://manmohit2007.github.io/Manmohit2007/share.png" alt="Share" class="share-icon">
                         <span class="relative -top-[2px]">Upload Video</span>
                     </h2>
@@ -216,11 +218,12 @@
                         </div>
                         <h3 class="text-xl sm:text-2xl font-bold text-center text-black -mt-8 sm:-mt-9">Boost Your Reach Today</h3>
                         <p class="text-black mt-1 text-center max-w-md text-xs sm:text-sm font-bold opacity-80 leading-tight">Join the community for exclusive growth insights.</p>
-                        <div class="mt-4 sm:mt-6 flex flex-row justify-center gap-5 sm:gap-10 w-auto">
-                          <button class="cta-button px-8 py-4 sm:px-8 sm:py-3 font-bold flex items-center justify-center text-lg sm:text-lg" onclick="openLinkWithDelay('https://www.youtube.com/@fanplusfollow')">
+                        <!-- Optimized symmetrical buttons for mobile using flex-1 -->
+                        <div class="mt-4 sm:mt-6 flex flex-row w-full sm:w-auto justify-center gap-3 sm:gap-10 px-2 sm:px-0">
+                          <button class="cta-button flex-1 sm:flex-none px-4 py-4 sm:px-8 sm:py-3 font-bold flex items-center justify-center text-lg sm:text-lg" onclick="openLinkWithDelay('https://www.youtube.com/@fanplusfollow')">
                             Subscribe
                           </button>
-                          <button class="cta-button px-8 py-4 sm:px-8 sm:py-3 font-bold flex items-center justify-center text-lg sm:text-lg" onclick="openLinkWithDelay('https://www.instagram.com/_manmohit_singh_/')">
+                          <button class="cta-button flex-1 sm:flex-none px-4 py-4 sm:px-8 sm:py-3 font-bold flex items-center justify-center text-lg sm:text-lg" onclick="openLinkWithDelay('https://www.instagram.com/_manmohit_singh_/')">
                             Follow
                           </button>
                         </div>
@@ -398,18 +401,19 @@
         const renderResults = () => {
             const container = document.getElementById('results-section');
             if (!isProcessed) { container.innerHTML = ''; return; }
+            // Optimized headers for mobile to avoid text/button clash
             container.innerHTML = `
                 <div class="glass-card p-4 sm:p-6 rounded-[36px] mb-8 sm:mb-12">
-                    <div class="flex justify-between items-center mb-6">
-                        <h2 class="text-2xl sm:text-3xl font-bold flex items-center gap-3"><img src="https://manmohit2007.github.io/Manmohit2007/like.png" class="header-icon"> Titles</h2>
-                        <button onclick="handleRegenerate()" class="cta-button text-xs sm:text-sm px-4 py-2 font-bold flex items-center">${icon('RotateCcw', 'mr-2 h-4 w-4')} Regenerate</button>
+                    <div class="flex justify-between items-center mb-6 gap-2">
+                        <h2 class="text-xl sm:text-3xl font-bold flex items-center gap-2 sm:gap-3"><img src="https://manmohit2007.github.io/Manmohit2007/like.png" class="header-icon"> Titles</h2>
+                        <button onclick="handleRegenerate()" class="cta-button text-xs sm:text-sm px-3 py-2 sm:px-4 sm:py-2 font-bold flex items-center shrink-0">${icon('RotateCcw', 'mr-1 sm:mr-2 h-3 w-3 sm:h-4 sm:w-4')} Regenerate</button>
                     </div>
                     <div id="titles-grid-container" class="grid grid-cols-1 md:grid-cols-3 gap-4"></div>
                 </div>
                 <div class="glass-card p-4 sm:p-6 rounded-[36px]">
-                    <div class="flex justify-between items-center mb-4">
-                        <h2 class="text-2xl sm:text-3xl font-bold flex items-center gap-3"><img src="https://manmohit2007.github.io/Manmohit2007/shorts.png" class="shorts-icon"> Description</h2>
-                        <button id="copy-desc-btn" onclick="copyToClipboard(descriptionFull, 3)" class="cta-button text-xs sm:text-sm px-4 py-2 font-bold flex items-center">${icon('Copy', 'mr-2 h-4 w-4')} Copy</button>
+                    <div class="flex justify-between items-center mb-4 gap-2">
+                        <h2 class="text-xl sm:text-3xl font-bold flex items-center gap-2 sm:gap-3"><img src="https://manmohit2007.github.io/Manmohit2007/shorts.png" class="shorts-icon"> Description</h2>
+                        <button id="copy-desc-btn" onclick="copyToClipboard(descriptionFull, 3)" class="cta-button text-xs sm:text-sm px-3 py-2 sm:px-4 sm:py-2 font-bold flex items-center shrink-0">${icon('Copy', 'mr-1 sm:mr-2 h-3 w-3 sm:h-4 sm:w-4')} Copy</button>
                     </div>
                     <div id="description-text-container" class="glass-inset-panel p-4 max-h-96 overflow-auto"></div>
                 </div>`;
