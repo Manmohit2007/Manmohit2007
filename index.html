@@ -10,11 +10,11 @@
     <link rel="apple-touch-icon" sizes="180x180" href="https://manmohit2007.github.io/Manmohit2007/brand_logo.png?v=10">
     <link rel="shortcut icon" href="https://manmohit2007.github.io/Manmohit2007/brand_logo.png?v=10">
 
-    <!-- PRIORITY PRELOADING: Ensures Background Loads Instantly -->
+    <!-- PRIORITY PRELOADING -->
     <link rel="preload" as="image" href="background.png">
     <link rel="preload" as="image" href="landscape.png">
     
-    <!-- FONT OPTIMIZATION: Use Link instead of @import for faster non-blocking load -->
+    <!-- FONT OPTIMIZATION -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet">
@@ -36,11 +36,13 @@
         }
 
         html {
-            background-color: #1f2937; /* Dark fallback prevents white flash on dark systems */
+            background-color: #1f2937;
             height: 100%;
             width: 100%;
             overflow-x: hidden;
             overscroll-behavior: none;
+            /* Prevents layout shift when scrollbar appears */
+            scrollbar-gutter: stable; 
         }
 
         body {
@@ -52,57 +54,45 @@
             padding: 0;
             overscroll-behavior: none;
             cursor: pointer;
-            /* CRITICAL FIX: Body is visible IMMEDIATELY so background shows instantly */
             opacity: 1; 
         }
 
         /* --- CONTENT WRAPPER --- */
-        /* This handles the smooth fade-in for UI elements ONLY */
         #content-wrapper {
             opacity: 0;
             transition: opacity 0.5s ease-out;
             width: 100%;
             height: 100%;
+            /* Hardware acceleration for the fade */
+            will-change: opacity; 
         }
 
         /* --- BACKGROUND LAYER --- */
-        /* Visible immediately. No transitions. No jitters. */
         #fixed-background {
             position: fixed;
             top: 0; left: 0; right: 0; bottom: 0;
             width: 100vw; height: 100vh;
             z-index: -1; 
             
-            /* MOBILE BACKGROUND SETUP */
-            /* ----------------------------------------------------------------------- */
-            /* PASTE BASE64 BELOW: Replace 'background.png' with your long code */
-            /* Example: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUg...') */
-            /* ----------------------------------------------------------------------- */
+            /* MOBILE BACKGROUND */
+            /* Replace url('background.png') with base64 if needed */
             background-image: linear-gradient(rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.2)), url('background.png');
             
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
             pointer-events: none;
-            transform: translateZ(0); /* Hardware Acceleration */
+            transform: translateZ(0); 
             -webkit-transform: translateZ(0);
             backface-visibility: hidden;
-            will-change: transform;
         }
 
         @media (min-width: 768px) {
             #fixed-background {
-                /* DESKTOP BACKGROUND SETUP */
-                /* ----------------------------------------------------------------------- */
-                /* PASTE BASE64 BELOW: Replace 'landscape.png' with your long code */
-                /* ----------------------------------------------------------------------- */
+                /* DESKTOP BACKGROUND */
+                /* Replace url('landscape.png') with base64 if needed */
                 background-image: linear-gradient(rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.2)), url('landscape.png');
             }
-        }
-
-        .fluid-transition {
-            transition: all 400ms cubic-bezier(0.25, 0.46, 0.45, 0.94);
-            will-change: transform, box-shadow, background-color, color, opacity; 
         }
 
         /* Entry Animation */
@@ -131,7 +121,9 @@
             box-shadow: inset 0 0 40px rgba(255, 255, 255, 0.4), 0 25px 50px rgba(0, 0, 0, 0.05);
             border: 1px solid rgba(255, 255, 255, 0.5);
             border-radius: 36px;
+            /* STABILITY FIX: Prevents translucency jitter */
             transform: translate3d(0,0,0);
+            isolation: isolate; 
         }
 
         /* --- CTA BUTTONS --- */
@@ -139,6 +131,7 @@
             background-color: rgba(0, 0, 0, 0.03);
             box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.08), 0 1px 0 rgba(255, 255, 255, 0.2);
             color: #000000; 
+            /* REMOVED 'all', targeted specific properties only */
             transition: transform 0.1s cubic-bezier(0.25, 0.46, 0.45, 0.94), background-color 0.2s ease;
             border: none;
             border-radius: 24px; 
@@ -167,7 +160,8 @@
             box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.1), 0 1px 0 rgba(255, 255, 255, 0.2);
             border-radius: 20px;
             border: none;
-            transition: all 0.15s ease;
+            /* Targeted transition for stability */
+            transition: transform 0.15s ease, background-color 0.15s ease;
             -webkit-tap-highlight-color: transparent;
         }
 
@@ -625,13 +619,9 @@
                     animatedElements.forEach(el => {
                         el.style.animationPlayState = 'running';
                     });
-
-                    setTimeout(() => {
-                        animatedElements.forEach(el => {
-                            el.classList.add('fluid-transition');
-                        });
-                        document.documentElement.style.scrollBehavior = 'smooth';
-                    }, 850); 
+                    
+                    // REMOVED: No longer adding fluid-transition to the main layout cards.
+                    document.documentElement.style.scrollBehavior = 'smooth';
                 });
             });
         };
