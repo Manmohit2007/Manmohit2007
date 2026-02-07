@@ -36,10 +36,7 @@
         }
 
         html {
-            /* Changed to a neutral light gray to match the glass theme. 
-               Prevents dark flash if image takes 100ms to load */
-            background-color: #e5e7eb; 
-            scroll-behavior: auto; /* Changed from smooth to auto for initial load stability */
+            background-color: #1f2937; /* Dark fallback prevents white flash on dark systems */
             height: 100%;
             width: 100%;
             overflow-x: hidden;
@@ -49,33 +46,45 @@
         body {
             background-color: transparent; 
             min-height: 100vh;
-            /* Mobile Viewport Fix */
             min-height: -webkit-fill-available;
             color: #000000;
             margin: 0;
             padding: 0;
             overscroll-behavior: none;
             cursor: pointer;
-            /* Fix Jitter: Start invisible. Transition duration increased slightly for elegance */
-            opacity: 0; 
-            transition: opacity 0.5s ease-out;
+            /* CRITICAL FIX: Body is visible IMMEDIATELY so background shows instantly */
+            opacity: 1; 
         }
 
-        /* --- STIFF STATIC BACKGROUND --- */
+        /* --- CONTENT WRAPPER --- */
+        /* This handles the smooth fade-in for UI elements ONLY */
+        #content-wrapper {
+            opacity: 0;
+            transition: opacity 0.5s ease-out;
+            width: 100%;
+            height: 100%;
+        }
+
+        /* --- BACKGROUND LAYER --- */
+        /* Visible immediately. No transitions. No jitters. */
         #fixed-background {
             position: fixed;
             top: 0; left: 0; right: 0; bottom: 0;
             width: 100vw; height: 100vh;
             z-index: -1; 
-            /* Fallback color if image fails or lags */
-            background-color: #d1d5db; 
+            
+            /* MOBILE BACKGROUND SETUP */
+            /* ----------------------------------------------------------------------- */
+            /* PASTE BASE64 BELOW: Replace 'background.png' with your long code */
+            /* Example: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUg...') */
+            /* ----------------------------------------------------------------------- */
             background-image: linear-gradient(rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.2)), url('background.png');
+            
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
             pointer-events: none;
-            /* GPU Acceleration to prevent repaints */
-            transform: translateZ(0);
+            transform: translateZ(0); /* Hardware Acceleration */
             -webkit-transform: translateZ(0);
             backface-visibility: hidden;
             will-change: transform;
@@ -83,6 +92,10 @@
 
         @media (min-width: 768px) {
             #fixed-background {
+                /* DESKTOP BACKGROUND SETUP */
+                /* ----------------------------------------------------------------------- */
+                /* PASTE BASE64 BELOW: Replace 'landscape.png' with your long code */
+                /* ----------------------------------------------------------------------- */
                 background-image: linear-gradient(rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.2)), url('landscape.png');
             }
         }
@@ -92,23 +105,20 @@
             will-change: transform, box-shadow, background-color, color, opacity; 
         }
 
-        /* Entry Animation - PERFORMANCE OPTIMIZATION */
+        /* Entry Animation */
         @keyframes spiral-entry {
             0% { opacity: 0; transform: perspective(1000px) scale(0.96) translateY(15px); }
             100% { opacity: 1; transform: perspective(1000px) scale(1) translateY(0); }
         }
         
         .card-animation-target {
-            /* Paused by default, played via JS to sync with body reveal */
             animation: spiral-entry 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards;
             animation-play-state: paused; 
             opacity: 0; 
             will-change: transform, opacity;
-            /* Hardware acceleration hint */
             transform: translateZ(0); 
         }
         
-        /* Delays relative to the moment animation starts playing */
         #app-header.card-animation-target { animation-delay: 0.1s; }
         #upload-card.card-animation-target { animation-delay: 0.2s; } 
         #promo-card.card-animation-target { animation-delay: 0.3s; }
@@ -121,7 +131,6 @@
             box-shadow: inset 0 0 40px rgba(255, 255, 255, 0.4), 0 25px 50px rgba(0, 0, 0, 0.05);
             border: 1px solid rgba(255, 255, 255, 0.5);
             border-radius: 36px;
-            /* Ensure layer promotion */
             transform: translate3d(0,0,0);
         }
 
@@ -146,7 +155,6 @@
             }
         }
         
-        /* Removed :active pseudo-class to prevent double animation conflict on iOS */
         .cta-button.active-manual {
             transform: scale(0.92) translateY(2px) !important; 
             background-color: rgba(0, 0, 0, 0.12) !important;
@@ -167,13 +175,11 @@
             cursor: pointer;
         }
 
-        /* Removed :active pseudo-class to prevent double animation conflict on iOS */
         .glass-inset-panel.interactive.active-state {
             transform: scale(0.96);
             background-color: rgba(0, 0, 0, 0.1);
         }
 
-        /* Re-introduced subtler animation for the large description box */
         #description-text-container.interactive.active-state {
             transform: scale(0.98);
         }
@@ -192,21 +198,15 @@
             transition: opacity 0.2s ease, transform 0.2s ease !important;
         }
 
-        .copy-pulse {
-            transition: all 0.1s ease;
-        }
-
-        /* Hide scrollbar for Chrome, Safari and Opera */
         .no-scrollbar::-webkit-scrollbar {
             display: none;
         }
-        /* Hide scrollbar for IE, Edge and Firefox */
         .no-scrollbar {
-            -ms-overflow-style: none;  /* IE and Edge */
-            scrollbar-width: none;  /* Firefox */
+            -ms-overflow-style: none;
+            scrollbar-width: none;
         }
 
-        /* Updated Icon Sizes for Small Screens */
+        /* Updated Icon Sizes */
         .header-icon { height: 3.8rem; width: 3.8rem; object-fit: contain; } 
         .share-icon { height: 3.2rem; width: 3.2rem; object-fit: contain; } 
         .shorts-icon { height: 3.5rem; width: 3.5rem; object-fit: contain; } 
@@ -219,63 +219,58 @@
     </style>
 </head>
 <body class="p-4 md:p-8" ontouchstart="">
+    <!-- Background is OUTSIDE the opacity transition wrapper so it shows instantly -->
     <div id="fixed-background"></div>
-    <div class="max-w-4xl mx-auto">
-        <!-- Optimized gap: Changed from mb-6 sm:mb-8 to mb-8 sm:mb-12 to match other cards -->
-        <div class="mb-8 sm:mb-12">
-            <!-- Removed 'fluid-transition' from initial class list to prevent load jitter -->
-            <header id="app-header" class="glass-card px-3 py-3 sm:px-6 sm:py-5 flex flex-row items-center justify-between card-animation-target">
-                <div class="flex items-center space-x-2 sm:space-x-4">
-                    <!-- Brand Logo: Shifted right by 4pt (approx 5.3px) on mobile and desktop -->
-                    <div class="w-[57px] h-[57px] sm:w-[84px] sm:h-[84px] flex-shrink-0 relative left-[5.3px] sm:left-[5.3px]">
-                        <img src="https://manmohit2007.github.io/Manmohit2007/brand_logo.png?v=10" alt="Logo" class="w-full h-full object-contain filter drop-shadow-sm">
-                    </div>
-                    <!-- Increased left offset from 2.6px to 6px to create more space -->
-                    <div class="text-left min-w-0 relative left-[6px] sm:left-[5.3px]">
-                        <h1 class="text-xl sm:text-3xl font-bold text-black leading-tight truncate">FanPlusFollow</h1>
-                    </div>
-                </div>
-                <div class="flex-shrink-0 ml-1">
-                    <!-- YouTube Logo: Shifted left by 4pt (5.3px) on mobile -->
-                    <div class="w-[77px] h-[77px] sm:w-[121px] sm:h-[121px] relative right-[5.3px] sm:right-0">
-                        <img src="https://manmohit2007.github.io/Manmohit2007/youtube.png" alt="YouTube" class="w-full h-full object-contain">
-                    </div>
-                </div>
-            </header>
-        </div>
-        <main>
-            <!-- Removed 'fluid-transition' from initial class list to prevent load jitter -->
-            <div id="upload-card" class="glass-card p-6 rounded-[36px] mb-8 sm:mb-12 card-animation-target">
-                <div class="mb-4">
-                    <!-- Adjusted text offset from -left-[6px] to -left-[2px] to reduce closeness -->
-                    <h2 class="text-xl sm:text-3xl font-bold flex items-center gap-1 sm:gap-2 text-black">
-                        <img src="https://manmohit2007.github.io/Manmohit2007/share.png" alt="Share" class="share-icon">
-                        <span class="relative -top-[2px] -left-[2px]">Upload Video</span>
-                    </h2>
-                </div>
-                <div class="p-1 min-h-[10rem] sm:min-h-[14rem]" id="upload-section-content"></div>
-            </div>
-            <div id="results-section"></div>
-        </main>
-        <!-- Optimized gap: Changed from mt-8 to mt-8 sm:mt-12 to match the consistent gap strategy -->
-        <div class="mt-8 sm:mt-12 w-full">
-            <!-- Removed 'fluid-transition' from initial class list to prevent load jitter -->
-            <div id="promo-card" class="glass-card px-2 pb-5 pt-0 sm:px-3 sm:pb-8 sm:pt-1 max-w-4xl mx-auto card-animation-target"> 
-                <div class="px-1 pb-1">
-                    <div class="flex flex-col items-center">
-                        <div class="w-72 sm:w-96 mb-0 -mt-5 sm:-mt-8">
-                            <img src="https://manmohit2007.github.io/Manmohit2007/banner.png" alt="Logo" class="w-full h-auto object-contain filter drop-shadow-md">
+    
+    <!-- Content Wrapper: This is what fades in, ensuring background is stable -->
+    <div id="content-wrapper">
+        <div class="max-w-4xl mx-auto">
+            <div class="mb-8 sm:mb-12">
+                <header id="app-header" class="glass-card px-3 py-3 sm:px-6 sm:py-5 flex flex-row items-center justify-between card-animation-target">
+                    <div class="flex items-center space-x-2 sm:space-x-4">
+                        <div class="w-[57px] h-[57px] sm:w-[84px] sm:h-[84px] flex-shrink-0 relative left-[5.3px] sm:left-[5.3px]">
+                            <img src="https://manmohit2007.github.io/Manmohit2007/brand_logo.png?v=10" alt="Logo" class="w-full h-full object-contain filter drop-shadow-sm">
                         </div>
-                        <!-- Updated vertical negative margin to bring text closer to banner: -mt-9 sm:-mt-10 -->
-                        <h3 class="text-xl sm:text-3xl font-bold text-center text-black -mt-9 sm:-mt-10">Boost Your Reach Today</h3>
-                        <p class="text-black mt-1 text-center max-w-md text-xs sm:text-sm font-bold opacity-80 leading-tight">Join the community for exclusive growth insights.</p>
-                        <div class="mt-4 sm:mt-6 flex flex-row w-full max-w-md sm:max-w-lg justify-center gap-[18px] sm:gap-[30.6px] px-2 sm:px-0">
-                          <button class="cta-button flex-1 sm:flex-none sm:w-40 px-4 py-4 font-bold flex items-center justify-center text-lg sm:text-lg" onclick="handleExternalLink(this, 'https://www.youtube.com/@fanplusfollow')">
-                            Subscribe
-                          </button>
-                          <button class="cta-button flex-1 sm:flex-none sm:w-40 px-4 py-4 font-bold flex items-center justify-center text-lg sm:text-lg" onclick="handleExternalLink(this, 'https://www.instagram.com/_manmohit_singh_/')">
-                            Follow
-                          </button>
+                        <div class="text-left min-w-0 relative left-[6px] sm:left-[5.3px]">
+                            <h1 class="text-xl sm:text-3xl font-bold text-black leading-tight truncate">FanPlusFollow</h1>
+                        </div>
+                    </div>
+                    <div class="flex-shrink-0 ml-1">
+                        <div class="w-[77px] h-[77px] sm:w-[121px] sm:h-[121px] relative right-[5.3px] sm:right-0">
+                            <img src="https://manmohit2007.github.io/Manmohit2007/youtube.png" alt="YouTube" class="w-full h-full object-contain">
+                        </div>
+                    </div>
+                </header>
+            </div>
+            <main>
+                <div id="upload-card" class="glass-card p-6 rounded-[36px] mb-8 sm:mb-12 card-animation-target">
+                    <div class="mb-4">
+                        <h2 class="text-xl sm:text-3xl font-bold flex items-center gap-1 sm:gap-2 text-black">
+                            <img src="https://manmohit2007.github.io/Manmohit2007/share.png" alt="Share" class="share-icon">
+                            <span class="relative -top-[2px] -left-[2px]">Upload Video</span>
+                        </h2>
+                    </div>
+                    <div class="p-1 min-h-[10rem] sm:min-h-[14rem]" id="upload-section-content"></div>
+                </div>
+                <div id="results-section"></div>
+            </main>
+            <div class="mt-8 sm:mt-12 w-full">
+                <div id="promo-card" class="glass-card px-2 pb-5 pt-0 sm:px-3 sm:pb-8 sm:pt-1 max-w-4xl mx-auto card-animation-target"> 
+                    <div class="px-1 pb-1">
+                        <div class="flex flex-col items-center">
+                            <div class="w-72 sm:w-96 mb-0 -mt-5 sm:-mt-8">
+                                <img src="https://manmohit2007.github.io/Manmohit2007/banner.png" alt="Logo" class="w-full h-auto object-contain filter drop-shadow-md">
+                            </div>
+                            <h3 class="text-xl sm:text-3xl font-bold text-center text-black -mt-9 sm:-mt-10">Boost Your Reach Today</h3>
+                            <p class="text-black mt-1 text-center max-w-md text-xs sm:text-sm font-bold opacity-80 leading-tight">Join the community for exclusive growth insights.</p>
+                            <div class="mt-4 sm:mt-6 flex flex-row w-full max-w-md sm:max-w-lg justify-center gap-[18px] sm:gap-[30.6px] px-2 sm:px-0">
+                              <button class="cta-button flex-1 sm:flex-none sm:w-40 px-4 py-4 font-bold flex items-center justify-center text-lg sm:text-lg" onclick="handleExternalLink(this, 'https://www.youtube.com/@fanplusfollow')">
+                                Subscribe
+                              </button>
+                              <button class="cta-button flex-1 sm:flex-none sm:w-40 px-4 py-4 font-bold flex items-center justify-center text-lg sm:text-lg" onclick="handleExternalLink(this, 'https://www.instagram.com/_manmohit_singh_/')">
+                                Follow
+                              </button>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -288,7 +283,7 @@
         let currentFileName = ""; 
         let isProcessing = false;
         let isProcessed = false;
-        let isUIBusy = false; // New global flag to prevent race conditions
+        let isUIBusy = false; 
         let titles = [];
         let description = "";
         let titlesFull = [];
@@ -299,26 +294,16 @@
         const YOUTUBE_CHANNEL_LINK = "https://www.youtube.com/@fanplusfollow";
         const INSTAGRAM_LINK = "https://www.instagram.com/_manmohit_singh_/";
 
-        // --- ANIMATION HELPER ---
         const animateAndExecute = (element, action) => {
-            if (isUIBusy) return; // Guard: Prevent interaction if busy
-            isUIBusy = true;      // Lock
+            if (isUIBusy) return; 
+            isUIBusy = true;      
             
-            // Determine active class based on element type
             const activeClass = element.classList.contains('cta-button') ? 'active-manual' : 'active-state';
-            
-            // Step 1: Press In
             element.classList.add(activeClass);
             
-            // Step 2: Wait briefly
             setTimeout(() => {
-                // Step 3: Release Out
                 element.classList.remove(activeClass);
-                
-                // Step 4: Wait for release animation
                 setTimeout(() => {
-                    // Step 5: Execute Action
-                    // Pass a "done" callback to unlock the UI
                     action(() => { isUIBusy = false; }); 
                 }, 150); 
             }, 100); 
@@ -327,7 +312,7 @@
         const handleExternalLink = (element, url) => {
             animateAndExecute(element, (done) => { 
                 window.open(url, '_blank');
-                done(); // Unlock immediately
+                done(); 
             });
         };
 
@@ -405,7 +390,6 @@
             const displayTemplates = getTemplates(displayVideoName);
             const fullTemplates = getTemplates(fullVideoName);
             titles = displayTemplates.titles[currentTitleSetIndex % displayTemplates.titles.length];
-            // FIX: Use displayTemplates (truncated name) for the displayed description text
             description = displayTemplates.descriptions[currentDescriptionIndex % displayTemplates.descriptions.length];
             titlesFull = fullTemplates.titles[currentTitleSetIndex % fullTemplates.titles.length];
             descriptionFull = fullTemplates.descriptions[currentDescriptionIndex % fullTemplates.descriptions.length];
@@ -442,12 +426,6 @@
             }, 200);
         };
 
-        // Keeping handleRegenerate for legacy or if needed, though now split
-        const handleRegenerate = () => {
-            currentTitleSetIndex++; currentDescriptionIndex++;
-            generateViralContent(); updateTitlesContent(); updateDescriptionContent();
-        };
-
         const copyToClipboard = (text, index, done) => {
             const tempElement = document.createElement('textarea');
             tempElement.value = text;
@@ -457,32 +435,22 @@
             document.body.removeChild(tempElement);
 
             if (index === 3) {
-                // Description Box Copy Logic
                 const container = document.getElementById('description-text-container');
                 if (container) {
-                    // FIX: Temporarily disable transition to prevent iPad jitter during layout changes
                     container.style.transition = 'none';
-
-                    // Lock height to prevent collapse during animation
                     const currentHeight = container.offsetHeight;
                     container.style.height = `${currentHeight}px`;
 
                     const contentDiv = container.querySelector('div');
-                    
-                    // 1. Fade Out Original Text
                     if (contentDiv) contentDiv.classList.add('text-fade-out');
 
                     setTimeout(() => {
-                        // 2. Prepare Container for Centered "Copied" Message
                         container.style.display = 'flex';
                         container.style.flexDirection = 'column';
                         container.style.justifyContent = 'center';
-                        
-                        // 3. Show "Copied" with Fade In - ADDED sm:text-lg
                         container.innerHTML = `<span class="flex items-center justify-center gap-1 w-full font-bold text-black/80 fade-in-text sm:text-lg">${icon('Check', 'h-5 w-5')} Copied</span>`;
                         
                         setTimeout(() => { 
-                            // 4. Fade Out "Copied"
                             const span = container.querySelector('span');
                             if (span) {
                                 span.classList.remove('fade-in-text');
@@ -490,44 +458,32 @@
                             }
                             
                             setTimeout(() => {
-                                // 5. Restore Original Content
                                 container.style.display = '';
                                 container.style.flexDirection = '';
                                 container.style.justifyContent = '';
-                                container.style.height = ''; // Unlock height to allow natural resizing if content changes
-                                container.style.transition = ''; // Restore transitions
-                                
-                                // Re-render clean HTML
+                                container.style.height = ''; 
+                                container.style.transition = ''; 
                                 container.innerHTML = `<div class="whitespace-pre-wrap break-words text-xs sm:text-sm font-bold text-black/90 fade-in-text text-left w-full font-sans leading-relaxed pointer-events-none">${description}</div>`;
-                                
-                                if (done) done(); // Unlock UI
-                            }, 200); // Wait for fade out
-                        }, 800); // Display duration
-                    }, 200); // Wait for original text fade out
+                                if (done) done(); 
+                            }, 200); 
+                        }, 800); 
+                    }, 200); 
                 } else {
                     if (done) done();
                 }
             } else {
-                // Title Cards Logic
                 const card = document.getElementById(`title-card-${index}`);
                 const originalText = titles[index];
                 if (card) {
-                    // FIX: Temporarily disable transition on the card container
                     card.style.transition = 'none';
-                    
                     const p = card.querySelector('p');
-                    
-                    // 1. Fade Out Original Text
                     p.classList.add('text-fade-out');
 
                     setTimeout(() => {
-                        // 2. Show "Copied" with Fade In
-                        // CHANGED: Replaced sm:text-lg with text-base to make it larger on mobile and smaller on desktop relative to previous states
                         p.classList.remove('text-fade-out');
                         p.innerHTML = `<span class="flex items-center justify-center gap-1 w-full fade-in-text text-base">${icon('Check', 'h-4 w-4')} Copied</span>`;
                         
                         setTimeout(() => { 
-                            // 3. Fade Out "Copied"
                             const span = p.querySelector('span');
                             if (span) {
                                 span.classList.remove('fade-in-text');
@@ -535,15 +491,12 @@
                             }
 
                             setTimeout(() => {
-                                // 4. Restore Original Text
                                 p.textContent = originalText;
                                 p.classList.remove('text-fade-out');
-                                void p.offsetWidth; // Trigger reflow
+                                void p.offsetWidth; 
                                 p.classList.add('fade-in-text');
-                                
-                                card.style.transition = ''; // Restore transitions
-                                
-                                if (done) done(); // Unlock UI
+                                card.style.transition = ''; 
+                                if (done) done(); 
                             }, 200);
                         }, 800);
                     }, 200);
@@ -561,7 +514,6 @@
                 container.innerHTML = `
                     <div id="file-drop-area" class="w-full h-full flex flex-col items-center justify-center text-center cursor-pointer pb-4">
                         <div class="mb-4">${icon('Upload', 'h-12 w-12')}</div>
-                        <!-- Updated text size: Base text-lg, Desktop sm:text-[21px] -->
                         <p class="text-lg sm:text-[21px] font-bold text-black">Upload Your Video File Here</p>
                         <button class="cta-button mt-6 px-6 py-4 font-bold text-lg pointer-events-none">Select File</button>
                         <input type="file" id="file-upload-input" class="hidden" accept="video/*" onchange="handleFileChange(event)" onclick="event.stopPropagation()"/>
@@ -572,7 +524,7 @@
                     if (btn) {
                         animateAndExecute(btn, (done) => {
                             document.getElementById('file-upload-input').click();
-                            done(); // Unlock immediately after opening file dialog
+                            done(); 
                         });
                     }
                 };
@@ -589,12 +541,10 @@
                                 </p>
                             </div>
                         </div>
-                        <!-- Updated alignment: Shifted right by 4pt (approx 5.3px) -->
                         <div class="relative inline-flex items-center justify-center mb-2 font-bold left-[5.3px]">
                             <div class="absolute right-full top-1/2 -translate-y-1/2 pr-2 flex items-center">
                                 ${!isProcessed ? icon('Loader', 'h-5 w-5') : icon('Check', 'h-5 w-5')}
                             </div>
-                            <!-- ADDED sm:text-lg -->
                             <span class="opacity-80 sm:text-lg">${isProcessed ? 'Analysis Complete' : 'Analyzing Video...'}</span>
                         </div>
                     </div>`;
@@ -612,10 +562,8 @@
 
         const updateDescriptionContent = () => {
             const container = document.getElementById('description-text-container');
-            // Added interactive class and onclick handler here
             if (container) {
                 container.setAttribute('onclick', `handleCopyClick(this, descriptionFull, 3)`);
-                // Increased mobile height to h-[32rem], set desktop to sm:h-[25rem]
                 container.className = "glass-inset-panel p-4 interactive cursor-pointer h-[32rem] sm:h-[25rem] overflow-hidden";
                 container.innerHTML = `<div class="whitespace-pre-wrap break-words text-xs sm:text-sm font-bold text-black/90 fade-in-text text-left w-full font-sans leading-relaxed pointer-events-none">${description}</div>`;
             }
@@ -627,7 +575,6 @@
             container.innerHTML = `
                 <div class="glass-card p-4 sm:p-6 rounded-[36px] mb-8 sm:mb-12">
                     <div class="flex justify-between items-center mb-6 gap-2">
-                        <!-- Adjusted text offset from -left-[6px] to -left-[9px] to bring closer to Like PNG -->
                         <h2 class="text-xl sm:text-3xl font-bold flex items-center gap-1 sm:gap-2"><img src="https://manmohit2007.github.io/Manmohit2007/like.png" class="header-icon"> <span class="relative -left-[9px]">Titles</span></h2>
                         <button onclick="handleRegenerateTitlesClick(this)" class="cta-button text-xs sm:text-sm px-3 py-2 sm:px-4 sm:py-2 font-bold flex items-center shrink-0" style="border-radius: 14px;">${icon('RotateCcw', 'mr-1 sm:mr-2 h-3 w-3 sm:h-4 sm:w-4')} Regenerate</button>
                     </div>
@@ -635,11 +582,9 @@
                 </div>
                 <div class="glass-card p-4 sm:p-6 rounded-[36px]">
                     <div class="flex justify-between items-center mb-4 gap-2">
-                        <!-- Adjusted text offset from -left-[6px] to -left-[3px] to add more space -->
                         <h2 class="text-xl sm:text-3xl font-bold flex items-center gap-1 sm:gap-2"><img src="https://manmohit2007.github.io/Manmohit2007/shorts.png" class="shorts-icon"> <span class="relative -left-[3px]">Description</span></h2>
                         <button onclick="handleRegenerateDescriptionClick(this)" class="cta-button text-xs sm:text-sm px-3 py-2 sm:px-4 sm:py-2 font-bold flex items-center shrink-0" style="border-radius: 14px;">${icon('RotateCcw', 'mr-1 sm:mr-2 h-3 w-3 sm:h-4 sm:w-4')} Regenerate</button>
                     </div>
-                    <!-- Updated fixed height classes here as well: h-[32rem] sm:h-[25rem] -->
                     <div id="description-text-container" class="glass-inset-panel p-4 interactive cursor-pointer h-[32rem] sm:h-[25rem] overflow-hidden"></div>
                 </div>`;
             updateTitlesContent(); updateDescriptionContent();
@@ -647,19 +592,14 @@
 
         const updateUI = () => { renderUploadSection(); renderResults(); };
         
-        // --- PRELOADER ---
         const preloadAssets = () => {
             const assets = [
-                // Backgrounds
                 'background.png',
                 'landscape.png',
-                // Header & Branding
                 'https://manmohit2007.github.io/Manmohit2007/brand_logo.png?v=10',
                 'https://manmohit2007.github.io/Manmohit2007/youtube.png',
-                // UI Elements
                 'https://manmohit2007.github.io/Manmohit2007/share.png',
                 'https://manmohit2007.github.io/Manmohit2007/banner.png',
-                // Results Section (Preloaded for later)
                 'https://manmohit2007.github.io/Manmohit2007/like.png',
                 'https://manmohit2007.github.io/Manmohit2007/shorts.png'
             ];
@@ -673,38 +613,29 @@
             preloadAssets(); 
             updateUI(); 
 
-            // Scroll to top instantly to prevent browser restoration jitter
             window.scrollTo(0, 0);
 
-            // Double RequestAnimationFrame: Ensures style calculation and layout are done 
-            // in the invisible state (opacity 0) BEFORE we trigger the transition.
-            // This is the "Secret Sauce" for removing the first-paint jitter.
+            // CHANGED: We now fade in the content-wrapper, not the body
             requestAnimationFrame(() => {
                 requestAnimationFrame(() => {
-                    // 1. Reveal Body smoothly
-                    document.body.style.opacity = '1';
+                    // Reveal Content
+                    document.getElementById('content-wrapper').style.opacity = '1';
                     
-                    // 2. Trigger Card Animations
                     const animatedElements = document.querySelectorAll('.card-animation-target');
                     animatedElements.forEach(el => {
-                        // Start the CSS animation
                         el.style.animationPlayState = 'running';
                     });
 
-                    // 3. Attach Fluid Transitions (only after entrance is largely done)
-                    // Increased delay slightly to 850ms to ensure zero conflict
                     setTimeout(() => {
                         animatedElements.forEach(el => {
                             el.classList.add('fluid-transition');
                         });
-                        // Re-enable smooth scroll for user interaction
                         document.documentElement.style.scrollBehavior = 'smooth';
                     }, 850); 
                 });
             });
         };
 
-        // Switch to DOMContentLoaded for faster startup
         document.addEventListener('DOMContentLoaded', initApp);
     </script>
 </body>
