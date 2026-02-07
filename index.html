@@ -112,14 +112,14 @@
         #upload-card.card-animation-target { animation-delay: 0.2s; } 
         #promo-card.card-animation-target { animation-delay: 0.3s; }
 
-        /* Glass Card - Ultra Blurry "Milky" Style */
+        /* Glass Card - Ultra Frosted & Blurry Style */
         .glass-card {
-            /* Increased white opacity for a dense, milky professional look */
-            background-color: rgba(255, 255, 255, 0.30);
+            /* Increased white opacity for maximum frosted/milky look */
+            background-color: rgba(255, 255, 255, 0.35);
             
-            /* EXTREME blur to strongly diffuse the wallpaper as requested */
-            -webkit-backdrop-filter: blur(150px) saturate(180%);
-            backdrop-filter: blur(150px) saturate(180%); 
+            /* EXTREME blur to strongly diffuse the wallpaper */
+            -webkit-backdrop-filter: blur(200px) saturate(180%);
+            backdrop-filter: blur(200px) saturate(180%); 
             
             /* Clean, subtle shadow */
             box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.15);
@@ -132,7 +132,7 @@
             isolation: isolate; 
         }
 
-        /* --- CTA BUTTONS (Consistent Shadow Function) --- */
+        /* --- CTA BUTTONS (Inverted Behavior) --- */
         .cta-button {
             background-color: rgba(255, 255, 255, 0.08);
             color: #000000; 
@@ -143,37 +143,31 @@
             outline: none;
             -webkit-tap-highlight-color: transparent;
             
-            /* DEFAULT (Outwards): 
-               - Top: White Highlight (Inset)
-               - Bottom: Soft Drop Shadow (Outside) 
-            */
-            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.4), 0 2px 4px rgba(0, 0, 0, 0.1);
+            /* DEFAULT (Inwards): Dark Inner Shadow Top + White Highlight Bottom */
+            box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.15), inset 0 -1px 0 rgba(255, 255, 255, 0.35);
             
             transition: background-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
         }
 
         .cta-button.active-manual {
-            /* ACTIVE (Inwards): 
-               - Top: Dark Inner Shadow (Inset)
-               - Bottom: White Highlight (Inset)
-            */
-            transform: scale(0.95) translateY(1px) !important; 
+            /* ACTIVE (Outwards): Popping UP */
+            transform: scale(1.02) translateY(-1px) !important; 
             
-            /* No darker background on press, just shadows shifting */
+            /* No darker background on press */
             background-color: rgba(255, 255, 255, 0.08) !important; 
             
-            /* The "Going Inside" Effect */
-            box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.15), inset 0 -1px 0 rgba(255, 255, 255, 0.35) !important;
+            /* The "Pop Out" Effect: White Highlight Top + Drop Shadow Bottom */
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.4), 0 4px 8px rgba(0, 0, 0, 0.15) !important;
             
             transition: transform 0.1s ease, box-shadow 0.1s ease;
         }
 
-        /* --- INSET PANELS (Consistent Shadow Function) --- */
+        /* --- INSET PANELS (Inverted Behavior) --- */
         .glass-inset-panel {
             background-color: rgba(0, 0, 0, 0.05);
             
-            /* DEFAULT (Outwards): Matches Button */
-            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.4), 0 2px 4px rgba(0, 0, 0, 0.1);
+            /* DEFAULT (Inwards): Matching Button's default inward look */
+            box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.15), inset 0 -1px 0 rgba(255, 255, 255, 0.35);
             
             border: none;
             border-radius: 20px;
@@ -186,20 +180,20 @@
         }
 
         .glass-inset-panel.interactive.active-state {
-            /* ACTIVE (Inwards): Matches Button */
-            transform: scale(0.95) !important;
+            /* ACTIVE (Outwards): Popping UP */
+            transform: scale(1.02) !important;
             
             /* No darkening on press */
             background-color: rgba(0, 0, 0, 0.05);
             
-            /* The "Going Inside" Effect */
-            box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.2), inset 0 -1px 0 rgba(255, 255, 255, 0.35) !important;
+            /* The "Pop Out" Effect */
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.4), 0 4px 8px rgba(0, 0, 0, 0.15) !important;
             
             transition: transform 0.1s ease, box-shadow 0.1s ease;
         }
 
         #description-text-container.interactive.active-state {
-            transform: scale(0.98) !important; 
+            transform: scale(1.01) !important; /* Slightly less scale for large box */
         }
 
         /* --- HOVER EFFECTS --- */
