@@ -102,25 +102,26 @@
         #upload-card.card-animation-target { animation-delay: 0.15s; } 
         #promo-card.card-animation-target { animation-delay: 0.25s; }
 
-        /* --- OPTIMIZED LIQUID GLASS --- */
+        /* --- UNIFIED LIQUID GLASS STYLE (Based on Select File Button) --- */
         .glass-card {
             position: relative;
+            /* Harmonized background gradient */
             background: linear-gradient(
                 135deg, 
-                rgba(255, 255, 255, 0.12) 0%, 
-                rgba(255, 255, 255, 0.03) 40%, 
-                rgba(255, 255, 255, 0.06) 100%
+                rgba(255, 255, 255, 0.15) 0%, 
+                rgba(255, 255, 255, 0.04) 40%, 
+                rgba(255, 255, 255, 0.08) 100%
             );
             
-            -webkit-backdrop-filter: blur(24px) saturate(180%) brightness(1.02) url(#liquid-refraction);
-            backdrop-filter: blur(24px) saturate(180%) brightness(1.02) url(#liquid-refraction); 
+            -webkit-backdrop-filter: blur(28px) saturate(190%) brightness(1.1) url(#liquid-refraction);
+            backdrop-filter: blur(28px) saturate(190%) brightness(1.1) url(#liquid-refraction); 
             
             box-shadow: 
-                0 20px 50px -10px rgba(0, 0, 0, 0.5),
-                inset 0 0 0 1px rgba(255, 255, 255, 0.18),
-                inset 0 1px 2px rgba(255, 255, 255, 0.1);
+                0 20px 50px -10px rgba(0, 0, 0, 0.6),
+                inset 0 0 0 1px rgba(255, 255, 255, 0.25), /* Stronger refractive edge */
+                inset 0 1px 2px rgba(255, 255, 255, 0.15);
             
-            border-radius: 32px; /* Mobile optimized radius */
+            border-radius: 32px;
             transform: translate3d(0,0,0);
             isolation: isolate; 
             overflow: hidden;
@@ -129,22 +130,26 @@
 
         @media (min-width: 640px) {
             .glass-card { border-radius: 48px; margin-bottom: 2.5rem; }
-            .glass-card { -webkit-backdrop-filter: blur(44px) saturate(210%) brightness(1.05) url(#liquid-refraction); backdrop-filter: blur(44px) saturate(210%) brightness(1.05) url(#liquid-refraction); }
+            .glass-card { 
+                -webkit-backdrop-filter: blur(48px) saturate(210%) brightness(1.15) url(#liquid-refraction); 
+                backdrop-filter: blur(48px) saturate(210%) brightness(1.15) url(#liquid-refraction); 
+            }
         }
 
         .glass-card::after {
             content: '';
             position: absolute;
             top: 0; left: 0; right: 0; bottom: 0;
-            opacity: 0.02;
+            opacity: 0.03;
             pointer-events: none;
             background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
             z-index: 0;
         }
 
-        /* --- MOBILE BUTTONS --- */
+        /* --- HARMONIZED BUTTONS --- */
         .cta-button {
-            background: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.03) 100%);
+            /* Syncing to the high-whiteness button style */
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.18) 0%, rgba(255, 255, 255, 0.05) 100%);
             color: #000000; 
             border: none;
             border-radius: 20px; 
@@ -152,30 +157,38 @@
             cursor: pointer;
             outline: none;
             -webkit-tap-highlight-color: transparent;
-            backdrop-filter: blur(10px) brightness(1.1);
-            -webkit-backdrop-filter: blur(10px) brightness(1.1);
+            backdrop-filter: blur(12px) brightness(1.15);
+            -webkit-backdrop-filter: blur(12px) brightness(1.15);
             
             box-shadow: 
-                inset 0 1px 1px rgba(255, 255, 255, 0.25),
-                0 4px 12px -2px rgba(0, 0, 0, 0.2);
+                inset 0 1px 1.5px rgba(255, 255, 255, 0.4),
+                inset 0 0 0 1px rgba(255, 255, 255, 0.1),
+                0 6px 16px -3px rgba(0, 0, 0, 0.3);
             
             transition: all 0.4s cubic-bezier(0.19, 1, 0.22, 1);
             position: relative;
             z-index: 2;
-            min-height: 52px; /* Touch target accessibility */
+            min-height: 52px;
         }
 
         .cta-button.active-manual {
             transform: scale(0.94) translateY(2px) !important; 
-            background: rgba(255, 255, 255, 0.05) !important; 
+            background: rgba(255, 255, 255, 0.1) !important; 
             transition: transform 0.1s ease;
         }
 
+        /* --- HARMONIZED INSET PANELS --- */
         .glass-inset-panel {
-            background: rgba(255, 255, 255, 0.04);
-            backdrop-filter: blur(20px) saturate(150%) url(#liquid-refraction);
-            -webkit-backdrop-filter: blur(20px) saturate(150%) url(#liquid-refraction);
-            box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.1), 0 2px 8px rgba(0, 0, 0, 0.1);
+            /* Matching the 'whiteness' of the primary button */
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.04) 100%);
+            backdrop-filter: blur(24px) saturate(180%) brightness(1.1) url(#liquid-refraction);
+            -webkit-backdrop-filter: blur(24px) saturate(180%) brightness(1.1) url(#liquid-refraction);
+            
+            box-shadow: 
+                inset 0 1px 1px rgba(255, 255, 255, 0.25),
+                inset 0 0 0 1px rgba(255, 255, 255, 0.05),
+                0 4px 12px rgba(0, 0, 0, 0.2);
+            
             border-radius: 20px;
             transition: all 0.4s cubic-bezier(0.19, 1, 0.22, 1);
             z-index: 2;
@@ -188,7 +201,7 @@
 
         .glass-inset-panel.interactive.active-state {
             transform: scale(0.97) !important;
-            background: rgba(255, 255, 255, 0.02);
+            background: rgba(255, 255, 255, 0.05);
         }
 
         .fade-in-text {
@@ -217,7 +230,6 @@
             .shorts-icon { height: 4.5rem; width: 4.5rem; }
         }
 
-        /* Hide scrollbars but keep functionality */
         .no-scrollbar::-webkit-scrollbar { display: none; }
         .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
     </style>
@@ -560,3 +572,4 @@
     </script>
 </body>
 </html>
+
