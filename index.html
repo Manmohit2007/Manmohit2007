@@ -36,7 +36,7 @@
         }
 
         html {
-            /* Restored Premium YouTube Dark Grey */
+            /* Deep dark background to contrast with the glass */
             background-color: #0f0f0f;
             height: 100%;
             width: 100%;
@@ -49,7 +49,7 @@
             background-color: transparent; 
             min-height: 100vh;
             min-height: -webkit-fill-available;
-            color: #ffffff; /* White text for dark background context */
+            color: #ffffff; 
             margin: 0;
             padding: 0;
             overscroll-behavior: none;
@@ -77,20 +77,31 @@
             opacity: 0;
             transition: opacity 1s ease-out;
 
-            /* Dark mode overlay logic to make the wallpaper pop on dark bg */
-            background-image: linear-gradient(rgba(15, 15, 15, 0.02), rgba(15, 15, 15, 0.15)), url('background.png');
+            /* CRITICAL UPDATE: Added a colorful gradient fallback.
+               If the image fails or is too dark, this ensures there is visible 
+               color contrast for the blur to actually interact with.
+            */
+            background: 
+                radial-gradient(circle at 0% 0%, rgba(50, 50, 150, 0.4) 0%, transparent 50%),
+                radial-gradient(circle at 100% 100%, rgba(150, 50, 50, 0.4) 0%, transparent 50%),
+                linear-gradient(rgba(15, 15, 15, 0.1), rgba(15, 15, 15, 0.4)), 
+                url('background.png');
+            
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
             pointer-events: none;
-            transform: translateZ(0); 
-            -webkit-transform: translateZ(0);
+            
+            /* Removed translateZ to avoid stacking context conflicts with blur */
             backface-visibility: hidden;
         }
 
         @media (min-width: 768px) {
             #fixed-background {
-                background-image: linear-gradient(rgba(15, 15, 15, 0.0), rgba(15, 15, 15, 0.1)), url('landscape.png');
+                background-image: 
+                    radial-gradient(circle at 0% 0%, rgba(50, 50, 150, 0.3) 0%, transparent 50%),
+                    radial-gradient(circle at 100% 100%, rgba(150, 50, 50, 0.3) 0%, transparent 50%),
+                    url('landscape.png');
             }
         }
 
@@ -105,31 +116,36 @@
             animation-play-state: paused; 
             opacity: 0; 
             will-change: transform, opacity;
-            transform: translateZ(0); 
+            /* Animation manages the transform, so we don't set a static one */
         }
         
         #app-header.card-animation-target { animation-delay: 0.1s; }
         #upload-card.card-animation-target { animation-delay: 0.2s; } 
         #promo-card.card-animation-target { animation-delay: 0.3s; }
 
-        /* Glass Card - True Milky Blur */
+        /* Glass Card - FIXED FOR BLUR VISIBILITY */
         .glass-card {
-            /* Low opacity white allows background colors to bleed through */
-            background-color: rgba(255, 255, 255, 0.18);
+            /* 1. LOWER OPACITY: Reduced from 0.15 to 0.08. 
+                  This stops it from looking like a solid white block.
+            */
+            background-color: rgba(255, 255, 255, 0.08);
             
-            /* Heavy blur creates the "milky" abstraction of the background */
-            -webkit-backdrop-filter: blur(40px) saturate(180%);
-            backdrop-filter: blur(40px) saturate(180%); 
+            /* 2. SATURATION + BLUR: 
+                  - saturate(200%) pulls colors from the background, making it look "glassy" not "foggy".
+                  - blur(40px) provides the heavy iOS style softness.
+            */
+            -webkit-backdrop-filter: saturate(200%) blur(40px);
+            backdrop-filter: saturate(200%) blur(40px);
             
-            /* Clean, subtle shadow */
-            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.15);
+            /* Clean shadow for lift */
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.2);
             
-            /* Precision border - slightly more transparent to blend */
-            border: 1px solid rgba(255, 255, 255, 0.2);
+            /* Sharper, brighter border to define edges */
+            border: 1px solid rgba(255, 255, 255, 0.15);
             
             border-radius: 36px;
-            transform: translate3d(0,0,0);
-            isolation: isolate; 
+            
+            /* Removed 'transform' and 'isolation' to prevent animation conflicts */
         }
 
         /* --- CTA BUTTONS (Consistent Shadow Function) --- */
@@ -142,37 +158,20 @@
             cursor: pointer;
             outline: none;
             -webkit-tap-highlight-color: transparent;
-            
-            /* DEFAULT (Outwards): 
-               - Top: White Highlight (Inset)
-               - Bottom: Soft Drop Shadow (Outside) 
-            */
             box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.4), 0 2px 4px rgba(0, 0, 0, 0.1);
-            
             transition: background-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
         }
 
         .cta-button.active-manual {
-            /* ACTIVE (Inwards): 
-               - Top: Dark Inner Shadow (Inset)
-               - Bottom: White Highlight (Inset)
-            */
             transform: scale(0.95) translateY(1px) !important; 
-            
-            /* No darker background on press, just shadows shifting */
             background-color: rgba(255, 255, 255, 0.08) !important; 
-            
-            /* The "Going Inside" Effect */
             box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.15), inset 0 -1px 0 rgba(255, 255, 255, 0.35) !important;
-            
             transition: transform 0.1s ease, box-shadow 0.1s ease;
         }
 
-        /* --- HOVER EFFECTS --- */
         @media (hover: hover) {
             .cta-button:hover {
                 transform: none;
-                /* Slight bright tint on hover for interactivity */
                 background-color: rgba(255, 255, 255, 0.12); 
             }
         }
@@ -191,13 +190,8 @@
             transition: opacity 0.2s ease, transform 0.2s ease !important;
         }
 
-        .no-scrollbar::-webkit-scrollbar {
-            display: none;
-        }
-        .no-scrollbar {
-            -ms-overflow-style: none;
-            scrollbar-width: none;
-        }
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
 
         .header-icon { height: 3.8rem; width: 3.8rem; object-fit: contain; } 
         .share-icon { height: 3.2rem; width: 3.2rem; object-fit: contain; } 
@@ -211,10 +205,7 @@
     </style>
 </head>
 <body class="p-4 md:p-8" ontouchstart="">
-    <!-- Background Layer (Opacity controlled by JS) -->
     <div id="fixed-background"></div>
-    
-    <!-- Content Wrapper (Opacity controlled by JS) -->
     <div id="content-wrapper">
         <div class="max-w-4xl mx-auto">
             <div class="mb-8 sm:mb-12">
@@ -290,7 +281,6 @@
             if (isUIBusy) return; 
             isUIBusy = true;      
             
-            // Now everything uses cta-button class, so we use active-manual for consistency
             const activeClass = element.classList.contains('cta-button') ? 'active-manual' : 'active-state';
             element.classList.add(activeClass);
             
