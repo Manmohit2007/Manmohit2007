@@ -112,20 +112,20 @@
         #upload-card.card-animation-target { animation-delay: 0.2s; } 
         #promo-card.card-animation-target { animation-delay: 0.3s; }
 
-        /* Glass Card - Modified to keep standard blurriness */
+        /* Glass Card - iOS 9 Style Blur */
         .glass-card {
-            /* Increased white opacity for maximum frosted/milky look */
-            background-color: rgba(255, 255, 255, 0.35);
+            /* Highly opaque white for that milky iOS 9 look */
+            background-color: rgba(255, 255, 255, 0.65);
             
-            /* Modified: Kept blur at 24px instead of 200px */
-            -webkit-backdrop-filter: blur(24px) saturate(180%);
-            backdrop-filter: blur(24px) saturate(180%); 
+            /* Strong blur radius to lose background detail */
+            -webkit-backdrop-filter: blur(50px) saturate(180%);
+            backdrop-filter: blur(50px) saturate(180%); 
             
             /* Clean, subtle shadow */
             box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.15);
             
             /* Precision border */
-            border: 1px solid rgba(255, 255, 255, 0.15);
+            border: 1px solid rgba(255, 255, 255, 0.4);
             
             border-radius: 36px;
             transform: translate3d(0,0,0);
@@ -168,51 +168,12 @@
             transition: transform 0.1s ease, box-shadow 0.1s ease;
         }
 
-        /* --- INSET PANELS (Consistent Shadow Function) --- */
-        .glass-inset-panel {
-            background-color: rgba(0, 0, 0, 0.05);
-            
-            /* DEFAULT (Outwards): Matches Button */
-            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.4), 0 2px 4px rgba(0, 0, 0, 0.1);
-            
-            border: none;
-            border-radius: 20px;
-            transition: background-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
-            -webkit-tap-highlight-color: transparent;
-        }
-
-        .glass-inset-panel.interactive {
-            cursor: pointer;
-        }
-
-        .glass-inset-panel.interactive.active-state {
-            /* ACTIVE (Inwards): Matches Button */
-            transform: scale(0.95) !important; 
-            
-            /* No darkening on press */
-            background-color: rgba(0, 0, 0, 0.05);
-            
-            /* The "Going Inside" Effect */
-            box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.2), inset 0 -1px 0 rgba(255, 255, 255, 0.35) !important;
-            
-            transition: transform 0.1s ease, box-shadow 0.1s ease;
-        }
-
-        #description-text-container.interactive.active-state {
-            transform: scale(0.98) !important; 
-        }
-
         /* --- HOVER EFFECTS --- */
         @media (hover: hover) {
             .cta-button:hover {
                 transform: none;
                 /* Slight bright tint on hover for interactivity */
                 background-color: rgba(255, 255, 255, 0.12); 
-            }
-
-            .glass-inset-panel.interactive:hover {
-                transform: none;
-                background-color: rgba(0, 0, 0, 0.05); 
             }
         }
 
@@ -329,6 +290,7 @@
             if (isUIBusy) return; 
             isUIBusy = true;      
             
+            // Now everything uses cta-button class, so we use active-manual for consistency
             const activeClass = element.classList.contains('cta-button') ? 'active-manual' : 'active-state';
             element.classList.add(activeClass);
             
@@ -468,14 +430,10 @@
             if (index === 3) {
                 const container = document.getElementById('description-text-container');
                 if (container) {
-                    // STABLE REVERT: Manually replacing content with a flex centered div
-                    // This avoids adding flex classes to the container itself which might collapse margins/padding differently.
-                    // We fill the existing container (which has padding) with a 100% height div.
                     const contentDiv = container.querySelector('div');
                     if (contentDiv) contentDiv.classList.add('text-fade-out');
 
                     setTimeout(() => {
-                        // Create a specific centered wrapper that takes up the full space available
                         container.innerHTML = `
                             <div class="h-full w-full flex items-center justify-center fade-in-text">
                                 <span class="flex items-center gap-1 font-bold text-black/80 sm:text-lg">
@@ -491,7 +449,6 @@
                             }
                             
                             setTimeout(() => {
-                                // Restore original content
                                 container.innerHTML = `<div class="whitespace-pre-wrap break-words text-xs sm:text-sm font-bold sm:font-medium text-black/90 fade-in-text text-left w-full font-sans leading-relaxed pointer-events-none">${description}</div>`;
                                 if (done) done(); 
                             }, 200); 
@@ -508,7 +465,6 @@
                     p.classList.add('text-fade-out');
 
                     setTimeout(() => {
-                        // Same stable strategy for titles
                         card.innerHTML = `
                             <div class="h-full w-full flex items-center justify-center fade-in-text">
                                 <span class="flex items-center gap-1 font-bold text-black/80 text-base">
@@ -524,7 +480,6 @@
                             }
 
                             setTimeout(() => {
-                                // Restore original p tag structure
                                 card.innerHTML = `<p class="text-sm sm:text-base font-bold text-black/90 fade-in-text text-center line-clamp-4">${originalText}</p>`;
                                 if (done) done(); 
                             }, 200);
@@ -563,7 +518,7 @@
                     <div class="flex flex-col items-center justify-center h-full w-full pt-4 sm:pt-10">
                         <div class="w-full mb-6 flex justify-center px-1">
                             <div 
-                                class="glass-inset-panel inline-flex items-center justify-center px-4 py-3 sm:px-6 sm:py-4 max-w-full ${isProcessed ? 'interactive cursor-pointer' : ''}" 
+                                class="cta-button inline-flex items-center justify-center px-4 py-3 sm:px-6 sm:py-4 max-w-full ${isProcessed ? 'cursor-pointer' : 'pointer-events-none'}" 
                                 onclick="${isProcessed ? 'handleResetClick(this)' : ''}"
                             >
                                 <p class="font-bold text-black/80 truncate text-center gap-2 max-w-[60vw] sm:max-w-lg">
@@ -585,7 +540,7 @@
             const grid = document.getElementById('titles-grid-container');
             if (!grid) return;
             grid.innerHTML = titles.map((title, index) => `
-                <div id="title-card-${index}" class="glass-inset-panel interactive p-4 flex flex-col justify-center h-32 sm:h-40" onclick="handleCopyClick(this, '${titlesFull[index].replace(/'/g, "\\'")}', ${index})">
+                <div id="title-card-${index}" class="cta-button p-4 flex flex-col justify-center h-32 sm:h-40 w-full" onclick="handleCopyClick(this, '${titlesFull[index].replace(/'/g, "\\'")}', ${index})">
                     <p class="text-sm sm:text-base font-bold text-black/90 fade-in-text text-center line-clamp-4">${title}</p>
                 </div>`).join('');
         };
@@ -594,7 +549,7 @@
             const container = document.getElementById('description-text-container');
             if (container) {
                 container.setAttribute('onclick', `handleCopyClick(this, descriptionFull, 3)`);
-                container.className = "glass-inset-panel p-4 interactive cursor-pointer h-[32rem] sm:h-[25rem] overflow-hidden";
+                container.className = "cta-button p-4 cursor-pointer h-[32rem] sm:h-[25rem] overflow-hidden w-full text-left flex items-start justify-start";
                 container.innerHTML = `<div class="whitespace-pre-wrap break-words text-xs sm:text-sm font-bold sm:font-medium text-black/90 fade-in-text text-left w-full font-sans leading-relaxed pointer-events-none">${description}</div>`;
             }
         };
@@ -615,7 +570,7 @@
                         <h2 class="text-xl sm:text-3xl font-bold flex items-center gap-1 sm:gap-2 text-black"><img src="https://manmohit2007.github.io/Manmohit2007/shorts.png" class="shorts-icon"> <span class="relative -left-[3px]">Description</span></h2>
                         <button onclick="handleRegenerateDescriptionClick(this)" class="cta-button text-xs sm:text-sm px-3 py-2 sm:px-4 sm:py-2 font-bold flex items-center shrink-0" style="border-radius: 14px;">${icon('RotateCcw', 'mr-1 sm:mr-2 h-3 w-3 sm:h-4 sm:w-4')} Regenerate</button>
                     </div>
-                    <div id="description-text-container" class="glass-inset-panel p-4 interactive cursor-pointer h-[32rem] sm:h-[25rem] overflow-hidden"></div>
+                    <div id="description-text-container" class="cta-button p-4 cursor-pointer h-[32rem] sm:h-[25rem] overflow-hidden w-full text-left flex items-start justify-start"></div>
                 </div>`;
             updateTitlesContent(); updateDescriptionContent();
         };
@@ -625,8 +580,6 @@
             renderResults(); 
         };
         
-        // --- ASSET PRELOADING ---
-        // We load assets manually to ensure everything is cached before revealing
         const loadAssets = async () => {
             const images = [
                 'background.png',
@@ -639,20 +592,17 @@
                 'https://manmohit2007.github.io/Manmohit2007/shorts.png'
             ];
             
-            // Create a promise for each image load with a fallback timeout
             const promises = images.map(src => {
                 return new Promise((resolve) => {
                     const img = new Image();
                     img.src = src;
                     img.onload = resolve;
-                    img.onerror = resolve; // Continue even if one fails
+                    img.onerror = resolve; 
                     
-                    // Individual timeout for each image
                     setTimeout(resolve, 2000); 
                 });
             });
 
-            // Wait for all critical images to load
             await Promise.all(promises);
         };
 
@@ -660,7 +610,6 @@
             const bg = document.getElementById('fixed-background');
             const wrapper = document.getElementById('content-wrapper');
             
-            // Prevent double reveal
             if (bg.style.opacity === '1') return;
 
             requestAnimationFrame(() => {
@@ -680,22 +629,17 @@
             updateUI(); 
             window.scrollTo(0, 0);
             
-            // Safety timeout: If assets take longer than 2.5s, show the app anyway
-            // This fixes the issue where the app gets "stuck" on background color
             const safetyTimer = setTimeout(() => {
                 revealInterface();
             }, 2500);
 
-            // Wait for assets (including background wallpaper) to load
             await loadAssets();
 
-            // Clear the safety timer since assets loaded fine
             clearTimeout(safetyTimer);
             
             revealInterface();
         };
 
-        // Switch to window.load to ensure Fonts and everything else is ready too
         window.addEventListener('load', initApp);
     </script>
 </body>
