@@ -13,6 +13,11 @@
     <!-- PRIORITY PRELOADING: Ensures Background Loads Instantly -->
     <link rel="preload" as="image" href="background.png">
     <link rel="preload" as="image" href="landscape.png">
+    
+    <!-- FONT OPTIMIZATION: Use Link instead of @import for faster non-blocking load -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet">
 
     <!-- Standard Meta Tags -->
     <meta charset="UTF-8">
@@ -23,8 +28,6 @@
 
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
-        
         :root { 
             font-family: 'Inter', sans-serif; 
             box-sizing: border-box;
@@ -49,6 +52,9 @@
             padding: 0;
             overscroll-behavior: none;
             cursor: pointer;
+            /* Fix Jitter: Start invisible, fade in via JS */
+            opacity: 0; 
+            transition: opacity 0.4s ease-out;
         }
 
         /* --- STIFF STATIC BACKGROUND --- */
@@ -75,23 +81,24 @@
 
         .fluid-transition {
             transition: all 400ms cubic-bezier(0.25, 0.46, 0.45, 0.94);
-            will-change: transform, box-shadow, filter, background-color, color, opacity; 
+            will-change: transform, box-shadow, background-color, color, opacity; 
         }
 
-        /* Entry Animation */
+        /* Entry Animation - PERFORMANCE OPTIMIZATION: Removed blur filter */
         @keyframes spiral-entry {
-            0% { opacity: 0; transform: perspective(1000px) scale(0.95) translateY(20px); filter: blur(10px); }
-            100% { opacity: 1; transform: perspective(1000px) scale(1) translateY(0); filter: blur(0); }
+            0% { opacity: 0; transform: perspective(1000px) scale(0.95) translateY(20px); }
+            100% { opacity: 1; transform: perspective(1000px) scale(1) translateY(0); }
         }
         
         .card-animation-target {
             animation: spiral-entry 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
             opacity: 0; 
+            will-change: transform, opacity; /* Hint browser to use GPU */
         }
         
-        #app-header.card-animation-target { animation-delay: 0.1s; }
-        #upload-card.card-animation-target { animation-delay: 0.2s; } 
-        #promo-card.card-animation-target { animation-delay: 0.3s; }
+        #app-header.card-animation-target { animation-delay: 0.05s; }
+        #upload-card.card-animation-target { animation-delay: 0.15s; } 
+        #promo-card.card-animation-target { animation-delay: 0.25s; }
 
         /* Glass Card Base Style */
         .glass-card {
@@ -651,6 +658,9 @@
             preloadAssets(); // Start loading images immediately
             updateUI(); 
 
+            // FIX JITTER: Reveal body smoothly after initial processing
+            document.body.style.opacity = '1';
+
             // FIX JITTER: Re-enable fluid transitions ONLY after entrance animations are complete
             // This prevents the CSS transition from fighting the CSS animation during load
             setTimeout(() => {
@@ -658,7 +668,7 @@
                 animatedElements.forEach(el => {
                     el.classList.add('fluid-transition');
                 });
-            }, 1000); // 1s delay covers the 0.6s animation + delays
+            }, 800); // reduced slightly to match animation end
         };
 
         // Switch to DOMContentLoaded for faster startup
