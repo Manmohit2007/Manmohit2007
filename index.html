@@ -113,36 +113,39 @@
         #upload-card.card-animation-target { animation-delay: 0.2s; } 
         #promo-card.card-animation-target { animation-delay: 0.3s; }
 
-        /* Glass Card - FIXED: Milky White Gradient Surface */
+        /* ================================================================
+           THE "MILKY" GLASS FIX 
+           ================================================================
+        */
         .glass-card {
-            /* CRITICAL FIX: Use Linear Gradient instead of solid color.
-               Top-Left: 40% White (Highlights)
-               Bottom-Right: 10% White (Transparency)
-               This creates the "Milky" volume effect.
+            /* 1. HEAVY OPACITY: 
+                  Instead of 0.2 or 0.4, we use 0.65 (65%) opacity at the top.
+                  This forces the card to be WHITE, creating the "milk" effect
+                  even on a black background.
             */
-            background: linear-gradient(145deg, rgba(255, 255, 255, 0.4) 0%, rgba(255, 255, 255, 0.1) 100%);
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.65) 0%, rgba(255, 255, 255, 0.25) 100%);
             
-            /* High Blur for diffusion */
-            -webkit-backdrop-filter: blur(30px) saturate(160%);
-            backdrop-filter: blur(30px) saturate(160%); 
+            /* 2. STANDARD BLUR: Enough to diffuse, but the opacity does the heavy lifting */
+            -webkit-backdrop-filter: blur(40px) saturate(140%);
+            backdrop-filter: blur(40px) saturate(140%); 
             
-            /* Inner Glow for thickness */
-            box-shadow: inset 0 0 20px rgba(255, 255, 255, 0.3), 0 15px 40px rgba(0, 0, 0, 0.2);
-            
-            /* 3D Border: Lighter on top/left to simulate light source */
-            border-top: 1px solid rgba(255, 255, 255, 0.6);
-            border-left: 1px solid rgba(255, 255, 255, 0.6);
+            /* 3. REFLECTIVE EDGES: Bright white top/left borders simulate light source */
+            border-top: 1.5px solid rgba(255, 255, 255, 0.65);
+            border-left: 1.5px solid rgba(255, 255, 255, 0.65);
             border-right: 1px solid rgba(255, 255, 255, 0.2);
             border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+            
+            /* 4. DEPTH SHADOW */
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.15);
             
             border-radius: 36px;
             transform: translate3d(0,0,0);
         }
 
-        /* --- CTA BUTTONS (Consistent Shadow Function) --- */
+        /* --- CTA BUTTONS (Adapted to match lighter cards) --- */
         .cta-button {
-            /* Increased opacity for buttons to pop against the new milky card */
-            background-color: rgba(255, 255, 255, 0.25); 
+            /* Slightly darker than the card to show contrast */
+            background-color: rgba(255, 255, 255, 0.4); 
             color: #000000; 
             border: none;
             border-radius: 24px; 
@@ -151,25 +154,26 @@
             outline: none;
             -webkit-tap-highlight-color: transparent;
             
-            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.4), 0 2px 4px rgba(0, 0, 0, 0.1);
+            /* Inner highlight */
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.6), 0 2px 5px rgba(0, 0, 0, 0.05);
             transition: background-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
         }
 
         .cta-button.active-manual {
             transform: scale(0.95) translateY(1px) !important; 
-            background-color: rgba(255, 255, 255, 0.25) !important; 
-            box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.15), inset 0 -1px 0 rgba(255, 255, 255, 0.35) !important;
+            background-color: rgba(255, 255, 255, 0.4) !important; 
+            box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.1), inset 0 -1px 0 rgba(255, 255, 255, 0.5) !important;
             transition: transform 0.1s ease, box-shadow 0.1s ease;
         }
 
-        /* --- INSET PANELS (Matched to Milky Style) --- */
+        /* --- INSET PANELS (Darker to look like cutouts) --- */
         .glass-inset-panel {
-            /* Slightly darker to show depth inside the milky card */
-            background-color: rgba(0, 0, 0, 0.03);
+            /* Darker tint to contrast with the bright milky card */
+            background-color: rgba(0, 0, 0, 0.04);
             
-            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.3), 0 2px 4px rgba(0, 0, 0, 0.05);
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.5), 0 2px 4px rgba(0, 0, 0, 0.05);
             
-            border: none;
+            border: 1px solid rgba(255,255,255, 0.1);
             border-radius: 20px;
             transition: background-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
             -webkit-tap-highlight-color: transparent;
@@ -181,8 +185,8 @@
 
         .glass-inset-panel.interactive.active-state {
             transform: scale(0.95) !important;
-            background-color: rgba(0, 0, 0, 0.05);
-            box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.2), inset 0 -1px 0 rgba(255, 255, 255, 0.35) !important;
+            background-color: rgba(0, 0, 0, 0.06);
+            box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.15), inset 0 -1px 0 rgba(255, 255, 255, 0.4) !important;
             transition: transform 0.1s ease, box-shadow 0.1s ease;
         }
 
@@ -194,12 +198,12 @@
         @media (hover: hover) {
             .cta-button:hover {
                 transform: none;
-                background-color: rgba(255, 255, 255, 0.35); 
+                background-color: rgba(255, 255, 255, 0.55); 
             }
 
             .glass-inset-panel.interactive:hover {
                 transform: none;
-                background-color: rgba(0, 0, 0, 0.05); 
+                background-color: rgba(0, 0, 0, 0.06); 
             }
         }
 
