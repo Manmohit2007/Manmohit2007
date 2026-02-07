@@ -112,49 +112,64 @@
         #upload-card.card-animation-target { animation-delay: 0.2s; } 
         #promo-card.card-animation-target { animation-delay: 0.3s; }
 
-        /* Glass Card - Updated to match image milkiness */
+        /* Glass Card - Professional "Pro" Brand Style */
         .glass-card {
-            /* Adjusted opacity for a milkier look on dark background */
-            background-color: rgba(255, 255, 255, 0.18);
-            /* Soft, deep blur */
-            -webkit-backdrop-filter: blur(50px) saturate(160%);
-            backdrop-filter: blur(50px) saturate(160%); 
-            /* Subtle inner glow for depth */
-            box-shadow: inset 0 0 20px rgba(255, 255, 255, 0.15), 0 20px 40px rgba(0, 0, 0, 0.25);
-            /* Very subtle border */
-            border: 1px solid rgba(255, 255, 255, 0.3);
+            /* Sophisticated white blend, not too heavy, not too clear */
+            background-color: rgba(255, 255, 255, 0.14);
+            
+            /* Heavy blur + Saturation boost (The "Apple" secret sauce) */
+            -webkit-backdrop-filter: blur(60px) saturate(180%);
+            backdrop-filter: blur(60px) saturate(180%); 
+            
+            /* Clean, subtle shadow - removed the heavy inner glow */
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.15);
+            
+            /* Precision border - thinner and more subtle */
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            
             border-radius: 36px;
             transform: translate3d(0,0,0);
             isolation: isolate; 
         }
 
-        /* --- CTA BUTTONS --- */
+        /* --- CTA BUTTONS (The "Press" Effect) --- */
         .cta-button {
-            background-color: rgba(0, 0, 0, 0.05);
-            box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.08), 0 1px 0 rgba(255, 255, 255, 0.2);
+            background-color: rgba(0, 0, 0, 0.1);
             color: #000000; 
-            transition: background-color 0.2s ease, transform 0.2s ease;
             border: none;
             border-radius: 24px; 
             user-select: none;
             cursor: pointer;
             outline: none;
             -webkit-tap-highlight-color: transparent;
+            
+            /* DEFAULT: White highlight on TOP to look raised */
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.35);
+            
+            transition: background-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
         }
 
         .cta-button.active-manual {
-            transform: scale(0.93) translateY(1px) !important; 
-            background-color: rgba(0, 0, 0, 0.12) !important;
-            box-shadow: inset 0 4px 10px rgba(0, 0, 0, 0.2);
-            transition: transform 0.1s ease;
+            /* ACTIVE: Scale down slightly + Move white highlight to BOTTOM + Inner shadow at top */
+            transform: scale(0.95) translateY(1px) !important; 
+            background-color: rgba(0, 0, 0, 0.25) !important;
+            
+            /* The "Going Inside" Effect: Top inner shadow + Bottom white highlight */
+            box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.2), inset 0 -1px 0 rgba(255, 255, 255, 0.35) !important;
+            
+            transition: transform 0.1s ease, box-shadow 0.1s ease;
         }
 
+        /* --- INSET PANELS (Titles, Descriptions, Video Box) --- */
         .glass-inset-panel {
-            background-color: rgba(0, 0, 0, 0.04);
-            box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.06), 0 1px 0 rgba(255, 255, 255, 0.2);
-            border-radius: 20px;
+            background-color: rgba(0, 0, 0, 0.05);
+            
+            /* DEFAULT: Raised look (White line on top) - matching buttons */
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.35);
+            
             border: none;
-            transition: background-color 0.2s ease, transform 0.2s ease;
+            border-radius: 20px;
+            transition: background-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
             -webkit-tap-highlight-color: transparent;
         }
 
@@ -163,31 +178,31 @@
         }
 
         .glass-inset-panel.interactive.active-state {
-            transform: scale(0.93) !important;
-            background-color: rgba(0, 0, 0, 0.09);
-            transition: transform 0.1s ease;
+            /* ACTIVE: Pressed look (Inner shadow top, White line bottom) - matching buttons */
+            transform: scale(0.95) !important;
+            background-color: rgba(0, 0, 0, 0.12);
+            
+            /* The "Going Inside" Effect */
+            box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.2), inset 0 -1px 0 rgba(255, 255, 255, 0.35) !important;
+            
+            transition: transform 0.1s ease, box-shadow 0.1s ease;
         }
 
         #description-text-container.interactive.active-state {
             transform: scale(0.98) !important; 
         }
 
-        /* --- HOVER EFFECTS REMOVED AS REQUESTED --- */
+        /* --- HOVER EFFECTS: DARKER BG, NO ZOOM/SCALE --- */
         @media (hover: hover) {
-            /* Only button color transitions remain, no card scaling */
-            .cta-button {
-                transition: transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94), background-color 0.2s ease;
-            }
             .cta-button:hover {
-                transform: scale(1.02); /* Slight scale for buttons only */
-                background-color: rgba(0, 0, 0, 0.08);
+                /* No scale/mount effect, just darker background */
+                transform: none;
+                background-color: rgba(0, 0, 0, 0.25); 
             }
 
-            .glass-inset-panel.interactive {
-                transition: transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94), background-color 0.15s ease;
-            }
             .glass-inset-panel.interactive:hover {
-                background-color: rgba(0, 0, 0, 0.06);
+                transform: none;
+                background-color: rgba(0, 0, 0, 0.12);
             }
         }
 
@@ -520,7 +535,7 @@
                     <div id="file-drop-area" class="w-full h-full flex flex-col items-center justify-center text-center cursor-pointer pb-4">
                         <div class="mb-4">${icon('Upload', 'h-12 w-12')}</div>
                         <p class="text-lg sm:text-[21px] font-bold text-black">Upload Your Video File Here</p>
-                        <button class="cta-button mt-6 px-6 py-4 font-bold text-lg pointer-events-none">Select File</button>
+                        <button class="cta-button mt-6 px-6 py-4 font-bold text-lg">Select File</button>
                         <input type="file" id="file-upload-input" class="hidden" accept="video/*" onchange="handleFileChange(event)" onclick="event.stopPropagation()"/>
                     </div>`;
                 
