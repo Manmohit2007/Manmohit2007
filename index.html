@@ -22,7 +22,7 @@
     <!-- Standard Meta Tags -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <meta name="color-scheme" content="light">
+    <meta name="color-scheme" content="dark">
     <title>FanPlusFollow</title>
     <meta name="description" content="Tools for Content Creators. Boost your reach with advanced insights.">
 
@@ -31,13 +31,13 @@
         :root { 
             font-family: 'Inter', sans-serif; 
             box-sizing: border-box;
-            color-scheme: light;
+            color-scheme: dark;
             -webkit-tap-highlight-color: transparent;
         }
 
         html {
-            /* Changed to White for Light Mode */
-            background-color: #ffffff;
+            /* Reverted to Dark for visibility of Blur */
+            background-color: #0f0f0f;
             height: 100%;
             width: 100%;
             overflow-x: hidden;
@@ -49,8 +49,8 @@
             background-color: transparent; 
             min-height: 100vh;
             min-height: -webkit-fill-available;
-            /* Changed text to black for contrast on white */
-            color: #000000; 
+            /* White text for dark background */
+            color: #ffffff; 
             margin: 0;
             padding: 0;
             overscroll-behavior: none;
@@ -74,18 +74,14 @@
             width: 100vw; height: 100vh;
             z-index: -1; 
             
-            /* Hidden initially, revealed via JS only when loaded */
             opacity: 0;
             transition: opacity 1s ease-out;
 
-            /* UPDATED LIGHT THEME GRADIENTS: 
-               Pastel blobs on white to allow blur visibility.
-               Using 0.9 opacity white overlay to keep it bright.
-            */
+            /* Removed white overlays. Restored vibrant dark gradients to make blur visible. */
             background: 
-                radial-gradient(circle at 10% 20%, rgba(37, 99, 235, 0.15) 0%, transparent 40%),  /* Soft Blue */
-                radial-gradient(circle at 90% 80%, rgba(220, 38, 38, 0.15) 0%, transparent 40%),   /* Soft Red */
-                linear-gradient(rgba(255, 255, 255, 0.7), rgba(255, 255, 255, 0.9)), 
+                radial-gradient(circle at 15% 25%, rgba(50, 80, 200, 0.4) 0%, transparent 45%), 
+                radial-gradient(circle at 85% 75%, rgba(200, 50, 50, 0.3) 0%, transparent 45%),
+                linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.6)), 
                 url('background.png');
             
             background-size: cover;
@@ -98,9 +94,9 @@
         @media (min-width: 768px) {
             #fixed-background {
                 background-image: 
-                    radial-gradient(circle at 10% 20%, rgba(37, 99, 235, 0.1) 0%, transparent 40%),
-                    radial-gradient(circle at 90% 80%, rgba(220, 38, 38, 0.1) 0%, transparent 40%),
-                    linear-gradient(rgba(255, 255, 255, 0.7), rgba(255, 255, 255, 0.9)),
+                    radial-gradient(circle at 15% 25%, rgba(50, 80, 200, 0.3) 0%, transparent 45%), 
+                    radial-gradient(circle at 85% 75%, rgba(200, 50, 50, 0.2) 0%, transparent 45%),
+                    linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.5)),
                     url('landscape.png');
             }
         }
@@ -122,50 +118,51 @@
         #upload-card.card-animation-target { animation-delay: 0.2s; } 
         #promo-card.card-animation-target { animation-delay: 0.3s; }
 
-        /* Glass Card - LIGHT MODE ADAPTATION */
+        /* Glass Card - BACKGROUND REMOVED (Almost) */
         .glass-card {
-            /* White tint */
-            background: linear-gradient(135deg, rgba(255, 255, 255, 0.6) 0%, rgba(255, 255, 255, 0.2) 100%);
+            /* Extremely low opacity (0.02) just to catch the border/shadow. 
+               It looks "removed" but allows the blur filter to work. */
+            background-color: rgba(255, 255, 255, 0.02);
             
-            /* Blur remains consistent */
-            -webkit-backdrop-filter: saturate(180%) blur(25px);
-            backdrop-filter: saturate(180%) blur(25px);
+            /* Strong Blur & Saturation */
+            -webkit-backdrop-filter: saturate(180%) blur(40px);
+            backdrop-filter: saturate(180%) blur(40px);
             
-            /* Softer shadow for light mode */
-            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.08);
+            /* Clean shadow */
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.25);
             
-            /* Darker/Grey border to define edges against white bg */
-            border: 1px solid rgba(0, 0, 0, 0.05);
+            /* Subtle border */
+            border: 1px solid rgba(255, 255, 255, 0.15);
             
             border-radius: 36px;
         }
 
         /* --- CTA BUTTONS --- */
         .cta-button {
-            /* Dark tint for buttons on light cards */
-            background-color: rgba(0, 0, 0, 0.04); 
-            color: #000000; 
+            /* Visible tint for buttons on the dark glass */
+            background-color: rgba(255, 255, 255, 0.08); 
+            color: #ffffff; 
             border: none;
             border-radius: 24px; 
             user-select: none;
             cursor: pointer;
             outline: none;
             -webkit-tap-highlight-color: transparent;
-            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.6), 0 2px 4px rgba(0, 0, 0, 0.05);
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.3), 0 2px 4px rgba(0, 0, 0, 0.2);
             transition: background-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
         }
 
         .cta-button.active-manual {
             transform: scale(0.95) translateY(1px) !important; 
-            background-color: rgba(0, 0, 0, 0.08) !important; 
-            box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.1), inset 0 -1px 0 rgba(255, 255, 255, 0.5) !important;
+            background-color: rgba(255, 255, 255, 0.12) !important; 
+            box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.2), inset 0 -1px 0 rgba(255, 255, 255, 0.3) !important;
             transition: transform 0.1s ease, box-shadow 0.1s ease;
         }
 
         @media (hover: hover) {
             .cta-button:hover {
                 transform: none;
-                background-color: rgba(0, 0, 0, 0.06); 
+                background-color: rgba(255, 255, 255, 0.15); 
             }
         }
 
@@ -186,9 +183,13 @@
         .no-scrollbar::-webkit-scrollbar { display: none; }
         .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
 
+        /* Icons colored white for dark theme */
         .header-icon { height: 3.8rem; width: 3.8rem; object-fit: contain; } 
         .share-icon { height: 3.2rem; width: 3.2rem; object-fit: contain; } 
         .shorts-icon { height: 3.5rem; width: 3.5rem; object-fit: contain; } 
+
+        /* Icon Stroke Colors - SVG */
+        svg { stroke: #ffffff; }
 
         @media (min-width: 640px) {
             .header-icon { height: 5rem; width: 5rem; }
@@ -208,7 +209,7 @@
                             <img src="https://manmohit2007.github.io/Manmohit2007/brand_logo.png?v=10" alt="Logo" class="w-full h-full object-contain filter drop-shadow-sm">
                         </div>
                         <div class="text-left min-w-0 relative left-[6px] sm:left-[5.3px]">
-                            <h1 class="text-xl sm:text-3xl font-bold text-black leading-tight truncate">FanPlusFollow</h1>
+                            <h1 class="text-xl sm:text-3xl font-bold text-white leading-tight truncate">FanPlusFollow</h1>
                         </div>
                     </div>
                     <div class="flex-shrink-0 ml-1">
@@ -221,7 +222,7 @@
             <main>
                 <div id="upload-card" class="glass-card p-6 rounded-[36px] mb-8 sm:mb-12 card-animation-target">
                     <div class="mb-4">
-                        <h2 class="text-xl sm:text-3xl font-bold flex items-center gap-1 sm:gap-2 text-black">
+                        <h2 class="text-xl sm:text-3xl font-bold flex items-center gap-1 sm:gap-2 text-white">
                             <img src="https://manmohit2007.github.io/Manmohit2007/share.png" alt="Share" class="share-icon">
                             <span class="relative -top-[2px] -left-[2px]">Upload Video</span>
                         </h2>
@@ -237,8 +238,8 @@
                             <div class="w-72 sm:w-96 mb-0 -mt-5 sm:-mt-8">
                                 <img src="https://manmohit2007.github.io/Manmohit2007/banner.png" alt="Logo" class="w-full h-auto object-contain filter drop-shadow-md">
                             </div>
-                            <h3 class="text-xl sm:text-3xl font-bold text-center text-black -mt-9 sm:-mt-10">Boost Your Reach Today</h3>
-                            <p class="text-black mt-1 text-center max-w-md text-xs sm:text-sm font-bold opacity-80 leading-tight">Join the community for exclusive growth insights.</p>
+                            <h3 class="text-xl sm:text-3xl font-bold text-center text-white -mt-9 sm:-mt-10">Boost Your Reach Today</h3>
+                            <p class="text-white mt-1 text-center max-w-md text-xs sm:text-sm font-bold opacity-80 leading-tight">Join the community for exclusive growth insights.</p>
                             <div class="mt-4 sm:mt-6 flex flex-row w-full max-w-md sm:max-w-lg justify-center gap-[18px] sm:gap-[30.6px] px-2 sm:px-0">
                               <button class="cta-button flex-1 sm:flex-none sm:w-40 px-4 py-4 font-bold flex items-center justify-center text-lg sm:text-lg" onclick="handleExternalLink(this, 'https://www.youtube.com/@fanplusfollow')">
                                 Subscribe
@@ -313,11 +314,11 @@
 
         const icon = (name, classes) => {
             const iconMap = {
-                'Upload': `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="${classes}"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" x2="12" y1="3" y2="15"/></svg>`,
-                'Copy': `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="${classes}"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>`,
-                'Check': `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="${classes}"><polyline points="20 6 9 17 4 12"/></svg>`,
-                'RotateCcw': `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="${classes}"><path d="M3 2v6h6"/><path d="M3 13a9 9 0 1 0 3-7.7L3 8"/></svg>`,
-                'Loader': `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="animate-spin ${classes}"><path d="M12 2v4"/><path d="M12 18v4"/><path d="M4.93 4.93l2.83 2.83"/><path d="M16.24 16.24l2.83 2.83"/><path d="M2 12h4"/><path d="M18 12h4"/><path d="M4.93 19.07l2.83-2.83"/><path d="M16.24 7.76l2.83-2.83"/></svg>`
+                'Upload': `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="${classes}"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" x2="12" y1="3" y2="15"/></svg>`,
+                'Copy': `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="${classes}"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>`,
+                'Check': `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="${classes}"><polyline points="20 6 9 17 4 12"/></svg>`,
+                'RotateCcw': `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="${classes}"><path d="M3 2v6h6"/><path d="M3 13a9 9 0 1 0 3-7.7L3 8"/></svg>`,
+                'Loader': `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="animate-spin ${classes}"><path d="M12 2v4"/><path d="M12 18v4"/><path d="M4.93 4.93l2.83 2.83"/><path d="M16.24 16.24l2.83 2.83"/><path d="M2 12h4"/><path d="M18 12h4"/><path d="M4.93 19.07l2.83-2.83"/><path d="M16.24 7.76l2.83-2.83"/></svg>`
             };
             return iconMap[name] || '';
         };
@@ -419,7 +420,7 @@
                     setTimeout(() => {
                         container.innerHTML = `
                             <div class="h-full w-full flex items-center justify-center fade-in-text">
-                                <span class="flex items-center gap-1 font-bold text-black/80 sm:text-lg">
+                                <span class="flex items-center gap-1 font-bold text-white/80 sm:text-lg">
                                     ${icon('Check', 'h-5 w-5')} Copied
                                 </span>
                             </div>`;
@@ -432,7 +433,7 @@
                             }
                             
                             setTimeout(() => {
-                                container.innerHTML = `<div class="whitespace-pre-wrap break-words text-xs sm:text-sm font-bold sm:font-medium text-black/90 fade-in-text text-left w-full font-sans leading-relaxed pointer-events-none">${description}</div>`;
+                                container.innerHTML = `<div class="whitespace-pre-wrap break-words text-xs sm:text-sm font-bold sm:font-medium text-white/90 fade-in-text text-left w-full font-sans leading-relaxed pointer-events-none">${description}</div>`;
                                 if (done) done(); 
                             }, 200); 
                         }, 800); 
@@ -450,7 +451,7 @@
                     setTimeout(() => {
                         card.innerHTML = `
                             <div class="h-full w-full flex items-center justify-center fade-in-text">
-                                <span class="flex items-center gap-1 font-bold text-black/80 text-base">
+                                <span class="flex items-center gap-1 font-bold text-white/80 text-base">
                                     ${icon('Check', 'h-4 w-4')} Copied
                                 </span>
                             </div>`;
@@ -463,7 +464,7 @@
                             }
 
                             setTimeout(() => {
-                                card.innerHTML = `<p class="text-sm sm:text-base font-bold text-black/90 fade-in-text text-center line-clamp-4">${originalText}</p>`;
+                                card.innerHTML = `<p class="text-sm sm:text-base font-bold text-white/90 fade-in-text text-center line-clamp-4">${originalText}</p>`;
                                 if (done) done(); 
                             }, 200);
                         }, 800);
@@ -482,7 +483,7 @@
                 container.innerHTML = `
                     <div id="file-drop-area" class="w-full h-full flex flex-col items-center justify-center text-center cursor-pointer pb-4">
                         <div class="mb-4">${icon('Upload', 'h-12 w-12')}</div>
-                        <p class="text-lg sm:text-[21px] font-bold text-black">Upload Your Video File Here</p>
+                        <p class="text-lg sm:text-[21px] font-bold text-white">Upload Your Video File Here</p>
                         <button class="cta-button mt-6 px-6 py-4 font-bold text-lg">Select File</button>
                         <input type="file" id="file-upload-input" class="hidden" accept="video/*" onchange="handleFileChange(event)" onclick="event.stopPropagation()"/>
                     </div>`;
@@ -504,7 +505,7 @@
                                 class="cta-button inline-flex items-center justify-center px-4 py-3 sm:px-6 sm:py-4 max-w-full ${isProcessed ? 'cursor-pointer' : 'pointer-events-none'}" 
                                 onclick="${isProcessed ? 'handleResetClick(this)' : ''}"
                             >
-                                <p class="font-bold text-black/80 truncate text-center gap-2 max-w-[60vw] sm:max-w-lg">
+                                <p class="font-bold text-white/80 truncate text-center gap-2 max-w-[60vw] sm:max-w-lg">
                                     ${currentFileName}
                                 </p>
                             </div>
@@ -513,7 +514,7 @@
                             <div class="absolute right-full top-1/2 -translate-y-1/2 pr-2 flex items-center">
                                 ${!isProcessed ? icon('Loader', 'h-5 w-5') : icon('Check', 'h-5 w-5')}
                             </div>
-                            <span class="opacity-80 sm:text-lg text-black">${isProcessed ? 'Analysis Complete' : 'Analyzing Video...'}</span>
+                            <span class="opacity-80 sm:text-lg text-white">${isProcessed ? 'Analysis Complete' : 'Analyzing Video...'}</span>
                         </div>
                     </div>`;
             }
@@ -524,7 +525,7 @@
             if (!grid) return;
             grid.innerHTML = titles.map((title, index) => `
                 <div id="title-card-${index}" class="cta-button p-4 flex flex-col justify-center h-32 sm:h-40 w-full" onclick="handleCopyClick(this, '${titlesFull[index].replace(/'/g, "\\'")}', ${index})">
-                    <p class="text-sm sm:text-base font-bold text-black/90 fade-in-text text-center line-clamp-4">${title}</p>
+                    <p class="text-sm sm:text-base font-bold text-white/90 fade-in-text text-center line-clamp-4">${title}</p>
                 </div>`).join('');
         };
 
@@ -533,7 +534,7 @@
             if (container) {
                 container.setAttribute('onclick', `handleCopyClick(this, descriptionFull, 3)`);
                 container.className = "cta-button p-4 cursor-pointer h-[32rem] sm:h-[25rem] overflow-hidden w-full text-left flex items-start justify-start";
-                container.innerHTML = `<div class="whitespace-pre-wrap break-words text-xs sm:text-sm font-bold sm:font-medium text-black/90 fade-in-text text-left w-full font-sans leading-relaxed pointer-events-none">${description}</div>`;
+                container.innerHTML = `<div class="whitespace-pre-wrap break-words text-xs sm:text-sm font-bold sm:font-medium text-white/90 fade-in-text text-left w-full font-sans leading-relaxed pointer-events-none">${description}</div>`;
             }
         };
 
@@ -543,14 +544,14 @@
             container.innerHTML = `
                 <div class="glass-card p-4 sm:p-6 rounded-[36px] mb-8 sm:mb-12">
                     <div class="flex justify-between items-center mb-6 gap-2">
-                        <h2 class="text-xl sm:text-3xl font-bold flex items-center gap-1 sm:gap-2 text-black"><img src="https://manmohit2007.github.io/Manmohit2007/like.png" class="header-icon"> <span class="relative -left-[9px]">Titles</span></h2>
+                        <h2 class="text-xl sm:text-3xl font-bold flex items-center gap-1 sm:gap-2 text-white"><img src="https://manmohit2007.github.io/Manmohit2007/like.png" class="header-icon"> <span class="relative -left-[9px]">Titles</span></h2>
                         <button onclick="handleRegenerateTitlesClick(this)" class="cta-button text-xs sm:text-sm px-3 py-2 sm:px-4 sm:py-2 font-bold flex items-center shrink-0" style="border-radius: 14px;">${icon('RotateCcw', 'mr-1 sm:mr-2 h-3 w-3 sm:h-4 sm:w-4')} Regenerate</button>
                     </div>
                     <div id="titles-grid-container" class="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6"></div>
                 </div>
                 <div class="glass-card p-4 sm:p-6 rounded-[36px]">
                     <div class="flex justify-between items-center mb-4 gap-2">
-                        <h2 class="text-xl sm:text-3xl font-bold flex items-center gap-1 sm:gap-2 text-black"><img src="https://manmohit2007.github.io/Manmohit2007/shorts.png" class="shorts-icon"> <span class="relative -left-[3px]">Description</span></h2>
+                        <h2 class="text-xl sm:text-3xl font-bold flex items-center gap-1 sm:gap-2 text-white"><img src="https://manmohit2007.github.io/Manmohit2007/shorts.png" class="shorts-icon"> <span class="relative -left-[3px]">Description</span></h2>
                         <button onclick="handleRegenerateDescriptionClick(this)" class="cta-button text-xs sm:text-sm px-3 py-2 sm:px-4 sm:py-2 font-bold flex items-center shrink-0" style="border-radius: 14px;">${icon('RotateCcw', 'mr-1 sm:mr-2 h-3 w-3 sm:h-4 sm:w-4')} Regenerate</button>
                     </div>
                     <div id="description-text-container" class="cta-button p-4 cursor-pointer h-[32rem] sm:h-[25rem] overflow-hidden w-full text-left flex items-start justify-start"></div>
