@@ -114,12 +114,12 @@
 
         /* Glass Card - Professional "Milky" Brand Style */
         .glass-card {
-            /* Increased white opacity for a milkier, more solid frosted look */
-            background-color: rgba(255, 255, 255, 0.22);
+            /* Increased white opacity for a dense, milky professional look */
+            background-color: rgba(255, 255, 255, 0.30);
             
-            /* Strong blur to effectively blur the wallpaper */
-            -webkit-backdrop-filter: blur(50px) saturate(180%);
-            backdrop-filter: blur(50px) saturate(180%); 
+            /* Heavy blur to strongly diffuse the wallpaper */
+            -webkit-backdrop-filter: blur(80px) saturate(180%);
+            backdrop-filter: blur(80px) saturate(180%); 
             
             /* Clean, subtle shadow */
             box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.15);
@@ -132,9 +132,8 @@
             isolation: isolate; 
         }
 
-        /* --- CTA BUTTONS (The "Press" Effect) --- */
+        /* --- CTA BUTTONS (The "Fused" 3D Effect) --- */
         .cta-button {
-            /* REMOVED DARKNESS: Now using a subtle white tint to look fused/glassy */
             background-color: rgba(255, 255, 255, 0.08);
             color: #000000; 
             border: none;
@@ -144,20 +143,26 @@
             outline: none;
             -webkit-tap-highlight-color: transparent;
             
-            /* DEFAULT: White highlight on TOP to look raised */
-            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.35);
+            /* DEFAULT (Outwards): 
+               - White highlight on TOP (Light source)
+               - Dark shadow on BOTTOM (Fused/Beveled look) 
+            */
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.4), inset 0 -1px 0 rgba(0, 0, 0, 0.1);
             
             transition: background-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
         }
 
         .cta-button.active-manual {
-            /* ACTIVE: Scale down slightly + Move white highlight to BOTTOM + Inner shadow at top */
+            /* ACTIVE (Inwards): Pressed state */
             transform: scale(0.95) translateY(1px) !important; 
             
-            /* Reduced darkness on press to match fused look */
-            background-color: rgba(0, 0, 0, 0.1) !important;
+            /* NO DARKNESS ADDED - Keeps the same color to look like physical movement */
+            background-color: rgba(255, 255, 255, 0.08) !important;
             
-            /* The "Going Inside" Effect: Top inner shadow + Bottom white highlight */
+            /* The "Going Inside" Effect flips: 
+               - Inner shadow at TOP
+               - White highlight moves to BOTTOM 
+            */
             box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.15), inset 0 -1px 0 rgba(255, 255, 255, 0.35) !important;
             
             transition: transform 0.1s ease, box-shadow 0.1s ease;
@@ -167,8 +172,8 @@
         .glass-inset-panel {
             background-color: rgba(0, 0, 0, 0.05);
             
-            /* DEFAULT: Raised look (White line on top) - matching buttons */
-            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.35);
+            /* DEFAULT (Outwards/Fused): Matching the button's look */
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.4), inset 0 -1px 0 rgba(0, 0, 0, 0.1);
             
             border: none;
             border-radius: 20px;
@@ -181,11 +186,13 @@
         }
 
         .glass-inset-panel.interactive.active-state {
-            /* ACTIVE: Pressed look (Inner shadow top, White line bottom) - matching buttons */
+            /* ACTIVE (Inwards): Pressed look */
             transform: scale(0.95) !important;
-            background-color: rgba(0, 0, 0, 0.12);
             
-            /* The "Going Inside" Effect */
+            /* NO DARKNESS ADDED */
+            background-color: rgba(0, 0, 0, 0.05);
+            
+            /* "Going Inside" Effect */
             box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.2), inset 0 -1px 0 rgba(255, 255, 255, 0.35) !important;
             
             transition: transform 0.1s ease, box-shadow 0.1s ease;
@@ -195,17 +202,16 @@
             transform: scale(0.98) !important; 
         }
 
-        /* --- HOVER EFFECTS: NO DARKNESS, NO ZOOM/SCALE --- */
+        /* --- HOVER EFFECTS: NO COLOR CHANGE, NO ZOOM/SCALE --- */
         @media (hover: hover) {
             .cta-button:hover {
-                /* Removed darkness. Made slightly brighter to indicate interaction cleanly. */
                 transform: none;
+                /* Keep distinct hover slightly brighter */
                 background-color: rgba(255, 255, 255, 0.12); 
             }
 
             .glass-inset-panel.interactive:hover {
                 transform: none;
-                /* Keep panels stable or slight tint */
                 background-color: rgba(0, 0, 0, 0.05); 
             }
         }
