@@ -71,7 +71,7 @@
             z-index: -1; 
             opacity: 0;
             transition: opacity 1s ease-out;
-            background-image: linear-gradient(rgba(15, 15, 15, 0.05), rgba(15, 15, 15, 0.2)), url('background.png');
+            background-image: linear-gradient(rgba(15, 15, 15, 0.05), rgba(15, 15, 15, 0.25)), url('background.png');
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
@@ -89,12 +89,12 @@
 
         /* Entry Animation */
         @keyframes liquid-entry {
-            0% { opacity: 0; transform: perspective(1200px) scale(0.94) translateY(30px) rotateX(4deg); }
+            0% { opacity: 0; transform: perspective(1200px) scale(0.92) translateY(40px) rotateX(6deg); }
             100% { opacity: 1; transform: perspective(1200px) scale(1) translateY(0) rotateX(0); }
         }
         
         .card-animation-target {
-            animation: liquid-entry 0.9s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+            animation: liquid-entry 1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
             animation-play-state: paused; 
             opacity: 0; 
             will-change: transform, opacity;
@@ -104,38 +104,51 @@
         #upload-card.card-animation-target { animation-delay: 0.2s; } 
         #promo-card.card-animation-target { animation-delay: 0.3s; }
 
-        /* --- iOS 26 LIQUID GLASS STYLE --- */
+        /* --- iOS 26 LIQUID GLASS WITH EDGE REFRACTION --- */
         .glass-card {
+            position: relative;
             /* Thick Liquid Gradient Sheen */
             background: linear-gradient(
                 165deg, 
-                rgba(255, 255, 255, 0.45) 0%, 
-                rgba(255, 255, 255, 0.25) 40%, 
-                rgba(255, 255, 255, 0.35) 100%
+                rgba(255, 255, 255, 0.55) 0%, 
+                rgba(255, 255, 255, 0.22) 35%, 
+                rgba(255, 255, 255, 0.45) 100%
             );
             
-            /* Enhanced Refraction and Vibrancy */
-            -webkit-backdrop-filter: blur(120px) saturate(210%) contrast(110%);
-            backdrop-filter: blur(120px) saturate(210%) contrast(110%); 
+            /* Enhanced Refraction with SVG Distortion */
+            -webkit-backdrop-filter: blur(80px) saturate(220%) contrast(110%) brightness(1.05) url(#liquid-refraction);
+            backdrop-filter: blur(80px) saturate(220%) contrast(110%) brightness(1.05) url(#liquid-refraction); 
             
-            /* Specular Highlights & Liquid Depth Shadows */
+            /* Multi-layered Specular Highlights & Volumetric Shadows */
             box-shadow: 
-                0 24px 60px -12px rgba(0, 0, 0, 0.18),
-                inset 0 1px 1px 0 rgba(255, 255, 255, 0.6), /* Top Edge Specular */
-                inset 0 -1px 1px 0 rgba(255, 255, 255, 0.15); /* Bottom Edge Softness */
+                0 32px 80px -16px rgba(0, 0, 0, 0.22),
+                inset 0 1.5px 0px 0 rgba(255, 255, 255, 0.8), /* Sharp Edge Specular */
+                inset 0 10px 20px -5px rgba(255, 255, 255, 0.4), /* Thick Surface Glow */
+                inset 0 -1.5px 1px 0 rgba(255, 255, 255, 0.2); /* Soft Bottom Light */
             
-            border: 0.5px solid rgba(255, 255, 255, 0.25);
-            border-radius: 40px;
+            border: 0.5px solid rgba(255, 255, 255, 0.35);
+            border-radius: 44px;
             transform: translate3d(0,0,0);
             isolation: isolate; 
+            overflow: hidden;
+        }
+
+        /* Glass Surface Sheen Overlay */
+        .glass-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: linear-gradient(125deg, rgba(255,255,255,0.15) 0%, rgba(255,255,255,0) 40%, rgba(255,255,255,0.05) 100%);
+            pointer-events: none;
+            z-index: 1;
         }
 
         /* --- LIQUID INTERACTIVES --- */
         .cta-button {
-            background: linear-gradient(135deg, rgba(255, 255, 255, 0.15) 0%, rgba(255, 255, 255, 0.05) 100%);
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.2) 0%, rgba(255, 255, 255, 0.08) 100%);
             color: #000000; 
             border: none;
-            border-radius: 26px; 
+            border-radius: 28px; 
             user-select: none;
             cursor: pointer;
             outline: none;
@@ -143,67 +156,69 @@
             
             /* Volumetric Shadow */
             box-shadow: 
-                inset 0 1px 1px rgba(255, 255, 255, 0.5), 
-                0 4px 12px rgba(0, 0, 0, 0.08);
+                inset 0 1px 1px rgba(255, 255, 255, 0.6), 
+                0 6px 16px rgba(0, 0, 0, 0.1);
             
-            transition: all 0.3s cubic-bezier(0.2, 0, 0, 1);
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            position: relative;
+            z-index: 2;
         }
 
         .cta-button.active-manual {
-            /* Liquid Compression Effect */
-            transform: scale(0.94) translateY(2px) !important; 
-            background: rgba(255, 255, 255, 0.1) !important; 
+            transform: scale(0.92) translateY(3px) !important; 
+            background: rgba(255, 255, 255, 0.12) !important; 
             box-shadow: 
-                inset 0 3px 8px rgba(0, 0, 0, 0.12), 
-                inset 0 -1px 0 rgba(255, 255, 255, 0.2) !important;
+                inset 0 4px 10px rgba(0, 0, 0, 0.15), 
+                inset 0 -1px 0 rgba(255, 255, 255, 0.25) !important;
             transition: transform 0.1s ease, box-shadow 0.1s ease;
         }
 
-        /* --- INSET PANELS --- */
+        /* --- INSET PANELS (Small Liquid Units) --- */
         .glass-inset-panel {
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(40px) brightness(1.05);
-            -webkit-backdrop-filter: blur(40px) brightness(1.05);
+            background: rgba(255, 255, 255, 0.12);
+            backdrop-filter: blur(50px) brightness(1.1) url(#liquid-refraction);
+            -webkit-backdrop-filter: blur(50px) brightness(1.1) url(#liquid-refraction);
             
             box-shadow: 
-                inset 0 1px 1px rgba(255, 255, 255, 0.4), 
-                0 4px 10px rgba(0, 0, 0, 0.04);
+                inset 0 1px 2px rgba(255, 255, 255, 0.5), 
+                0 4px 12px rgba(0, 0, 0, 0.06);
             
-            border: 0.5px solid rgba(255, 255, 255, 0.1);
-            border-radius: 28px;
-            transition: all 0.3s cubic-bezier(0.2, 0, 0, 1);
+            border: 0.5px solid rgba(255, 255, 255, 0.15);
+            border-radius: 30px;
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            z-index: 2;
         }
 
         .glass-inset-panel.interactive.active-state {
-            transform: scale(0.96) !important;
-            background: rgba(255, 255, 255, 0.06);
+            transform: scale(0.95) !important;
+            background: rgba(255, 255, 255, 0.08);
             box-shadow: 
-                inset 0 4px 12px rgba(0, 0, 0, 0.08), 
+                inset 0 6px 14px rgba(0, 0, 0, 0.1), 
                 inset 0 -1px 0 rgba(255, 255, 255, 0.2) !important;
             transition: transform 0.15s ease;
         }
 
         @media (hover: hover) {
             .cta-button:hover, .glass-inset-panel.interactive:hover {
-                background: rgba(255, 255, 255, 0.18);
+                background: rgba(255, 255, 255, 0.22);
                 box-shadow: 
-                    inset 0 1px 2px rgba(255, 255, 255, 0.6), 
-                    0 8px 16px rgba(0, 0, 0, 0.06);
+                    inset 0 1px 2px rgba(255, 255, 255, 0.7), 
+                    0 10px 20px rgba(0, 0, 0, 0.08);
             }
         }
 
         .fade-in-text {
-            animation: fadeInText 0.5s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+            animation: fadeInText 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
         }
         @keyframes fadeInText {
-            from { opacity: 0; transform: translateY(8px); }
-            to { opacity: 1; transform: translateY(0); }
+            from { opacity: 0; transform: translateY(10px) scale(0.98); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
         }
 
         .text-fade-out {
             opacity: 0 !important;
-            transform: translateY(-6px) !important;
-            transition: all 0.25s ease !important;
+            transform: translateY(-8px) scale(0.98) !important;
+            transition: all 0.3s ease !important;
         }
 
         .no-scrollbar::-webkit-scrollbar { display: none; }
@@ -221,13 +236,22 @@
     </style>
 </head>
 <body class="p-4 md:p-8" ontouchstart="">
+    
+    <!-- SVG REFRACTION FILTER BLOCK -->
+    <svg style="position: fixed; width: 0; height: 0; pointer-events: none;" aria-hidden="true">
+        <filter id="liquid-refraction">
+            <feTurbulence type="fractalNoise" baseFrequency="0.01 0.01" numOctaves="1" result="warp" />
+            <feDisplacementMap in="SourceGraphic" in2="warp" scale="15" xChannelSelector="R" yChannelSelector="G" />
+        </filter>
+    </svg>
+
     <div id="fixed-background"></div>
     
     <div id="content-wrapper">
         <div class="max-w-4xl mx-auto">
             <div class="mb-8 sm:mb-12">
                 <header id="app-header" class="glass-card px-3 py-3 sm:px-6 sm:py-5 flex flex-row items-center justify-between card-animation-target">
-                    <div class="flex items-center space-x-2 sm:space-x-4">
+                    <div class="flex items-center space-x-2 sm:space-x-4 relative z-10">
                         <div class="w-[57px] h-[57px] sm:w-[84px] sm:h-[84px] flex-shrink-0 relative left-[5.3px]">
                             <img src="https://manmohit2007.github.io/Manmohit2007/brand_logo.png?v=10" alt="Logo" class="w-full h-full object-contain filter drop-shadow-sm">
                         </div>
@@ -235,7 +259,7 @@
                             <h1 class="text-xl sm:text-3xl font-bold text-black leading-tight truncate">FanPlusFollow</h1>
                         </div>
                     </div>
-                    <div class="flex-shrink-0 ml-1">
+                    <div class="flex-shrink-0 ml-1 relative z-10">
                         <div class="w-[77px] h-[77px] sm:w-[121px] sm:h-[121px] relative right-[5.3px]">
                             <img src="https://manmohit2007.github.io/Manmohit2007/youtube.png" alt="YouTube" class="w-full h-full object-contain">
                         </div>
@@ -243,20 +267,20 @@
                 </header>
             </div>
             <main>
-                <div id="upload-card" class="glass-card p-6 rounded-[40px] mb-8 sm:mb-12 card-animation-target">
-                    <div class="mb-4">
+                <div id="upload-card" class="glass-card p-6 rounded-[44px] mb-8 sm:mb-12 card-animation-target">
+                    <div class="mb-4 relative z-10">
                         <h2 class="text-xl sm:text-3xl font-bold flex items-center gap-1 sm:gap-2 text-black">
                             <img src="https://manmohit2007.github.io/Manmohit2007/share.png" alt="Share" class="share-icon">
                             <span class="relative -top-[2px] -left-[2px]">Upload Video</span>
                         </h2>
                     </div>
-                    <div class="p-1 min-h-[10rem] sm:min-h-[14rem]" id="upload-section-content"></div>
+                    <div class="p-1 min-h-[10rem] sm:min-h-[14rem] relative z-10" id="upload-section-content"></div>
                 </div>
                 <div id="results-section"></div>
             </main>
             <div class="mt-8 sm:mt-12 w-full">
                 <div id="promo-card" class="glass-card px-2 pb-5 pt-0 sm:px-3 sm:pb-8 sm:pt-1 max-w-4xl mx-auto card-animation-target"> 
-                    <div class="px-1 pb-1">
+                    <div class="px-1 pb-1 relative z-10">
                         <div class="flex flex-col items-center">
                             <div class="w-72 sm:w-96 mb-0 -mt-5 sm:-mt-8">
                                 <img src="https://manmohit2007.github.io/Manmohit2007/banner.png" alt="Logo" class="w-full h-auto object-contain filter drop-shadow-md">
@@ -336,7 +360,6 @@
         const icon = (name, classes) => {
             const iconMap = {
                 'Upload': `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="${classes}"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" x2="12" y1="3" y2="15"/></svg>`,
-                'Copy': `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="${classes}"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>`,
                 'Check': `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" class="${classes}"><polyline points="20 6 9 17 4 12"/></svg>`,
                 'RotateCcw': `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="${classes}"><path d="M3 2v6h6"/><path d="M3 13a9 9 0 1 0 3-7.7L3 8"/></svg>`,
                 'Loader': `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="animate-spin ${classes}"><path d="M12 2v4"/><path d="M12 18v4"/><path d="M4.93 4.93l2.83 2.83"/><path d="M16.24 16.24l2.83 2.83"/><path d="M2 12h4"/><path d="M18 12h4"/><path d="M4.93 19.07l2.83-2.83"/><path d="M16.24 7.76l2.83-2.83"/></svg>`
@@ -369,16 +392,16 @@
                 titles: [
                     [`🔥 ULTIMATE ${vName} Guide! #fanplusfollow`, `📈 ${vName}: How We Went VIRAL! #fanplusfollow`, `🤯 This ${vName} Hack is Insane! #fanplusfollow`],
                     [`🚀 ${vName} HACK: More Views! #fanplusfollow`, `💡 One ${vName} Tip That Works... #fanplusfollow`, `🚫 Stop Making Bad ${vName} Videos! #fanplusfollow`],
-                    [`🤫 The ${vName} Secret Nobody Tells You... #fanplusfollow`, `⚠️ Don't Upload ${vName} Until You Watch This! #fanplusfollow`, `🚀 From 0 to 10k Views with ${vName} #fanplusfollow`],
-                    [`💎 ${vName} Masterclass: Pro Secrets Revealed #fanplusfollow`, `⚡ Fast Track Your Growth: ${vName} Explained #fanplusfollow`, `🧠 Psychology of ${vName}: Why It Works #fanplusfollow`],
-                    [`💥 Break the Algorithm with ${vName}! #fanplusfollow`, `🛑 The BIGGEST ${vName} Mistake Creators Make #fanplusfollow`, `✨ Perfect ${vName} Tutorial in 5 Minutes #fanplusfollow`]
+                    [`🤫 ${vName} Secret Nobody Tells You... #fanplusfollow`, `⚠️ Don't Upload ${vName} Until You Watch This!`, `🚀 From 0 to 10k Views with ${vName}`],
+                    [`💎 ${vName} Masterclass: Pro Secrets`, `⚡ Fast Track Growth: ${vName} Explained`, `🧠 Psychology of ${vName}: Why It Works`],
+                    [`💥 Break the Algorithm with ${vName}!`, `🛑 BIGGEST ${vName} Mistake Creators Make`, `✨ Perfect ${vName} Tutorial in 5 Minutes`]
                 ],
                 descriptions: [
-                    `🚀 Unlock the full potential of ${vName} with this comprehensive guide!\n\n📌 IN THIS VIDEO:\n0:00 - Intro\n1:45 - Why ${vName} Matters\n4:20 - Step-by-Step Strategy\n8:15 - Secret Hack Revealed\n\n💡 JOIN THE COMMUNITY:\nSubscribe: ${YOUTUBE_CHANNEL_LINK}\nFollow: ${INSTAGRAM_LINK}\n\n#${vName.replace(/\s+/g, '')} #FanPlusFollow`,
-                    `😱 You won't believe how much ${vName} can change your channel!\n\n🔥 EXPECT:\n- 🎥 Real results from this method\n- 📈 Actionable steps\n- 🤫 Consistency secret\n\n✅ STAY CONNECTED:\n📸 Instagram: ${INSTAGRAM_LINK}\n📺 YouTube: ${YOUTUBE_CHANNEL_LINK}\n\n#Viral #${vName.replace(/\s+/g, '')}`,
-                    `⚡ Want to master ${vName} in record time?\n\n✅ The basics\n✅ Advanced tips\n✅ Pitfalls to avoid\n\n🔗 Follow for updates:\nIG: ${INSTAGRAM_LINK}\nYT: ${YOUTUBE_CHANNEL_LINK}\n\n#${vName.replace(/\s+/g, '')} #QuickTips`,
-                    `🧠 Let's dive deep into the analytics behind ${vName}.\n\n📊 KEY TAKEAWAYS:\n1. The "Hook" Strategy\n2. Retention Hacks\n\nJoin the #FanPlusFollow movement!\n👉 ${YOUTUBE_CHANNEL_LINK}\n\n#Analytics #YouTubeTips`,
-                    `📖 I tried ${vName} so you don't have to...\n\nTimestamps:\n0:00 - The Experiment\n3:10 - The Struggle\n6:45 - The Breakthrough\n\n🌟 Support:\nSubscribe: ${YOUTUBE_CHANNEL_LINK}\n\n#${vName.replace(/\s+/g, '')} #CreatorJourney`
+                    `🚀 Unlock the full potential of ${vName}!\n\n📌 IN THIS VIDEO:\n0:00 - Intro\n1:45 - Why ${vName} Matters\n4:20 - Step-by-Step Strategy\n\n💡 JOIN THE COMMUNITY:\nSubscribe: ${YOUTUBE_CHANNEL_LINK}\nFollow: ${INSTAGRAM_LINK}\n\n#${vName.replace(/\s+/g, '')} #FanPlusFollow`,
+                    `😱 SHOCKING results with ${vName}!\n\n🔥 EXPECT:\n- 🎥 Proof this works\n- 📈 Easy steps\n- 🤫 The algorithm secret\n\n✅ CONNECT:\n📸 IG: ${INSTAGRAM_LINK}\n📺 YT: ${YOUTUBE_CHANNEL_LINK}\n\n#Viral #${vName.replace(/\s+/g, '')}`,
+                    `⚡ Master ${vName} in record time.\n\n✅ Basics\n✅ Advanced tips\n✅ Pitfalls\n\n🔗 Daily updates:\nIG: ${INSTAGRAM_LINK}\nYT: ${YOUTUBE_CHANNEL_LINK}\n\n#${vName.replace(/\s+/g, '')}`,
+                    `🧠 Deep dive: ${vName} Analytics.\n\n📊 KEY TAKEAWAYS:\n1. Hook Strategy\n2. Retention Hacks\n\nJoin the movement:\n👉 ${YOUTUBE_CHANNEL_LINK}\n\n#YouTubeTips #${vName.replace(/\s+/g, '')}`,
+                    `📖 I tested ${vName} so you don't have to...\n\nTimestamps:\n0:00 - Experiment\n3:10 - Struggle\n6:45 - Breakthrough\n\n🌟 Support:\nSubscribe: ${YOUTUBE_CHANNEL_LINK}\n\n#CreatorJourney #${vName.replace(/\s+/g, '')}`
                 ]
             });
             const displayTemplates = getTemplates(displayVideoName);
@@ -398,7 +421,7 @@
                 generateViralContent(); 
                 updateTitlesContent(); 
                 if (done) done();
-            }, 250);
+            }, 300);
         };
 
         const regenerateDescription = (done) => {
@@ -411,7 +434,7 @@
                 generateViralContent(); 
                 updateDescriptionContent();
                 if (done) done();
-            }, 250);
+            }, 300);
         };
 
         const copyToClipboard = (text, index, done) => {
@@ -428,16 +451,16 @@
                     const contentDiv = container.querySelector('div');
                     if (contentDiv) contentDiv.classList.add('text-fade-out');
                     setTimeout(() => {
-                        container.innerHTML = `<div class="h-full w-full flex items-center justify-center fade-in-text"><span class="flex items-center gap-2 font-bold text-black sm:text-xl">${icon('Check', 'h-6 w-6')} Copied</span></div>`;
+                        container.innerHTML = `<div class="h-full w-full flex items-center justify-center fade-in-text"><span class="flex items-center gap-2 font-bold text-black sm:text-2xl">${icon('Check', 'h-7 w-7')} Copied</span></div>`;
                         setTimeout(() => { 
                             const wrapper = container.querySelector('div');
                             if (wrapper) wrapper.classList.add('text-fade-out');
                             setTimeout(() => {
                                 container.innerHTML = `<div class="whitespace-pre-wrap break-words text-xs sm:text-sm font-bold sm:font-medium text-black/90 fade-in-text text-left w-full font-sans leading-relaxed pointer-events-none">${description}</div>`;
                                 if (done) done(); 
-                            }, 200); 
+                            }, 250); 
                         }, 800); 
-                    }, 200); 
+                    }, 250); 
                 } else if (done) done();
             } else {
                 const card = document.getElementById(`title-card-${index}`);
@@ -446,16 +469,16 @@
                     const p = card.querySelector('p');
                     p.classList.add('text-fade-out');
                     setTimeout(() => {
-                        card.innerHTML = `<div class="h-full w-full flex items-center justify-center fade-in-text"><span class="flex items-center gap-2 font-bold text-black text-lg">${icon('Check', 'h-5 w-5')} Copied</span></div>`;
+                        card.innerHTML = `<div class="h-full w-full flex items-center justify-center fade-in-text"><span class="flex items-center gap-2 font-bold text-black text-xl">${icon('Check', 'h-6 w-6')} Copied</span></div>`;
                         setTimeout(() => { 
                             const wrapper = card.querySelector('div');
                             if (wrapper) wrapper.classList.add('text-fade-out');
                             setTimeout(() => {
                                 card.innerHTML = `<p class="text-sm sm:text-base font-bold text-black/90 fade-in-text text-center line-clamp-4">${originalText}</p>`;
                                 if (done) done(); 
-                            }, 200);
+                            }, 250);
                         }, 800);
-                    }, 200);
+                    }, 250);
                 } else if (done) done();
             }
         };
@@ -467,9 +490,9 @@
             if (!file) {
                 container.innerHTML = `
                     <div id="file-drop-area" class="w-full h-full flex flex-col items-center justify-center text-center cursor-pointer pb-4">
-                        <div class="mb-4 text-black">${icon('Upload', 'h-14 w-14')}</div>
-                        <p class="text-lg sm:text-[22px] font-bold text-black">Upload Video for Analysis</p>
-                        <button class="cta-button mt-6 px-8 py-4 font-bold text-lg">Select File</button>
+                        <div class="mb-4 text-black">${icon('Upload', 'h-16 w-16')}</div>
+                        <p class="text-lg sm:text-[24px] font-bold text-black">Upload Video for Viral Analysis</p>
+                        <button class="cta-button mt-6 px-10 py-4 font-bold text-lg">Select File</button>
                         <input type="file" id="file-upload-input" class="hidden" accept="video/*" onchange="handleFileChange(event)"/>
                     </div>`;
                 document.getElementById('file-drop-area').onclick = () => {
@@ -486,9 +509,9 @@
                         </div>
                         <div class="relative inline-flex items-center justify-center mb-2 font-bold left-[5.3px]">
                             <div class="absolute right-full top-1/2 -translate-y-1/2 pr-3 flex items-center">
-                                ${!isProcessed ? icon('Loader', 'h-6 w-6 text-black') : icon('Check', 'h-6 w-6 text-black')}
+                                ${!isProcessed ? icon('Loader', 'h-7 w-7 text-black') : icon('Check', 'h-7 w-7 text-black')}
                             </div>
-                            <span class="opacity-80 sm:text-xl text-black">${isProcessed ? 'Analysis Ready' : 'Processing Content...'}</span>
+                            <span class="opacity-80 sm:text-2xl text-black">${isProcessed ? 'Analysis Ready' : 'Processing Content...'}</span>
                         </div>
                     </div>`;
             }
@@ -515,19 +538,19 @@
             const container = document.getElementById('results-section');
             if (!isProcessed) { container.innerHTML = ''; return; }
             container.innerHTML = `
-                <div class="glass-card p-4 sm:p-6 rounded-[40px] mb-8 sm:mb-12">
-                    <div class="flex justify-between items-center mb-6 gap-2">
+                <div class="glass-card p-4 sm:p-6 rounded-[44px] mb-8 sm:mb-12">
+                    <div class="flex justify-between items-center mb-6 gap-2 relative z-10">
                         <h2 class="text-xl sm:text-3xl font-bold flex items-center gap-1 sm:gap-2 text-black"><img src="https://manmohit2007.github.io/Manmohit2007/like.png" class="header-icon"> <span class="relative -left-[9px]">Viral Titles</span></h2>
-                        <button onclick="handleRegenerateTitlesClick(this)" class="cta-button text-xs sm:text-sm px-4 py-2 font-bold flex items-center shrink-0" style="border-radius: 16px;">${icon('RotateCcw', 'mr-1 sm:mr-2 h-4 w-4')} Refresh</button>
+                        <button onclick="handleRegenerateTitlesClick(this)" class="cta-button text-xs sm:text-sm px-4 py-2 font-bold flex items-center shrink-0" style="border-radius: 18px;">${icon('RotateCcw', 'mr-1 sm:mr-2 h-4 w-4')} Refresh</button>
                     </div>
-                    <div id="titles-grid-container" class="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6"></div>
+                    <div id="titles-grid-container" class="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6 relative z-10"></div>
                 </div>
-                <div class="glass-card p-4 sm:p-6 rounded-[40px]">
-                    <div class="flex justify-between items-center mb-4 gap-2">
+                <div class="glass-card p-4 sm:p-6 rounded-[44px]">
+                    <div class="flex justify-between items-center mb-4 gap-2 relative z-10">
                         <h2 class="text-xl sm:text-3xl font-bold flex items-center gap-1 sm:gap-2 text-black"><img src="https://manmohit2007.github.io/Manmohit2007/shorts.png" class="shorts-icon"> <span class="relative -left-[3px]">Smart Description</span></h2>
-                        <button onclick="handleRegenerateDescriptionClick(this)" class="cta-button text-xs sm:text-sm px-4 py-2 font-bold flex items-center shrink-0" style="border-radius: 16px;">${icon('RotateCcw', 'mr-1 sm:mr-2 h-4 w-4')} Refresh</button>
+                        <button onclick="handleRegenerateDescriptionClick(this)" class="cta-button text-xs sm:text-sm px-4 py-2 font-bold flex items-center shrink-0" style="border-radius: 18px;">${icon('RotateCcw', 'mr-1 sm:mr-2 h-4 w-4')} Refresh</button>
                     </div>
-                    <div id="description-text-container" class="glass-inset-panel p-5 interactive cursor-pointer h-[28rem] sm:h-[22rem] overflow-hidden"></div>
+                    <div id="description-text-container" class="glass-inset-panel p-6 interactive cursor-pointer h-[28rem] sm:h-[22rem] overflow-hidden relative z-10"></div>
                 </div>`;
             updateTitlesContent(); updateDescriptionContent();
         };
