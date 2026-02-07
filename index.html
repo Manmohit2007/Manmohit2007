@@ -114,19 +114,21 @@
 
         /* Glass Card - Ultra Frosted & Blurry Style */
         .glass-card {
-            /* Balanced Opacity: Enough to be milky, transparent enough to show the blur */
-            background-color: rgba(255, 255, 255, 0.25);
+            /* FIX 1: Reduced base opacity so it doesn't turn solid white */
+            background-color: rgba(255, 255, 255, 0.06);
             
-            /* OPTIMIZED BLUR: 50px is the "heavy frosted" sweet spot. 
-               Anything over 100px turns the background into a single flat color. */
-            -webkit-backdrop-filter: blur(50px) saturate(180%);
-            backdrop-filter: blur(50px) saturate(180%); 
+            /* FIX 2: Added Gradient Sheen for the "Milky" texture */
+            background-image: linear-gradient(145deg, rgba(255, 255, 255, 0.15) 0%, rgba(255, 255, 255, 0.02) 100%);
+            
+            /* FIX 3: Strong blur that preserves background colors */
+            -webkit-backdrop-filter: blur(40px) saturate(160%);
+            backdrop-filter: blur(40px) saturate(160%); 
             
             /* Clean, subtle shadow */
             box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.15);
             
-            /* Precision border */
-            border: 1px solid rgba(255, 255, 255, 0.15);
+            /* Sharper border for glass edge definition */
+            border: 1px solid rgba(255, 255, 255, 0.25);
             
             border-radius: 36px;
             transform: translate3d(0,0,0);
