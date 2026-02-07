@@ -112,19 +112,19 @@
         #upload-card.card-animation-target { animation-delay: 0.2s; } 
         #promo-card.card-animation-target { animation-delay: 0.3s; }
 
-        /* Glass Card - Professional "Pro" Brand Style */
+        /* Glass Card - Professional "Milky" Brand Style */
         .glass-card {
-            /* Sophisticated white blend, not too heavy, not too clear */
-            background-color: rgba(255, 255, 255, 0.14);
+            /* Increased white opacity for a milkier, more solid frosted look */
+            background-color: rgba(255, 255, 255, 0.22);
             
-            /* Heavy blur + Saturation boost (The "Apple" secret sauce) */
-            -webkit-backdrop-filter: blur(60px) saturate(180%);
-            backdrop-filter: blur(60px) saturate(180%); 
+            /* Strong blur to effectively blur the wallpaper */
+            -webkit-backdrop-filter: blur(50px) saturate(180%);
+            backdrop-filter: blur(50px) saturate(180%); 
             
-            /* Clean, subtle shadow - removed the heavy inner glow */
+            /* Clean, subtle shadow */
             box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.15);
             
-            /* Precision border - thinner and more subtle */
+            /* Precision border */
             border: 1px solid rgba(255, 255, 255, 0.15);
             
             border-radius: 36px;
@@ -134,7 +134,8 @@
 
         /* --- CTA BUTTONS (The "Press" Effect) --- */
         .cta-button {
-            background-color: rgba(0, 0, 0, 0.1);
+            /* REMOVED DARKNESS: Now using a subtle white tint to look fused/glassy */
+            background-color: rgba(255, 255, 255, 0.08);
             color: #000000; 
             border: none;
             border-radius: 24px; 
@@ -152,10 +153,12 @@
         .cta-button.active-manual {
             /* ACTIVE: Scale down slightly + Move white highlight to BOTTOM + Inner shadow at top */
             transform: scale(0.95) translateY(1px) !important; 
-            background-color: rgba(0, 0, 0, 0.25) !important;
+            
+            /* Reduced darkness on press to match fused look */
+            background-color: rgba(0, 0, 0, 0.1) !important;
             
             /* The "Going Inside" Effect: Top inner shadow + Bottom white highlight */
-            box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.2), inset 0 -1px 0 rgba(255, 255, 255, 0.35) !important;
+            box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.15), inset 0 -1px 0 rgba(255, 255, 255, 0.35) !important;
             
             transition: transform 0.1s ease, box-shadow 0.1s ease;
         }
@@ -192,17 +195,18 @@
             transform: scale(0.98) !important; 
         }
 
-        /* --- HOVER EFFECTS: DARKER BG, NO ZOOM/SCALE --- */
+        /* --- HOVER EFFECTS: NO DARKNESS, NO ZOOM/SCALE --- */
         @media (hover: hover) {
             .cta-button:hover {
-                /* No scale/mount effect, just darker background */
+                /* Removed darkness. Made slightly brighter to indicate interaction cleanly. */
                 transform: none;
-                background-color: rgba(0, 0, 0, 0.25); 
+                background-color: rgba(255, 255, 255, 0.12); 
             }
 
             .glass-inset-panel.interactive:hover {
                 transform: none;
-                background-color: rgba(0, 0, 0, 0.12);
+                /* Keep panels stable or slight tint */
+                background-color: rgba(0, 0, 0, 0.05); 
             }
         }
 
