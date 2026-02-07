@@ -63,7 +63,6 @@
             transition: opacity 0.5s ease-out;
             width: 100%;
             height: 100%;
-            /* Hardware acceleration for the fade */
             will-change: opacity; 
         }
 
@@ -75,7 +74,6 @@
             z-index: -1; 
             
             /* MOBILE BACKGROUND */
-            /* Replace url('background.png') with base64 if needed */
             background-image: linear-gradient(rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.2)), url('background.png');
             
             background-size: cover;
@@ -90,7 +88,6 @@
         @media (min-width: 768px) {
             #fixed-background {
                 /* DESKTOP BACKGROUND */
-                /* Replace url('landscape.png') with base64 if needed */
                 background-image: linear-gradient(rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.2)), url('landscape.png');
             }
         }
@@ -121,7 +118,7 @@
             box-shadow: inset 0 0 40px rgba(255, 255, 255, 0.4), 0 25px 50px rgba(0, 0, 0, 0.05);
             border: 1px solid rgba(255, 255, 255, 0.5);
             border-radius: 36px;
-            /* STABILITY FIX: Prevents translucency jitter */
+            /* Base transform for stability */
             transform: translate3d(0,0,0);
             isolation: isolate; 
         }
@@ -131,8 +128,8 @@
             background-color: rgba(0, 0, 0, 0.03);
             box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.08), 0 1px 0 rgba(255, 255, 255, 0.2);
             color: #000000; 
-            /* REMOVED 'all', targeted specific properties only */
-            transition: transform 0.1s cubic-bezier(0.25, 0.46, 0.45, 0.94), background-color 0.2s ease;
+            /* Base transition for background, transform handled by apple-tilt class on desktop */
+            transition: background-color 0.2s ease;
             border: none;
             border-radius: 24px; 
             user-select: none;
@@ -143,7 +140,6 @@
 
         @media (hover: hover) {
             .cta-button:hover {
-                transform: translateY(-1px);
                 background-color: rgba(0, 0, 0, 0.05);
             }
         }
@@ -160,8 +156,7 @@
             box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.1), 0 1px 0 rgba(255, 255, 255, 0.2);
             border-radius: 20px;
             border: none;
-            /* Targeted transition for stability */
-            transition: transform 0.15s ease, background-color 0.15s ease;
+            transition: background-color 0.15s ease;
             -webkit-tap-highlight-color: transparent;
         }
 
@@ -176,6 +171,21 @@
 
         #description-text-container.interactive.active-state {
             transform: scale(0.98);
+        }
+
+        /* --- APPLE TILT EFFECT STYLES --- */
+        @media (hover: hover) {
+            .apple-tilt {
+                /* Smooth return to center when mouse leaves */
+                transition: transform 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+                transform-style: preserve-3d;
+                will-change: transform;
+            }
+            
+            /* While moving cursor, instant update (no lag) */
+            .apple-tilt.is-tilting {
+                transition: transform 0.05s linear; 
+            }
         }
 
         .fade-in-text {
@@ -584,7 +594,54 @@
             updateTitlesContent(); updateDescriptionContent();
         };
 
-        const updateUI = () => { renderUploadSection(); renderResults(); };
+        const initTiltEffect = () => {
+            // Only enable on devices that support hover (trackpads/mice)
+            if (!window.matchMedia('(hover: hover)').matches) return;
+
+            // Select all interactive cards/buttons
+            const elements = document.querySelectorAll('.glass-card, .cta-button, .glass-inset-panel.interactive');
+            
+            elements.forEach(el => {
+                // Prevent duplicate listeners
+                if (el.dataset.tiltInitialized) return;
+                el.dataset.tiltInitialized = "true";
+
+                el.classList.add('apple-tilt');
+
+                el.addEventListener('mousemove', (e) => {
+                    if (isUIBusy) return; // Don't tilt if busy animating clicks
+
+                    const rect = el.getBoundingClientRect();
+                    const x = e.clientX - rect.left;
+                    const y = e.clientY - rect.top;
+                    
+                    const centerX = rect.width / 2;
+                    const centerY = rect.height / 2;
+                    
+                    // Calculate rotation (subtle 3-4 degrees max)
+                    // Invert Y axis for natural 3D feel (mouse up = tilt up)
+                    const rotateX = ((y - centerY) / centerY) * -3; 
+                    const rotateY = ((x - centerX) / centerX) * 3;
+
+                    el.classList.add('is-tilting');
+                    // Add subtle scale to enhance 3D effect
+                    el.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.01, 1.01, 1.01)`;
+                });
+
+                el.addEventListener('mouseleave', () => {
+                    el.classList.remove('is-tilting');
+                    // Smoothly return to center
+                    el.style.transform = 'perspective(1000px) rotateX(0) rotateY(0) scale3d(1, 1, 1)';
+                });
+            });
+        };
+
+        const updateUI = () => { 
+            renderUploadSection(); 
+            renderResults(); 
+            // Re-bind tilt effects to new elements
+            setTimeout(initTiltEffect, 50);
+        };
         
         const preloadAssets = () => {
             const assets = [
@@ -620,7 +677,6 @@
                         el.style.animationPlayState = 'running';
                     });
                     
-                    // REMOVED: No longer adding fluid-transition to the main layout cards.
                     document.documentElement.style.scrollBehavior = 'smooth';
                 });
             });
