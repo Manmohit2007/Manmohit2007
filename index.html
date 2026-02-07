@@ -197,12 +197,13 @@
         }
     </style>
 </head>
-<body class="p-4 md:p-8" onload="initApp()" ontouchstart="">
+<body class="p-4 md:p-8" ontouchstart="">
     <div id="fixed-background"></div>
     <div class="max-w-4xl mx-auto">
         <!-- Optimized gap: Changed from mb-6 sm:mb-8 to mb-8 sm:mb-12 to match other cards -->
         <div class="mb-8 sm:mb-12">
-            <header id="app-header" class="glass-card fluid-transition px-3 py-3 sm:px-6 sm:py-5 flex flex-row items-center justify-between card-animation-target">
+            <!-- Removed 'fluid-transition' from initial class list to prevent load jitter -->
+            <header id="app-header" class="glass-card px-3 py-3 sm:px-6 sm:py-5 flex flex-row items-center justify-between card-animation-target">
                 <div class="flex items-center space-x-2 sm:space-x-4">
                     <!-- Brand Logo: Shifted right by 4pt (approx 5.3px) on mobile and desktop -->
                     <div class="w-[57px] h-[57px] sm:w-[84px] sm:h-[84px] flex-shrink-0 relative left-[5.3px] sm:left-[5.3px]">
@@ -222,7 +223,8 @@
             </header>
         </div>
         <main>
-            <div id="upload-card" class="glass-card fluid-transition p-6 rounded-[36px] mb-8 sm:mb-12 card-animation-target">
+            <!-- Removed 'fluid-transition' from initial class list to prevent load jitter -->
+            <div id="upload-card" class="glass-card p-6 rounded-[36px] mb-8 sm:mb-12 card-animation-target">
                 <div class="mb-4">
                     <!-- Adjusted text offset from -left-[6px] to -left-[2px] to reduce closeness -->
                     <h2 class="text-xl sm:text-3xl font-bold flex items-center gap-1 sm:gap-2 text-black">
@@ -236,7 +238,8 @@
         </main>
         <!-- Optimized gap: Changed from mt-8 to mt-8 sm:mt-12 to match the consistent gap strategy -->
         <div class="mt-8 sm:mt-12 w-full">
-            <div id="promo-card" class="glass-card fluid-transition px-2 pb-5 pt-0 sm:px-3 sm:pb-8 sm:pt-1 max-w-4xl mx-auto card-animation-target"> 
+            <!-- Removed 'fluid-transition' from initial class list to prevent load jitter -->
+            <div id="promo-card" class="glass-card px-2 pb-5 pt-0 sm:px-3 sm:pb-8 sm:pt-1 max-w-4xl mx-auto card-animation-target"> 
                 <div class="px-1 pb-1">
                     <div class="flex flex-col items-center">
                         <div class="w-72 sm:w-96 mb-0 -mt-5 sm:-mt-8">
@@ -497,9 +500,10 @@
                     p.classList.add('text-fade-out');
 
                     setTimeout(() => {
-                        // 2. Show "Copied" with Fade In - ADDED sm:text-lg
+                        // 2. Show "Copied" with Fade In
+                        // CHANGED: Replaced sm:text-lg with text-base to make it larger on mobile and smaller on desktop relative to previous states
                         p.classList.remove('text-fade-out');
-                        p.innerHTML = `<span class="flex items-center justify-center gap-1 w-full fade-in-text sm:text-lg">${icon('Check', 'h-4 w-4')} Copied</span>`;
+                        p.innerHTML = `<span class="flex items-center justify-center gap-1 w-full fade-in-text text-base">${icon('Check', 'h-4 w-4')} Copied</span>`;
                         
                         setTimeout(() => { 
                             // 3. Fade Out "Copied"
@@ -646,7 +650,19 @@
         const initApp = () => { 
             preloadAssets(); // Start loading images immediately
             updateUI(); 
+
+            // FIX JITTER: Re-enable fluid transitions ONLY after entrance animations are complete
+            // This prevents the CSS transition from fighting the CSS animation during load
+            setTimeout(() => {
+                const animatedElements = document.querySelectorAll('.card-animation-target');
+                animatedElements.forEach(el => {
+                    el.classList.add('fluid-transition');
+                });
+            }, 1000); // 1s delay covers the 0.6s animation + delays
         };
+
+        // Switch to DOMContentLoaded for faster startup
+        document.addEventListener('DOMContentLoaded', initApp);
     </script>
 </body>
 </html>
