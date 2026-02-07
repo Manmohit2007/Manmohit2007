@@ -36,7 +36,6 @@
         }
 
         html {
-            /* Restored Premium YouTube Dark Grey */
             background-color: #0f0f0f;
             height: 100%;
             width: 100%;
@@ -49,7 +48,7 @@
             background-color: transparent; 
             min-height: 100vh;
             min-height: -webkit-fill-available;
-            color: #ffffff; /* White text for dark background context */
+            color: #ffffff;
             margin: 0;
             padding: 0;
             overscroll-behavior: none;
@@ -72,13 +71,9 @@
             top: 0; left: 0; right: 0; bottom: 0;
             width: 100vw; height: 100vh;
             z-index: -1; 
-            
-            /* Hidden initially, revealed via JS only when loaded */
             opacity: 0;
             transition: opacity 1s ease-out;
-
-            /* Dark mode overlay logic to make the wallpaper pop on dark bg */
-            background-image: linear-gradient(rgba(15, 15, 15, 0.02), rgba(15, 15, 15, 0.15)), url('background.png');
+            background-image: linear-gradient(rgba(15, 15, 15, 0.05), rgba(15, 15, 15, 0.2)), url('background.png');
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
@@ -110,24 +105,22 @@
         
         #app-header.card-animation-target { animation-delay: 0.1s; }
         #upload-card.card-animation-target { animation-delay: 0.2s; } 
+        #results-section .glass-card { animation: spiral-entry 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
         #promo-card.card-animation-target { animation-delay: 0.3s; }
 
-        /* Glass Card - Ultra Frosted & Blurry Style */
+        /* iOS 9 Glass Card Styling */
         .glass-card {
-            /* FIX 1: Reduced base opacity so it doesn't turn solid white */
-            background-color: rgba(255, 255, 255, 0.06);
+            /* Milky translucent white */
+            background-color: rgba(255, 255, 255, 0.65);
             
-            /* FIX 2: Added Gradient Sheen for the "Milky" texture */
-            background-image: linear-gradient(145deg, rgba(255, 255, 255, 0.15) 0%, rgba(255, 255, 255, 0.02) 100%);
+            /* Authentic iOS 9 blur and saturation */
+            -webkit-backdrop-filter: blur(30px) saturate(190%);
+            backdrop-filter: blur(30px) saturate(190%); 
             
-            /* FIX 3: Strong blur that preserves background colors */
-            -webkit-backdrop-filter: blur(40px) saturate(160%);
-            backdrop-filter: blur(40px) saturate(160%); 
+            /* Clean, soft depth */
+            box-shadow: 0 4px 24px 0 rgba(0, 0, 0, 0.12);
             
-            /* Clean, subtle shadow */
-            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.15);
-            
-            /* Sharper border for glass edge definition */
+            /* Subtle hair-line border for definition */
             border: 1px solid rgba(255, 255, 255, 0.25);
             
             border-radius: 36px;
@@ -135,9 +128,10 @@
             isolation: isolate; 
         }
 
-        /* --- CTA BUTTONS (Consistent Shadow Function) --- */
+        /* --- CTA BUTTONS --- */
         .cta-button {
-            background-color: rgba(255, 255, 255, 0.08);
+            /* Slightly darker/more prominent in iOS 9 style */
+            background-color: rgba(255, 255, 255, 0.2);
             color: #000000; 
             border: none;
             border-radius: 24px; 
@@ -146,39 +140,22 @@
             outline: none;
             -webkit-tap-highlight-color: transparent;
             
-            /* DEFAULT (Outwards): 
-               - Top: White Highlight (Inset)
-               - Bottom: Soft Drop Shadow (Outside) 
-            */
-            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.4), 0 2px 4px rgba(0, 0, 0, 0.1);
-            
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.4), 0 2px 4px rgba(0, 0, 0, 0.08);
             transition: background-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
         }
 
         .cta-button.active-manual {
-            /* ACTIVE (Inwards): 
-               - Top: Dark Inner Shadow (Inset)
-               - Bottom: White Highlight (Inset)
-            */
             transform: scale(0.95) translateY(1px) !important; 
-            
-            /* No darker background on press, just shadows shifting */
-            background-color: rgba(255, 255, 255, 0.08) !important; 
-            
-            /* The "Going Inside" Effect */
-            box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.15), inset 0 -1px 0 rgba(255, 255, 255, 0.35) !important;
-            
+            background-color: rgba(0, 0, 0, 0.05) !important; 
+            box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.1), inset 0 -1px 0 rgba(255, 255, 255, 0.3) !important;
             transition: transform 0.1s ease, box-shadow 0.1s ease;
         }
 
-        /* --- INSET PANELS (Consistent Shadow Function) --- */
+        /* --- INSET PANELS --- */
         .glass-inset-panel {
-            background-color: rgba(255, 255, 255, 0.08);
-            
-            /* DEFAULT (Outwards): Matches Button */
-            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.4), 0 2px 4px rgba(0, 0, 0, 0.1);
-            
-            border: none;
+            background-color: rgba(0, 0, 0, 0.04);
+            box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.06);
+            border: 1px solid rgba(0, 0, 0, 0.02);
             border-radius: 24px;
             transition: background-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
             -webkit-tap-highlight-color: transparent;
@@ -189,33 +166,18 @@
         }
 
         .glass-inset-panel.interactive.active-state {
-            /* ACTIVE (Inwards): Matches Button */
-            transform: scale(0.95) !important;
-            
-            /* No darkening on press */
-            background-color: rgba(255, 255, 255, 0.08);
-            
-            /* The "Going Inside" Effect */
-            box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.2), inset 0 -1px 0 rgba(255, 255, 255, 0.35) !important;
-            
+            transform: scale(0.96) !important;
+            background-color: rgba(0, 0, 0, 0.08);
+            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1) !important;
             transition: transform 0.1s ease, box-shadow 0.1s ease;
         }
 
-        #description-text-container.interactive.active-state {
-            transform: scale(0.98) !important; 
-        }
-
-        /* --- HOVER EFFECTS --- */
         @media (hover: hover) {
             .cta-button:hover {
-                transform: none;
-                /* Slight bright tint on hover for interactivity */
-                background-color: rgba(255, 255, 255, 0.12); 
+                background-color: rgba(255, 255, 255, 0.3); 
             }
-
             .glass-inset-panel.interactive:hover {
-                transform: none;
-                background-color: rgba(255, 255, 255, 0.12); 
+                background-color: rgba(0, 0, 0, 0.06); 
             }
         }
 
@@ -233,14 +195,6 @@
             transition: opacity 0.2s ease, transform 0.2s ease !important;
         }
 
-        .no-scrollbar::-webkit-scrollbar {
-            display: none;
-        }
-        .no-scrollbar {
-            -ms-overflow-style: none;
-            scrollbar-width: none;
-        }
-
         .header-icon { height: 3.8rem; width: 3.8rem; object-fit: contain; } 
         .share-icon { height: 3.2rem; width: 3.2rem; object-fit: contain; } 
         .shorts-icon { height: 3.5rem; width: 3.5rem; object-fit: contain; } 
@@ -253,10 +207,8 @@
     </style>
 </head>
 <body class="p-4 md:p-8" ontouchstart="">
-    <!-- Background Layer (Opacity controlled by JS) -->
     <div id="fixed-background"></div>
     
-    <!-- Content Wrapper (Opacity controlled by JS) -->
     <div id="content-wrapper">
         <div class="max-w-4xl mx-auto">
             <div class="mb-8 sm:mb-12">
@@ -296,7 +248,7 @@
                                 <img src="https://manmohit2007.github.io/Manmohit2007/banner.png" alt="Logo" class="w-full h-auto object-contain filter drop-shadow-md">
                             </div>
                             <h3 class="text-xl sm:text-3xl font-bold text-center text-black -mt-9 sm:-mt-10">Boost Your Reach Today</h3>
-                            <p class="text-black mt-1 text-center max-w-md text-xs sm:text-sm font-bold opacity-80 leading-tight">Join the community for exclusive growth insights.</p>
+                            <p class="text-black mt-1 text-center max-w-md text-xs sm:text-sm font-bold opacity-70 leading-tight">Join the community for exclusive growth insights.</p>
                             <div class="mt-4 sm:mt-6 flex flex-row w-full max-w-md sm:max-w-lg justify-center gap-[18px] sm:gap-[30.6px] px-2 sm:px-0">
                               <button class="cta-button flex-1 sm:flex-none sm:w-40 px-4 py-4 font-bold flex items-center justify-center text-lg sm:text-lg" onclick="handleExternalLink(this, 'https://www.youtube.com/@fanplusfollow')">
                                 Subscribe
@@ -471,14 +423,10 @@
             if (index === 3) {
                 const container = document.getElementById('description-text-container');
                 if (container) {
-                    // STABLE REVERT: Manually replacing content with a flex centered div
-                    // This avoids adding flex classes to the container itself which might collapse margins/padding differently.
-                    // We fill the existing container (which has padding) with a 100% height div.
                     const contentDiv = container.querySelector('div');
                     if (contentDiv) contentDiv.classList.add('text-fade-out');
 
                     setTimeout(() => {
-                        // Create a specific centered wrapper that takes up the full space available
                         container.innerHTML = `
                             <div class="h-full w-full flex items-center justify-center fade-in-text">
                                 <span class="flex items-center gap-1 font-bold text-black/80 sm:text-lg">
@@ -488,13 +436,9 @@
                         
                         setTimeout(() => { 
                             const wrapper = container.querySelector('div');
-                            if (wrapper) {
-                                wrapper.classList.remove('fade-in-text');
-                                wrapper.classList.add('text-fade-out');
-                            }
+                            if (wrapper) wrapper.classList.add('text-fade-out');
                             
                             setTimeout(() => {
-                                // Restore original content
                                 container.innerHTML = `<div class="whitespace-pre-wrap break-words text-xs sm:text-sm font-bold sm:font-medium text-black/90 fade-in-text text-left w-full font-sans leading-relaxed pointer-events-none">${description}</div>`;
                                 if (done) done(); 
                             }, 200); 
@@ -511,7 +455,6 @@
                     p.classList.add('text-fade-out');
 
                     setTimeout(() => {
-                        // Same stable strategy for titles
                         card.innerHTML = `
                             <div class="h-full w-full flex items-center justify-center fade-in-text">
                                 <span class="flex items-center gap-1 font-bold text-black/80 text-base">
@@ -521,13 +464,9 @@
                         
                         setTimeout(() => { 
                             const wrapper = card.querySelector('div');
-                            if (wrapper) {
-                                wrapper.classList.remove('fade-in-text');
-                                wrapper.classList.add('text-fade-out');
-                            }
+                            if (wrapper) wrapper.classList.add('text-fade-out');
 
                             setTimeout(() => {
-                                // Restore original p tag structure
                                 card.innerHTML = `<p class="text-sm sm:text-base font-bold text-black/90 fade-in-text text-center line-clamp-4">${originalText}</p>`;
                                 if (done) done(); 
                             }, 200);
@@ -588,7 +527,7 @@
             const grid = document.getElementById('titles-grid-container');
             if (!grid) return;
             grid.innerHTML = titles.map((title, index) => `
-                <div id="title-card-${index}" class="glass-inset-panel interactive p-4 flex flex-col justify-center h-32 sm:h-40" style="border-radius: 12px;" onclick="handleCopyClick(this, '${titlesFull[index].replace(/'/g, "\\'")}', ${index})">
+                <div id="title-card-${index}" class="glass-inset-panel interactive p-4 flex flex-col justify-center h-32 sm:h-40" onclick="handleCopyClick(this, '${titlesFull[index].replace(/'/g, "\\'")}', ${index})">
                     <p class="text-sm sm:text-base font-bold text-black/90 fade-in-text text-center line-clamp-4">${title}</p>
                 </div>`).join('');
         };
@@ -628,8 +567,6 @@
             renderResults(); 
         };
         
-        // --- ASSET PRELOADING ---
-        // We load assets manually to ensure everything is cached before revealing
         const loadAssets = async () => {
             const images = [
                 'background.png',
@@ -641,64 +578,38 @@
                 'https://manmohit2007.github.io/Manmohit2007/like.png',
                 'https://manmohit2007.github.io/Manmohit2007/shorts.png'
             ];
-            
-            // Create a promise for each image load with a fallback timeout
             const promises = images.map(src => {
                 return new Promise((resolve) => {
                     const img = new Image();
                     img.src = src;
                     img.onload = resolve;
-                    img.onerror = resolve; // Continue even if one fails
-                    
-                    // Individual timeout for each image
+                    img.onerror = resolve; 
                     setTimeout(resolve, 2000); 
                 });
             });
-
-            // Wait for all critical images to load
             await Promise.all(promises);
         };
 
         const revealInterface = () => {
             const bg = document.getElementById('fixed-background');
             const wrapper = document.getElementById('content-wrapper');
-            
-            // Prevent double reveal
             if (bg.style.opacity === '1') return;
-
             requestAnimationFrame(() => {
                 bg.style.opacity = '1';
                 wrapper.style.opacity = '1';
-                
-                const animatedElements = document.querySelectorAll('.card-animation-target');
-                animatedElements.forEach(el => {
-                    el.style.animationPlayState = 'running';
-                });
-                
-                document.documentElement.style.scrollBehavior = 'smooth';
+                document.querySelectorAll('.card-animation-target').forEach(el => el.style.animationPlayState = 'running');
             });
         }
 
         const initApp = async () => { 
             updateUI(); 
             window.scrollTo(0, 0);
-            
-            // Safety timeout: If assets take longer than 2.5s, show the app anyway
-            // This fixes the issue where the app gets "stuck" on background color
-            const safetyTimer = setTimeout(() => {
-                revealInterface();
-            }, 2500);
-
-            // Wait for assets (including background wallpaper) to load
+            const safetyTimer = setTimeout(revealInterface, 2500);
             await loadAssets();
-
-            // Clear the safety timer since assets loaded fine
             clearTimeout(safetyTimer);
-            
             revealInterface();
         };
 
-        // Switch to window.load to ensure Fonts and everything else is ready too
         window.addEventListener('load', initApp);
     </script>
 </body>
