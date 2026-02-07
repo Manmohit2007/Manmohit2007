@@ -114,19 +114,19 @@
 
         /* Glass Card - Ultra Frosted & Blurry Style */
         .glass-card {
-            /* Increased opacity slightly for that "opaque/milky" feel while keeping transparency */
-            background: linear-gradient(135deg, rgba(255, 255, 255, 0.4), rgba(255, 255, 255, 0.3));
+            /* MILKY IOS 9 STYLE: Higher opacity white */
+            background: rgba(255, 255, 255, 0.65);
             
-            /* High blur radius (150px) to turn the wallpaper into a smooth gradient */
-            /* High saturation (190%) to make the colors underneath pop through the blur */
-            -webkit-backdrop-filter: blur(150px) saturate(190%);
-            backdrop-filter: blur(150px) saturate(190%); 
+            /* Strong blur to create the gradient wash effect */
+            /* High saturation to mimic the vibrant iOS transparency */
+            -webkit-backdrop-filter: blur(60px) saturate(180%);
+            backdrop-filter: blur(60px) saturate(180%); 
             
             /* Clean, subtle shadow */
-            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.15);
+            box-shadow: 0 10px 40px -10px rgba(0, 0, 0, 0.15);
             
-            /* Precision border */
-            border: 1px solid rgba(255, 255, 255, 0.3);
+            /* Precision border - slightly more opaque to define the edges */
+            border: 1px solid rgba(255, 255, 255, 0.4);
             
             border-radius: 36px;
             transform: translate3d(0,0,0);
@@ -135,7 +135,8 @@
 
         /* --- CTA BUTTONS (Consistent Shadow Function) --- */
         .cta-button {
-            background-color: rgba(255, 255, 255, 0.05); /* Further reduced opacity */
+            /* Increased opacity slightly so they don't disappear into the milky card */
+            background-color: rgba(255, 255, 255, 0.15); 
             color: #000000; 
             border: none;
             border-radius: 24px; 
