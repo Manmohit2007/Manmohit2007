@@ -36,8 +36,8 @@
         }
 
         html {
-            /* Solid background color stays visible while images load */
-            background-color: #1f2937;
+            /* Premium YouTube Dark Grey */
+            background-color: #0f0f0f;
             height: 100%;
             width: 100%;
             overflow-x: hidden;
@@ -49,7 +49,7 @@
             background-color: transparent; 
             min-height: 100vh;
             min-height: -webkit-fill-available;
-            color: #000000;
+            color: #ffffff; /* Default text white for dark bg, but cards are light inside */
             margin: 0;
             padding: 0;
             overscroll-behavior: none;
@@ -60,7 +60,7 @@
         /* --- CONTENT WRAPPER --- */
         #content-wrapper {
             opacity: 0;
-            transition: opacity 0.6s ease-out; /* Slightly slower for elegance */
+            transition: opacity 0.8s ease-out;
             width: 100%;
             height: 100%;
             will-change: opacity; 
@@ -75,9 +75,10 @@
             
             /* Hidden initially, revealed via JS only when loaded */
             opacity: 0;
-            transition: opacity 0.6s ease-out;
+            transition: opacity 1s ease-out;
 
-            background-image: linear-gradient(rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.2)), url('background.png');
+            /* Darker overlay for premium feel */
+            background-image: linear-gradient(rgba(15, 15, 15, 0.4), rgba(15, 15, 15, 0.6)), url('background.png');
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
@@ -89,7 +90,7 @@
 
         @media (min-width: 768px) {
             #fixed-background {
-                background-image: linear-gradient(rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.2)), url('landscape.png');
+                background-image: linear-gradient(rgba(15, 15, 15, 0.3), rgba(15, 15, 15, 0.5)), url('landscape.png');
             }
         }
 
@@ -111,13 +112,16 @@
         #upload-card.card-animation-target { animation-delay: 0.2s; } 
         #promo-card.card-animation-target { animation-delay: 0.3s; }
 
-        /* Glass Card Base Style */
+        /* Glass Card - Milkier & More Translucent */
         .glass-card {
-            background-color: rgba(255, 255, 255, 0.11);
-            -webkit-backdrop-filter: blur(24px) saturate(110%);
-            backdrop-filter: blur(24px) saturate(110%); 
-            box-shadow: inset 0 0 40px rgba(255, 255, 255, 0.4), 0 25px 50px rgba(0, 0, 0, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.5);
+            /* Increased opacity for milkier look */
+            background-color: rgba(255, 255, 255, 0.14);
+            /* Stronger blur */
+            -webkit-backdrop-filter: blur(40px) saturate(140%);
+            backdrop-filter: blur(40px) saturate(140%); 
+            /* Subtle inner glow and shadow */
+            box-shadow: inset 0 0 40px rgba(255, 255, 255, 0.3), 0 25px 50px rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.4);
             border-radius: 36px;
             transform: translate3d(0,0,0);
             isolation: isolate; 
@@ -125,7 +129,7 @@
 
         /* --- CTA BUTTONS --- */
         .cta-button {
-            background-color: rgba(0, 0, 0, 0.03);
+            background-color: rgba(0, 0, 0, 0.05);
             box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.08), 0 1px 0 rgba(255, 255, 255, 0.2);
             color: #000000; 
             transition: background-color 0.2s ease, transform 0.2s ease;
@@ -138,18 +142,19 @@
         }
 
         .cta-button.active-manual {
-            transform: scale(0.92) translateY(2px) !important; 
+            /* Distinct press effect */
+            transform: scale(0.93) translateY(1px) !important; 
             background-color: rgba(0, 0, 0, 0.12) !important;
             box-shadow: inset 0 4px 10px rgba(0, 0, 0, 0.2);
-            transition: transform 0.05s ease;
+            transition: transform 0.1s ease;
         }
 
         .glass-inset-panel {
             background-color: rgba(0, 0, 0, 0.04);
-            box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.1), 0 1px 0 rgba(255, 255, 255, 0.2);
+            box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.06), 0 1px 0 rgba(255, 255, 255, 0.2);
             border-radius: 20px;
             border: none;
-            transition: background-color 0.15s ease, transform 0.2s ease;
+            transition: background-color 0.2s ease, transform 0.2s ease;
             -webkit-tap-highlight-color: transparent;
         }
 
@@ -157,16 +162,19 @@
             cursor: pointer;
         }
 
+        /* Unified Active State for Panels (File Button, Titles) */
         .glass-inset-panel.interactive.active-state {
-            transform: scale(0.96);
-            background-color: rgba(0, 0, 0, 0.1);
+            /* Matched scale to buttons for consistent feel */
+            transform: scale(0.93) !important;
+            background-color: rgba(0, 0, 0, 0.09);
+            transition: transform 0.1s ease;
         }
 
         #description-text-container.interactive.active-state {
-            transform: scale(0.98);
+            transform: scale(0.98) !important; /* Slightly less for large box */
         }
 
-        /* --- DESKTOP ZOOM TRANSITIONS (Strictly restricted to hover devices) --- */
+        /* --- DESKTOP ZOOM TRANSITIONS --- */
         @media (hover: hover) {
             .glass-card {
                 transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
@@ -181,7 +189,7 @@
             }
             .cta-button:hover {
                 transform: scale(1.05);
-                background-color: rgba(0, 0, 0, 0.06);
+                background-color: rgba(0, 0, 0, 0.08);
             }
 
             .glass-inset-panel.interactive {
@@ -189,6 +197,7 @@
             }
             .glass-inset-panel.interactive:hover {
                 transform: scale(1.02);
+                background-color: rgba(0, 0, 0, 0.06);
             }
         }
 
@@ -305,15 +314,17 @@
             if (isUIBusy) return; 
             isUIBusy = true;      
             
+            // Determine active class based on element type
             const activeClass = element.classList.contains('cta-button') ? 'active-manual' : 'active-state';
             element.classList.add(activeClass);
             
+            // Ensure animation plays fully before executing action
             setTimeout(() => {
                 element.classList.remove(activeClass);
                 setTimeout(() => {
                     action(() => { isUIBusy = false; }); 
                 }, 150); 
-            }, 100); 
+            }, 120); // Increased slightly to ensure visual registration
         };
 
         const handleExternalLink = (element, url) => {
@@ -470,7 +481,7 @@
                                 container.style.justifyContent = '';
                                 container.style.height = ''; 
                                 container.style.transition = ''; 
-                                container.innerHTML = `<div class="whitespace-pre-wrap break-words text-xs sm:text-sm font-bold text-black/90 fade-in-text text-left w-full font-sans leading-relaxed pointer-events-none">${description}</div>`;
+                                container.innerHTML = `<div class="whitespace-pre-wrap break-words text-xs sm:text-sm font-bold sm:font-medium text-black/90 fade-in-text text-left w-full font-sans leading-relaxed pointer-events-none">${description}</div>`;
                                 if (done) done(); 
                             }, 200); 
                         }, 800); 
@@ -522,7 +533,7 @@
                     <div id="file-drop-area" class="w-full h-full flex flex-col items-center justify-center text-center cursor-pointer pb-4">
                         <div class="mb-4">${icon('Upload', 'h-12 w-12')}</div>
                         <p class="text-lg sm:text-[21px] font-bold text-black">Upload Your Video File Here</p>
-                        <button class="cta-button mt-6 px-6 py-4 font-bold text-lg">Select File</button>
+                        <button class="cta-button mt-6 px-6 py-4 font-bold text-lg pointer-events-none">Select File</button>
                         <input type="file" id="file-upload-input" class="hidden" accept="video/*" onchange="handleFileChange(event)" onclick="event.stopPropagation()"/>
                     </div>`;
                 
@@ -541,7 +552,7 @@
                         <div class="w-full mb-6 flex justify-center px-1">
                             <div 
                                 class="glass-inset-panel inline-flex items-center justify-center px-4 py-3 sm:px-6 sm:py-4 max-w-full ${isProcessed ? 'interactive cursor-pointer' : ''}" 
-                                ${isProcessed ? 'onclick="handleResetClick(this)"' : ''}
+                                onclick="${isProcessed ? 'handleResetClick(this)' : ''}"
                             >
                                 <p class="font-bold text-black/80 truncate text-center gap-2 max-w-[60vw] sm:max-w-lg">
                                     ${currentFileName}
@@ -552,7 +563,7 @@
                             <div class="absolute right-full top-1/2 -translate-y-1/2 pr-2 flex items-center">
                                 ${!isProcessed ? icon('Loader', 'h-5 w-5') : icon('Check', 'h-5 w-5')}
                             </div>
-                            <span class="opacity-80 sm:text-lg">${isProcessed ? 'Analysis Complete' : 'Analyzing Video...'}</span>
+                            <span class="opacity-80 sm:text-lg text-black">${isProcessed ? 'Analysis Complete' : 'Analyzing Video...'}</span>
                         </div>
                     </div>`;
             }
@@ -572,7 +583,7 @@
             if (container) {
                 container.setAttribute('onclick', `handleCopyClick(this, descriptionFull, 3)`);
                 container.className = "glass-inset-panel p-4 interactive cursor-pointer h-[32rem] sm:h-[25rem] overflow-hidden";
-                container.innerHTML = `<div class="whitespace-pre-wrap break-words text-xs sm:text-sm font-bold text-black/90 fade-in-text text-left w-full font-sans leading-relaxed pointer-events-none">${description}</div>`;
+                container.innerHTML = `<div class="whitespace-pre-wrap break-words text-xs sm:text-sm font-bold sm:font-medium text-black/90 fade-in-text text-left w-full font-sans leading-relaxed pointer-events-none">${description}</div>`;
             }
         };
 
@@ -582,14 +593,14 @@
             container.innerHTML = `
                 <div class="glass-card p-4 sm:p-6 rounded-[36px] mb-8 sm:mb-12">
                     <div class="flex justify-between items-center mb-6 gap-2">
-                        <h2 class="text-xl sm:text-3xl font-bold flex items-center gap-1 sm:gap-2"><img src="https://manmohit2007.github.io/Manmohit2007/like.png" class="header-icon"> <span class="relative -left-[9px]">Titles</span></h2>
+                        <h2 class="text-xl sm:text-3xl font-bold flex items-center gap-1 sm:gap-2 text-black"><img src="https://manmohit2007.github.io/Manmohit2007/like.png" class="header-icon"> <span class="relative -left-[9px]">Titles</span></h2>
                         <button onclick="handleRegenerateTitlesClick(this)" class="cta-button text-xs sm:text-sm px-3 py-2 sm:px-4 sm:py-2 font-bold flex items-center shrink-0" style="border-radius: 14px;">${icon('RotateCcw', 'mr-1 sm:mr-2 h-3 w-3 sm:h-4 sm:w-4')} Regenerate</button>
                     </div>
                     <div id="titles-grid-container" class="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6"></div>
                 </div>
                 <div class="glass-card p-4 sm:p-6 rounded-[36px]">
                     <div class="flex justify-between items-center mb-4 gap-2">
-                        <h2 class="text-xl sm:text-3xl font-bold flex items-center gap-1 sm:gap-2"><img src="https://manmohit2007.github.io/Manmohit2007/shorts.png" class="shorts-icon"> <span class="relative -left-[3px]">Description</span></h2>
+                        <h2 class="text-xl sm:text-3xl font-bold flex items-center gap-1 sm:gap-2 text-black"><img src="https://manmohit2007.github.io/Manmohit2007/shorts.png" class="shorts-icon"> <span class="relative -left-[3px]">Description</span></h2>
                         <button onclick="handleRegenerateDescriptionClick(this)" class="cta-button text-xs sm:text-sm px-3 py-2 sm:px-4 sm:py-2 font-bold flex items-center shrink-0" style="border-radius: 14px;">${icon('RotateCcw', 'mr-1 sm:mr-2 h-3 w-3 sm:h-4 sm:w-4')} Regenerate</button>
                     </div>
                     <div id="description-text-container" class="glass-inset-panel p-4 interactive cursor-pointer h-[32rem] sm:h-[25rem] overflow-hidden"></div>
@@ -616,13 +627,16 @@
                 'https://manmohit2007.github.io/Manmohit2007/shorts.png'
             ];
             
-            // Create a promise for each image load
+            // Create a promise for each image load with a fallback timeout
             const promises = images.map(src => {
                 return new Promise((resolve) => {
                     const img = new Image();
                     img.src = src;
                     img.onload = resolve;
                     img.onerror = resolve; // Continue even if one fails
+                    
+                    // Individual timeout for each image
+                    setTimeout(resolve, 2000); 
                 });
             });
 
@@ -630,29 +644,43 @@
             await Promise.all(promises);
         };
 
+        const revealInterface = () => {
+            const bg = document.getElementById('fixed-background');
+            const wrapper = document.getElementById('content-wrapper');
+            
+            // Prevent double reveal
+            if (bg.style.opacity === '1') return;
+
+            requestAnimationFrame(() => {
+                bg.style.opacity = '1';
+                wrapper.style.opacity = '1';
+                
+                const animatedElements = document.querySelectorAll('.card-animation-target');
+                animatedElements.forEach(el => {
+                    el.style.animationPlayState = 'running';
+                });
+                
+                document.documentElement.style.scrollBehavior = 'smooth';
+            });
+        }
+
         const initApp = async () => { 
             updateUI(); 
-
             window.scrollTo(0, 0);
             
+            // Safety timeout: If assets take longer than 2.5s, show the app anyway
+            // This fixes the issue where the app gets "stuck" on background color
+            const safetyTimer = setTimeout(() => {
+                revealInterface();
+            }, 2500);
+
             // Wait for assets (including background wallpaper) to load
             await loadAssets();
 
-            // Once assets are ready, trigger the reveal
-            requestAnimationFrame(() => {
-                requestAnimationFrame(() => {
-                    // Reveal Background and Content simultaneously
-                    document.getElementById('fixed-background').style.opacity = '1';
-                    document.getElementById('content-wrapper').style.opacity = '1';
-                    
-                    const animatedElements = document.querySelectorAll('.card-animation-target');
-                    animatedElements.forEach(el => {
-                        el.style.animationPlayState = 'running';
-                    });
-                    
-                    document.documentElement.style.scrollBehavior = 'smooth';
-                });
-            });
+            // Clear the safety timer since assets loaded fine
+            clearTimeout(safetyTimer);
+            
+            revealInterface();
         };
 
         // Switch to window.load to ensure Fonts and everything else is ready too
