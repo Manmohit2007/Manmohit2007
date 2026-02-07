@@ -2,49 +2,52 @@
 <html lang="en">
 <head>
     <!-- ============================================== -->
-    <!-- FAVICON & BRANDING -->
+    <!-- PRE-FETCHING ALL ASSETS SIMULTANEOUSLY -->
     <!-- ============================================== -->
-    <link rel="icon" href="https://manmohit2007.github.io/Manmohit2007/brand_logo.png?v=10">
-    <link rel="icon" type="image/png" sizes="32x32" href="https://manmohit2007.github.io/Manmohit2007/brand_logo.png?v=10">
-    <link rel="icon" type="image/png" sizes="192x192" href="https://manmohit2007.github.io/Manmohit2007/brand_logo.png?v=10">
-    <link rel="apple-touch-icon" sizes="180x180" href="https://manmohit2007.github.io/Manmohit2007/brand_logo.png?v=10">
-    <link rel="shortcut icon" href="https://manmohit2007.github.io/Manmohit2007/brand_logo.png?v=10">
+    <link rel="preload" as="image" href="background.png" fetchpriority="high">
+    <link rel="preload" as="image" href="https://manmohit2007.github.io/Manmohit2007/brand_logo.png?v=10" fetchpriority="high">
+    <link rel="preload" as="image" href="https://manmohit2007.github.io/Manmohit2007/youtube.png" fetchpriority="high">
+    
+    <!-- PERFORMANCE HINTS -->
+    <link rel="preconnect" href="https://manmohit2007.github.io">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
-    <!-- Standard Meta Tags -->
+    <!-- FAVICON & BRANDING -->
+    <link rel="icon" href="https://manmohit2007.github.io/Manmohit2007/brand_logo.png?v=10">
+    <link rel="apple-touch-icon" sizes="180x180" href="https://manmohit2007.github.io/Manmohit2007/brand_logo.png?v=10">
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <meta name="color-scheme" content="only light">
     <title>FanPlusFollow</title>
-    <meta name="description" content="Tools for Content Creators. Boost your reach with advanced insights.">
-
+    
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap');
         
         :root { 
             font-family: 'Inter', sans-serif; 
-            box-sizing: border-box;
             color-scheme: only light;
             -webkit-tap-highlight-color: transparent;
         }
 
         html {
-            background-color: #1f2937; 
+            /* Changed to a light neutral that matches your glass cards */
+            background-color: #f3f4f6; 
             scroll-behavior: smooth;
             height: 100%;
             width: 100%;
             overflow-x: hidden;
-            overscroll-behavior: none;
         }
 
         body {
             background-color: transparent; 
             min-height: 100vh;
-            color: #000000;
             margin: 0;
             padding: 0;
-            overscroll-behavior: none;
             cursor: pointer;
+            text-rendering: optimizeLegibility;
         }
 
         /* --- STIFF STATIC BACKGROUND --- */
@@ -53,14 +56,13 @@
             top: 0; left: 0; right: 0; bottom: 0;
             width: 100vw; height: 100vh;
             z-index: -1; 
-            background-image: linear-gradient(rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.2)), url('background.png');
+            /* Added a subtle transition so images fade in smoothly */
+            transition: opacity 0.4s ease-in-out;
+            background: linear-gradient(rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.2)), url('background.png');
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
             pointer-events: none;
-            transform: translateZ(0);
-            backface-visibility: hidden;
-            will-change: transform;
         }
 
         @media (min-width: 768px) {
@@ -69,119 +71,51 @@
             }
         }
 
-        .fluid-transition {
-            transition: all 400ms cubic-bezier(0.25, 0.46, 0.45, 0.94);
-            will-change: transform, box-shadow, filter, background-color, color, opacity; 
-        }
-
-        /* Entry Animation */
+        /* Entry Animations */
         @keyframes spiral-entry {
-            0% { opacity: 0; transform: perspective(1000px) scale(0.95) translateY(20px); filter: blur(10px); }
-            100% { opacity: 1; transform: perspective(1000px) scale(1) translateY(0); filter: blur(0); }
+            0% { opacity: 0; transform: translateY(10px); }
+            100% { opacity: 1; transform: translateY(0); }
         }
         
         .card-animation-target {
-            animation: spiral-entry 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            animation: spiral-entry 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
             opacity: 0; 
         }
         
-        #app-header.card-animation-target { animation-delay: 0.1s; }
-        #upload-card.card-animation-target { animation-delay: 0.2s; } 
-        #promo-card.card-animation-target { animation-delay: 0.3s; }
+        #app-header.card-animation-target { animation-delay: 0.05s; }
+        #upload-card.card-animation-target { animation-delay: 0.1s; } 
+        #promo-card.card-animation-target { animation-delay: 0.15s; }
 
-        /* Glass Card Base Style */
         .glass-card {
-            background-color: rgba(255, 255, 255, 0.15);
-            -webkit-backdrop-filter: blur(24px) saturate(110%);
-            backdrop-filter: blur(24px) saturate(110%); 
+            background-color: rgba(255, 255, 255, 0.18);
+            -webkit-backdrop-filter: blur(20px) saturate(110%);
+            backdrop-filter: blur(20px) saturate(110%); 
             box-shadow: inset 0 0 40px rgba(255, 255, 255, 0.4), 0 25px 50px rgba(0, 0, 0, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.5);
+            border: 1px solid rgba(255, 255, 255, 0.6);
             border-radius: 36px;
-            transform: translateZ(0);
         }
 
-        /* --- CTA BUTTONS --- */
         .cta-button {
             background-color: rgba(0, 0, 0, 0.03);
             box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.08), 0 1px 0 rgba(255, 255, 255, 0.2);
             color: #000000; 
-            transition: transform 0.1s cubic-bezier(0.25, 0.46, 0.45, 0.94), background-color 0.2s ease;
+            transition: transform 0.1s ease, background-color 0.2s ease;
             border: none;
             border-radius: 24px; 
             user-select: none;
-            cursor: pointer;
-            outline: none;
-            -webkit-tap-highlight-color: transparent;
         }
 
-        @media (hover: hover) {
-            .cta-button:hover {
-                transform: translateY(-1px);
-                background-color: rgba(0, 0, 0, 0.05);
-            }
-        }
-        
-        /* Removed :active pseudo-class to prevent double animation conflict on iOS */
         .cta-button.active-manual {
-            transform: scale(0.92) translateY(2px) !important; 
-            background-color: rgba(0, 0, 0, 0.12) !important;
-            box-shadow: inset 0 4px 10px rgba(0, 0, 0, 0.2);
-            transition: transform 0.05s ease;
+            transform: scale(0.94) translateY(1px) !important; 
+            background-color: rgba(0, 0, 0, 0.1) !important;
         }
 
         .glass-inset-panel {
             background-color: rgba(0, 0, 0, 0.04);
-            box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.1), 0 1px 0 rgba(255, 255, 255, 0.2);
+            box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.08);
             border-radius: 20px;
-            border: none;
-            transition: all 0.15s ease;
-            -webkit-tap-highlight-color: transparent;
         }
 
-        .glass-inset-panel.interactive {
-            cursor: pointer;
-        }
-
-        /* Removed :active pseudo-class to prevent double animation conflict on iOS */
-        .glass-inset-panel.interactive.active-state {
-            transform: scale(0.96);
-            background-color: rgba(0, 0, 0, 0.1);
-        }
-
-        /* Re-introduced subtler animation for the large description box */
-        #description-text-container.interactive.active-state {
-            transform: scale(0.98);
-        }
-
-        .fade-in-text {
-            animation: fadeInText 0.4s cubic-bezier(0.4, 0, 0.2, 1) forwards;
-        }
-        @keyframes fadeInText {
-            from { opacity: 0; transform: translateY(4px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .text-fade-out {
-            opacity: 0 !important;
-            transform: translateY(-4px) !important;
-            transition: opacity 0.2s ease, transform 0.2s ease !important;
-        }
-
-        .copy-pulse {
-            transition: all 0.1s ease;
-        }
-
-        /* Hide scrollbar for Chrome, Safari and Opera */
-        .no-scrollbar::-webkit-scrollbar {
-            display: none;
-        }
-        /* Hide scrollbar for IE, Edge and Firefox */
-        .no-scrollbar {
-            -ms-overflow-style: none;  /* IE and Edge */
-            scrollbar-width: none;  /* Firefox */
-        }
-
-        /* Updated Icon Sizes for Small Screens */
         .header-icon { height: 3.8rem; width: 3.8rem; object-fit: contain; } 
         .share-icon { height: 3.2rem; width: 3.2rem; object-fit: contain; } 
         .shorts-icon { height: 3.5rem; width: 3.5rem; object-fit: contain; } 
@@ -193,24 +127,21 @@
         }
     </style>
 </head>
-<body class="p-4 md:p-8" onload="initApp()" ontouchstart="">
+<body class="p-4 md:p-8" onload="initApp()">
     <div id="fixed-background"></div>
+    
     <div class="max-w-4xl mx-auto">
-        <!-- Optimized gap: Changed from mb-6 sm:mb-8 to mb-8 sm:mb-12 to match other cards -->
         <div class="mb-8 sm:mb-12">
-            <header id="app-header" class="glass-card fluid-transition px-3 py-3 sm:px-6 sm:py-5 flex flex-row items-center justify-between card-animation-target">
+            <header id="app-header" class="glass-card px-3 py-3 sm:px-6 sm:py-5 flex flex-row items-center justify-between card-animation-target">
                 <div class="flex items-center space-x-2 sm:space-x-4">
-                    <!-- Brand Logo: Shifted right by 4pt (approx 5.3px) on mobile and desktop -->
-                    <div class="w-[57px] h-[57px] sm:w-[84px] sm:h-[84px] flex-shrink-0 relative left-[5.3px] sm:left-[5.3px]">
-                        <img src="https://manmohit2007.github.io/Manmohit2007/brand_logo.png?v=10" alt="Logo" class="w-full h-full object-contain filter drop-shadow-sm">
+                    <div class="w-[57px] h-[57px] sm:w-[84px] sm:h-[84px] flex-shrink-0 relative left-[5.3px]">
+                        <img src="https://manmohit2007.github.io/Manmohit2007/brand_logo.png?v=10" alt="Logo" fetchpriority="high" class="w-full h-full object-contain filter drop-shadow-sm">
                     </div>
-                    <!-- Increased left offset from 2.6px to 6px to create more space -->
                     <div class="text-left min-w-0 relative left-[6px] sm:left-[5.3px]">
                         <h1 class="text-xl sm:text-3xl font-bold text-black leading-tight truncate">FanPlusFollow</h1>
                     </div>
                 </div>
                 <div class="flex-shrink-0 ml-1">
-                    <!-- YouTube Logo: Shifted left by 4pt (5.3px) on mobile -->
                     <div class="w-[77px] h-[77px] sm:w-[121px] sm:h-[121px] relative right-[5.3px] sm:right-0">
                         <img src="https://manmohit2007.github.io/Manmohit2007/youtube.png" alt="YouTube" class="w-full h-full object-contain">
                     </div>
@@ -218,9 +149,8 @@
             </header>
         </div>
         <main>
-            <div id="upload-card" class="glass-card fluid-transition p-6 rounded-[36px] mb-8 sm:mb-12 card-animation-target">
+            <div id="upload-card" class="glass-card p-6 rounded-[36px] mb-8 sm:mb-12 card-animation-target">
                 <div class="mb-4">
-                    <!-- Adjusted text offset from -left-[6px] to -left-[2px] to reduce closeness -->
                     <h2 class="text-xl sm:text-3xl font-bold flex items-center gap-1 sm:gap-2 text-black">
                         <img src="https://manmohit2007.github.io/Manmohit2007/share.png" alt="Share" class="share-icon">
                         <span class="relative -top-[2px] -left-[2px]">Upload Video</span>
@@ -230,15 +160,13 @@
             </div>
             <div id="results-section"></div>
         </main>
-        <!-- Optimized gap: Changed from mt-8 to mt-8 sm:mt-12 to match the consistent gap strategy -->
         <div class="mt-8 sm:mt-12 w-full">
-            <div id="promo-card" class="glass-card fluid-transition px-2 pb-5 pt-0 sm:px-3 sm:pb-8 sm:pt-1 max-w-4xl mx-auto card-animation-target"> 
+            <div id="promo-card" class="glass-card px-2 pb-5 pt-0 sm:px-3 sm:pb-8 sm:pt-1 max-w-4xl mx-auto card-animation-target"> 
                 <div class="px-1 pb-1">
                     <div class="flex flex-col items-center">
                         <div class="w-72 sm:w-96 mb-0 -mt-5 sm:-mt-8">
-                            <img src="https://manmohit2007.github.io/Manmohit2007/banner.png" alt="Logo" class="w-full h-auto object-contain filter drop-shadow-md">
+                            <img src="https://manmohit2007.github.io/Manmohit2007/banner.png" alt="Logo" loading="lazy" class="w-full h-auto object-contain filter drop-shadow-md">
                         </div>
-                        <!-- Updated vertical negative margin to bring text closer to banner: -mt-9 sm:-mt-10 -->
                         <h3 class="text-xl sm:text-3xl font-bold text-center text-black -mt-9 sm:-mt-10">Boost Your Reach Today</h3>
                         <p class="text-black mt-1 text-center max-w-md text-xs sm:text-sm font-bold opacity-80 leading-tight">Join the community for exclusive growth insights.</p>
                         <div class="mt-4 sm:mt-6 flex flex-row w-full max-w-md sm:max-w-lg justify-center gap-[18px] sm:gap-[30.6px] px-2 sm:px-0">
@@ -257,10 +185,9 @@
 
     <script>
         let file = null;
-        let currentFileName = ""; 
         let isProcessing = false;
         let isProcessed = false;
-        let isUIBusy = false; // New global flag to prevent race conditions
+        let isUIBusy = false; 
         let titles = [];
         let description = "";
         let titlesFull = [];
@@ -271,35 +198,23 @@
         const YOUTUBE_CHANNEL_LINK = "https://www.youtube.com/@fanplusfollow";
         const INSTAGRAM_LINK = "https://www.instagram.com/_manmohit_singh_/";
 
-        // --- ANIMATION HELPER ---
         const animateAndExecute = (element, action) => {
-            if (isUIBusy) return; // Guard: Prevent interaction if busy
-            isUIBusy = true;      // Lock
-            
-            // Determine active class based on element type
+            if (isUIBusy) return;
+            isUIBusy = true;
             const activeClass = element.classList.contains('cta-button') ? 'active-manual' : 'active-state';
-            
-            // Step 1: Press In
             element.classList.add(activeClass);
-            
-            // Step 2: Wait briefly
             setTimeout(() => {
-                // Step 3: Release Out
                 element.classList.remove(activeClass);
-                
-                // Step 4: Wait for release animation
                 setTimeout(() => {
-                    // Step 5: Execute Action
-                    // Pass a "done" callback to unlock the UI
                     action(() => { isUIBusy = false; }); 
-                }, 150); 
-            }, 100); 
+                }, 100); 
+            }, 80); 
         };
 
         const handleExternalLink = (element, url) => {
             animateAndExecute(element, (done) => { 
                 window.open(url, '_blank');
-                done(); // Unlock immediately
+                done();
             });
         };
 
@@ -325,7 +240,6 @@
         const icon = (name, classes) => {
             const iconMap = {
                 'Upload': `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="${classes}"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" x2="12" y1="3" y2="15"/></svg>`,
-                'Copy': `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="${classes}"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>`,
                 'Check': `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="${classes}"><polyline points="20 6 9 17 4 12"/></svg>`,
                 'RotateCcw': `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="${classes}"><path d="M3 2v6h6"/><path d="M3 13a9 9 0 1 0 3-7.7L3 8"/></svg>`,
                 'Loader': `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="animate-spin ${classes}"><path d="M12 2v4"/><path d="M12 18v4"/><path d="M4.93 4.93l2.83 2.83"/><path d="M16.24 16.24l2.83 2.83"/><path d="M2 12h4"/><path d="M18 12h4"/><path d="M4.93 19.07l2.83-2.83"/><path d="M16.24 7.76l2.83-2.83"/></svg>`
@@ -337,7 +251,6 @@
             const selectedFile = event.target.files?.[0];
             if (selectedFile && selectedFile.type.startsWith("video/")) {
                 file = selectedFile;
-                currentFileName = file.name; 
                 processFile();
             }
         };
@@ -347,77 +260,43 @@
             setTimeout(() => {
                 generateViralContent(); 
                 isProcessing = false; isProcessed = true; updateUI(); 
-            }, 1800);
+            }, 800); 
         };
 
         const generateViralContent = () => { 
             if (!file) return;
-            const fullVideoName = currentFileName.replace(/\.[^/.]+$/, "");
+            const fullVideoName = file.name.replace(/\.[^/.]+$/, "");
             let displayVideoName = fullVideoName.length > 20 ? fullVideoName.substring(0, 20) + "..." : fullVideoName;
             const getTemplates = (vName) => ({
                 titles: [
                     [`🔥 ULTIMATE ${vName} Guide! #fanplusfollow`, `📈 ${vName}: How We Went VIRAL! #fanplusfollow`, `🤯 This ${vName} Hack is Insane! #fanplusfollow`],
-                    [`🚀 ${vName} HACK: More Views! #fanplusfollow`, `💡 One ${vName} Tip That Works... #fanplusfollow`, `🚫 Stop Making Bad ${vName} Videos! #fanplusfollow`],
-                    [`🤫 The ${vName} Secret Nobody Tells You... #fanplusfollow`, `⚠️ Don't Upload ${vName} Until You Watch This! #fanplusfollow`, `🚀 From 0 to 10k Views with ${vName} #fanplusfollow`],
-                    [`💎 ${vName} Masterclass: Pro Secrets Revealed #fanplusfollow`, `⚡ Fast Track Your Growth: ${vName} Explained #fanplusfollow`, `🧠 Psychology of ${vName}: Why It Works #fanplusfollow`],
-                    [`💥 Break the Algorithm with ${vName}! #fanplusfollow`, `🛑 The BIGGEST ${vName} Mistake Creators Make #fanplusfollow`, `✨ Perfect ${vName} Tutorial in 5 Minutes #fanplusfollow`]
+                    [`🚀 ${vName} HACK: More Views! #fanplusfollow`, `💡 One ${vName} Tip That Works... #fanplusfollow`, `🚫 Stop Making Bad ${vName} Videos! #fanplusfollow`]
                 ],
                 descriptions: [
-                    `🚀 Unlock the full potential of ${vName} with this comprehensive guide! Whether you're a beginner or a pro, these insights will help you skyrocket your engagement.\n\n📌 IN THIS VIDEO:\n0:00 - Intro\n1:45 - Why ${vName} Matters\n4:20 - Step-by-Step Strategy\n8:15 - Secret Hack Revealed\n10:30 - Final Thoughts\n\n💡 JOIN THE CREATOR COMMUNITY:\nSubscribe here: ${YOUTUBE_CHANNEL_LINK}\nFollow on IG: ${INSTAGRAM_LINK}\n\n👇 QUESTION OF THE DAY:\nWhat's your biggest challenge with ${vName}? Let me know in the comments!\n\n#${vName.replace(/\s+/g, '')} #ContentStrategy #GrowthTips #FanPlusFollow`,
-                    
-                    `😱 You won't believe how much ${vName} can change your channel! I tested this strategy for 30 days and the results were SHOCKING.\n\n🔥 WHAT TO EXPECT:\n- 🎥 Real results from this method\n- 📈 Actionable steps you can take today\n- 🤫 The secret to consistency\n\n✅ STAY CONNECTED:\n📸 Instagram: ${INSTAGRAM_LINK}\n📺 YouTube: ${YOUTUBE_CHANNEL_LINK}\n\n✨ If you enjoyed this video, please hit that LIKE button and SUBSCRIBE for more daily tips!\n\n#Viral #Trending #CreatorEconomy #${vName.replace(/\s+/g, '')}`,
-
-                    `⚡ Want to master ${vName} in record time? This video breaks down exactly what you need to know to get results FAST.\n\nWe cover:\n✅ The basics of ${vName}\n✅ Advanced tips for maximum reach\n✅ Common pitfalls to avoid\n\nDon't forget to LIKE and SUBSCRIBE if you found this helpful! It supports the channel and helps us bring you more value.\n\n🔗 Follow for daily updates:\nIG: ${INSTAGRAM_LINK}\nYT: ${YOUTUBE_CHANNEL_LINK}\n\n#${vName.replace(/\s+/g, '')} #QuickTips #SocialMediaGrowth #FanPlusFollow`,
-
-                    `🧠 Let's dive deep into the analytics behind ${vName}. Why does it work? How does the algorithm treat it? We're answering it all today.\n\n📊 KEY TAKEAWAYS:\n1. The "Hook" Strategy\n2. Retention Hacks\n3. Conversion Tactics\n\nJoin the #FanPlusFollow movement!\n👉 ${YOUTUBE_CHANNEL_LINK}\n👉 ${INSTAGRAM_LINK}\n\nComment "GROWTH" below if you watched until the end!\n\n#${vName.replace(/\s+/g, '')} #Analytics #YouTubeTips #InstagramTips`,
-
-                    `📖 I tried ${vName} so you don't have to... here is what happened. The journey was unexpected, but the lessons are invaluable for any creator trying to grow right now.\n\nTimestamps:\n0:00 - The Experiment\n3:10 - The Struggle\n6:45 - The Breakthrough\n9:00 - The Results\n\nIf you're serious about growth, you need to see this.\n\n🌟 Support the Channel:\nSubscribe: ${YOUTUBE_CHANNEL_LINK}\nFollow: ${INSTAGRAM_LINK}\n\n#${vName.replace(/\s+/g, '')} #CaseStudy #CreatorJourney #FanPlusFollow`
+                    `🚀 Master ${vName} with these simple hacks!\n\n💡 SUBSCRIBE:\n${YOUTUBE_CHANNEL_LINK}\n\n#${vName.replace(/\s+/g, '')} #FanPlusFollow`,
+                    `😱 ${vName} growth secrets revealed inside.\n\n✅ FOLLOW ME:\n${INSTAGRAM_LINK}\n\n#Viral #FanPlusFollow`
                 ]
             });
             const displayTemplates = getTemplates(displayVideoName);
             const fullTemplates = getTemplates(fullVideoName);
             titles = displayTemplates.titles[currentTitleSetIndex % displayTemplates.titles.length];
-            // FIX: Use displayTemplates (truncated name) for the displayed description text
             description = displayTemplates.descriptions[currentDescriptionIndex % displayTemplates.descriptions.length];
             titlesFull = fullTemplates.titles[currentTitleSetIndex % fullTemplates.titles.length];
             descriptionFull = fullTemplates.descriptions[currentDescriptionIndex % fullTemplates.descriptions.length];
         };
 
         const regenerateTitles = (done) => {
-            if (!file || isProcessing) {
-                if (done) done();
-                return;
-            }
-            const elements = document.querySelectorAll('#titles-grid-container .fade-in-text');
-            elements.forEach(el => el.classList.add('text-fade-out'));
-            setTimeout(() => {
-                currentTitleSetIndex++;
-                generateViralContent(); 
-                updateTitlesContent(); 
-                if (done) done();
-            }, 200);
+            currentTitleSetIndex++;
+            generateViralContent(); 
+            updateTitlesContent(); 
+            if (done) done();
         };
 
         const regenerateDescription = (done) => {
-            if (!file || isProcessing) {
-                if (done) done();
-                return;
-            }
-            const container = document.getElementById('description-text-container');
-            const textEl = container ? container.querySelector('.fade-in-text') : null;
-            if (textEl) textEl.classList.add('text-fade-out');
-            setTimeout(() => {
-                currentDescriptionIndex++;
-                generateViralContent(); 
-                updateDescriptionContent();
-                if (done) done();
-            }, 200);
-        };
-
-        // Keeping handleRegenerate for legacy or if needed, though now split
-        const handleRegenerate = () => {
-            currentTitleSetIndex++; currentDescriptionIndex++;
-            generateViralContent(); updateTitlesContent(); updateDescriptionContent();
+            currentDescriptionIndex++;
+            generateViralContent(); 
+            updateDescriptionContent();
+            if (done) done();
         };
 
         const copyToClipboard = (text, index, done) => {
@@ -429,141 +308,48 @@
             document.body.removeChild(tempElement);
 
             if (index === 3) {
-                // Description Box Copy Logic
                 const container = document.getElementById('description-text-container');
                 if (container) {
-                    // FIX: Temporarily disable transition to prevent iPad jitter during layout changes
-                    container.style.transition = 'none';
-
-                    // Lock height to prevent collapse during animation
-                    const currentHeight = container.offsetHeight;
-                    container.style.height = `${currentHeight}px`;
-
-                    const contentDiv = container.querySelector('div');
-                    
-                    // 1. Fade Out Original Text
-                    if (contentDiv) contentDiv.classList.add('text-fade-out');
-
-                    setTimeout(() => {
-                        // 2. Prepare Container for Centered "Copied" Message
-                        container.style.display = 'flex';
-                        container.style.flexDirection = 'column';
-                        container.style.justifyContent = 'center';
-                        
-                        // 3. Show "Copied" with Fade In
-                        container.innerHTML = `<span class="flex items-center justify-center gap-1 w-full font-bold text-black/80 fade-in-text">${icon('Check', 'h-5 w-5')} Copied</span>`;
-                        
-                        setTimeout(() => { 
-                            // 4. Fade Out "Copied"
-                            const span = container.querySelector('span');
-                            if (span) {
-                                span.classList.remove('fade-in-text');
-                                span.classList.add('text-fade-out');
-                            }
-                            
-                            setTimeout(() => {
-                                // 5. Restore Original Content
-                                container.style.display = '';
-                                container.style.flexDirection = '';
-                                container.style.justifyContent = '';
-                                container.style.height = ''; // Unlock height to allow natural resizing if content changes
-                                container.style.transition = ''; // Restore transitions
-                                
-                                // Re-render clean HTML
-                                container.innerHTML = `<div class="whitespace-pre-wrap break-words text-xs sm:text-sm font-bold text-black/90 fade-in-text text-left w-full font-sans leading-relaxed pointer-events-none">${description}</div>`;
-                                
-                                if (done) done(); // Unlock UI
-                            }, 200); // Wait for fade out
-                        }, 800); // Display duration
-                    }, 200); // Wait for original text fade out
-                } else {
-                    if (done) done();
+                    container.innerHTML = `<span class="flex items-center justify-center h-full font-bold text-black/80">Copied</span>`;
+                    setTimeout(() => { 
+                        updateDescriptionContent();
+                        if (done) done(); 
+                    }, 800);
                 }
             } else {
-                // Title Cards Logic
                 const card = document.getElementById(`title-card-${index}`);
                 const originalText = titles[index];
                 if (card) {
-                    // FIX: Temporarily disable transition on the card container
-                    card.style.transition = 'none';
-                    
                     const p = card.querySelector('p');
-                    
-                    // 1. Fade Out Original Text
-                    p.classList.add('text-fade-out');
-
-                    setTimeout(() => {
-                        // 2. Show "Copied" with Fade In
-                        p.classList.remove('text-fade-out');
-                        p.innerHTML = `<span class="flex items-center justify-center gap-1 w-full fade-in-text">${icon('Check', 'h-4 w-4')} Copied</span>`;
-                        
-                        setTimeout(() => { 
-                            // 3. Fade Out "Copied"
-                            const span = p.querySelector('span');
-                            if (span) {
-                                span.classList.remove('fade-in-text');
-                                span.classList.add('text-fade-out');
-                            }
-
-                            setTimeout(() => {
-                                // 4. Restore Original Text
-                                p.textContent = originalText;
-                                p.classList.remove('text-fade-out');
-                                void p.offsetWidth; // Trigger reflow
-                                p.classList.add('fade-in-text');
-                                
-                                card.style.transition = ''; // Restore transitions
-                                
-                                if (done) done(); // Unlock UI
-                            }, 200);
-                        }, 800);
-                    }, 200);
-                } else {
-                    if (done) done();
+                    p.innerHTML = `<span class="flex items-center justify-center gap-1 w-full">Copied</span>`;
+                    setTimeout(() => { 
+                        p.textContent = originalText;
+                        if (done) done(); 
+                    }, 800);
                 }
             }
         };
 
-        const resetApp = () => { file = null; currentFileName = ""; isProcessing = false; isProcessed = false; updateUI(); };
+        const resetApp = () => { file = null; isProcessing = false; isProcessed = false; updateUI(); };
 
         const renderUploadSection = () => {
             const container = document.getElementById('upload-section-content');
             if (!file) {
                 container.innerHTML = `
-                    <div id="file-drop-area" class="w-full h-full flex flex-col items-center justify-center text-center cursor-pointer pb-4">
-                        <div class="mb-4">${icon('Upload', 'h-12 w-12')}</div>
-                        <p class="text-lg font-bold text-black">Upload Your Video File Here</p>
-                        <button class="cta-button mt-6 px-6 py-4 font-bold text-lg pointer-events-none">Select File</button>
-                        <input type="file" id="file-upload-input" class="hidden" accept="video/*" onchange="handleFileChange(event)" onclick="event.stopPropagation()"/>
+                    <div id="file-drop-area" class="w-full h-full flex flex-col items-center justify-center text-center cursor-pointer">
+                        <div class="mb-4"><svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" x2="12" y1="3" y2="15"/></svg></div>
+                        <p class="text-lg font-bold text-black">Upload Your Video</p>
+                        <button class="cta-button mt-6 px-6 py-4 font-bold text-lg">Select File</button>
+                        <input type="file" id="file-upload-input" class="hidden" accept="video/*" onchange="handleFileChange(event)"/>
                     </div>`;
-                
-                document.getElementById('file-drop-area').onclick = () => {
-                    const btn = document.querySelector('#file-drop-area .cta-button');
-                    if (btn) {
-                        animateAndExecute(btn, (done) => {
-                            document.getElementById('file-upload-input').click();
-                            done(); // Unlock immediately after opening file dialog
-                        });
-                    }
-                };
+                document.getElementById('file-drop-area').onclick = () => document.getElementById('file-upload-input').click();
             } else {
                 container.innerHTML = `
-                    <div class="flex flex-col items-center justify-center h-full w-full pt-4 sm:pt-10">
-                        <div class="w-full mb-6 flex justify-center px-1">
-                            <div 
-                                class="glass-inset-panel inline-flex items-center justify-center px-4 py-3 sm:px-6 sm:py-4 max-w-full ${isProcessed ? 'interactive cursor-pointer' : ''}" 
-                                ${isProcessed ? 'onclick="handleResetClick(this)"' : ''}
-                            >
-                                <p class="font-bold text-black/80 truncate text-center gap-2 max-w-[60vw] sm:max-w-lg">
-                                    ${currentFileName}
-                                </p>
-                            </div>
+                    <div class="flex flex-col items-center justify-center h-full w-full">
+                        <div class="glass-inset-panel inline-flex items-center justify-center px-4 py-3 mb-6 ${isProcessed ? 'cursor-pointer' : ''}" ${isProcessed ? 'onclick="handleResetClick(this)"' : ''}>
+                            <p class="font-bold text-black/80 truncate max-w-[60vw]">${file.name}</p>
                         </div>
-                        <!-- Updated alignment: Shifted right by 4pt (approx 5.3px) -->
-                        <div class="relative inline-flex items-center justify-center mb-2 font-bold left-[5.3px]">
-                            <div class="absolute right-full top-1/2 -translate-y-1/2 pr-2 flex items-center">
-                                ${!isProcessed ? icon('Loader', 'h-5 w-5') : icon('Check', 'h-5 w-5')}
-                            </div>
+                        <div class="flex items-center font-bold">
                             <span class="opacity-80">${isProcessed ? 'Analysis Complete' : 'Analyzing Video...'}</span>
                         </div>
                     </div>`;
@@ -572,21 +358,17 @@
 
         const updateTitlesContent = () => {
             const grid = document.getElementById('titles-grid-container');
-            if (!grid) return;
-            grid.innerHTML = titles.map((title, index) => `
-                <div id="title-card-${index}" class="glass-inset-panel interactive p-4 flex flex-col justify-center h-32 sm:h-40" onclick="handleCopyClick(this, '${titlesFull[index].replace(/'/g, "\\'")}', ${index})">
-                    <p class="text-sm sm:text-base font-bold text-black/90 fade-in-text text-center line-clamp-4">${title}</p>
+            if (grid) grid.innerHTML = titles.map((title, index) => `
+                <div id="title-card-${index}" class="glass-inset-panel p-4 flex flex-col justify-center h-32 sm:h-40 cursor-pointer" onclick="handleCopyClick(this, '${titlesFull[index].replace(/'/g, "\\'")}', ${index})">
+                    <p class="text-sm sm:text-base font-bold text-black/90 text-center line-clamp-4">${title}</p>
                 </div>`).join('');
         };
 
         const updateDescriptionContent = () => {
             const container = document.getElementById('description-text-container');
-            // Added interactive class and onclick handler here
             if (container) {
                 container.setAttribute('onclick', `handleCopyClick(this, descriptionFull, 3)`);
-                // Increased mobile height to h-[32rem], set desktop to sm:h-[25rem]
-                container.className = "glass-inset-panel p-4 interactive cursor-pointer h-[32rem] sm:h-[25rem] overflow-hidden";
-                container.innerHTML = `<div class="whitespace-pre-wrap break-words text-xs sm:text-sm font-bold text-black/90 fade-in-text text-left w-full font-sans leading-relaxed pointer-events-none">${description}</div>`;
+                container.innerHTML = `<div class="whitespace-pre-wrap text-xs sm:text-sm font-bold text-black/90 text-left w-full leading-relaxed">${description}</div>`;
             }
         };
 
@@ -594,22 +376,19 @@
             const container = document.getElementById('results-section');
             if (!isProcessed) { container.innerHTML = ''; return; }
             container.innerHTML = `
-                <div class="glass-card p-4 sm:p-6 rounded-[36px] mb-8 sm:mb-12">
-                    <div class="flex justify-between items-center mb-6 gap-2">
-                        <!-- Adjusted text offset from -left-[6px] to -left-[9px] to bring closer to Like PNG -->
-                        <h2 class="text-xl sm:text-3xl font-bold flex items-center gap-1 sm:gap-2"><img src="https://manmohit2007.github.io/Manmohit2007/like.png" class="header-icon"> <span class="relative -left-[9px]">Titles</span></h2>
-                        <button onclick="handleRegenerateTitlesClick(this)" class="cta-button text-xs sm:text-sm px-3 py-2 sm:px-4 sm:py-2 font-bold flex items-center shrink-0" style="border-radius: 14px;">${icon('RotateCcw', 'mr-1 sm:mr-2 h-3 w-3 sm:h-4 sm:w-4')} Regenerate</button>
+                <div class="glass-card p-4 sm:p-6 mb-8 sm:mb-12 card-animation-target">
+                    <div class="flex justify-between items-center mb-6">
+                        <h2 class="text-xl sm:text-3xl font-bold flex items-center gap-2"><img src="https://manmohit2007.github.io/Manmohit2007/like.png" class="header-icon"> Titles</h2>
+                        <button onclick="handleRegenerateTitlesClick(this)" class="cta-button text-xs px-3 py-2 font-bold" style="border-radius: 12px;">Regenerate</button>
                     </div>
-                    <div id="titles-grid-container" class="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6"></div>
+                    <div id="titles-grid-container" class="grid grid-cols-1 md:grid-cols-3 gap-4"></div>
                 </div>
-                <div class="glass-card p-4 sm:p-6 rounded-[36px]">
-                    <div class="flex justify-between items-center mb-4 gap-2">
-                        <!-- Adjusted text offset from -left-[6px] to -left-[3px] to add more space -->
-                        <h2 class="text-xl sm:text-3xl font-bold flex items-center gap-1 sm:gap-2"><img src="https://manmohit2007.github.io/Manmohit2007/shorts.png" class="shorts-icon"> <span class="relative -left-[3px]">Description</span></h2>
-                        <button onclick="handleRegenerateDescriptionClick(this)" class="cta-button text-xs sm:text-sm px-3 py-2 sm:px-4 sm:py-2 font-bold flex items-center shrink-0" style="border-radius: 14px;">${icon('RotateCcw', 'mr-1 sm:mr-2 h-3 w-3 sm:h-4 sm:w-4')} Regenerate</button>
+                <div class="glass-card p-4 sm:p-6 card-animation-target">
+                    <div class="flex justify-between items-center mb-4">
+                        <h2 class="text-xl sm:text-3xl font-bold flex items-center gap-2"><img src="https://manmohit2007.github.io/Manmohit2007/shorts.png" class="shorts-icon"> Description</h2>
+                        <button onclick="handleRegenerateDescriptionClick(this)" class="cta-button text-xs px-3 py-2 font-bold" style="border-radius: 12px;">Regenerate</button>
                     </div>
-                    <!-- Updated fixed height classes here as well: h-[32rem] sm:h-[25rem] -->
-                    <div id="description-text-container" class="glass-inset-panel p-4 interactive cursor-pointer h-[32rem] sm:h-[25rem] overflow-hidden"></div>
+                    <div id="description-text-container" class="glass-inset-panel p-4 cursor-pointer h-64 overflow-hidden"></div>
                 </div>`;
             updateTitlesContent(); updateDescriptionContent();
         };
