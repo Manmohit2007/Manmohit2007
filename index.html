@@ -36,12 +36,12 @@
         }
 
         html {
+            /* Solid background color stays visible while images load */
             background-color: #1f2937;
             height: 100%;
             width: 100%;
             overflow-x: hidden;
             overscroll-behavior: none;
-            /* Prevents layout shift when scrollbar appears */
             scrollbar-gutter: stable; 
         }
 
@@ -60,7 +60,7 @@
         /* --- CONTENT WRAPPER --- */
         #content-wrapper {
             opacity: 0;
-            transition: opacity 0.5s ease-out;
+            transition: opacity 0.6s ease-out; /* Slightly slower for elegance */
             width: 100%;
             height: 100%;
             will-change: opacity; 
@@ -73,9 +73,11 @@
             width: 100vw; height: 100vh;
             z-index: -1; 
             
-            /* MOBILE BACKGROUND */
+            /* Hidden initially, revealed via JS only when loaded */
+            opacity: 0;
+            transition: opacity 0.6s ease-out;
+
             background-image: linear-gradient(rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.2)), url('background.png');
-            
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
@@ -87,7 +89,6 @@
 
         @media (min-width: 768px) {
             #fixed-background {
-                /* DESKTOP BACKGROUND */
                 background-image: linear-gradient(rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.2)), url('landscape.png');
             }
         }
@@ -112,13 +113,13 @@
 
         /* Glass Card Base Style */
         .glass-card {
-            background-color: rgba(255, 255, 255, 0.15);
+            /* Increased Transparency: Changed from 0.15 to 0.08 */
+            background-color: rgba(255, 255, 255, 0.08);
             -webkit-backdrop-filter: blur(24px) saturate(110%);
             backdrop-filter: blur(24px) saturate(110%); 
             box-shadow: inset 0 0 40px rgba(255, 255, 255, 0.4), 0 25px 50px rgba(0, 0, 0, 0.05);
             border: 1px solid rgba(255, 255, 255, 0.5);
             border-radius: 36px;
-            /* Base transform for stability */
             transform: translate3d(0,0,0);
             isolation: isolate; 
         }
@@ -128,8 +129,7 @@
             background-color: rgba(0, 0, 0, 0.03);
             box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.08), 0 1px 0 rgba(255, 255, 255, 0.2);
             color: #000000; 
-            /* Base transition for background, transform handled by apple-tilt class on desktop */
-            transition: background-color 0.2s ease;
+            transition: background-color 0.2s ease, transform 0.2s ease;
             border: none;
             border-radius: 24px; 
             user-select: none;
@@ -138,12 +138,6 @@
             -webkit-tap-highlight-color: transparent;
         }
 
-        @media (hover: hover) {
-            .cta-button:hover {
-                background-color: rgba(0, 0, 0, 0.05);
-            }
-        }
-        
         .cta-button.active-manual {
             transform: scale(0.92) translateY(2px) !important; 
             background-color: rgba(0, 0, 0, 0.12) !important;
@@ -156,7 +150,7 @@
             box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.1), 0 1px 0 rgba(255, 255, 255, 0.2);
             border-radius: 20px;
             border: none;
-            transition: background-color 0.15s ease;
+            transition: background-color 0.15s ease, transform 0.2s ease;
             -webkit-tap-highlight-color: transparent;
         }
 
@@ -173,18 +167,29 @@
             transform: scale(0.98);
         }
 
-        /* --- APPLE TILT EFFECT STYLES --- */
+        /* --- DESKTOP ZOOM TRANSITIONS --- */
         @media (hover: hover) {
-            .apple-tilt {
-                /* Smooth return to center when mouse leaves */
-                transition: transform 0.6s cubic-bezier(0.23, 1, 0.32, 1);
-                transform-style: preserve-3d;
-                will-change: transform;
+            .glass-card {
+                transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
             }
-            
-            /* While moving cursor, instant update (no lag) */
-            .apple-tilt.is-tilting {
-                transition: transform 0.05s linear; 
+            .glass-card:hover {
+                transform: scale(1.015) translate3d(0,0,0);
+                z-index: 10;
+            }
+
+            .cta-button {
+                transition: transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94), background-color 0.2s ease;
+            }
+            .cta-button:hover {
+                transform: scale(1.05);
+                background-color: rgba(0, 0, 0, 0.06);
+            }
+
+            .glass-inset-panel.interactive {
+                transition: transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94), background-color 0.15s ease;
+            }
+            .glass-inset-panel.interactive:hover {
+                transform: scale(1.02);
             }
         }
 
@@ -210,7 +215,6 @@
             scrollbar-width: none;
         }
 
-        /* Updated Icon Sizes */
         .header-icon { height: 3.8rem; width: 3.8rem; object-fit: contain; } 
         .share-icon { height: 3.2rem; width: 3.2rem; object-fit: contain; } 
         .shorts-icon { height: 3.5rem; width: 3.5rem; object-fit: contain; } 
@@ -223,10 +227,10 @@
     </style>
 </head>
 <body class="p-4 md:p-8" ontouchstart="">
-    <!-- Background is OUTSIDE the opacity transition wrapper so it shows instantly -->
+    <!-- Background Layer (Opacity controlled by JS) -->
     <div id="fixed-background"></div>
     
-    <!-- Content Wrapper: This is what fades in, ensuring background is stable -->
+    <!-- Content Wrapper (Opacity controlled by JS) -->
     <div id="content-wrapper">
         <div class="max-w-4xl mx-auto">
             <div class="mb-8 sm:mb-12">
@@ -594,57 +598,15 @@
             updateTitlesContent(); updateDescriptionContent();
         };
 
-        const initTiltEffect = () => {
-            // Only enable on devices that support hover (trackpads/mice)
-            if (!window.matchMedia('(hover: hover)').matches) return;
-
-            // Select all interactive cards/buttons
-            const elements = document.querySelectorAll('.glass-card, .cta-button, .glass-inset-panel.interactive');
-            
-            elements.forEach(el => {
-                // Prevent duplicate listeners
-                if (el.dataset.tiltInitialized) return;
-                el.dataset.tiltInitialized = "true";
-
-                el.classList.add('apple-tilt');
-
-                el.addEventListener('mousemove', (e) => {
-                    if (isUIBusy) return; // Don't tilt if busy animating clicks
-
-                    const rect = el.getBoundingClientRect();
-                    const x = e.clientX - rect.left;
-                    const y = e.clientY - rect.top;
-                    
-                    const centerX = rect.width / 2;
-                    const centerY = rect.height / 2;
-                    
-                    // Calculate rotation (subtle 3-4 degrees max)
-                    // Invert Y axis for natural 3D feel (mouse up = tilt up)
-                    const rotateX = ((y - centerY) / centerY) * -3; 
-                    const rotateY = ((x - centerX) / centerX) * 3;
-
-                    el.classList.add('is-tilting');
-                    // Add subtle scale to enhance 3D effect
-                    el.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.01, 1.01, 1.01)`;
-                });
-
-                el.addEventListener('mouseleave', () => {
-                    el.classList.remove('is-tilting');
-                    // Smoothly return to center
-                    el.style.transform = 'perspective(1000px) rotateX(0) rotateY(0) scale3d(1, 1, 1)';
-                });
-            });
-        };
-
         const updateUI = () => { 
             renderUploadSection(); 
             renderResults(); 
-            // Re-bind tilt effects to new elements
-            setTimeout(initTiltEffect, 50);
         };
         
-        const preloadAssets = () => {
-            const assets = [
+        // --- ASSET PRELOADING ---
+        // We load assets manually to ensure everything is cached before revealing
+        const loadAssets = async () => {
+            const images = [
                 'background.png',
                 'landscape.png',
                 'https://manmohit2007.github.io/Manmohit2007/brand_logo.png?v=10',
@@ -654,22 +616,34 @@
                 'https://manmohit2007.github.io/Manmohit2007/like.png',
                 'https://manmohit2007.github.io/Manmohit2007/shorts.png'
             ];
-            assets.forEach(src => {
-                const img = new Image();
-                img.src = src;
+            
+            // Create a promise for each image load
+            const promises = images.map(src => {
+                return new Promise((resolve) => {
+                    const img = new Image();
+                    img.src = src;
+                    img.onload = resolve;
+                    img.onerror = resolve; // Continue even if one fails
+                });
             });
+
+            // Wait for all critical images to load
+            await Promise.all(promises);
         };
 
-        const initApp = () => { 
-            preloadAssets(); 
+        const initApp = async () => { 
             updateUI(); 
 
             window.scrollTo(0, 0);
+            
+            // Wait for assets (including background wallpaper) to load
+            await loadAssets();
 
-            // CHANGED: We now fade in the content-wrapper, not the body
+            // Once assets are ready, trigger the reveal
             requestAnimationFrame(() => {
                 requestAnimationFrame(() => {
-                    // Reveal Content
+                    // Reveal Background and Content simultaneously
+                    document.getElementById('fixed-background').style.opacity = '1';
                     document.getElementById('content-wrapper').style.opacity = '1';
                     
                     const animatedElements = document.querySelectorAll('.card-animation-target');
@@ -682,7 +656,8 @@
             });
         };
 
-        document.addEventListener('DOMContentLoaded', initApp);
+        // Switch to window.load to ensure Fonts and everything else is ready too
+        window.addEventListener('load', initApp);
     </script>
 </body>
 </html>
