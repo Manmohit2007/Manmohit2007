@@ -10,6 +10,10 @@
     <link rel="apple-touch-icon" sizes="180x180" href="https://manmohit2007.github.io/Manmohit2007/brand_logo.png?v=10">
     <link rel="shortcut icon" href="https://manmohit2007.github.io/Manmohit2007/brand_logo.png?v=10">
 
+    <!-- PRIORITY PRELOADING: Ensures Background Loads Instantly -->
+    <link rel="preload" as="image" href="background.png">
+    <link rel="preload" as="image" href="landscape.png">
+
     <!-- Standard Meta Tags -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
@@ -450,8 +454,8 @@
                         container.style.flexDirection = 'column';
                         container.style.justifyContent = 'center';
                         
-                        // 3. Show "Copied" with Fade In
-                        container.innerHTML = `<span class="flex items-center justify-center gap-1 w-full font-bold text-black/80 fade-in-text">${icon('Check', 'h-5 w-5')} Copied</span>`;
+                        // 3. Show "Copied" with Fade In - ADDED sm:text-lg
+                        container.innerHTML = `<span class="flex items-center justify-center gap-1 w-full font-bold text-black/80 fade-in-text sm:text-lg">${icon('Check', 'h-5 w-5')} Copied</span>`;
                         
                         setTimeout(() => { 
                             // 4. Fade Out "Copied"
@@ -493,9 +497,9 @@
                     p.classList.add('text-fade-out');
 
                     setTimeout(() => {
-                        // 2. Show "Copied" with Fade In
+                        // 2. Show "Copied" with Fade In - ADDED sm:text-lg
                         p.classList.remove('text-fade-out');
-                        p.innerHTML = `<span class="flex items-center justify-center gap-1 w-full fade-in-text">${icon('Check', 'h-4 w-4')} Copied</span>`;
+                        p.innerHTML = `<span class="flex items-center justify-center gap-1 w-full fade-in-text sm:text-lg">${icon('Check', 'h-4 w-4')} Copied</span>`;
                         
                         setTimeout(() => { 
                             // 3. Fade Out "Copied"
@@ -564,7 +568,8 @@
                             <div class="absolute right-full top-1/2 -translate-y-1/2 pr-2 flex items-center">
                                 ${!isProcessed ? icon('Loader', 'h-5 w-5') : icon('Check', 'h-5 w-5')}
                             </div>
-                            <span class="opacity-80">${isProcessed ? 'Analysis Complete' : 'Analyzing Video...'}</span>
+                            <!-- ADDED sm:text-lg -->
+                            <span class="opacity-80 sm:text-lg">${isProcessed ? 'Analysis Complete' : 'Analyzing Video...'}</span>
                         </div>
                     </div>`;
             }
@@ -615,7 +620,33 @@
         };
 
         const updateUI = () => { renderUploadSection(); renderResults(); };
-        const initApp = () => { updateUI(); };
+        
+        // --- PRELOADER ---
+        const preloadAssets = () => {
+            const assets = [
+                // Backgrounds
+                'background.png',
+                'landscape.png',
+                // Header & Branding
+                'https://manmohit2007.github.io/Manmohit2007/brand_logo.png?v=10',
+                'https://manmohit2007.github.io/Manmohit2007/youtube.png',
+                // UI Elements
+                'https://manmohit2007.github.io/Manmohit2007/share.png',
+                'https://manmohit2007.github.io/Manmohit2007/banner.png',
+                // Results Section (Preloaded for later)
+                'https://manmohit2007.github.io/Manmohit2007/like.png',
+                'https://manmohit2007.github.io/Manmohit2007/shorts.png'
+            ];
+            assets.forEach(src => {
+                const img = new Image();
+                img.src = src;
+            });
+        };
+
+        const initApp = () => { 
+            preloadAssets(); // Start loading images immediately
+            updateUI(); 
+        };
     </script>
 </body>
 </html>
