@@ -73,7 +73,7 @@
             z-index: -1; 
             opacity: 0;
             transition: opacity 1s ease-out;
-            background-image: linear-gradient(rgba(15, 15, 15, 0.05), rgba(15, 15, 15, 0.2)), url('background.png');
+            background-image: linear-gradient(rgba(0, 0, 0, 0.05), rgba(0, 0, 0, 0.1)), url('background.png');
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
@@ -85,7 +85,7 @@
 
         @media (min-width: 768px) {
             #fixed-background {
-                background-image: linear-gradient(rgba(15, 15, 15, 0.0), rgba(15, 15, 15, 0.1)), url('landscape.png');
+                background-image: linear-gradient(rgba(0, 0, 0, 0.0), rgba(0, 0, 0, 0.05)), url('landscape.png');
             }
         }
 
@@ -108,19 +108,19 @@
         #results-section .glass-card { animation: spiral-entry 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
         #promo-card.card-animation-target { animation-delay: 0.3s; }
 
-        /* iOS 9 Glass Card Styling */
+        /* REFINED iOS BLUR STYLE */
         .glass-card {
-            /* Milky translucent white */
-            background-color: rgba(255, 255, 255, 0.65);
+            /* Lower opacity for true glass look */
+            background-color: rgba(255, 255, 255, 0.35);
             
-            /* Authentic iOS 9 blur and saturation */
-            -webkit-backdrop-filter: blur(30px) saturate(190%);
-            backdrop-filter: blur(30px) saturate(190%); 
+            /* High blur + high saturation for vibrant bleed-through */
+            -webkit-backdrop-filter: blur(80px) saturate(220%);
+            backdrop-filter: blur(80px) saturate(220%); 
             
-            /* Clean, soft depth */
-            box-shadow: 0 4px 24px 0 rgba(0, 0, 0, 0.12);
+            /* Soft, expansive depth */
+            box-shadow: 0 10px 40px -5px rgba(0, 0, 0, 0.15);
             
-            /* Subtle hair-line border for definition */
+            /* Very subtle hair-line border */
             border: 1px solid rgba(255, 255, 255, 0.25);
             
             border-radius: 36px;
@@ -130,8 +130,7 @@
 
         /* --- CTA BUTTONS --- */
         .cta-button {
-            /* Slightly darker/more prominent in iOS 9 style */
-            background-color: rgba(255, 255, 255, 0.2);
+            background-color: rgba(255, 255, 255, 0.15);
             color: #000000; 
             border: none;
             border-radius: 24px; 
@@ -140,21 +139,21 @@
             outline: none;
             -webkit-tap-highlight-color: transparent;
             
-            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.4), 0 2px 4px rgba(0, 0, 0, 0.08);
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.3), 0 2px 5px rgba(0, 0, 0, 0.08);
             transition: background-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
         }
 
         .cta-button.active-manual {
             transform: scale(0.95) translateY(1px) !important; 
             background-color: rgba(0, 0, 0, 0.05) !important; 
-            box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.1), inset 0 -1px 0 rgba(255, 255, 255, 0.3) !important;
+            box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.12), inset 0 -1px 0 rgba(255, 255, 255, 0.2) !important;
             transition: transform 0.1s ease, box-shadow 0.1s ease;
         }
 
         /* --- INSET PANELS --- */
         .glass-inset-panel {
-            background-color: rgba(0, 0, 0, 0.04);
-            box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.06);
+            background-color: rgba(0, 0, 0, 0.05);
+            box-shadow: inset 0 1.5px 3px rgba(0, 0, 0, 0.08);
             border: 1px solid rgba(0, 0, 0, 0.02);
             border-radius: 24px;
             transition: background-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
@@ -167,8 +166,8 @@
 
         .glass-inset-panel.interactive.active-state {
             transform: scale(0.96) !important;
-            background-color: rgba(0, 0, 0, 0.08);
-            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1) !important;
+            background-color: rgba(0, 0, 0, 0.1);
+            box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.15) !important;
             transition: transform 0.1s ease, box-shadow 0.1s ease;
         }
 
@@ -177,7 +176,7 @@
                 background-color: rgba(255, 255, 255, 0.3); 
             }
             .glass-inset-panel.interactive:hover {
-                background-color: rgba(0, 0, 0, 0.06); 
+                background-color: rgba(0, 0, 0, 0.08); 
             }
         }
 
@@ -515,9 +514,9 @@
                         </div>
                         <div class="relative inline-flex items-center justify-center mb-2 font-bold left-[5.3px]">
                             <div class="absolute right-full top-1/2 -translate-y-1/2 pr-2 flex items-center">
-                                ${!isProcessed ? icon('Loader', 'h-5 w-5') : icon('Check', 'h-5 w-5')}
+                                ${!isProcessing ? icon('Loader', 'h-5 w-5') : icon('Check', 'h-5 w-5')}
                             </div>
-                            <span class="opacity-80 sm:text-lg text-black">${isProcessed ? 'Analysis Complete' : 'Analyzing Video...'}</span>
+                            <span class="opacity-80 sm:text-lg text-black">${isProcessed ? 'Analysis Complete' : (isProcessing ? 'Analyzing Video...' : '')}</span>
                         </div>
                     </div>`;
             }
