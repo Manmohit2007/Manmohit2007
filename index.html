@@ -114,19 +114,21 @@
 
         /* Glass Card - Ultra Frosted & Blurry Style */
         .glass-card {
-            /* LOW OPACITY: Removes the "white box" look, keeping it transparent */
-            background: rgba(255, 255, 255, 0.05);
+            /* MILKY GLASS: Semi-transparent white gradient to mimic the reference */
+            background: linear-gradient(180deg, rgba(255, 255, 255, 0.4) 0%, rgba(255, 255, 255, 0.2) 100%);
             
-            /* HEAVY BLUR: This transforms the wallpaper into a smooth gradient */
-            /* We use a high blur radius (50px) to smudge the details completely */
-            -webkit-backdrop-filter: blur(50px) saturate(150%);
-            backdrop-filter: blur(50px) saturate(150%); 
+            /* HEAVY BLUR & SATURATION: 
+               - blur(50px): Smooths the background completely.
+               - saturate(200%): Keeps the colors vibrant despite the white overlay.
+            */
+            -webkit-backdrop-filter: blur(50px) saturate(200%);
+            backdrop-filter: blur(50px) saturate(200%); 
             
-            /* Clean, subtle shadow for depth */
-            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.2);
+            /* Clean shadow */
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.1);
             
-            /* Sharp, thin border to define the glass edges */
-            border: 1px solid rgba(255, 255, 255, 0.15);
+            /* Distinct white border to define the edge like the image */
+            border: 1px solid rgba(255, 255, 255, 0.5);
             
             border-radius: 36px;
             transform: translate3d(0,0,0);
@@ -135,10 +137,10 @@
 
         /* --- CTA BUTTONS (Consistent Shadow Function) --- */
         .cta-button {
-            /* Very transparent to blend with the new glass look */
-            background-color: rgba(255, 255, 255, 0.08); 
-            color: #ffffff; /* Switched to white text for better contrast on dark/colored glass */
-            border: none;
+            /* Slightly clearer/darker than the card to stand out */
+            background-color: rgba(255, 255, 255, 0.25); 
+            color: #000000; /* Black text for readability on milky background */
+            border: 1px solid rgba(255, 255, 255, 0.2);
             border-radius: 24px; 
             user-select: none;
             cursor: pointer;
@@ -146,24 +148,24 @@
             -webkit-tap-highlight-color: transparent;
             
             /* Sharper highlight */
-            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 2px 4px rgba(0, 0, 0, 0.1);
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.4), 0 2px 4px rgba(0, 0, 0, 0.05);
             
             transition: background-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
         }
 
         .cta-button.active-manual {
             transform: scale(0.95) translateY(1px) !important; 
-            background-color: rgba(255, 255, 255, 0.08) !important; 
-            box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.2), inset 0 -1px 0 rgba(255, 255, 255, 0.1) !important;
+            background-color: rgba(255, 255, 255, 0.25) !important; 
+            box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.1), inset 0 -1px 0 rgba(255, 255, 255, 0.3) !important;
             transition: transform 0.1s ease, box-shadow 0.1s ease;
         }
 
         /* --- INSET PANELS (Consistent Shadow Function) --- */
         .glass-inset-panel {
-            /* Almost invisible background to let the card's blur dominate */
-            background-color: rgba(0, 0, 0, 0.1); 
+            /* Subtle inset look */
+            background-color: rgba(255, 255, 255, 0.15); 
             
-            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.15), 0 2px 4px rgba(0, 0, 0, 0.05);
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.3), 0 2px 4px rgba(0, 0, 0, 0.05);
             
             border: none;
             border-radius: 20px;
@@ -177,8 +179,8 @@
 
         .glass-inset-panel.interactive.active-state {
             transform: scale(0.95) !important;
-            background-color: rgba(0, 0, 0, 0.1);
-            box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.2), inset 0 -1px 0 rgba(255, 255, 255, 0.1) !important;
+            background-color: rgba(255, 255, 255, 0.15);
+            box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.1), inset 0 -1px 0 rgba(255, 255, 255, 0.3) !important;
             transition: transform 0.1s ease, box-shadow 0.1s ease;
         }
 
@@ -190,12 +192,12 @@
         @media (hover: hover) {
             .cta-button:hover {
                 transform: none;
-                background-color: rgba(255, 255, 255, 0.12); 
+                background-color: rgba(255, 255, 255, 0.35); 
             }
 
             .glass-inset-panel.interactive:hover {
                 transform: none;
-                background-color: rgba(255, 255, 255, 0.05); 
+                background-color: rgba(255, 255, 255, 0.25); 
             }
         }
 
