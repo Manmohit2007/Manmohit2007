@@ -36,8 +36,10 @@
         }
 
         html {
-            background-color: #1f2937; 
-            scroll-behavior: smooth;
+            /* Changed to a neutral light gray to match the glass theme. 
+               Prevents dark flash if image takes 100ms to load */
+            background-color: #e5e7eb; 
+            scroll-behavior: auto; /* Changed from smooth to auto for initial load stability */
             height: 100%;
             width: 100%;
             overflow-x: hidden;
@@ -47,14 +49,16 @@
         body {
             background-color: transparent; 
             min-height: 100vh;
+            /* Mobile Viewport Fix */
+            min-height: -webkit-fill-available;
             color: #000000;
             margin: 0;
             padding: 0;
             overscroll-behavior: none;
             cursor: pointer;
-            /* Fix Jitter: Start invisible, fade in via JS */
+            /* Fix Jitter: Start invisible. Transition duration increased slightly for elegance */
             opacity: 0; 
-            transition: opacity 0.4s ease-out;
+            transition: opacity 0.5s ease-out;
         }
 
         /* --- STIFF STATIC BACKGROUND --- */
@@ -63,12 +67,16 @@
             top: 0; left: 0; right: 0; bottom: 0;
             width: 100vw; height: 100vh;
             z-index: -1; 
+            /* Fallback color if image fails or lags */
+            background-color: #d1d5db; 
             background-image: linear-gradient(rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.2)), url('background.png');
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
             pointer-events: none;
+            /* GPU Acceleration to prevent repaints */
             transform: translateZ(0);
+            -webkit-transform: translateZ(0);
             backface-visibility: hidden;
             will-change: transform;
         }
@@ -84,21 +92,26 @@
             will-change: transform, box-shadow, background-color, color, opacity; 
         }
 
-        /* Entry Animation - PERFORMANCE OPTIMIZATION: Removed blur filter */
+        /* Entry Animation - PERFORMANCE OPTIMIZATION */
         @keyframes spiral-entry {
-            0% { opacity: 0; transform: perspective(1000px) scale(0.95) translateY(20px); }
+            0% { opacity: 0; transform: perspective(1000px) scale(0.96) translateY(15px); }
             100% { opacity: 1; transform: perspective(1000px) scale(1) translateY(0); }
         }
         
         .card-animation-target {
-            animation: spiral-entry 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            /* Paused by default, played via JS to sync with body reveal */
+            animation: spiral-entry 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            animation-play-state: paused; 
             opacity: 0; 
-            will-change: transform, opacity; /* Hint browser to use GPU */
+            will-change: transform, opacity;
+            /* Hardware acceleration hint */
+            transform: translateZ(0); 
         }
         
-        #app-header.card-animation-target { animation-delay: 0.05s; }
-        #upload-card.card-animation-target { animation-delay: 0.15s; } 
-        #promo-card.card-animation-target { animation-delay: 0.25s; }
+        /* Delays relative to the moment animation starts playing */
+        #app-header.card-animation-target { animation-delay: 0.1s; }
+        #upload-card.card-animation-target { animation-delay: 0.2s; } 
+        #promo-card.card-animation-target { animation-delay: 0.3s; }
 
         /* Glass Card Base Style */
         .glass-card {
@@ -108,7 +121,8 @@
             box-shadow: inset 0 0 40px rgba(255, 255, 255, 0.4), 0 25px 50px rgba(0, 0, 0, 0.05);
             border: 1px solid rgba(255, 255, 255, 0.5);
             border-radius: 36px;
-            transform: translateZ(0);
+            /* Ensure layer promotion */
+            transform: translate3d(0,0,0);
         }
 
         /* --- CTA BUTTONS --- */
@@ -547,7 +561,8 @@
                 container.innerHTML = `
                     <div id="file-drop-area" class="w-full h-full flex flex-col items-center justify-center text-center cursor-pointer pb-4">
                         <div class="mb-4">${icon('Upload', 'h-12 w-12')}</div>
-                        <p class="text-lg font-bold text-black">Upload Your Video File Here</p>
+                        <!-- Updated text size: Base text-lg, Desktop sm:text-[21px] -->
+                        <p class="text-lg sm:text-[21px] font-bold text-black">Upload Your Video File Here</p>
                         <button class="cta-button mt-6 px-6 py-4 font-bold text-lg pointer-events-none">Select File</button>
                         <input type="file" id="file-upload-input" class="hidden" accept="video/*" onchange="handleFileChange(event)" onclick="event.stopPropagation()"/>
                     </div>`;
@@ -655,20 +670,38 @@
         };
 
         const initApp = () => { 
-            preloadAssets(); // Start loading images immediately
+            preloadAssets(); 
             updateUI(); 
 
-            // FIX JITTER: Reveal body smoothly after initial processing
-            document.body.style.opacity = '1';
+            // Scroll to top instantly to prevent browser restoration jitter
+            window.scrollTo(0, 0);
 
-            // FIX JITTER: Re-enable fluid transitions ONLY after entrance animations are complete
-            // This prevents the CSS transition from fighting the CSS animation during load
-            setTimeout(() => {
-                const animatedElements = document.querySelectorAll('.card-animation-target');
-                animatedElements.forEach(el => {
-                    el.classList.add('fluid-transition');
+            // Double RequestAnimationFrame: Ensures style calculation and layout are done 
+            // in the invisible state (opacity 0) BEFORE we trigger the transition.
+            // This is the "Secret Sauce" for removing the first-paint jitter.
+            requestAnimationFrame(() => {
+                requestAnimationFrame(() => {
+                    // 1. Reveal Body smoothly
+                    document.body.style.opacity = '1';
+                    
+                    // 2. Trigger Card Animations
+                    const animatedElements = document.querySelectorAll('.card-animation-target');
+                    animatedElements.forEach(el => {
+                        // Start the CSS animation
+                        el.style.animationPlayState = 'running';
+                    });
+
+                    // 3. Attach Fluid Transitions (only after entrance is largely done)
+                    // Increased delay slightly to 850ms to ensure zero conflict
+                    setTimeout(() => {
+                        animatedElements.forEach(el => {
+                            el.classList.add('fluid-transition');
+                        });
+                        // Re-enable smooth scroll for user interaction
+                        document.documentElement.style.scrollBehavior = 'smooth';
+                    }, 850); 
                 });
-            }, 800); // reduced slightly to match animation end
+            });
         };
 
         // Switch to DOMContentLoaded for faster startup
