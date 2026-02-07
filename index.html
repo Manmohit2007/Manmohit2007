@@ -36,8 +36,7 @@
         }
 
         html {
-            /* Deep gradient to provide rich backdrop for glass */
-            background: radial-gradient(circle at center, #2a2a2a 0%, #0f0f0f 100%);
+            /* Restored Premium YouTube Dark Grey */
             background-color: #0f0f0f;
             height: 100%;
             width: 100%;
@@ -50,7 +49,7 @@
             background-color: transparent; 
             min-height: 100vh;
             min-height: -webkit-fill-available;
-            color: #ffffff; 
+            color: #ffffff; /* White text for dark background context */
             margin: 0;
             padding: 0;
             overscroll-behavior: none;
@@ -78,8 +77,8 @@
             opacity: 0;
             transition: opacity 1s ease-out;
 
-            /* Lighter overlay to ensure glass stays bright */
-            background-image: linear-gradient(rgba(15, 15, 15, 0.0), rgba(15, 15, 15, 0.05)), url('background.png');
+            /* Dark mode overlay logic to make the wallpaper pop on dark bg */
+            background-image: linear-gradient(rgba(15, 15, 15, 0.02), rgba(15, 15, 15, 0.15)), url('background.png');
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
@@ -113,39 +112,29 @@
         #upload-card.card-animation-target { animation-delay: 0.2s; } 
         #promo-card.card-animation-target { animation-delay: 0.3s; }
 
-        /* ================================================================
-           THE "MILKY" GLASS FIX 
-           ================================================================
-        */
+        /* Glass Card - Modified to keep standard blurriness */
         .glass-card {
-            /* 1. HEAVY OPACITY: 
-                  Instead of 0.2 or 0.4, we use 0.65 (65%) opacity at the top.
-                  This forces the card to be WHITE, creating the "milk" effect
-                  even on a black background.
-            */
-            background: linear-gradient(135deg, rgba(255, 255, 255, 0.65) 0%, rgba(255, 255, 255, 0.25) 100%);
+            /* Increased white opacity for maximum frosted/milky look */
+            background-color: rgba(255, 255, 255, 0.35);
             
-            /* 2. STANDARD BLUR: Enough to diffuse, but the opacity does the heavy lifting */
-            -webkit-backdrop-filter: blur(40px) saturate(140%);
-            backdrop-filter: blur(40px) saturate(140%); 
+            /* Modified: Kept blur at 24px instead of 200px */
+            -webkit-backdrop-filter: blur(24px) saturate(180%);
+            backdrop-filter: blur(24px) saturate(180%); 
             
-            /* 3. REFLECTIVE EDGES: Bright white top/left borders simulate light source */
-            border-top: 1.5px solid rgba(255, 255, 255, 0.65);
-            border-left: 1.5px solid rgba(255, 255, 255, 0.65);
-            border-right: 1px solid rgba(255, 255, 255, 0.2);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
-            
-            /* 4. DEPTH SHADOW */
+            /* Clean, subtle shadow */
             box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.15);
+            
+            /* Precision border */
+            border: 1px solid rgba(255, 255, 255, 0.15);
             
             border-radius: 36px;
             transform: translate3d(0,0,0);
+            isolation: isolate; 
         }
 
-        /* --- CTA BUTTONS (Adapted to match lighter cards) --- */
+        /* --- CTA BUTTONS (Consistent Shadow Function) --- */
         .cta-button {
-            /* Slightly darker than the card to show contrast */
-            background-color: rgba(255, 255, 255, 0.4); 
+            background-color: rgba(255, 255, 255, 0.08);
             color: #000000; 
             border: none;
             border-radius: 24px; 
@@ -154,26 +143,39 @@
             outline: none;
             -webkit-tap-highlight-color: transparent;
             
-            /* Inner highlight */
-            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.6), 0 2px 5px rgba(0, 0, 0, 0.05);
+            /* DEFAULT (Outwards): 
+               - Top: White Highlight (Inset)
+               - Bottom: Soft Drop Shadow (Outside) 
+            */
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.4), 0 2px 4px rgba(0, 0, 0, 0.1);
+            
             transition: background-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
         }
 
         .cta-button.active-manual {
+            /* ACTIVE (Inwards): 
+               - Top: Dark Inner Shadow (Inset)
+               - Bottom: White Highlight (Inset)
+            */
             transform: scale(0.95) translateY(1px) !important; 
-            background-color: rgba(255, 255, 255, 0.4) !important; 
-            box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.1), inset 0 -1px 0 rgba(255, 255, 255, 0.5) !important;
+            
+            /* No darker background on press, just shadows shifting */
+            background-color: rgba(255, 255, 255, 0.08) !important; 
+            
+            /* The "Going Inside" Effect */
+            box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.15), inset 0 -1px 0 rgba(255, 255, 255, 0.35) !important;
+            
             transition: transform 0.1s ease, box-shadow 0.1s ease;
         }
 
-        /* --- INSET PANELS (Darker to look like cutouts) --- */
+        /* --- INSET PANELS (Consistent Shadow Function) --- */
         .glass-inset-panel {
-            /* Darker tint to contrast with the bright milky card */
-            background-color: rgba(0, 0, 0, 0.04);
+            background-color: rgba(0, 0, 0, 0.05);
             
-            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.5), 0 2px 4px rgba(0, 0, 0, 0.05);
+            /* DEFAULT (Outwards): Matches Button */
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.4), 0 2px 4px rgba(0, 0, 0, 0.1);
             
-            border: 1px solid rgba(255,255,255, 0.1);
+            border: none;
             border-radius: 20px;
             transition: background-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
             -webkit-tap-highlight-color: transparent;
@@ -184,9 +186,15 @@
         }
 
         .glass-inset-panel.interactive.active-state {
-            transform: scale(0.95) !important;
-            background-color: rgba(0, 0, 0, 0.06);
-            box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.15), inset 0 -1px 0 rgba(255, 255, 255, 0.4) !important;
+            /* ACTIVE (Inwards): Matches Button */
+            transform: scale(0.95) !important; 
+            
+            /* No darkening on press */
+            background-color: rgba(0, 0, 0, 0.05);
+            
+            /* The "Going Inside" Effect */
+            box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.2), inset 0 -1px 0 rgba(255, 255, 255, 0.35) !important;
+            
             transition: transform 0.1s ease, box-shadow 0.1s ease;
         }
 
@@ -198,12 +206,13 @@
         @media (hover: hover) {
             .cta-button:hover {
                 transform: none;
-                background-color: rgba(255, 255, 255, 0.55); 
+                /* Slight bright tint on hover for interactivity */
+                background-color: rgba(255, 255, 255, 0.12); 
             }
 
             .glass-inset-panel.interactive:hover {
                 transform: none;
-                background-color: rgba(0, 0, 0, 0.06); 
+                background-color: rgba(0, 0, 0, 0.05); 
             }
         }
 
@@ -665,7 +674,7 @@
                 
                 document.documentElement.style.scrollBehavior = 'smooth';
             });
-        }
+        };
 
         const initApp = async () => { 
             updateUI(); 
