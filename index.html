@@ -114,12 +114,13 @@
 
         /* Glass Card - Ultra Frosted & Blurry Style */
         .glass-card {
-            /* Increased white opacity for maximum frosted/milky look */
-            background-color: rgba(255, 255, 255, 0.35);
+            /* Balanced Opacity: Enough to be milky, transparent enough to show the blur */
+            background-color: rgba(255, 255, 255, 0.25);
             
-            /* EXTREME blur to strongly diffuse the wallpaper */
-            -webkit-backdrop-filter: blur(300px) saturate(180%);
-            backdrop-filter: blur(300px) saturate(180%); 
+            /* OPTIMIZED BLUR: 50px is the "heavy frosted" sweet spot. 
+               Anything over 100px turns the background into a single flat color. */
+            -webkit-backdrop-filter: blur(50px) saturate(180%);
+            backdrop-filter: blur(50px) saturate(180%); 
             
             /* Clean, subtle shadow */
             box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.15);
@@ -585,7 +586,7 @@
             const grid = document.getElementById('titles-grid-container');
             if (!grid) return;
             grid.innerHTML = titles.map((title, index) => `
-                <div id="title-card-${index}" class="glass-inset-panel interactive p-4 flex flex-col justify-center h-32 sm:h-40" onclick="handleCopyClick(this, '${titlesFull[index].replace(/'/g, "\\'")}', ${index})">
+                <div id="title-card-${index}" class="glass-inset-panel interactive p-4 flex flex-col justify-center h-32 sm:h-40" style="border-radius: 12px;" onclick="handleCopyClick(this, '${titlesFull[index].replace(/'/g, "\\'")}', ${index})">
                     <p class="text-sm sm:text-base font-bold text-black/90 fade-in-text text-center line-clamp-4">${title}</p>
                 </div>`).join('');
         };
