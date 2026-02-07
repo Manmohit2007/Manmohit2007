@@ -112,20 +112,20 @@
         #upload-card.card-animation-target { animation-delay: 0.2s; } 
         #promo-card.card-animation-target { animation-delay: 0.3s; }
 
-        /* Glass Card - iOS 9 Style Blur */
+        /* Glass Card - True Milky Blur */
         .glass-card {
-            /* Highly opaque white for that milky iOS 9 look */
-            background-color: rgba(255, 255, 255, 0.65);
+            /* Low opacity white allows background colors to bleed through */
+            background-color: rgba(255, 255, 255, 0.18);
             
-            /* Strong blur radius to lose background detail */
-            -webkit-backdrop-filter: blur(50px) saturate(180%);
-            backdrop-filter: blur(50px) saturate(180%); 
+            /* Heavy blur creates the "milky" abstraction of the background */
+            -webkit-backdrop-filter: blur(40px) saturate(180%);
+            backdrop-filter: blur(40px) saturate(180%); 
             
             /* Clean, subtle shadow */
             box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.15);
             
-            /* Precision border */
-            border: 1px solid rgba(255, 255, 255, 0.4);
+            /* Precision border - slightly more transparent to blend */
+            border: 1px solid rgba(255, 255, 255, 0.2);
             
             border-radius: 36px;
             transform: translate3d(0,0,0);
