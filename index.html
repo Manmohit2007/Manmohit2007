@@ -72,97 +72,120 @@
             width: 100vw; height: 100vh;
             z-index: -1; 
             opacity: 0;
-            transition: opacity 1.2s ease-in-out;
-            background-image: linear-gradient(rgba(0, 0, 0, 0.02), rgba(0, 0, 0, 0.08)), url('background.png');
+            transition: opacity 1s ease-out;
+            background-image: linear-gradient(rgba(15, 15, 15, 0.02), rgba(15, 15, 15, 0.15)), url('background.png');
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
             pointer-events: none;
             transform: translateZ(0); 
             -webkit-transform: translateZ(0);
+            backface-visibility: hidden;
         }
 
         @media (min-width: 768px) {
             #fixed-background {
-                background-image: linear-gradient(rgba(0, 0, 0, 0.0), rgba(0, 0, 0, 0.05)), url('landscape.png');
+                background-image: linear-gradient(rgba(15, 15, 15, 0.0), rgba(15, 15, 15, 0.1)), url('landscape.png');
             }
         }
 
         /* Entry Animation */
         @keyframes spiral-entry {
-            0% { opacity: 0; transform: perspective(1000px) scale(0.97) translateY(10px); }
+            0% { opacity: 0; transform: perspective(1000px) scale(0.96) translateY(15px); }
             100% { opacity: 1; transform: perspective(1000px) scale(1) translateY(0); }
         }
         
         .card-animation-target {
-            animation: spiral-entry 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            animation: spiral-entry 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards;
             animation-play-state: paused; 
             opacity: 0; 
             will-change: transform, opacity;
+            transform: translateZ(0); 
         }
         
-        #app-header.card-animation-target { animation-delay: 0.05s; }
-        #upload-card.card-animation-target { animation-delay: 0.15s; } 
-        #results-section .glass-card { animation: spiral-entry 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
-        #promo-card.card-animation-target { animation-delay: 0.25s; }
+        #app-header.card-animation-target { animation-delay: 0.1s; }
+        #upload-card.card-animation-target { animation-delay: 0.2s; } 
+        #promo-card.card-animation-target { animation-delay: 0.3s; }
 
-        /* --- EXTREME BLUR GLASS CARD (PRIORITY) --- */
+        /* Glass Card - Multi-layered Intensity */
         .glass-card {
-            /* Minimal white base to let colors through */
-            background-color: rgba(255, 255, 255, 0.12);
-            
-            /* Deep diffusion + High saturation + Slight Brightness lift */
-            -webkit-backdrop-filter: blur(65px) saturate(240%) brightness(1.05);
-            backdrop-filter: blur(65px) saturate(240%) brightness(1.05); 
-            
-            /* Broad, soft shadow to emphasize the "floating" glass */
-            box-shadow: 0 15px 45px -10px rgba(0, 0, 0, 0.18);
-            
-            /* Definition border */
-            border: 1px solid rgba(255, 255, 255, 0.22);
-            
-            border-radius: 40px;
+            position: relative;
+            overflow: hidden;
+            background-color: rgba(255, 255, 255, 0.45); /* Increased opacity for base layer */
+            -webkit-backdrop-filter: blur(100px) saturate(180%);
+            backdrop-filter: blur(100px) saturate(180%); 
+            box-shadow: 0 10px 40px 0 rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 36px;
             transform: translate3d(0,0,0);
             isolation: isolate; 
         }
 
+        /* The extra blur layer */
+        .glass-card::before {
+            content: "";
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background-color: rgba(255, 255, 255, 0.1);
+            -webkit-backdrop-filter: blur(120px);
+            backdrop-filter: blur(120px);
+            z-index: -1;
+            pointer-events: none;
+        }
+
         /* --- CTA BUTTONS --- */
         .cta-button {
-            background-color: rgba(255, 255, 255, 0.18);
+            background-color: rgba(255, 255, 255, 0.08);
             color: #000000; 
             border: none;
-            border-radius: 22px; 
+            border-radius: 24px; 
             user-select: none;
             cursor: pointer;
             outline: none;
-            -webkit-tap-highlight-color: transparent;
-            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.35), 0 2px 6px rgba(0, 0, 0, 0.06);
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.4), 0 2px 4px rgba(0, 0, 0, 0.1);
             transition: background-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
         }
 
         .cta-button.active-manual {
             transform: scale(0.95) translateY(1px) !important; 
-            background-color: rgba(0, 0, 0, 0.08) !important; 
-            box-shadow: inset 0 3px 10px rgba(0, 0, 0, 0.15), inset 0 -1px 0 rgba(255, 255, 255, 0.15) !important;
+            background-color: rgba(255, 255, 255, 0.08) !important; 
+            box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.15), inset 0 -1px 0 rgba(255, 255, 255, 0.35) !important;
+            transition: transform 0.1s ease, box-shadow 0.1s ease;
         }
 
         /* --- INSET PANELS --- */
         .glass-inset-panel {
-            background-color: rgba(0, 0, 0, 0.06);
-            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
-            border: 1px solid rgba(0, 0, 0, 0.01);
-            border-radius: 22px;
+            background-color: rgba(255, 255, 255, 0.08);
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.4), 0 2px 4px rgba(0, 0, 0, 0.1);
+            border: none;
+            border-radius: 24px;
             transition: background-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+            -webkit-tap-highlight-color: transparent;
         }
 
-        .glass-inset-panel.interactive:hover {
-            background-color: rgba(0, 0, 0, 0.09); 
+        .glass-inset-panel.interactive {
+            cursor: pointer;
         }
 
         .glass-inset-panel.interactive.active-state {
-            transform: scale(0.97) !important;
-            background-color: rgba(0, 0, 0, 0.12);
-            box-shadow: inset 0 3px 8px rgba(0, 0, 0, 0.2) !important;
+            transform: scale(0.95) !important;
+            background-color: rgba(255, 255, 255, 0.08);
+            box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.2), inset 0 -1px 0 rgba(255, 255, 255, 0.35) !important;
+            transition: transform 0.1s ease, box-shadow 0.1s ease;
+        }
+
+        #description-text-container.interactive.active-state {
+            transform: scale(0.98) !important; 
+        }
+
+        /* --- HOVER EFFECTS --- */
+        @media (hover: hover) {
+            .cta-button:hover {
+                background-color: rgba(255, 255, 255, 0.12); 
+            }
+            .glass-inset-panel.interactive:hover {
+                background-color: rgba(255, 255, 255, 0.12); 
+            }
         }
 
         .fade-in-text {
@@ -232,7 +255,7 @@
                                 <img src="https://manmohit2007.github.io/Manmohit2007/banner.png" alt="Logo" class="w-full h-auto object-contain filter drop-shadow-md">
                             </div>
                             <h3 class="text-xl sm:text-3xl font-bold text-center text-black -mt-9 sm:-mt-10">Boost Your Reach Today</h3>
-                            <p class="text-black mt-1 text-center max-w-md text-xs sm:text-sm font-bold opacity-70 leading-tight">Join the community for exclusive growth insights.</p>
+                            <p class="text-black mt-1 text-center max-w-md text-xs sm:text-sm font-bold opacity-80 leading-tight">Join the community for exclusive growth insights.</p>
                             <div class="mt-4 sm:mt-6 flex flex-row w-full max-w-md sm:max-w-lg justify-center gap-[18px] sm:gap-[30.6px] px-2 sm:px-0">
                               <button class="cta-button flex-1 sm:flex-none sm:w-40 px-4 py-4 font-bold flex items-center justify-center text-lg sm:text-lg" onclick="handleExternalLink(this, 'https://www.youtube.com/@fanplusfollow')">
                                 Subscribe
@@ -267,10 +290,8 @@
         const animateAndExecute = (element, action) => {
             if (isUIBusy) return; 
             isUIBusy = true;      
-            
             const activeClass = element.classList.contains('cta-button') ? 'active-manual' : 'active-state';
             element.classList.add(activeClass);
-            
             setTimeout(() => {
                 element.classList.remove(activeClass);
                 setTimeout(() => {
@@ -280,10 +301,7 @@
         };
 
         const handleExternalLink = (element, url) => {
-            animateAndExecute(element, (done) => { 
-                window.open(url, '_blank');
-                done(); 
-            });
+            animateAndExecute(element, (done) => { window.open(url, '_blank'); done(); });
         };
 
         const handleRegenerateTitlesClick = (element) => {
@@ -299,10 +317,7 @@
         };
 
         const handleResetClick = (element) => {
-            animateAndExecute(element, (done) => { 
-                resetApp(); 
-                done(); 
-            });
+            animateAndExecute(element, (done) => { resetApp(); done(); });
         };
 
         const icon = (name, classes) => {
@@ -341,20 +356,11 @@
                 titles: [
                     [`🔥 ULTIMATE ${vName} Guide! #fanplusfollow`, `📈 ${vName}: How We Went VIRAL! #fanplusfollow`, `🤯 This ${vName} Hack is Insane! #fanplusfollow`],
                     [`🚀 ${vName} HACK: More Views! #fanplusfollow`, `💡 One ${vName} Tip That Works... #fanplusfollow`, `🚫 Stop Making Bad ${vName} Videos! #fanplusfollow`],
-                    [`🤫 The ${vName} Secret Nobody Tells You... #fanplusfollow`, `⚠️ Don't Upload ${vName} Until You Watch This! #fanplusfollow`, `🚀 From 0 to 10k Views with ${vName} #fanplusfollow`],
-                    [`💎 ${vName} Masterclass: Pro Secrets Revealed #fanplusfollow`, `⚡ Fast Track Your Growth: ${vName} Explained #fanplusfollow`, `🧠 Psychology of ${vName}: Why It Works #fanplusfollow`],
-                    [`💥 Break the Algorithm with ${vName}! #fanplusfollow`, `🛑 The BIGGEST ${vName} Mistake Creators Make #fanplusfollow`, `✨ Perfect ${vName} Tutorial in 5 Minutes #fanplusfollow`]
+                    [`🤫 The ${vName} Secret Nobody Tells You... #fanplusfollow`, `⚠️ Don't Upload ${vName} Until You Watch This! #fanplusfollow`, `🚀 From 0 to 10k Views with ${vName} #fanplusfollow`]
                 ],
                 descriptions: [
-                    `🚀 Unlock the full potential of ${vName} with this comprehensive guide! Whether you're a beginner or a pro, these insights will help you skyrocket your engagement.\n\n📌 IN THIS VIDEO:\n0:00 - Intro\n1:45 - Why ${vName} Matters\n4:20 - Step-by-Step Strategy\n8:15 - Secret Hack Revealed\n10:30 - Final Thoughts\n\n💡 JOIN THE CREATOR COMMUNITY:\nSubscribe here: ${YOUTUBE_CHANNEL_LINK}\nFollow on IG: ${INSTAGRAM_LINK}\n\n👇 QUESTION OF THE DAY:\nWhat's your biggest challenge with ${vName}? Let me know in the comments!\n\n#${vName.replace(/\s+/g, '')} #ContentStrategy #GrowthTips #FanPlusFollow`,
-                    
-                    `😱 You won't believe how much ${vName} can change your channel! I tested this strategy for 30 days and the results were SHOCKING.\n\n🔥 WHAT TO EXPECT:\n- 🎥 Real results from this method\n- 📈 Actionable steps you can take today\n- 🤫 The secret to consistency\n\n✅ STAY CONNECTED:\n📸 Instagram: ${INSTAGRAM_LINK}\n📺 YouTube: ${YOUTUBE_CHANNEL_LINK}\n\n✨ If you enjoyed this video, please hit that LIKE button and SUBSCRIBE for more daily tips!\n\n#Viral #Trending #CreatorEconomy #${vName.replace(/\s+/g, '')}`,
-
-                    `⚡ Want to master ${vName} in record time? This video breaks down exactly what you need to know to get results FAST.\n\nWe cover:\n✅ The basics of ${vName}\n✅ Advanced tips for maximum reach\n✅ Common pitfalls to avoid\n\nDon't forget to LIKE and SUBSCRIBE if you found this helpful! It supports the channel and helps us bring you more value.\n\n🔗 Follow for daily updates:\nIG: ${INSTAGRAM_LINK}\nYT: ${YOUTUBE_CHANNEL_LINK}\n\n#${vName.replace(/\s+/g, '')} #QuickTips #SocialMediaGrowth #FanPlusFollow`,
-
-                    `🧠 Let's dive deep into the analytics behind ${vName}. Why does it work? How does the algorithm treat it? We're answering it all today.\n\n📊 KEY TAKEAWAYS:\n1. The "Hook" Strategy\n2. Retention Hacks\n3. Conversion Tactics\n\nJoin the #FanPlusFollow movement!\n👉 ${YOUTUBE_CHANNEL_LINK}\n👉 ${INSTAGRAM_LINK}\n\nComment "GROWTH" below if you watched until the end!\n\n#${vName.replace(/\s+/g, '')} #Analytics #YouTubeTips #InstagramTips`,
-
-                    `📖 I tried ${vName} so you don't have to... here is what happened. The journey was unexpected, but the lessons are invaluable for any creator trying to grow right now.\n\nTimestamps:\n0:00 - The Experiment\n3:10 - The Struggle\n6:45 - The Breakthrough\n9:00 - The Results\n\nIf you're serious about growth, you need to see this.\n\n🌟 Support the Channel:\nSubscribe: ${YOUTUBE_CHANNEL_LINK}\nFollow: ${INSTAGRAM_LINK}\n\n#${vName.replace(/\s+/g, '')} #CaseStudy #CreatorJourney #FanPlusFollow`
+                    `🚀 Unlock the full potential of ${vName} with this comprehensive guide! Whether you're a beginner or a pro, these insights will help you skyrocket your engagement.\n\n💡 JOIN THE CREATOR COMMUNITY:\nSubscribe here: ${YOUTUBE_CHANNEL_LINK}\nFollow on IG: ${INSTAGRAM_LINK}\n\n#${vName.replace(/\s+/g, '')} #ContentStrategy #GrowthTips #FanPlusFollow`,
+                    `😱 You won't believe how much ${vName} can change your channel! I tested this strategy for 30 days and the results were SHOCKING.\n\n✅ STAY CONNECTED:\n📸 Instagram: ${INSTAGRAM_LINK}\n📺 YouTube: ${YOUTUBE_CHANNEL_LINK}\n\n#Viral #Trending #CreatorEconomy #${vName.replace(/\s+/g, '')}`
                 ]
             });
             const displayTemplates = getTemplates(displayVideoName);
@@ -367,24 +373,20 @@
 
         const regenerateTitles = (done) => {
             if (!file || isProcessing) { if (done) done(); return; }
-            document.querySelectorAll('#titles-grid-container .fade-in-text').forEach(el => el.classList.add('text-fade-out'));
+            const elements = document.querySelectorAll('#titles-grid-container .fade-in-text');
+            elements.forEach(el => el.classList.add('text-fade-out'));
             setTimeout(() => {
-                currentTitleSetIndex++;
-                generateViralContent(); 
-                updateTitlesContent(); 
-                if (done) done();
+                currentTitleSetIndex++; generateViralContent(); updateTitlesContent(); if (done) done();
             }, 200);
         };
 
         const regenerateDescription = (done) => {
             if (!file || isProcessing) { if (done) done(); return; }
-            const textEl = document.querySelector('#description-text-container .fade-in-text');
+            const container = document.getElementById('description-text-container');
+            const textEl = container ? container.querySelector('.fade-in-text') : null;
             if (textEl) textEl.classList.add('text-fade-out');
             setTimeout(() => {
-                currentDescriptionIndex++;
-                generateViralContent(); 
-                updateDescriptionContent();
-                if (done) done();
+                currentDescriptionIndex++; generateViralContent(); updateDescriptionContent(); if (done) done();
             }, 200);
         };
 
@@ -395,47 +397,41 @@
             tempElement.select();
             document.execCommand('copy');
             document.body.removeChild(tempElement);
-
             if (index === 3) {
                 const container = document.getElementById('description-text-container');
                 if (container) {
                     const contentDiv = container.querySelector('div');
                     if (contentDiv) contentDiv.classList.add('text-fade-out');
                     setTimeout(() => {
-                        container.innerHTML = `
-                            <div class="h-full w-full flex items-center justify-center fade-in-text">
-                                <span class="flex items-center gap-1 font-bold text-black/80 sm:text-lg">
-                                    ${icon('Check', 'h-5 w-5')} Copied
-                                </span>
-                            </div>`;
+                        container.innerHTML = `<div class="h-full w-full flex items-center justify-center fade-in-text"><span class="flex items-center gap-1 font-bold text-black/80 sm:text-lg">${icon('Check', 'h-5 w-5')} Copied</span></div>`;
                         setTimeout(() => { 
                             const wrapper = container.querySelector('div');
-                            if (wrapper) wrapper.classList.add('text-fade-out');
+                            if (wrapper) { wrapper.classList.add('text-fade-out'); }
                             setTimeout(() => {
                                 container.innerHTML = `<div class="whitespace-pre-wrap break-words text-xs sm:text-sm font-bold sm:font-medium text-black/90 fade-in-text text-left w-full font-sans leading-relaxed pointer-events-none">${description}</div>`;
                                 if (done) done(); 
                             }, 200); 
                         }, 800); 
                     }, 200); 
-                } else { if (done) done(); }
+                } else if (done) done();
             } else {
                 const card = document.getElementById(`title-card-${index}`);
+                const originalText = titles[index];
                 if (card) {
-                    const originalText = titles[index];
                     const p = card.querySelector('p');
                     p.classList.add('text-fade-out');
                     setTimeout(() => {
                         card.innerHTML = `<div class="h-full w-full flex items-center justify-center fade-in-text"><span class="flex items-center gap-1 font-bold text-black/80 text-base">${icon('Check', 'h-4 w-4')} Copied</span></div>`;
                         setTimeout(() => { 
                             const wrapper = card.querySelector('div');
-                            if (wrapper) wrapper.classList.add('text-fade-out');
+                            if (wrapper) { wrapper.classList.add('text-fade-out'); }
                             setTimeout(() => {
                                 card.innerHTML = `<p class="text-sm sm:text-base font-bold text-black/90 fade-in-text text-center line-clamp-4">${originalText}</p>`;
                                 if (done) done(); 
                             }, 200);
                         }, 800);
                     }, 200);
-                } else { if (done) done(); }
+                } else if (done) done();
             }
         };
 
@@ -448,8 +444,8 @@
                     <div id="file-drop-area" class="w-full h-full flex flex-col items-center justify-center text-center cursor-pointer pb-4">
                         <div class="mb-4">${icon('Upload', 'h-12 w-12')}</div>
                         <p class="text-lg sm:text-[21px] font-bold text-black">Upload Your Video File Here</p>
-                        <button class="cta-button mt-6 px-6 py-4 font-bold text-lg">Select File</button>
-                        <input type="file" id="file-upload-input" class="hidden" accept="video/*" onchange="handleFileChange(event)"/>
+                        <button class="cta-button mt-6 px-6 py-4 font-bold text-lg" style="border-radius: 18px;">Select File</button>
+                        <input type="file" id="file-upload-input" class="hidden" accept="video/*" onchange="handleFileChange(event)" onclick="event.stopPropagation()"/>
                     </div>`;
                 document.getElementById('file-drop-area').onclick = () => {
                     const btn = document.querySelector('#file-drop-area .cta-button');
@@ -459,13 +455,13 @@
                 container.innerHTML = `
                     <div class="flex flex-col items-center justify-center h-full w-full pt-4 sm:pt-10">
                         <div class="w-full mb-6 flex justify-center px-1">
-                            <div class="glass-inset-panel inline-flex items-center justify-center px-4 py-3 sm:px-6 sm:py-4 max-w-full ${isProcessed ? 'interactive cursor-pointer' : ''}" onclick="${isProcessed ? 'handleResetClick(this)' : ''}">
+                            <div class="glass-inset-panel inline-flex items-center justify-center px-4 py-3 sm:px-6 sm:py-4 max-w-full ${isProcessed ? 'interactive cursor-pointer' : ''}" style="border-radius: 18px;" onclick="${isProcessed ? 'handleResetClick(this)' : ''}">
                                 <p class="font-bold text-black/80 truncate text-center gap-2 max-w-[60vw] sm:max-w-lg">${currentFileName}</p>
                             </div>
                         </div>
-                        <div class="relative inline-flex items-center justify-center mb-2 font-bold">
+                        <div class="relative inline-flex items-center justify-center mb-2 font-bold left-[5.3px]">
                             <div class="absolute right-full top-1/2 -translate-y-1/2 pr-2 flex items-center">${!isProcessed ? icon('Loader', 'h-5 w-5') : icon('Check', 'h-5 w-5')}</div>
-                            <span class="opacity-80 sm:text-lg text-black">${isProcessed ? 'Analysis Complete' : (isProcessing ? 'Analyzing Video...' : '')}</span>
+                            <span class="opacity-80 sm:text-lg text-black">${isProcessed ? 'Analysis Complete' : 'Analyzing Video...'}</span>
                         </div>
                     </div>`;
             }
@@ -474,13 +470,17 @@
         const updateTitlesContent = () => {
             const grid = document.getElementById('titles-grid-container');
             if (!grid) return;
-            grid.innerHTML = titles.map((title, index) => `<div id="title-card-${index}" class="glass-inset-panel interactive p-4 flex flex-col justify-center h-32 sm:h-40" onclick="handleCopyClick(this, '${titlesFull[index].replace(/'/g, "\\'")}', ${index})"><p class="text-sm sm:text-base font-bold text-black/90 fade-in-text text-center line-clamp-4">${title}</p></div>`).join('');
+            grid.innerHTML = titles.map((title, index) => `
+                <div id="title-card-${index}" class="glass-inset-panel interactive p-4 flex flex-col justify-center h-32 sm:h-40" onclick="handleCopyClick(this, '${titlesFull[index].replace(/'/g, "\\'")}', ${index})">
+                    <p class="text-sm sm:text-base font-bold text-black/90 fade-in-text text-center line-clamp-4">${title}</p>
+                </div>`).join('');
         };
 
         const updateDescriptionContent = () => {
             const container = document.getElementById('description-text-container');
             if (container) {
                 container.setAttribute('onclick', `handleCopyClick(this, descriptionFull, 3)`);
+                container.className = "glass-inset-panel p-4 interactive cursor-pointer h-[32rem] sm:h-[25rem] overflow-hidden";
                 container.innerHTML = `<div class="whitespace-pre-wrap break-words text-xs sm:text-sm font-bold sm:font-medium text-black/90 fade-in-text text-left w-full font-sans leading-relaxed pointer-events-none">${description}</div>`;
             }
         };
@@ -491,14 +491,14 @@
             container.innerHTML = `
                 <div class="glass-card p-4 sm:p-6 rounded-[36px] mb-8 sm:mb-12">
                     <div class="flex justify-between items-center mb-6 gap-2">
-                        <h2 class="text-xl sm:text-3xl font-bold flex items-center gap-1 sm:gap-2 text-black"><img src="https://manmohit2007.github.io/Manmohit2007/like.png" class="header-icon"> <span>Titles</span></h2>
+                        <h2 class="text-xl sm:text-3xl font-bold flex items-center gap-1 sm:gap-2 text-black"><img src="https://manmohit2007.github.io/Manmohit2007/like.png" class="header-icon"> <span class="relative -left-[9px]">Titles</span></h2>
                         <button onclick="handleRegenerateTitlesClick(this)" class="cta-button text-xs sm:text-sm px-3 py-2 sm:px-4 sm:py-2 font-bold flex items-center shrink-0" style="border-radius: 14px;">${icon('RotateCcw', 'mr-1 sm:mr-2 h-3 w-3 sm:h-4 sm:w-4')} Regenerate</button>
                     </div>
                     <div id="titles-grid-container" class="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6"></div>
                 </div>
                 <div class="glass-card p-4 sm:p-6 rounded-[36px]">
                     <div class="flex justify-between items-center mb-4 gap-2">
-                        <h2 class="text-xl sm:text-3xl font-bold flex items-center gap-1 sm:gap-2 text-black"><img src="https://manmohit2007.github.io/Manmohit2007/shorts.png" class="shorts-icon"> <span>Description</span></h2>
+                        <h2 class="text-xl sm:text-3xl font-bold flex items-center gap-1 sm:gap-2 text-black"><img src="https://manmohit2007.github.io/Manmohit2007/shorts.png" class="shorts-icon"> <span class="relative -left-[3px]">Description</span></h2>
                         <button onclick="handleRegenerateDescriptionClick(this)" class="cta-button text-xs sm:text-sm px-3 py-2 sm:px-4 sm:py-2 font-bold flex items-center shrink-0" style="border-radius: 14px;">${icon('RotateCcw', 'mr-1 sm:mr-2 h-3 w-3 sm:h-4 sm:w-4')} Regenerate</button>
                     </div>
                     <div id="description-text-container" class="glass-inset-panel p-4 interactive cursor-pointer h-[32rem] sm:h-[25rem] overflow-hidden"></div>
@@ -510,7 +510,8 @@
         
         const loadAssets = async () => {
             const images = ['background.png', 'landscape.png', 'https://manmohit2007.github.io/Manmohit2007/brand_logo.png?v=10', 'https://manmohit2007.github.io/Manmohit2007/youtube.png', 'https://manmohit2007.github.io/Manmohit2007/share.png', 'https://manmohit2007.github.io/Manmohit2007/banner.png', 'https://manmohit2007.github.io/Manmohit2007/like.png', 'https://manmohit2007.github.io/Manmohit2007/shorts.png'];
-            await Promise.all(images.map(src => new Promise(res => { const img = new Image(); img.src = src; img.onload = res; img.onerror = res; setTimeout(res, 2000); })));
+            const promises = images.map(src => new Promise((resolve) => { const img = new Image(); img.src = src; img.onload = resolve; img.onerror = resolve; setTimeout(resolve, 2000); }));
+            await Promise.all(promises);
         };
 
         const revealInterface = () => {
@@ -518,13 +519,18 @@
             const wrapper = document.getElementById('content-wrapper');
             if (bg.style.opacity === '1') return;
             requestAnimationFrame(() => {
-                bg.style.opacity = '1';
-                wrapper.style.opacity = '1';
+                bg.style.opacity = '1'; wrapper.style.opacity = '1';
                 document.querySelectorAll('.card-animation-target').forEach(el => el.style.animationPlayState = 'running');
+                document.documentElement.style.scrollBehavior = 'smooth';
             });
         }
 
-        const initApp = async () => { updateUI(); window.scrollTo(0, 0); const safetyTimer = setTimeout(revealInterface, 2500); await loadAssets(); clearTimeout(safetyTimer); revealInterface(); };
+        const initApp = async () => { 
+            updateUI(); window.scrollTo(0, 0);
+            const safetyTimer = setTimeout(revealInterface, 2500);
+            await loadAssets(); clearTimeout(safetyTimer); revealInterface();
+        };
+
         window.addEventListener('load', initApp);
     </script>
 </body>
