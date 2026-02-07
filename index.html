@@ -112,60 +112,59 @@
         #upload-card.card-animation-target { animation-delay: 0.2s; } 
         #promo-card.card-animation-target { animation-delay: 0.3s; }
 
-        /* Glass Card - Ultra Frosted & Blurry Style */
+        /* Glass Card - Updated to match request */
         .glass-card {
-            /* MILKY GLASS: Semi-transparent white gradient to mimic the reference */
-            background: linear-gradient(180deg, rgba(255, 255, 255, 0.4) 0%, rgba(255, 255, 255, 0.2) 100%);
-            
-            /* HEAVY BLUR & SATURATION: 
-               - blur(50px): Smooths the background completely.
-               - saturate(200%): Keeps the colors vibrant despite the white overlay.
-            */
-            -webkit-backdrop-filter: blur(50px) saturate(200%);
-            backdrop-filter: blur(50px) saturate(200%); 
-            
-            /* Clean shadow */
-            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.1);
-            
-            /* Distinct white border to define the edge like the image */
+            background-color: rgba(255, 255, 255, 0.15);
+            -webkit-backdrop-filter: blur(24px) saturate(110%);
+            backdrop-filter: blur(24px) saturate(110%);
+            box-shadow: inset 0 0 40px rgba(255, 255, 255, 0.4), 0 25px 50px rgba(0, 0, 0, 0.05);
             border: 1px solid rgba(255, 255, 255, 0.5);
-            
             border-radius: 36px;
-            transform: translate3d(0,0,0);
-            isolation: isolate; 
+            transform: translateZ(0);
         }
 
         /* --- CTA BUTTONS (Consistent Shadow Function) --- */
         .cta-button {
-            /* Slightly clearer/darker than the card to stand out */
-            background-color: rgba(255, 255, 255, 0.25); 
-            color: #000000; /* Black text for readability on milky background */
-            border: 1px solid rgba(255, 255, 255, 0.2);
+            background-color: rgba(255, 255, 255, 0.08);
+            color: #000000; 
+            border: none;
             border-radius: 24px; 
             user-select: none;
             cursor: pointer;
             outline: none;
             -webkit-tap-highlight-color: transparent;
             
-            /* Sharper highlight */
-            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.4), 0 2px 4px rgba(0, 0, 0, 0.05);
+            /* DEFAULT (Outwards): 
+               - Top: White Highlight (Inset)
+               - Bottom: Soft Drop Shadow (Outside) 
+            */
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.4), 0 2px 4px rgba(0, 0, 0, 0.1);
             
             transition: background-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
         }
 
         .cta-button.active-manual {
+            /* ACTIVE (Inwards): 
+               - Top: Dark Inner Shadow (Inset)
+               - Bottom: White Highlight (Inset)
+            */
             transform: scale(0.95) translateY(1px) !important; 
-            background-color: rgba(255, 255, 255, 0.25) !important; 
-            box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.1), inset 0 -1px 0 rgba(255, 255, 255, 0.3) !important;
+            
+            /* No darker background on press, just shadows shifting */
+            background-color: rgba(255, 255, 255, 0.08) !important; 
+            
+            /* The "Going Inside" Effect */
+            box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.15), inset 0 -1px 0 rgba(255, 255, 255, 0.35) !important;
+            
             transition: transform 0.1s ease, box-shadow 0.1s ease;
         }
 
         /* --- INSET PANELS (Consistent Shadow Function) --- */
         .glass-inset-panel {
-            /* Subtle inset look */
-            background-color: rgba(255, 255, 255, 0.15); 
+            background-color: rgba(0, 0, 0, 0.05);
             
-            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.3), 0 2px 4px rgba(0, 0, 0, 0.05);
+            /* DEFAULT (Outwards): Matches Button */
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.4), 0 2px 4px rgba(0, 0, 0, 0.1);
             
             border: none;
             border-radius: 20px;
@@ -178,9 +177,15 @@
         }
 
         .glass-inset-panel.interactive.active-state {
+            /* ACTIVE (Inwards): Matches Button */
             transform: scale(0.95) !important;
-            background-color: rgba(255, 255, 255, 0.15);
-            box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.1), inset 0 -1px 0 rgba(255, 255, 255, 0.3) !important;
+            
+            /* No darkening on press */
+            background-color: rgba(0, 0, 0, 0.05);
+            
+            /* The "Going Inside" Effect */
+            box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.2), inset 0 -1px 0 rgba(255, 255, 255, 0.35) !important;
+            
             transition: transform 0.1s ease, box-shadow 0.1s ease;
         }
 
@@ -192,12 +197,13 @@
         @media (hover: hover) {
             .cta-button:hover {
                 transform: none;
-                background-color: rgba(255, 255, 255, 0.35); 
+                /* Slight bright tint on hover for interactivity */
+                background-color: rgba(255, 255, 255, 0.12); 
             }
 
             .glass-inset-panel.interactive:hover {
                 transform: none;
-                background-color: rgba(255, 255, 255, 0.25); 
+                background-color: rgba(0, 0, 0, 0.05); 
             }
         }
 
