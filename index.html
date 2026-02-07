@@ -36,7 +36,6 @@
         }
 
         html {
-            /* Restored Premium YouTube Dark Grey */
             background-color: #0f0f0f;
             height: 100%;
             width: 100%;
@@ -49,7 +48,7 @@
             background-color: transparent; 
             min-height: 100vh;
             min-height: -webkit-fill-available;
-            color: #ffffff; /* White text for dark background context */
+            color: #ffffff;
             margin: 0;
             padding: 0;
             overscroll-behavior: none;
@@ -57,7 +56,6 @@
             opacity: 1; 
         }
 
-        /* --- CONTENT WRAPPER --- */
         #content-wrapper {
             opacity: 0;
             transition: opacity 0.8s ease-out;
@@ -66,19 +64,14 @@
             will-change: opacity; 
         }
 
-        /* --- BACKGROUND LAYER --- */
         #fixed-background {
             position: fixed;
             top: 0; left: 0; right: 0; bottom: 0;
             width: 100vw; height: 100vh;
             z-index: -1; 
-            
-            /* Hidden initially, revealed via JS only when loaded */
             opacity: 0;
             transition: opacity 1s ease-out;
-
-            /* Dark mode overlay logic to make the wallpaper pop on dark bg */
-            background-image: linear-gradient(rgba(15, 15, 15, 0.02), rgba(15, 15, 15, 0.15)), url('background.png');
+            background-image: linear-gradient(rgba(15, 15, 15, 0.05), rgba(15, 15, 15, 0.2)), url('background.png');
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
@@ -95,148 +88,126 @@
         }
 
         /* Entry Animation */
-        @keyframes spiral-entry {
-            0% { opacity: 0; transform: perspective(1000px) scale(0.96) translateY(15px); }
-            100% { opacity: 1; transform: perspective(1000px) scale(1) translateY(0); }
+        @keyframes liquid-entry {
+            0% { opacity: 0; transform: perspective(1200px) scale(0.94) translateY(30px) rotateX(4deg); }
+            100% { opacity: 1; transform: perspective(1200px) scale(1) translateY(0) rotateX(0); }
         }
         
         .card-animation-target {
-            animation: spiral-entry 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            animation: liquid-entry 0.9s cubic-bezier(0.22, 1, 0.36, 1) forwards;
             animation-play-state: paused; 
             opacity: 0; 
             will-change: transform, opacity;
-            transform: translateZ(0); 
         }
         
         #app-header.card-animation-target { animation-delay: 0.1s; }
         #upload-card.card-animation-target { animation-delay: 0.2s; } 
         #promo-card.card-animation-target { animation-delay: 0.3s; }
 
-        /* Glass Card - Ultra Frosted & Blurry Style */
+        /* --- iOS 26 LIQUID GLASS STYLE --- */
         .glass-card {
-            /* Increased white opacity for maximum frosted/milky look */
-            background-color: rgba(255, 255, 255, 0.35);
+            /* Thick Liquid Gradient Sheen */
+            background: linear-gradient(
+                165deg, 
+                rgba(255, 255, 255, 0.45) 0%, 
+                rgba(255, 255, 255, 0.25) 40%, 
+                rgba(255, 255, 255, 0.35) 100%
+            );
             
-            /* EXTREME blur to strongly diffuse the wallpaper */
-            -webkit-backdrop-filter: blur(200px) saturate(180%);
-            backdrop-filter: blur(200px) saturate(180%); 
+            /* Enhanced Refraction and Vibrancy */
+            -webkit-backdrop-filter: blur(120px) saturate(210%) contrast(110%);
+            backdrop-filter: blur(120px) saturate(210%) contrast(110%); 
             
-            /* Clean, subtle shadow */
-            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.15);
+            /* Specular Highlights & Liquid Depth Shadows */
+            box-shadow: 
+                0 24px 60px -12px rgba(0, 0, 0, 0.18),
+                inset 0 1px 1px 0 rgba(255, 255, 255, 0.6), /* Top Edge Specular */
+                inset 0 -1px 1px 0 rgba(255, 255, 255, 0.15); /* Bottom Edge Softness */
             
-            /* Precision border */
-            border: 1px solid rgba(255, 255, 255, 0.15);
-            
-            border-radius: 36px;
+            border: 0.5px solid rgba(255, 255, 255, 0.25);
+            border-radius: 40px;
             transform: translate3d(0,0,0);
             isolation: isolate; 
         }
 
-        /* --- CTA BUTTONS (Consistent Shadow Function) --- */
+        /* --- LIQUID INTERACTIVES --- */
         .cta-button {
-            background-color: rgba(255, 255, 255, 0.08);
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.15) 0%, rgba(255, 255, 255, 0.05) 100%);
             color: #000000; 
             border: none;
-            border-radius: 24px; 
+            border-radius: 26px; 
             user-select: none;
             cursor: pointer;
             outline: none;
             -webkit-tap-highlight-color: transparent;
             
-            /* DEFAULT (Outwards): 
-               - Top: White Highlight (Inset)
-               - Bottom: Soft Drop Shadow (Outside) 
-            */
-            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.4), 0 2px 4px rgba(0, 0, 0, 0.1);
+            /* Volumetric Shadow */
+            box-shadow: 
+                inset 0 1px 1px rgba(255, 255, 255, 0.5), 
+                0 4px 12px rgba(0, 0, 0, 0.08);
             
-            transition: background-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+            transition: all 0.3s cubic-bezier(0.2, 0, 0, 1);
         }
 
         .cta-button.active-manual {
-            /* ACTIVE (Inwards): 
-               - Top: Dark Inner Shadow (Inset)
-               - Bottom: White Highlight (Inset)
-            */
-            transform: scale(0.95) translateY(1px) !important; 
-            
-            /* No darker background on press, just shadows shifting */
-            background-color: rgba(255, 255, 255, 0.08) !important; 
-            
-            /* The "Going Inside" Effect */
-            box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.15), inset 0 -1px 0 rgba(255, 255, 255, 0.35) !important;
-            
+            /* Liquid Compression Effect */
+            transform: scale(0.94) translateY(2px) !important; 
+            background: rgba(255, 255, 255, 0.1) !important; 
+            box-shadow: 
+                inset 0 3px 8px rgba(0, 0, 0, 0.12), 
+                inset 0 -1px 0 rgba(255, 255, 255, 0.2) !important;
             transition: transform 0.1s ease, box-shadow 0.1s ease;
         }
 
-        /* --- INSET PANELS (Consistent Shadow Function) --- */
+        /* --- INSET PANELS --- */
         .glass-inset-panel {
-            background-color: rgba(255, 255, 255, 0.08);
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(40px) brightness(1.05);
+            -webkit-backdrop-filter: blur(40px) brightness(1.05);
             
-            /* DEFAULT (Outwards): Matches Button */
-            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.4), 0 2px 4px rgba(0, 0, 0, 0.1);
+            box-shadow: 
+                inset 0 1px 1px rgba(255, 255, 255, 0.4), 
+                0 4px 10px rgba(0, 0, 0, 0.04);
             
-            border: none;
-            border-radius: 24px;
-            transition: background-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
-            -webkit-tap-highlight-color: transparent;
-        }
-
-        .glass-inset-panel.interactive {
-            cursor: pointer;
+            border: 0.5px solid rgba(255, 255, 255, 0.1);
+            border-radius: 28px;
+            transition: all 0.3s cubic-bezier(0.2, 0, 0, 1);
         }
 
         .glass-inset-panel.interactive.active-state {
-            /* ACTIVE (Inwards): Matches Button */
-            transform: scale(0.95) !important;
-            
-            /* No darkening on press */
-            background-color: rgba(255, 255, 255, 0.08);
-            
-            /* The "Going Inside" Effect */
-            box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.2), inset 0 -1px 0 rgba(255, 255, 255, 0.35) !important;
-            
-            transition: transform 0.1s ease, box-shadow 0.1s ease;
+            transform: scale(0.96) !important;
+            background: rgba(255, 255, 255, 0.06);
+            box-shadow: 
+                inset 0 4px 12px rgba(0, 0, 0, 0.08), 
+                inset 0 -1px 0 rgba(255, 255, 255, 0.2) !important;
+            transition: transform 0.15s ease;
         }
 
-        #description-text-container.interactive.active-state {
-            transform: scale(0.98) !important; 
-        }
-
-        /* --- HOVER EFFECTS --- */
         @media (hover: hover) {
-            .cta-button:hover {
-                transform: none;
-                /* Slight bright tint on hover for interactivity */
-                background-color: rgba(255, 255, 255, 0.12); 
-            }
-
-            .glass-inset-panel.interactive:hover {
-                transform: none;
-                background-color: rgba(255, 255, 255, 0.12); 
+            .cta-button:hover, .glass-inset-panel.interactive:hover {
+                background: rgba(255, 255, 255, 0.18);
+                box-shadow: 
+                    inset 0 1px 2px rgba(255, 255, 255, 0.6), 
+                    0 8px 16px rgba(0, 0, 0, 0.06);
             }
         }
 
         .fade-in-text {
-            animation: fadeInText 0.4s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+            animation: fadeInText 0.5s cubic-bezier(0.22, 1, 0.36, 1) forwards;
         }
         @keyframes fadeInText {
-            from { opacity: 0; transform: translateY(4px); }
+            from { opacity: 0; transform: translateY(8px); }
             to { opacity: 1; transform: translateY(0); }
         }
 
         .text-fade-out {
             opacity: 0 !important;
-            transform: translateY(-4px) !important;
-            transition: opacity 0.2s ease, transform 0.2s ease !important;
+            transform: translateY(-6px) !important;
+            transition: all 0.25s ease !important;
         }
 
-        .no-scrollbar::-webkit-scrollbar {
-            display: none;
-        }
-        .no-scrollbar {
-            -ms-overflow-style: none;
-            scrollbar-width: none;
-        }
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
 
         .header-icon { height: 3.8rem; width: 3.8rem; object-fit: contain; } 
         .share-icon { height: 3.2rem; width: 3.2rem; object-fit: contain; } 
@@ -250,31 +221,29 @@
     </style>
 </head>
 <body class="p-4 md:p-8" ontouchstart="">
-    <!-- Background Layer (Opacity controlled by JS) -->
     <div id="fixed-background"></div>
     
-    <!-- Content Wrapper (Opacity controlled by JS) -->
     <div id="content-wrapper">
         <div class="max-w-4xl mx-auto">
             <div class="mb-8 sm:mb-12">
                 <header id="app-header" class="glass-card px-3 py-3 sm:px-6 sm:py-5 flex flex-row items-center justify-between card-animation-target">
                     <div class="flex items-center space-x-2 sm:space-x-4">
-                        <div class="w-[57px] h-[57px] sm:w-[84px] sm:h-[84px] flex-shrink-0 relative left-[5.3px] sm:left-[5.3px]">
+                        <div class="w-[57px] h-[57px] sm:w-[84px] sm:h-[84px] flex-shrink-0 relative left-[5.3px]">
                             <img src="https://manmohit2007.github.io/Manmohit2007/brand_logo.png?v=10" alt="Logo" class="w-full h-full object-contain filter drop-shadow-sm">
                         </div>
-                        <div class="text-left min-w-0 relative left-[6px] sm:left-[5.3px]">
+                        <div class="text-left min-w-0 relative left-[6px]">
                             <h1 class="text-xl sm:text-3xl font-bold text-black leading-tight truncate">FanPlusFollow</h1>
                         </div>
                     </div>
                     <div class="flex-shrink-0 ml-1">
-                        <div class="w-[77px] h-[77px] sm:w-[121px] sm:h-[121px] relative right-[5.3px] sm:right-0">
+                        <div class="w-[77px] h-[77px] sm:w-[121px] sm:h-[121px] relative right-[5.3px]">
                             <img src="https://manmohit2007.github.io/Manmohit2007/youtube.png" alt="YouTube" class="w-full h-full object-contain">
                         </div>
                     </div>
                 </header>
             </div>
             <main>
-                <div id="upload-card" class="glass-card p-6 rounded-[36px] mb-8 sm:mb-12 card-animation-target">
+                <div id="upload-card" class="glass-card p-6 rounded-[40px] mb-8 sm:mb-12 card-animation-target">
                     <div class="mb-4">
                         <h2 class="text-xl sm:text-3xl font-bold flex items-center gap-1 sm:gap-2 text-black">
                             <img src="https://manmohit2007.github.io/Manmohit2007/share.png" alt="Share" class="share-icon">
@@ -293,12 +262,12 @@
                                 <img src="https://manmohit2007.github.io/Manmohit2007/banner.png" alt="Logo" class="w-full h-auto object-contain filter drop-shadow-md">
                             </div>
                             <h3 class="text-xl sm:text-3xl font-bold text-center text-black -mt-9 sm:-mt-10">Boost Your Reach Today</h3>
-                            <p class="text-black mt-1 text-center max-w-md text-xs sm:text-sm font-bold opacity-80 leading-tight">Join the community for exclusive growth insights.</p>
+                            <p class="text-black mt-1 text-center max-w-md text-xs sm:text-sm font-bold opacity-70 leading-tight">Join the community for exclusive growth insights.</p>
                             <div class="mt-4 sm:mt-6 flex flex-row w-full max-w-md sm:max-w-lg justify-center gap-[18px] sm:gap-[30.6px] px-2 sm:px-0">
-                              <button class="cta-button flex-1 sm:flex-none sm:w-40 px-4 py-4 font-bold flex items-center justify-center text-lg sm:text-lg" onclick="handleExternalLink(this, 'https://www.youtube.com/@fanplusfollow')">
+                              <button class="cta-button flex-1 sm:flex-none sm:w-40 px-4 py-4 font-bold flex items-center justify-center text-lg" onclick="handleExternalLink(this, 'https://www.youtube.com/@fanplusfollow')">
                                 Subscribe
                               </button>
-                              <button class="cta-button flex-1 sm:flex-none sm:w-40 px-4 py-4 font-bold flex items-center justify-center text-lg sm:text-lg" onclick="handleExternalLink(this, 'https://www.instagram.com/_manmohit_singh_/')">
+                              <button class="cta-button flex-1 sm:flex-none sm:w-40 px-4 py-4 font-bold flex items-center justify-center text-lg" onclick="handleExternalLink(this, 'https://www.instagram.com/_manmohit_singh_/')">
                                 Follow
                               </button>
                             </div>
@@ -328,10 +297,8 @@
         const animateAndExecute = (element, action) => {
             if (isUIBusy) return; 
             isUIBusy = true;      
-            
             const activeClass = element.classList.contains('cta-button') ? 'active-manual' : 'active-state';
             element.classList.add(activeClass);
-            
             setTimeout(() => {
                 element.classList.remove(activeClass);
                 setTimeout(() => {
@@ -368,11 +335,11 @@
 
         const icon = (name, classes) => {
             const iconMap = {
-                'Upload': `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="${classes}"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" x2="12" y1="3" y2="15"/></svg>`,
+                'Upload': `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="${classes}"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" x2="12" y1="3" y2="15"/></svg>`,
                 'Copy': `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="${classes}"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>`,
-                'Check': `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="${classes}"><polyline points="20 6 9 17 4 12"/></svg>`,
-                'RotateCcw': `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="${classes}"><path d="M3 2v6h6"/><path d="M3 13a9 9 0 1 0 3-7.7L3 8"/></svg>`,
-                'Loader': `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="animate-spin ${classes}"><path d="M12 2v4"/><path d="M12 18v4"/><path d="M4.93 4.93l2.83 2.83"/><path d="M16.24 16.24l2.83 2.83"/><path d="M2 12h4"/><path d="M18 12h4"/><path d="M4.93 19.07l2.83-2.83"/><path d="M16.24 7.76l2.83-2.83"/></svg>`
+                'Check': `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" class="${classes}"><polyline points="20 6 9 17 4 12"/></svg>`,
+                'RotateCcw': `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="${classes}"><path d="M3 2v6h6"/><path d="M3 13a9 9 0 1 0 3-7.7L3 8"/></svg>`,
+                'Loader': `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="animate-spin ${classes}"><path d="M12 2v4"/><path d="M12 18v4"/><path d="M4.93 4.93l2.83 2.83"/><path d="M16.24 16.24l2.83 2.83"/><path d="M2 12h4"/><path d="M18 12h4"/><path d="M4.93 19.07l2.83-2.83"/><path d="M16.24 7.76l2.83-2.83"/></svg>`
             };
             return iconMap[name] || '';
         };
@@ -407,15 +374,11 @@
                     [`💥 Break the Algorithm with ${vName}! #fanplusfollow`, `🛑 The BIGGEST ${vName} Mistake Creators Make #fanplusfollow`, `✨ Perfect ${vName} Tutorial in 5 Minutes #fanplusfollow`]
                 ],
                 descriptions: [
-                    `🚀 Unlock the full potential of ${vName} with this comprehensive guide! Whether you're a beginner or a pro, these insights will help you skyrocket your engagement.\n\n📌 IN THIS VIDEO:\n0:00 - Intro\n1:45 - Why ${vName} Matters\n4:20 - Step-by-Step Strategy\n8:15 - Secret Hack Revealed\n10:30 - Final Thoughts\n\n💡 JOIN THE CREATOR COMMUNITY:\nSubscribe here: ${YOUTUBE_CHANNEL_LINK}\nFollow on IG: ${INSTAGRAM_LINK}\n\n👇 QUESTION OF THE DAY:\nWhat's your biggest challenge with ${vName}? Let me know in the comments!\n\n#${vName.replace(/\s+/g, '')} #ContentStrategy #GrowthTips #FanPlusFollow`,
-                    
-                    `😱 You won't believe how much ${vName} can change your channel! I tested this strategy for 30 days and the results were SHOCKING.\n\n🔥 WHAT TO EXPECT:\n- 🎥 Real results from this method\n- 📈 Actionable steps you can take today\n- 🤫 The secret to consistency\n\n✅ STAY CONNECTED:\n📸 Instagram: ${INSTAGRAM_LINK}\n📺 YouTube: ${YOUTUBE_CHANNEL_LINK}\n\n✨ If you enjoyed this video, please hit that LIKE button and SUBSCRIBE for more daily tips!\n\n#Viral #Trending #CreatorEconomy #${vName.replace(/\s+/g, '')}`,
-
-                    `⚡ Want to master ${vName} in record time? This video breaks down exactly what you need to know to get results FAST.\n\nWe cover:\n✅ The basics of ${vName}\n✅ Advanced tips for maximum reach\n✅ Common pitfalls to avoid\n\nDon't forget to LIKE and SUBSCRIBE if you found this helpful! It supports the channel and helps us bring you more value.\n\n🔗 Follow for daily updates:\nIG: ${INSTAGRAM_LINK}\nYT: ${YOUTUBE_CHANNEL_LINK}\n\n#${vName.replace(/\s+/g, '')} #QuickTips #SocialMediaGrowth #FanPlusFollow`,
-
-                    `🧠 Let's dive deep into the analytics behind ${vName}. Why does it work? How does the algorithm treat it? We're answering it all today.\n\n📊 KEY TAKEAWAYS:\n1. The "Hook" Strategy\n2. Retention Hacks\n3. Conversion Tactics\n\nJoin the #FanPlusFollow movement!\n👉 ${YOUTUBE_CHANNEL_LINK}\n👉 ${INSTAGRAM_LINK}\n\nComment "GROWTH" below if you watched until the end!\n\n#${vName.replace(/\s+/g, '')} #Analytics #YouTubeTips #InstagramTips`,
-
-                    `📖 I tried ${vName} so you don't have to... here is what happened. The journey was unexpected, but the lessons are invaluable for any creator trying to grow right now.\n\nTimestamps:\n0:00 - The Experiment\n3:10 - The Struggle\n6:45 - The Breakthrough\n9:00 - The Results\n\nIf you're serious about growth, you need to see this.\n\n🌟 Support the Channel:\nSubscribe: ${YOUTUBE_CHANNEL_LINK}\nFollow: ${INSTAGRAM_LINK}\n\n#${vName.replace(/\s+/g, '')} #CaseStudy #CreatorJourney #FanPlusFollow`
+                    `🚀 Unlock the full potential of ${vName} with this comprehensive guide!\n\n📌 IN THIS VIDEO:\n0:00 - Intro\n1:45 - Why ${vName} Matters\n4:20 - Step-by-Step Strategy\n8:15 - Secret Hack Revealed\n\n💡 JOIN THE COMMUNITY:\nSubscribe: ${YOUTUBE_CHANNEL_LINK}\nFollow: ${INSTAGRAM_LINK}\n\n#${vName.replace(/\s+/g, '')} #FanPlusFollow`,
+                    `😱 You won't believe how much ${vName} can change your channel!\n\n🔥 EXPECT:\n- 🎥 Real results from this method\n- 📈 Actionable steps\n- 🤫 Consistency secret\n\n✅ STAY CONNECTED:\n📸 Instagram: ${INSTAGRAM_LINK}\n📺 YouTube: ${YOUTUBE_CHANNEL_LINK}\n\n#Viral #${vName.replace(/\s+/g, '')}`,
+                    `⚡ Want to master ${vName} in record time?\n\n✅ The basics\n✅ Advanced tips\n✅ Pitfalls to avoid\n\n🔗 Follow for updates:\nIG: ${INSTAGRAM_LINK}\nYT: ${YOUTUBE_CHANNEL_LINK}\n\n#${vName.replace(/\s+/g, '')} #QuickTips`,
+                    `🧠 Let's dive deep into the analytics behind ${vName}.\n\n📊 KEY TAKEAWAYS:\n1. The "Hook" Strategy\n2. Retention Hacks\n\nJoin the #FanPlusFollow movement!\n👉 ${YOUTUBE_CHANNEL_LINK}\n\n#Analytics #YouTubeTips`,
+                    `📖 I tried ${vName} so you don't have to...\n\nTimestamps:\n0:00 - The Experiment\n3:10 - The Struggle\n6:45 - The Breakthrough\n\n🌟 Support:\nSubscribe: ${YOUTUBE_CHANNEL_LINK}\n\n#${vName.replace(/\s+/g, '')} #CreatorJourney`
                 ]
             });
             const displayTemplates = getTemplates(displayVideoName);
@@ -427,10 +390,7 @@
         };
 
         const regenerateTitles = (done) => {
-            if (!file || isProcessing) {
-                if (done) done();
-                return;
-            }
+            if (!file || isProcessing) { if (done) done(); return; }
             const elements = document.querySelectorAll('#titles-grid-container .fade-in-text');
             elements.forEach(el => el.classList.add('text-fade-out'));
             setTimeout(() => {
@@ -438,14 +398,11 @@
                 generateViralContent(); 
                 updateTitlesContent(); 
                 if (done) done();
-            }, 200);
+            }, 250);
         };
 
         const regenerateDescription = (done) => {
-            if (!file || isProcessing) {
-                if (done) done();
-                return;
-            }
+            if (!file || isProcessing) { if (done) done(); return; }
             const container = document.getElementById('description-text-container');
             const textEl = container ? container.querySelector('.fade-in-text') : null;
             if (textEl) textEl.classList.add('text-fade-out');
@@ -454,7 +411,7 @@
                 generateViralContent(); 
                 updateDescriptionContent();
                 if (done) done();
-            }, 200);
+            }, 250);
         };
 
         const copyToClipboard = (text, index, done) => {
@@ -468,71 +425,38 @@
             if (index === 3) {
                 const container = document.getElementById('description-text-container');
                 if (container) {
-                    // STABLE REVERT: Manually replacing content with a flex centered div
-                    // This avoids adding flex classes to the container itself which might collapse margins/padding differently.
-                    // We fill the existing container (which has padding) with a 100% height div.
                     const contentDiv = container.querySelector('div');
                     if (contentDiv) contentDiv.classList.add('text-fade-out');
-
                     setTimeout(() => {
-                        // Create a specific centered wrapper that takes up the full space available
-                        container.innerHTML = `
-                            <div class="h-full w-full flex items-center justify-center fade-in-text">
-                                <span class="flex items-center gap-1 font-bold text-black/80 sm:text-lg">
-                                    ${icon('Check', 'h-5 w-5')} Copied
-                                </span>
-                            </div>`;
-                        
+                        container.innerHTML = `<div class="h-full w-full flex items-center justify-center fade-in-text"><span class="flex items-center gap-2 font-bold text-black sm:text-xl">${icon('Check', 'h-6 w-6')} Copied</span></div>`;
                         setTimeout(() => { 
                             const wrapper = container.querySelector('div');
-                            if (wrapper) {
-                                wrapper.classList.remove('fade-in-text');
-                                wrapper.classList.add('text-fade-out');
-                            }
-                            
+                            if (wrapper) wrapper.classList.add('text-fade-out');
                             setTimeout(() => {
-                                // Restore original content
                                 container.innerHTML = `<div class="whitespace-pre-wrap break-words text-xs sm:text-sm font-bold sm:font-medium text-black/90 fade-in-text text-left w-full font-sans leading-relaxed pointer-events-none">${description}</div>`;
                                 if (done) done(); 
                             }, 200); 
                         }, 800); 
                     }, 200); 
-                } else {
-                    if (done) done();
-                }
+                } else if (done) done();
             } else {
                 const card = document.getElementById(`title-card-${index}`);
                 const originalText = titles[index];
                 if (card) {
                     const p = card.querySelector('p');
                     p.classList.add('text-fade-out');
-
                     setTimeout(() => {
-                        // Same stable strategy for titles
-                        card.innerHTML = `
-                            <div class="h-full w-full flex items-center justify-center fade-in-text">
-                                <span class="flex items-center gap-1 font-bold text-black/80 text-base">
-                                    ${icon('Check', 'h-4 w-4')} Copied
-                                </span>
-                            </div>`;
-                        
+                        card.innerHTML = `<div class="h-full w-full flex items-center justify-center fade-in-text"><span class="flex items-center gap-2 font-bold text-black text-lg">${icon('Check', 'h-5 w-5')} Copied</span></div>`;
                         setTimeout(() => { 
                             const wrapper = card.querySelector('div');
-                            if (wrapper) {
-                                wrapper.classList.remove('fade-in-text');
-                                wrapper.classList.add('text-fade-out');
-                            }
-
+                            if (wrapper) wrapper.classList.add('text-fade-out');
                             setTimeout(() => {
-                                // Restore original p tag structure
                                 card.innerHTML = `<p class="text-sm sm:text-base font-bold text-black/90 fade-in-text text-center line-clamp-4">${originalText}</p>`;
                                 if (done) done(); 
                             }, 200);
                         }, 800);
                     }, 200);
-                } else {
-                    if (done) done();
-                }
+                } else if (done) done();
             }
         };
 
@@ -543,39 +467,28 @@
             if (!file) {
                 container.innerHTML = `
                     <div id="file-drop-area" class="w-full h-full flex flex-col items-center justify-center text-center cursor-pointer pb-4">
-                        <div class="mb-4">${icon('Upload', 'h-12 w-12')}</div>
-                        <p class="text-lg sm:text-[21px] font-bold text-black">Upload Your Video File Here</p>
-                        <button class="cta-button mt-6 px-6 py-4 font-bold text-lg">Select File</button>
-                        <input type="file" id="file-upload-input" class="hidden" accept="video/*" onchange="handleFileChange(event)" onclick="event.stopPropagation()"/>
+                        <div class="mb-4 text-black">${icon('Upload', 'h-14 w-14')}</div>
+                        <p class="text-lg sm:text-[22px] font-bold text-black">Upload Video for Analysis</p>
+                        <button class="cta-button mt-6 px-8 py-4 font-bold text-lg">Select File</button>
+                        <input type="file" id="file-upload-input" class="hidden" accept="video/*" onchange="handleFileChange(event)"/>
                     </div>`;
-                
                 document.getElementById('file-drop-area').onclick = () => {
                     const btn = document.querySelector('#file-drop-area .cta-button');
-                    if (btn) {
-                        animateAndExecute(btn, (done) => {
-                            document.getElementById('file-upload-input').click();
-                            done(); 
-                        });
-                    }
+                    if (btn) animateAndExecute(btn, (done) => { document.getElementById('file-upload-input').click(); done(); });
                 };
             } else {
                 container.innerHTML = `
                     <div class="flex flex-col items-center justify-center h-full w-full pt-4 sm:pt-10">
                         <div class="w-full mb-6 flex justify-center px-1">
-                            <div 
-                                class="glass-inset-panel inline-flex items-center justify-center px-4 py-3 sm:px-6 sm:py-4 max-w-full ${isProcessed ? 'interactive cursor-pointer' : ''}" 
-                                onclick="${isProcessed ? 'handleResetClick(this)' : ''}"
-                            >
-                                <p class="font-bold text-black/80 truncate text-center gap-2 max-w-[60vw] sm:max-w-lg">
-                                    ${currentFileName}
-                                </p>
+                            <div class="glass-inset-panel inline-flex items-center justify-center px-4 py-3 sm:px-6 sm:py-4 max-w-full ${isProcessed ? 'interactive cursor-pointer' : ''}" onclick="${isProcessed ? 'handleResetClick(this)' : ''}">
+                                <p class="font-bold text-black/80 truncate text-center gap-2 max-w-[60vw] sm:max-w-lg">${currentFileName}</p>
                             </div>
                         </div>
                         <div class="relative inline-flex items-center justify-center mb-2 font-bold left-[5.3px]">
-                            <div class="absolute right-full top-1/2 -translate-y-1/2 pr-2 flex items-center">
-                                ${!isProcessed ? icon('Loader', 'h-5 w-5') : icon('Check', 'h-5 w-5')}
+                            <div class="absolute right-full top-1/2 -translate-y-1/2 pr-3 flex items-center">
+                                ${!isProcessed ? icon('Loader', 'h-6 w-6 text-black') : icon('Check', 'h-6 w-6 text-black')}
                             </div>
-                            <span class="opacity-80 sm:text-lg text-black">${isProcessed ? 'Analysis Complete' : 'Analyzing Video...'}</span>
+                            <span class="opacity-80 sm:text-xl text-black">${isProcessed ? 'Analysis Ready' : 'Processing Content...'}</span>
                         </div>
                     </div>`;
             }
@@ -594,7 +507,6 @@
             const container = document.getElementById('description-text-container');
             if (container) {
                 container.setAttribute('onclick', `handleCopyClick(this, descriptionFull, 3)`);
-                container.className = "glass-inset-panel p-4 interactive cursor-pointer h-[32rem] sm:h-[25rem] overflow-hidden";
                 container.innerHTML = `<div class="whitespace-pre-wrap break-words text-xs sm:text-sm font-bold sm:font-medium text-black/90 fade-in-text text-left w-full font-sans leading-relaxed pointer-events-none">${description}</div>`;
             }
         };
@@ -603,34 +515,28 @@
             const container = document.getElementById('results-section');
             if (!isProcessed) { container.innerHTML = ''; return; }
             container.innerHTML = `
-                <div class="glass-card p-4 sm:p-6 rounded-[36px] mb-8 sm:mb-12">
+                <div class="glass-card p-4 sm:p-6 rounded-[40px] mb-8 sm:mb-12">
                     <div class="flex justify-between items-center mb-6 gap-2">
-                        <h2 class="text-xl sm:text-3xl font-bold flex items-center gap-1 sm:gap-2 text-black"><img src="https://manmohit2007.github.io/Manmohit2007/like.png" class="header-icon"> <span class="relative -left-[9px]">Titles</span></h2>
-                        <button onclick="handleRegenerateTitlesClick(this)" class="cta-button text-xs sm:text-sm px-3 py-2 sm:px-4 sm:py-2 font-bold flex items-center shrink-0" style="border-radius: 14px;">${icon('RotateCcw', 'mr-1 sm:mr-2 h-3 w-3 sm:h-4 sm:w-4')} Regenerate</button>
+                        <h2 class="text-xl sm:text-3xl font-bold flex items-center gap-1 sm:gap-2 text-black"><img src="https://manmohit2007.github.io/Manmohit2007/like.png" class="header-icon"> <span class="relative -left-[9px]">Viral Titles</span></h2>
+                        <button onclick="handleRegenerateTitlesClick(this)" class="cta-button text-xs sm:text-sm px-4 py-2 font-bold flex items-center shrink-0" style="border-radius: 16px;">${icon('RotateCcw', 'mr-1 sm:mr-2 h-4 w-4')} Refresh</button>
                     </div>
                     <div id="titles-grid-container" class="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6"></div>
                 </div>
-                <div class="glass-card p-4 sm:p-6 rounded-[36px]">
+                <div class="glass-card p-4 sm:p-6 rounded-[40px]">
                     <div class="flex justify-between items-center mb-4 gap-2">
-                        <h2 class="text-xl sm:text-3xl font-bold flex items-center gap-1 sm:gap-2 text-black"><img src="https://manmohit2007.github.io/Manmohit2007/shorts.png" class="shorts-icon"> <span class="relative -left-[3px]">Description</span></h2>
-                        <button onclick="handleRegenerateDescriptionClick(this)" class="cta-button text-xs sm:text-sm px-3 py-2 sm:px-4 sm:py-2 font-bold flex items-center shrink-0" style="border-radius: 14px;">${icon('RotateCcw', 'mr-1 sm:mr-2 h-3 w-3 sm:h-4 sm:w-4')} Regenerate</button>
+                        <h2 class="text-xl sm:text-3xl font-bold flex items-center gap-1 sm:gap-2 text-black"><img src="https://manmohit2007.github.io/Manmohit2007/shorts.png" class="shorts-icon"> <span class="relative -left-[3px]">Smart Description</span></h2>
+                        <button onclick="handleRegenerateDescriptionClick(this)" class="cta-button text-xs sm:text-sm px-4 py-2 font-bold flex items-center shrink-0" style="border-radius: 16px;">${icon('RotateCcw', 'mr-1 sm:mr-2 h-4 w-4')} Refresh</button>
                     </div>
-                    <div id="description-text-container" class="glass-inset-panel p-4 interactive cursor-pointer h-[32rem] sm:h-[25rem] overflow-hidden"></div>
+                    <div id="description-text-container" class="glass-inset-panel p-5 interactive cursor-pointer h-[28rem] sm:h-[22rem] overflow-hidden"></div>
                 </div>`;
             updateTitlesContent(); updateDescriptionContent();
         };
 
-        const updateUI = () => { 
-            renderUploadSection(); 
-            renderResults(); 
-        };
+        const updateUI = () => { renderUploadSection(); renderResults(); };
         
-        // --- ASSET PRELOADING ---
-        // We load assets manually to ensure everything is cached before revealing
         const loadAssets = async () => {
             const images = [
-                'background.png',
-                'landscape.png',
+                'background.png', 'landscape.png',
                 'https://manmohit2007.github.io/Manmohit2007/brand_logo.png?v=10',
                 'https://manmohit2007.github.io/Manmohit2007/youtube.png',
                 'https://manmohit2007.github.io/Manmohit2007/share.png',
@@ -638,64 +544,31 @@
                 'https://manmohit2007.github.io/Manmohit2007/like.png',
                 'https://manmohit2007.github.io/Manmohit2007/shorts.png'
             ];
-            
-            // Create a promise for each image load with a fallback timeout
-            const promises = images.map(src => {
-                return new Promise((resolve) => {
-                    const img = new Image();
-                    img.src = src;
-                    img.onload = resolve;
-                    img.onerror = resolve; // Continue even if one fails
-                    
-                    // Individual timeout for each image
-                    setTimeout(resolve, 2000); 
-                });
-            });
-
-            // Wait for all critical images to load
+            const promises = images.map(src => new Promise((resolve) => {
+                const img = new Image(); img.src = src; img.onload = resolve; img.onerror = resolve;
+                setTimeout(resolve, 2000); 
+            }));
             await Promise.all(promises);
         };
 
         const revealInterface = () => {
             const bg = document.getElementById('fixed-background');
             const wrapper = document.getElementById('content-wrapper');
-            
-            // Prevent double reveal
             if (bg.style.opacity === '1') return;
-
             requestAnimationFrame(() => {
-                bg.style.opacity = '1';
-                wrapper.style.opacity = '1';
-                
-                const animatedElements = document.querySelectorAll('.card-animation-target');
-                animatedElements.forEach(el => {
-                    el.style.animationPlayState = 'running';
-                });
-                
-                document.documentElement.style.scrollBehavior = 'smooth';
+                bg.style.opacity = '1'; wrapper.style.opacity = '1';
+                document.querySelectorAll('.card-animation-target').forEach(el => el.style.animationPlayState = 'running');
             });
         }
 
         const initApp = async () => { 
             updateUI(); 
-            window.scrollTo(0, 0);
-            
-            // Safety timeout: If assets take longer than 2.5s, show the app anyway
-            // This fixes the issue where the app gets "stuck" on background color
-            const safetyTimer = setTimeout(() => {
-                revealInterface();
-            }, 2500);
-
-            // Wait for assets (including background wallpaper) to load
+            const safetyTimer = setTimeout(revealInterface, 2500);
             await loadAssets();
-
-            // Clear the safety timer since assets loaded fine
             clearTimeout(safetyTimer);
-            
             revealInterface();
         };
 
-        // Switch to window.load to ensure Fonts and everything else is ready too
         window.addEventListener('load', initApp);
     </script>
 </body>
