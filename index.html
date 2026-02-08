@@ -122,6 +122,7 @@
             -webkit-backdrop-filter: blur(24px) saturate(110%);
             backdrop-filter: blur(24px) saturate(110%); 
             box-shadow: inset 0 0 40px rgba(255, 255, 255, 0.4), 0 25px 50px rgba(0, 0, 0, 0.05);
+            /* This border is 0.5 opacity. We now match the buttons to this. */
             border: 1px solid rgba(255, 255, 255, 0.5);
             border-radius: 36px;
             transform: translateZ(0);
@@ -134,9 +135,8 @@
         .cta-button {
             /* Default: Slightly lighter background for "uplifted" look */
             background-color: rgba(255, 255, 255, 0.12);
-            /* UPDATED: Fused Upwards Look */
-            /* Stronger Top White Inset + Stronger Bottom Black Drop Shadow */
-            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.55), 0 6px 14px rgba(0, 0, 0, 0.25);
+            /* UPDATED: Increased White Line to 0.5 alpha (matches glass border) */
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.5), 0 4px 8px rgba(0, 0, 0, 0.15);
             
             color: #000000; 
             transition: transform 0.1s cubic-bezier(0.25, 0.46, 0.45, 0.94), background-color 0.2s ease, box-shadow 0.2s ease;
@@ -164,8 +164,8 @@
             .cta-button:hover {
                 transform: translateY(-2px) translateZ(0); /* Lift slightly more */
                 background-color: rgba(255, 255, 255, 0.2);
-                /* Hover: Even stronger shadow to simulate lifting */
-                box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.65), 0 8px 18px rgba(0, 0, 0, 0.28);
+                /* Hover: Increased White Line to 0.6 alpha */
+                box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.6), 0 6px 12px rgba(0, 0, 0, 0.2);
             }
         }
         
@@ -184,8 +184,8 @@
         .glass-inset-panel {
             /* Default: Uplifted (Fused Outwards) */
             background-color: rgba(255, 255, 255, 0.12);
-            /* UPDATED: Fused Upwards Look */
-            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.55), 0 6px 14px rgba(0, 0, 0, 0.25);
+            /* UPDATED: Increased White Line to 0.5 alpha (matches glass border) */
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.5), 0 4px 8px rgba(0, 0, 0, 0.15);
             
             border-radius: 20px;
             border: none;
@@ -212,7 +212,7 @@
             .glass-inset-panel.interactive:hover {
                 transform: translateY(-2px) translateZ(0);
                 background-color: rgba(255, 255, 255, 0.15);
-                box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.65), 0 8px 18px rgba(0, 0, 0, 0.28);
+                box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.6), 0 6px 12px rgba(0, 0, 0, 0.2);
             }
         }
 
