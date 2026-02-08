@@ -519,6 +519,7 @@
                         container.style.flexDirection = 'column';
                         container.style.justifyContent = 'center';
                         
+                        // Modified: Added text-base sm:text-lg to make "Copied" bigger on desktop
                         container.innerHTML = `<span class="flex items-center justify-center gap-1 w-full font-bold text-black/80 fade-in-text text-base sm:text-lg">${icon('Check', 'h-5 w-5')} Copied</span>`;
                         
                         setTimeout(() => { 
@@ -554,6 +555,7 @@
 
                     setTimeout(() => {
                         p.classList.remove('text-fade-out');
+                        // Modified: Added text-base to make copied text bigger on mobile
                         p.innerHTML = `<span class="flex items-center justify-center gap-1 w-full fade-in-text text-base">${icon('Check', 'h-4 w-4')} Copied</span>`;
                         
                         setTimeout(() => { 
@@ -581,26 +583,41 @@
 
         const resetApp = () => { file = null; currentFileName = ""; isProcessing = false; isProcessed = false; updateUI(); };
 
+        // New specific handler for the Select File button to fix touch responsiveness
+        const handleSelectFileBtnClick = (event, btnElement) => {
+            event.stopPropagation(); // Prevent the container's click from firing
+            animateAndExecute(btnElement, (done) => {
+                document.getElementById('file-upload-input').click();
+                btnElement.blur(); // Remove focus to prevent sticky hover state on touch
+                done(); 
+            });
+        };
+
+        // Handler for the drop area container
+        const handleDropAreaClick = (event) => {
+            const btn = document.querySelector('#file-drop-area .cta-button');
+            if (btn) {
+                animateAndExecute(btn, (done) => {
+                    document.getElementById('file-upload-input').click();
+                    done(); 
+                });
+            }
+        };
+
         const renderUploadSection = () => {
             const container = document.getElementById('upload-section-content');
             if (!file) {
+                // Modified: Added onclick handlers directly to button and div for better touch response
+                // Added pointer-events-none to text/icon so clicks fall through to the container cleanly
                 container.innerHTML = `
-                    <div id="file-drop-area" class="w-full h-full flex flex-col items-center justify-center text-center cursor-pointer pb-4">
-                        <div class="mb-4">${icon('Upload', 'h-12 w-12')}</div>
-                        <p class="text-lg sm:text-xl font-bold text-black">Upload Your Video File Here</p>
-                        <button class="cta-button mt-6 px-6 py-4 font-bold text-lg">Select File</button>
+                    <div id="file-drop-area" class="w-full h-full flex flex-col items-center justify-center text-center cursor-pointer pb-4" onclick="handleDropAreaClick(event)">
+                        <div class="mb-4 pointer-events-none">${icon('Upload', 'h-12 w-12')}</div>
+                        <p class="text-lg sm:text-xl font-bold text-black pointer-events-none">Upload Your Video File Here</p>
+                        <button class="cta-button mt-6 px-6 py-4 font-bold text-lg" onclick="handleSelectFileBtnClick(event, this)">Select File</button>
                         <input type="file" id="file-upload-input" class="hidden" accept="video/*" onchange="handleFileChange(event)" onclick="event.stopPropagation()"/>
                     </div>`;
                 
-                document.getElementById('file-drop-area').onclick = () => {
-                    const btn = document.querySelector('#file-drop-area .cta-button');
-                    if (btn) {
-                        animateAndExecute(btn, (done) => {
-                            document.getElementById('file-upload-input').click();
-                            done(); 
-                        });
-                    }
-                };
+                // Removed the previous dynamic onclick attachment since we now use inline handlers
             } else {
                 container.innerHTML = `
                     <div class="flex flex-col items-center justify-center h-full w-full pt-4 sm:pt-10">
@@ -614,6 +631,7 @@
                                 </p>
                             </div>
                         </div>
+                        <!-- Modified: Added text-base sm:text-lg to make Analysis Complete text bigger on desktop -->
                         <div class="relative inline-flex items-center justify-center mb-2 font-bold left-[5.3px] text-base sm:text-lg">
                             <div class="absolute right-full top-1/2 -translate-y-1/2 pr-2 flex items-center">
                                 ${!isProcessed ? icon('Loader', 'h-5 w-5') : icon('Check', 'h-5 w-5')}
