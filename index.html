@@ -661,7 +661,9 @@
                     setTimeout(() => {
                         // REPLACEMENT: Use a flex container that fills the card completely
                         // This removes any paragraph margin/line-clamp issues that cause clipping
-                        card.innerHTML = `<div class="w-full h-full flex items-center justify-center fade-in-text"><span class="flex items-center gap-2 font-bold text-black/80 text-[17px]">${icon('Check', 'h-5 w-5')} Copied</span></div>`;
+                        // FIXED: Changed text size to responsive (text-lg sm:text-xl) to fix desktop clipping of fixed pixel text
+                        // ADDED: pb-1 to ensure baseline doesn't get cut
+                        card.innerHTML = `<div class="w-full h-full flex items-center justify-center fade-in-text"><span class="flex items-center gap-2 font-bold text-black/80 text-lg sm:text-xl pb-1 leading-normal">${icon('Check', 'h-5 w-5')} Copied</span></div>`;
                         
                         setTimeout(() => { 
                             const div = card.querySelector('div');
@@ -672,7 +674,7 @@
 
                             setTimeout(() => {
                                 // RESTORE: Put the original P tag back exactly as it was
-                                card.innerHTML = `<p class="text-sm sm:text-base font-bold text-black/90 fade-in-text text-center line-clamp-4">${originalText}</p>`;
+                                card.innerHTML = `<p class="text-sm sm:text-base font-bold text-black/90 fade-in-text text-center line-clamp-4 leading-relaxed">${originalText}</p>`;
                                 card.style.transition = ''; 
                                 if (done) done(); 
                             }, 200);
@@ -749,10 +751,10 @@
             const grid = document.getElementById('titles-grid-container');
             if (!grid) return;
             // FIXED: Changed p-4 to p-3 to reduce padding on mobile
-            // FIXED: Increased h-32 to h-36 to give more vertical space for text, preventing clipping
+            // FIXED: Increased h-36 to sm:h-44 to give even more vertical space for text on desktop
             grid.innerHTML = titles.map((title, index) => `
-                <div id="title-card-${index}" class="glass-inset-panel interactive p-3 sm:p-4 flex flex-col justify-center h-36 sm:h-40" onclick="handleCopyClick(this, '${titlesFull[index].replace(/'/g, "\\'")}', ${index})">
-                    <p class="text-sm sm:text-base font-bold text-black/90 fade-in-text text-center line-clamp-4">${title}</p>
+                <div id="title-card-${index}" class="glass-inset-panel interactive p-3 sm:p-4 flex flex-col justify-center h-36 sm:h-44" onclick="handleCopyClick(this, '${titlesFull[index].replace(/'/g, "\\'")}', ${index})">
+                    <p class="text-sm sm:text-base font-bold text-black/90 fade-in-text text-center line-clamp-4 leading-relaxed">${title}</p>
                 </div>`).join('');
         };
 
