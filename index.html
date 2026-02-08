@@ -45,7 +45,7 @@
             margin: 0;
             padding: 0;
             overscroll-behavior: none;
-            cursor: pointer;
+            /* Removed cursor: pointer to prevent full-screen tap flicker on mobile */
         }
 
         /* --- STIFF STATIC BACKGROUND --- */
@@ -54,22 +54,24 @@
             top: 0; left: 0; right: 0; bottom: 0;
             width: 100%; 
             height: 100%;
-            height: 100lvh; /* Uses Largest Viewport Height to ignore mobile URL bar resizing */
-            min-height: 100%;
             z-index: -1; 
             background-image: url('background.png');
             background-size: cover;
             background-position: center center;
             background-repeat: no-repeat;
+            background-attachment: scroll; /* Scroll is more stable on mobile inside a fixed container */
             opacity: 0; 
             transition: opacity 0.5s ease-out;
             pointer-events: none;
             
-            /* Hardware acceleration to prevent jitter/repainting during zoom */
-            transform: translateZ(0);
-            -webkit-transform: translateZ(0);
-            will-change: transform;
+            /* Hardware acceleration to prevent jitter/repainting during clicks or zoom */
+            transform: translate3d(0, 0, 0);
+            -webkit-transform: translate3d(0, 0, 0);
+            will-change: transform, opacity;
+            -webkit-backface-visibility: hidden;
             backface-visibility: hidden;
+            -webkit-transform-style: preserve-3d;
+            transform-style: preserve-3d;
         }
 
         @media (min-width: 768px) {
@@ -120,16 +122,14 @@
             box-shadow: inset 0 0 40px rgba(255, 255, 255, 0.4), 0 25px 50px rgba(0, 0, 0, 0.05);
             border: 1px solid rgba(255, 255, 255, 0.5);
             border-radius: 36px;
+            /* Help isolate the card's transformation from the background */
             transform: translateZ(0);
         }
 
         /* --- CTA BUTTONS --- */
         .cta-button {
-            /* Default: Slightly lighter background for "uplifted" look */
             background-color: rgba(255, 255, 255, 0.12);
-            /* White highlight above (inset), Shadow below (drop) */
             box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.4), 0 2px 4px rgba(0, 0, 0, 0.1);
-            
             color: #000000; 
             transition: transform 0.1s cubic-bezier(0.25, 0.46, 0.45, 0.94), background-color 0.2s ease, box-shadow 0.2s ease;
             border: none;
@@ -140,8 +140,6 @@
             -webkit-tap-highlight-color: transparent;
         }
 
-        /* CRITICAL FIX: Only apply hover effects on devices with a fine pointer (mouse) */
-        /* This prevents the "white" sticky hover state on touch devices */
         @media (hover: hover) and (pointer: fine) {
             .cta-button:hover {
                 transform: translateY(-1px);
@@ -153,16 +151,12 @@
         .cta-button.active-manual {
             transform: scale(0.96) translateY(1px) !important; 
             background-color: rgba(0, 0, 0, 0.05) !important;
-            
-            /* Active: Shadow above (inner top), White line below (inner bottom) -> Fused Inwards */
             box-shadow: inset 0 3px 6px rgba(0, 0, 0, 0.15), inset 0 -1px 0 rgba(255, 255, 255, 0.3) !important;
-            
             transition: transform 0.05s ease, box-shadow 0.05s ease;
         }
 
-        /* Glass Inset Panel (Title Cards, Description Box, Filename Box) */
+        /* Glass Inset Panel */
         .glass-inset-panel {
-            /* Default: Uplifted (Fused Outwards) */
             background-color: rgba(255, 255, 255, 0.12);
             box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.4), 0 2px 4px rgba(0, 0, 0, 0.1);
             border-radius: 20px;
@@ -175,7 +169,6 @@
             cursor: pointer;
         }
 
-        /* CRITICAL FIX: Only apply hover effects on devices with a fine pointer (mouse) */
         @media (hover: hover) and (pointer: fine) {
             .glass-inset-panel.interactive:hover {
                 transform: translateY(-1px);
@@ -184,21 +177,18 @@
             }
         }
 
-        /* Clicked State: Fused Inwards */
         .glass-inset-panel.interactive.active-state {
             transform: scale(0.98);
             background-color: rgba(0, 0, 0, 0.05);
-            /* Inner shadow top, White line bottom */
             box-shadow: inset 0 3px 6px rgba(0, 0, 0, 0.15), inset 0 -1px 0 rgba(255, 255, 255, 0.3);
         }
         
-        /* Ensure focus doesn't inadvertently trigger hover-like visual states */
         .cta-button:focus, .glass-inset-panel.interactive:focus {
             outline: none;
         }
 
         #description-text-container.interactive.active-state {
-            transform: scale(0.99); /* Reduced scale for large box to prevent heavy shifting */
+            transform: scale(0.99); 
         }
 
         .fade-in-text {
@@ -244,7 +234,6 @@
     <div id="fixed-background"></div>
     <div class="max-w-4xl mx-auto">
         <div class="mb-8 sm:mb-12">
-            <!-- Adjusted sm:py-5 to sm:py-3 for a slightly smaller height on desktop -->
             <header id="app-header" class="glass-card fluid-transition px-3 py-3 sm:px-6 sm:py-3 flex flex-row items-center justify-between pre-load-hidden">
                 <div class="flex items-center space-x-2 sm:space-x-4">
                     <div class="w-[57px] h-[57px] sm:w-[84px] sm:h-[84px] flex-shrink-0 relative left-[5.3px] sm:left-[5.3px]">
@@ -332,7 +321,6 @@
             });
 
             try {
-                // Wait for all assets or a max timeout of 4 seconds (fallback)
                 await Promise.race([
                     Promise.all(promises),
                     new Promise(resolve => setTimeout(resolve, 4000))
@@ -345,18 +333,15 @@
         const initApp = async () => {
             await preloadAssets();
             
-            // Hide Loader
             const loader = document.getElementById('initial-loader');
             if (loader) {
                 loader.style.opacity = '0';
                 loader.style.visibility = 'hidden';
             }
 
-            // Show Wallpaper
             const bg = document.getElementById('fixed-background');
             if (bg) bg.style.opacity = '1';
 
-            // Trigger Entry Animations
             document.getElementById('app-header').classList.remove('pre-load-hidden');
             document.getElementById('app-header').classList.add('card-animate');
             
@@ -372,7 +357,6 @@
         const YOUTUBE_CHANNEL_LINK = "https://www.youtube.com/@fanplusfollow";
         const INSTAGRAM_LINK = "https://www.instagram.com/_manmohit_singh_/";
 
-        // --- ANIMATION HELPER ---
         const animateAndExecute = (element, action) => {
             if (isUIBusy) return; 
             isUIBusy = true;      
@@ -383,7 +367,6 @@
             setTimeout(() => {
                 element.classList.remove(activeClass);
                 
-                // CRITICAL FIX: Temporarily disable pointer events to force-clear sticky :hover states on touch devices
                 if (element) {
                     const originalPointerEvents = element.style.pointerEvents;
                     element.style.pointerEvents = 'none'; 
@@ -392,10 +375,8 @@
                         element.blur();
                     }
                     
-                    // Force browser reflow to clear any stuck states
                     void element.offsetHeight;
 
-                    // Restore interaction capability after a short delay
                     setTimeout(() => {
                         element.style.pointerEvents = originalPointerEvents;
                     }, 350);
@@ -524,11 +505,6 @@
             }, 200);
         };
 
-        const handleRegenerate = () => {
-            currentTitleSetIndex++; currentDescriptionIndex++;
-            generateViralContent(); updateTitlesContent(); updateDescriptionContent();
-        };
-
         const copyToClipboard = (text, index, done) => {
             const tempElement = document.createElement('textarea');
             tempElement.value = text;
@@ -552,8 +528,6 @@
                         container.style.display = 'flex';
                         container.style.flexDirection = 'column';
                         container.style.justifyContent = 'center';
-                        
-                        // Modified: Added text-base sm:text-lg to make "Copied" bigger on desktop
                         container.innerHTML = `<span class="flex items-center justify-center gap-1 w-full font-bold text-black/80 fade-in-text text-base sm:text-lg">${icon('Check', 'h-5 w-5')} Copied</span>`;
                         
                         setTimeout(() => { 
@@ -589,7 +563,6 @@
 
                     setTimeout(() => {
                         p.classList.remove('text-fade-out');
-                        // Modified: Added text-base to make copied text bigger on mobile
                         p.innerHTML = `<span class="flex items-center justify-center gap-1 w-full fade-in-text text-base">${icon('Check', 'h-4 w-4')} Copied</span>`;
                         
                         setTimeout(() => { 
@@ -617,17 +590,15 @@
 
         const resetApp = () => { file = null; currentFileName = ""; isProcessing = false; isProcessed = false; updateUI(); };
 
-        // New specific handler for the Select File button to fix touch responsiveness
         const handleSelectFileBtnClick = (event, btnElement) => {
-            event.stopPropagation(); // Prevent the container's click from firing
+            event.stopPropagation(); 
             animateAndExecute(btnElement, (done) => {
                 document.getElementById('file-upload-input').click();
-                btnElement.blur(); // Remove focus to prevent sticky hover state on touch
+                btnElement.blur(); 
                 done(); 
             });
         };
 
-        // Handler for the drop area container
         const handleDropAreaClick = (event) => {
             const btn = document.querySelector('#file-drop-area .cta-button');
             if (btn) {
@@ -641,8 +612,6 @@
         const renderUploadSection = () => {
             const container = document.getElementById('upload-section-content');
             if (!file) {
-                // Modified: Added onclick handlers directly to button and div for better touch response
-                // Added pointer-events-none to text/icon so clicks fall through to the container cleanly
                 container.innerHTML = `
                     <div id="file-drop-area" class="w-full h-full flex flex-col items-center justify-center text-center cursor-pointer pb-4" onclick="handleDropAreaClick(event)">
                         <div class="mb-4 pointer-events-none">${icon('Upload', 'h-12 w-12')}</div>
@@ -650,8 +619,6 @@
                         <button class="cta-button mt-6 px-6 py-4 font-bold text-lg" onclick="handleSelectFileBtnClick(event, this)">Select File</button>
                         <input type="file" id="file-upload-input" class="hidden" accept="video/*" onchange="handleFileChange(event)" onclick="event.stopPropagation()"/>
                     </div>`;
-                
-                // Removed the previous dynamic onclick attachment since we now use inline handlers
             } else {
                 container.innerHTML = `
                     <div class="flex flex-col items-center justify-center h-full w-full pt-4 sm:pt-10">
@@ -665,7 +632,6 @@
                                 </p>
                             </div>
                         </div>
-                        <!-- Modified: Added text-base sm:text-lg to make Analysis Complete text bigger on desktop -->
                         <div class="relative inline-flex items-center justify-center mb-2 font-bold left-[5.3px] text-base sm:text-lg">
                             <div class="absolute right-full top-1/2 -translate-y-1/2 pr-2 flex items-center">
                                 ${!isProcessed ? icon('Loader', 'h-5 w-5') : icon('Check', 'h-5 w-5')}
@@ -716,7 +682,6 @@
         };
 
         const updateUI = () => { renderUploadSection(); renderResults(); };
-        // initApp is now async and handles preloading
     </script>
 </body>
 </html>
