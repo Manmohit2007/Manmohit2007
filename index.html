@@ -645,8 +645,8 @@
 
                     setTimeout(() => {
                         p.classList.remove('text-fade-out');
-                        // Modified: Increased to text-lg and icon to h-5 w-5 to make copied text slightly bigger
-                        p.innerHTML = `<span class="flex items-center justify-center gap-1 w-full fade-in-text text-lg">${icon('Check', 'h-5 w-5')} Copied</span>`;
+                        // Modified: Changed text-lg (18px) to text-[17px] per request
+                        p.innerHTML = `<span class="flex items-center justify-center gap-1 w-full fade-in-text text-[17px]">${icon('Check', 'h-5 w-5')} Copied</span>`;
                         
                         setTimeout(() => { 
                             const span = p.querySelector('span');
