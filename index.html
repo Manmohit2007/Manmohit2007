@@ -367,6 +367,12 @@
             
             setTimeout(() => {
                 element.classList.remove(activeClass);
+                
+                // Remove focus to prevent sticky hover/focus states that make buttons look "white"
+                if (element && typeof element.blur === 'function') {
+                    element.blur();
+                }
+
                 setTimeout(() => {
                     action(() => { isUIBusy = false; }); 
                 }, 150); 
