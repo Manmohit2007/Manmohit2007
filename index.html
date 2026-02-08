@@ -599,8 +599,8 @@
                         container.style.flexDirection = 'column';
                         container.style.justifyContent = 'center';
                         
-                        // Modified: Changed text size to text-[17px] as requested
-                        container.innerHTML = `<span class="flex items-center justify-center gap-1 w-full font-bold text-black/80 fade-in-text text-[17px] sm:text-[17px]">${icon('Check', 'h-5 w-5')} Copied</span>`;
+                        // Modified: Increased mobile text size from text-base to text-lg
+                        container.innerHTML = `<span class="flex items-center justify-center gap-1 w-full font-bold text-black/80 fade-in-text text-lg sm:text-lg">${icon('Check', 'h-5 w-5')} Copied</span>`;
                         
                         setTimeout(() => { 
                             const span = container.querySelector('span');
