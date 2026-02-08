@@ -52,7 +52,10 @@
         #fixed-background {
             position: fixed;
             top: 0; left: 0; 
-            width: 100%; height: 100%; 
+            width: 100%; 
+            /* Use svh to prevent resizing/jumping when mobile address bar hides */
+            height: 100vh; 
+            height: 100svh; 
             z-index: -1; 
             background-image: url('background.png');
             background-size: cover;
@@ -60,6 +63,7 @@
             background-repeat: no-repeat;
             opacity: 0; 
             transition: opacity 0.5s ease-out;
+            pointer-events: none;
         }
 
         @media (min-width: 768px) {
@@ -462,7 +466,7 @@
             setTimeout(() => {
                 currentDescriptionIndex++;
                 generateViralContent(); 
-                updateDescriptionContent();
+                updateDescriptionContent(); 
                 if (done) done();
             }, 200);
         };
@@ -496,6 +500,7 @@
                         container.style.flexDirection = 'column';
                         container.style.justifyContent = 'center';
                         
+                        // Modified: Added text-base sm:text-lg to make "Copied" bigger on desktop
                         container.innerHTML = `<span class="flex items-center justify-center gap-1 w-full font-bold text-black/80 fade-in-text text-base sm:text-lg">${icon('Check', 'h-5 w-5')} Copied</span>`;
                         
                         setTimeout(() => { 
@@ -565,6 +570,7 @@
                 container.innerHTML = `
                     <div id="file-drop-area" class="w-full h-full flex flex-col items-center justify-center text-center cursor-pointer pb-4">
                         <div class="mb-4">${icon('Upload', 'h-12 w-12')}</div>
+                        <!-- Modified: Added sm:text-xl to make text bigger on desktop -->
                         <p class="text-lg sm:text-xl font-bold text-black">Upload Your Video File Here</p>
                         <button class="cta-button mt-6 px-6 py-4 font-bold text-lg pointer-events-none">Select File</button>
                         <input type="file" id="file-upload-input" class="hidden" accept="video/*" onchange="handleFileChange(event)" onclick="event.stopPropagation()"/>
@@ -592,6 +598,7 @@
                                 </p>
                             </div>
                         </div>
+                        <!-- Modified: Added text-base sm:text-lg to make Analysis Complete text bigger on desktop -->
                         <div class="relative inline-flex items-center justify-center mb-2 font-bold left-[5.3px] text-base sm:text-lg">
                             <div class="absolute right-full top-1/2 -translate-y-1/2 pr-2 flex items-center">
                                 ${!isProcessed ? icon('Loader', 'h-5 w-5') : icon('Check', 'h-5 w-5')}
