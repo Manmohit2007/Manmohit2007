@@ -127,7 +127,7 @@
             border-radius: 36px;
             transform: translateZ(0);
             
-            /* ADDED: Fix for black leaks/jitter */
+            /* ADDED: Fix for black leaks/jitter on main cards too */
             -webkit-backface-visibility: hidden;
             backface-visibility: hidden;
             -webkit-background-clip: padding-box;
@@ -677,8 +677,8 @@
                     setTimeout(() => {
                         // REPLACEMENT: Use a flex container that fills the card completely
                         // This removes any paragraph margin/line-clamp issues that cause clipping
-                        // FIXED: Reverted text size to text-[17px] as requested, removing pb-1 and adding relaxed leading to fix clipping
-                        card.innerHTML = `<div class="w-full h-full flex items-center justify-center fade-in-text"><span class="flex items-center gap-2 font-bold text-black/80 text-[17px] leading-relaxed">${icon('Check', 'h-5 w-5')} Copied</span></div>`;
+                        // FIXED: Reverted text size to text-[17px], added pb-1 back, and switched to leading-snug to ensure it fits and baseline isn't cut
+                        card.innerHTML = `<div class="w-full h-full flex items-center justify-center fade-in-text"><span class="flex items-center gap-2 font-bold text-black/80 text-[17px] leading-snug pb-1">${icon('Check', 'h-5 w-5')} Copied</span></div>`;
                         
                         setTimeout(() => { 
                             const div = card.querySelector('div');
