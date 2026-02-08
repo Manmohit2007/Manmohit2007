@@ -431,8 +431,11 @@
             setTimeout(() => {
                 element.classList.remove(activeClass);
                 
-                // CRITICAL FIX: Temporarily disable pointer events to force-clear sticky :hover states on touch devices
-                if (element) {
+                // CRITICAL FIX: Only apply sticky hover fix (disabling pointer events) on touch devices
+                // On desktop (MacBook), we want immediate return to hover state
+                const isDesktop = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+
+                if (element && !isDesktop) {
                     const originalPointerEvents = element.style.pointerEvents;
                     element.style.pointerEvents = 'none'; 
                     
@@ -447,6 +450,11 @@
                     setTimeout(() => {
                         element.style.pointerEvents = originalPointerEvents;
                     }, 350);
+                } else if (element) {
+                    // On desktop, just remove focus but keep pointer events for immediate hover state
+                    if (typeof element.blur === 'function') {
+                        element.blur();
+                    }
                 }
 
                 setTimeout(() => {
@@ -637,8 +645,8 @@
 
                     setTimeout(() => {
                         p.classList.remove('text-fade-out');
-                        // Modified: Added text-base to make copied text bigger on mobile
-                        p.innerHTML = `<span class="flex items-center justify-center gap-1 w-full fade-in-text text-base">${icon('Check', 'h-4 w-4')} Copied</span>`;
+                        // Modified: Increased to text-lg and icon to h-5 w-5 to make copied text slightly bigger
+                        p.innerHTML = `<span class="flex items-center justify-center gap-1 w-full fade-in-text text-lg">${icon('Check', 'h-5 w-5')} Copied</span>`;
                         
                         setTimeout(() => { 
                             const span = p.querySelector('span');
