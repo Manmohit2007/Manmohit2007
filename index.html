@@ -142,20 +142,28 @@
             cursor: pointer;
             outline: none;
             -webkit-tap-highlight-color: transparent;
+
+            /* iOS Fixes for "Square Cutout" / Highlight artifacts */
+            -webkit-appearance: none;
+            appearance: none;
+            overflow: hidden;
+            transform: translateZ(0); /* Force GPU layer to prevent background leakage */
+            -webkit-mask-image: -webkit-radial-gradient(white, black); /* Strict border-radius enforcement for WebKit */
         }
 
         /* CRITICAL FIX: Only apply hover effects on devices with a fine pointer (mouse) */
         /* This prevents the "white" sticky hover state on touch devices */
         @media (hover: hover) and (pointer: fine) {
             .cta-button:hover {
-                transform: translateY(-1px);
+                transform: translateY(-1px) translateZ(0); /* Maintain translateZ on hover */
                 background-color: rgba(255, 255, 255, 0.2);
                 box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.5), 0 4px 6px rgba(0, 0, 0, 0.12);
             }
         }
         
         .cta-button.active-manual {
-            transform: scale(0.96) translateY(1px) !important; 
+            /* Maintain translateZ on active to prevent clipping pop-in */
+            transform: scale(0.96) translateY(1px) translateZ(0) !important; 
             background-color: rgba(0, 0, 0, 0.05) !important;
             
             /* Active: Shadow above (inner top), White line below (inner bottom) -> Fused Inwards */
@@ -173,6 +181,13 @@
             border: none;
             transition: all 0.15s cubic-bezier(0.25, 0.46, 0.45, 0.94);
             -webkit-tap-highlight-color: transparent;
+            
+            /* iOS Fixes */
+            -webkit-appearance: none;
+            appearance: none;
+            overflow: hidden;
+            transform: translateZ(0);
+            -webkit-mask-image: -webkit-radial-gradient(white, black);
         }
 
         .glass-inset-panel.interactive {
@@ -182,7 +197,7 @@
         /* CRITICAL FIX: Only apply hover effects on devices with a fine pointer (mouse) */
         @media (hover: hover) and (pointer: fine) {
             .glass-inset-panel.interactive:hover {
-                transform: translateY(-1px);
+                transform: translateY(-1px) translateZ(0);
                 background-color: rgba(255, 255, 255, 0.15);
                 box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.5), 0 4px 6px rgba(0, 0, 0, 0.12);
             }
@@ -190,7 +205,7 @@
 
         /* Clicked State: Fused Inwards */
         .glass-inset-panel.interactive.active-state {
-            transform: scale(0.98);
+            transform: scale(0.98) translateZ(0);
             background-color: rgba(0, 0, 0, 0.05);
             /* Inner shadow top, White line bottom */
             box-shadow: inset 0 3px 6px rgba(0, 0, 0, 0.15), inset 0 -1px 0 rgba(255, 255, 255, 0.3);
@@ -586,8 +601,8 @@
                         container.style.flexDirection = 'column';
                         container.style.justifyContent = 'center';
                         
-                        // Modified: Added text-base sm:text-lg to make "Copied" bigger on desktop
-                        container.innerHTML = `<span class="flex items-center justify-center gap-1 w-full font-bold text-black/80 fade-in-text text-base sm:text-lg">${icon('Check', 'h-5 w-5')} Copied</span>`;
+                        // Modified: Increased mobile text size from text-base to text-lg
+                        container.innerHTML = `<span class="flex items-center justify-center gap-1 w-full font-bold text-black/80 fade-in-text text-lg sm:text-lg">${icon('Check', 'h-5 w-5')} Copied</span>`;
                         
                         setTimeout(() => { 
                             const span = container.querySelector('span');
