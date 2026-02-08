@@ -368,14 +368,25 @@
             setTimeout(() => {
                 element.classList.remove(activeClass);
                 
-                // Remove focus to prevent sticky hover/focus states that make buttons look "white"
-                if (element && typeof element.blur === 'function') {
-                    element.blur();
+                // CRITICAL FIX: Temporarily disable pointer events to force-clear sticky :hover states on touch devices
+                // This makes the browser re-evaluate interactions and drops the hover state
+                if (element) {
+                    const originalPointerEvents = element.style.pointerEvents;
+                    element.style.pointerEvents = 'none'; 
+                    
+                    if (typeof element.blur === 'function') {
+                        element.blur();
+                    }
+
+                    // Restore interaction capability after a short delay
+                    setTimeout(() => {
+                        element.style.pointerEvents = originalPointerEvents;
+                    }, 300);
                 }
 
                 setTimeout(() => {
                     action(() => { isUIBusy = false; }); 
-                }, 150); 
+                }, 100); 
             }, 100); 
         };
 
