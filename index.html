@@ -162,6 +162,9 @@
             overflow: hidden;
             transform: translateZ(0); /* Force GPU layer to prevent background leakage */
             
+            /* ADDED: Fix for "Squared Cutout" on iPad (Strictly forces radius clipping) */
+            -webkit-mask-image: -webkit-radial-gradient(white, black);
+            
             /* ADDED: Fix for "Black Leaks" */
             -webkit-backface-visibility: hidden;
             backface-visibility: hidden;
@@ -212,6 +215,9 @@
             
             transform: translateZ(0);
             
+            /* ADDED: Fix for "Squared Cutout" on iPad (Strictly forces radius clipping) */
+            -webkit-mask-image: -webkit-radial-gradient(white, black);
+
             /* FIXED: Removed backface-visibility here to prevent text clipping (the 'C' issue) */
             /* We rely on background-clip and border-transparent for leak prevention on these elements */
             -webkit-background-clip: padding-box;
@@ -677,8 +683,9 @@
                     setTimeout(() => {
                         // REPLACEMENT: Use a flex container that fills the card completely
                         // This removes any paragraph margin/line-clamp issues that cause clipping
-                        // FIXED: Reverted text size to text-[17px], added py-3 (more padding) to expand box, and used leading-relaxed.
-                        card.innerHTML = `<div class="w-full h-full flex items-center justify-center fade-in-text"><span class="flex items-center gap-2 font-bold text-black/80 text-[17px] leading-relaxed py-3 pl-1 pr-2">${icon('Check', 'h-5 w-5')} Copied</span></div>`;
+                        // FIXED: Replaced span with DIV to properly contain block properties.
+                        // FIXED: Used text-[17px] and leading-[1.6] to prevent ascender clipping (the 'C' issue).
+                        card.innerHTML = `<div class="w-full h-full flex items-center justify-center fade-in-text"><div class="flex items-center gap-2 font-bold text-black/80 text-[17px] leading-[1.6]">${icon('Check', 'h-5 w-5')} Copied</div></div>`;
                         
                         setTimeout(() => { 
                             const div = card.querySelector('div');
