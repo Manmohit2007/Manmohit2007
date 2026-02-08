@@ -29,13 +29,16 @@
         }
 
         html {
-            /* Gemini Dark Grey #131314 */
             background-color: #131314; 
             scroll-behavior: smooth;
             height: 100%;
             width: 100%;
             overflow-x: hidden;
+            /* Prevent any rubber-banding or UI shifts */
             overscroll-behavior: none;
+            -webkit-backface-visibility: hidden;
+            backface-visibility: hidden;
+            perspective: 1000px;
         }
 
         body {
@@ -45,26 +48,32 @@
             margin: 0;
             padding: 0;
             overscroll-behavior: none;
-            /* Removed cursor: pointer to prevent full-screen tap flicker on mobile */
         }
 
-        /* --- STIFF STATIC BACKGROUND --- */
+        /* --- STIFF STATIC BACKGROUND (Samsung Internet Optimized) --- */
         #fixed-background {
             position: fixed;
-            top: 0; left: 0; right: 0; bottom: 0;
-            width: 100%; 
-            height: 100%;
+            /* Use "inset" with a negative value to create a "bleed" area.
+               This masks shifts caused by the mobile URL bar appearing/disappearing. */
+            top: -5%;
+            left: -5%;
+            right: -5%;
+            bottom: -5%;
+            width: 110%; 
+            height: 110%;
             z-index: -1; 
             background-image: url('background.png');
             background-size: cover;
             background-position: center center;
             background-repeat: no-repeat;
-            background-attachment: scroll; /* Scroll is more stable on mobile inside a fixed container */
             opacity: 0; 
             transition: opacity 0.5s ease-out;
             pointer-events: none;
             
-            /* Hardware acceleration to prevent jitter/repainting during clicks or zoom */
+            /* Tell the browser this element is strictly isolated from layout shifts */
+            contain: strict;
+            
+            /* Heavy hardware acceleration to lock the layer in place */
             transform: translate3d(0, 0, 0);
             -webkit-transform: translate3d(0, 0, 0);
             will-change: transform, opacity;
@@ -94,7 +103,7 @@
 
         .fluid-transition {
             transition: all 400ms cubic-bezier(0.25, 0.46, 0.45, 0.94);
-            will-change: transform, box-shadow, filter, background-color, color, opacity; 
+            will-change: transform, box-shadow, filter, background-color, opacity; 
         }
 
         /* Entry Animation */
@@ -122,7 +131,6 @@
             box-shadow: inset 0 0 40px rgba(255, 255, 255, 0.4), 0 25px 50px rgba(0, 0, 0, 0.05);
             border: 1px solid rgba(255, 255, 255, 0.5);
             border-radius: 36px;
-            /* Help isolate the card's transformation from the background */
             transform: translateZ(0);
         }
 
@@ -155,7 +163,6 @@
             transition: transform 0.05s ease, box-shadow 0.05s ease;
         }
 
-        /* Glass Inset Panel */
         .glass-inset-panel {
             background-color: rgba(255, 255, 255, 0.12);
             box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.4), 0 2px 4px rgba(0, 0, 0, 0.1);
@@ -183,14 +190,6 @@
             box-shadow: inset 0 3px 6px rgba(0, 0, 0, 0.15), inset 0 -1px 0 rgba(255, 255, 255, 0.3);
         }
         
-        .cta-button:focus, .glass-inset-panel.interactive:focus {
-            outline: none;
-        }
-
-        #description-text-container.interactive.active-state {
-            transform: scale(0.99); 
-        }
-
         .fade-in-text {
             animation: fadeInText 0.4s cubic-bezier(0.4, 0, 0.2, 1) forwards;
         }
@@ -203,14 +202,6 @@
             opacity: 0 !important;
             transform: translateY(-4px) !important;
             transition: opacity 0.2s ease, transform 0.2s ease !important;
-        }
-
-        .no-scrollbar::-webkit-scrollbar {
-            display: none;
-        }
-        .no-scrollbar {
-            -ms-overflow-style: none;
-            scrollbar-width: none;
         }
 
         /* Icon Sizes */
@@ -298,7 +289,6 @@
         let currentTitleSetIndex = 0;
         let currentDescriptionIndex = 0;
 
-        // --- ASSET PRELOADING ---
         const ASSETS_TO_PRELOAD = [
             'https://manmohit2007.github.io/Manmohit2007/brand_logo.png?v=10',
             'https://manmohit2007.github.io/Manmohit2007/youtube.png',
@@ -312,7 +302,7 @@
 
         const preloadAssets = async () => {
             const promises = ASSETS_TO_PRELOAD.map(src => {
-                return new Promise((resolve, reject) => {
+                return new Promise((resolve) => {
                     const img = new Image();
                     img.src = src;
                     img.onload = resolve;
@@ -325,9 +315,7 @@
                     Promise.all(promises),
                     new Promise(resolve => setTimeout(resolve, 4000))
                 ]);
-            } catch (e) {
-                console.warn("Asset preload warning:", e);
-            }
+            } catch (e) {}
         };
 
         const initApp = async () => {
@@ -370,13 +358,8 @@
                 if (element) {
                     const originalPointerEvents = element.style.pointerEvents;
                     element.style.pointerEvents = 'none'; 
-                    
-                    if (typeof element.blur === 'function') {
-                        element.blur();
-                    }
-                    
+                    if (typeof element.blur === 'function') element.blur();
                     void element.offsetHeight;
-
                     setTimeout(() => {
                         element.style.pointerEvents = originalPointerEvents;
                     }, 350);
@@ -417,7 +400,6 @@
         const icon = (name, classes) => {
             const iconMap = {
                 'Upload': `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="${classes}"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" x2="12" y1="3" y2="15"/></svg>`,
-                'Copy': `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="${classes}"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>`,
                 'Check': `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="${classes}"><polyline points="20 6 9 17 4 12"/></svg>`,
                 'RotateCcw': `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="${classes}"><path d="M3 2v6h6"/><path d="M3 13a9 9 0 1 0 3-7.7L3 8"/></svg>`,
                 'Loader': `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="animate-spin ${classes}"><path d="M12 2v4"/><path d="M12 18v4"/><path d="M4.93 4.93l2.83 2.83"/><path d="M16.24 16.24l2.83 2.83"/><path d="M2 12h4"/><path d="M18 12h4"/><path d="M4.93 19.07l2.83-2.83"/><path d="M16.24 7.76l2.83-2.83"/></svg>`
@@ -456,14 +438,10 @@
                 ],
                 descriptions: [
                     `🚀 Unlock the full potential of ${vName} with this comprehensive guide! Whether you're a beginner or a pro, these insights will help you skyrocket your engagement.\n\n📌 IN THIS VIDEO:\n0:00 - Intro\n1:45 - Why ${vName} Matters\n4:20 - Step-by-Step Strategy\n8:15 - Secret Hack Revealed\n10:30 - Final Thoughts\n\n💡 JOIN THE CREATOR COMMUNITY:\nSubscribe here: ${YOUTUBE_CHANNEL_LINK}\nFollow on IG: ${INSTAGRAM_LINK}\n\n👇 QUESTION OF THE DAY:\nWhat's your biggest challenge with ${vName}? Let me know in the comments!\n\n#${vName.replace(/\s+/g, '')} #ContentStrategy #GrowthTips #FanPlusFollow`,
-                    
-                    `😱 You won't believe how much ${vName} can change your channel! I tested this strategy for 30 days and the results were SHOCKING.\n\n🔥 WHAT TO EXPECT:\n- 🎥 Real results from this method\n- 📈 Actionable steps you can take today\n- 🤫 The secret to consistency\n\n✅ STAY CONNECTED:\n📸 Instagram: ${INSTAGRAM_LINK}\n📺 YouTube: ${YOUTUBE_CHANNEL_LINK}\n\n✨ If you enjoyed this video, please hit that LIKE button and SUBSCRIBE for more daily tips!\n\n#Viral #Trending #CreatorEconomy #${vName.replace(/\s+/g, '')}`,
-
-                    `⚡ Want to master ${vName} in record time? This video breaks down exactly what you need to know to get results FAST.\n\nWe cover:\n✅ The basics of ${vName}\n✅ Advanced tips for maximum reach\n✅ Common pitfalls to avoid\n\nDon't forget to LIKE and SUBSCRIBE if you found this helpful! It supports the channel and helps us bring you more value.\n\n🔗 Follow for daily updates:\nIG: ${INSTAGRAM_LINK}\nYT: ${YOUTUBE_CHANNEL_LINK}\n\n#${vName.replace(/\s+/g, '')} #QuickTips #SocialMediaGrowth #FanPlusFollow`,
-
-                    `🧠 Let's dive deep into the analytics behind ${vName}. Why does it work? How does the algorithm treat it? We're answering it all today.\n\n📊 KEY TAKEAWAYS:\n1. The "Hook" Strategy\n2. Retention Hacks\n3. Conversion Tactics\n\nJoin the #FanPlusFollow movement!\n👉 ${YOUTUBE_CHANNEL_LINK}\n👉 ${INSTAGRAM_LINK}\n\nComment "GROWTH" below if you watched until the end!\n\n#${vName.replace(/\s+/g, '')} #Analytics #YouTubeTips #InstagramTips`,
-
-                    `📖 I tried ${vName} so you don't have to... here is what happened. The journey was unexpected, but the lessons are invaluable for any creator trying to grow right now.\n\nTimestamps:\n0:00 - The Experiment\n3:10 - The Struggle\n6:45 - The Breakthrough\n9:00 - The Results\n\nIf you're serious about growth, you need to see this.\n\n🌟 Support the Channel:\nSubscribe: ${YOUTUBE_CHANNEL_LINK}\nFollow: ${INSTAGRAM_LINK}\n\n#${vName.replace(/\s+/g, '')} #CaseStudy #CreatorJourney #FanPlusFollow`
+                    `😱 You won't believe how much ${vName} can change your channel! I tested this strategy for 30 days and the results were SHOCKING.\n\n✅ STAY CONNECTED:\n📸 Instagram: ${INSTAGRAM_LINK}\n📺 YouTube: ${YOUTUBE_CHANNEL_LINK}\n\n#Viral #Trending #CreatorEconomy #${vName.replace(/\s+/g, '')}`,
+                    `⚡ Want to master ${vName} in record time? This video breaks down exactly what you need to know to get results FAST.\n\n🔗 Follow for daily updates:\nIG: ${INSTAGRAM_LINK}\nYT: ${YOUTUBE_CHANNEL_LINK}\n\n#${vName.replace(/\s+/g, '')} #QuickTips #SocialMediaGrowth #FanPlusFollow`,
+                    `🧠 Let's dive deep into the analytics behind ${vName}. Why does it work? How does the algorithm treat it?\n\nJoin the #FanPlusFollow movement!\n👉 ${YOUTUBE_CHANNEL_LINK}\n👉 ${INSTAGRAM_LINK}\n\n#${vName.replace(/\s+/g, '')} #Analytics #YouTubeTips #InstagramTips`,
+                    `📖 I tried ${vName} so you don't have to... here is what happened. The journey was unexpected, but the lessons are invaluable.\n\n🌟 Support the Channel:\nSubscribe: ${YOUTUBE_CHANNEL_LINK}\nFollow: ${INSTAGRAM_LINK}\n\n#${vName.replace(/\s+/g, '')} #CaseStudy #CreatorJourney #FanPlusFollow`
                 ]
             });
             const displayTemplates = getTemplates(displayVideoName);
@@ -475,32 +453,22 @@
         };
 
         const regenerateTitles = (done) => {
-            if (!file || isProcessing) {
-                if (done) done();
-                return;
-            }
+            if (!file || isProcessing) { if (done) done(); return; }
             const elements = document.querySelectorAll('#titles-grid-container .fade-in-text');
             elements.forEach(el => el.classList.add('text-fade-out'));
             setTimeout(() => {
-                currentTitleSetIndex++;
-                generateViralContent(); 
-                updateTitlesContent(); 
+                currentTitleSetIndex++; generateViralContent(); updateTitlesContent(); 
                 if (done) done();
             }, 200);
         };
 
         const regenerateDescription = (done) => {
-            if (!file || isProcessing) {
-                if (done) done();
-                return;
-            }
+            if (!file || isProcessing) { if (done) done(); return; }
             const container = document.getElementById('description-text-container');
             const textEl = container ? container.querySelector('.fade-in-text') : null;
             if (textEl) textEl.classList.add('text-fade-out');
             setTimeout(() => {
-                currentDescriptionIndex++;
-                generateViralContent(); 
-                updateDescriptionContent(); 
+                currentDescriptionIndex++; generateViralContent(); updateDescriptionContent(); 
                 if (done) done();
             }, 200);
         };
@@ -519,40 +487,28 @@
                     container.style.transition = 'none';
                     const currentHeight = container.offsetHeight;
                     container.style.height = `${currentHeight}px`;
-
                     const contentDiv = container.querySelector('div');
-                    
                     if (contentDiv) contentDiv.classList.add('text-fade-out');
-
                     setTimeout(() => {
                         container.style.display = 'flex';
                         container.style.flexDirection = 'column';
                         container.style.justifyContent = 'center';
                         container.innerHTML = `<span class="flex items-center justify-center gap-1 w-full font-bold text-black/80 fade-in-text text-base sm:text-lg">${icon('Check', 'h-5 w-5')} Copied</span>`;
-                        
                         setTimeout(() => { 
                             const span = container.querySelector('span');
-                            if (span) {
-                                span.classList.remove('fade-in-text');
-                                span.classList.add('text-fade-out');
-                            }
-                            
+                            if (span) span.classList.add('text-fade-out');
                             setTimeout(() => {
                                 container.style.display = '';
                                 container.style.flexDirection = '';
                                 container.style.justifyContent = '';
                                 container.style.height = ''; 
                                 container.style.transition = ''; 
-                                
                                 container.innerHTML = `<div class="whitespace-pre-wrap break-words text-xs sm:text-sm font-bold text-black/90 fade-in-text text-left w-full font-sans leading-relaxed pointer-events-none">${description}</div>`;
-                                
                                 if (done) done(); 
                             }, 200); 
                         }, 800); 
                     }, 200); 
-                } else {
-                    if (done) done();
-                }
+                } else if (done) done();
             } else {
                 const card = document.getElementById(`title-card-${index}`);
                 const originalText = titles[index];
@@ -560,18 +516,12 @@
                     card.style.transition = 'none';
                     const p = card.querySelector('p');
                     p.classList.add('text-fade-out');
-
                     setTimeout(() => {
                         p.classList.remove('text-fade-out');
                         p.innerHTML = `<span class="flex items-center justify-center gap-1 w-full fade-in-text text-base">${icon('Check', 'h-4 w-4')} Copied</span>`;
-                        
                         setTimeout(() => { 
                             const span = p.querySelector('span');
-                            if (span) {
-                                span.classList.remove('fade-in-text');
-                                span.classList.add('text-fade-out');
-                            }
-
+                            if (span) span.classList.add('text-fade-out');
                             setTimeout(() => {
                                 p.textContent = originalText;
                                 p.classList.remove('text-fade-out');
@@ -582,9 +532,7 @@
                             }, 200);
                         }, 800);
                     }, 200);
-                } else {
-                    if (done) done();
-                }
+                } else if (done) done();
             }
         };
 
@@ -623,13 +571,8 @@
                 container.innerHTML = `
                     <div class="flex flex-col items-center justify-center h-full w-full pt-4 sm:pt-10">
                         <div class="w-full mb-6 flex justify-center px-1">
-                            <div 
-                                class="glass-inset-panel inline-flex items-center justify-center px-4 py-3 sm:px-6 sm:py-4 max-w-full ${isProcessed ? 'interactive cursor-pointer' : ''}" 
-                                ${isProcessed ? 'onclick="handleResetClick(this)"' : ''}
-                            >
-                                <p class="font-bold text-black/80 truncate text-center gap-2 max-w-[60vw] sm:max-w-lg">
-                                    ${currentFileName}
-                                </p>
+                            <div class="glass-inset-panel inline-flex items-center justify-center px-4 py-3 sm:px-6 sm:py-4 max-w-full ${isProcessed ? 'interactive cursor-pointer' : ''}" ${isProcessed ? 'onclick="handleResetClick(this)"' : ''}>
+                                <p class="font-bold text-black/80 truncate text-center gap-2 max-w-[60vw] sm:max-w-lg">${currentFileName}</p>
                             </div>
                         </div>
                         <div class="relative inline-flex items-center justify-center mb-2 font-bold left-[5.3px] text-base sm:text-lg">
