@@ -52,14 +52,14 @@
         #fixed-background {
             position: fixed;
             top: 0; left: 0; 
-            width: 100%; 
-            /* Use svh to prevent resizing/jumping when mobile address bar hides */
-            height: 100vh; 
-            height: 100svh; 
+            width: 100vw; 
+            height: 100vh;
+            height: 100lvh; 
+            min-height: 100%;
             z-index: -1; 
             background-image: url('background.png');
             background-size: cover;
-            background-position: center;
+            background-position: center center;
             background-repeat: no-repeat;
             opacity: 0; 
             transition: opacity 0.5s ease-out;
@@ -119,10 +119,13 @@
 
         /* --- CTA BUTTONS --- */
         .cta-button {
-            background-color: rgba(0, 0, 0, 0.03);
-            box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.08), 0 1px 0 rgba(255, 255, 255, 0.2);
+            /* Default: Slightly lighter background for "uplifted" look */
+            background-color: rgba(255, 255, 255, 0.12);
+            /* White highlight above (inset), Shadow below (drop) */
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.4), 0 2px 4px rgba(0, 0, 0, 0.1);
+            
             color: #000000; 
-            transition: transform 0.1s cubic-bezier(0.25, 0.46, 0.45, 0.94), background-color 0.2s ease;
+            transition: transform 0.1s cubic-bezier(0.25, 0.46, 0.45, 0.94), background-color 0.2s ease, box-shadow 0.2s ease;
             border: none;
             border-radius: 24px; 
             user-select: none;
@@ -134,24 +137,29 @@
         @media (hover: hover) {
             .cta-button:hover {
                 transform: translateY(-1px);
-                background-color: rgba(0, 0, 0, 0.05);
+                background-color: rgba(255, 255, 255, 0.2);
+                box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.5), 0 4px 6px rgba(0, 0, 0, 0.12);
             }
         }
         
         .cta-button.active-manual {
-            transform: scale(0.92) translateY(2px) !important; 
-            background-color: rgba(0, 0, 0, 0.12) !important;
-            box-shadow: inset 0 4px 10px rgba(0, 0, 0, 0.2);
-            transition: transform 0.05s ease;
+            transform: scale(0.96) translateY(1px) !important; 
+            background-color: rgba(0, 0, 0, 0.05) !important;
+            
+            /* Active: Shadow above (inner top), White line below (inner bottom) -> Fused Inwards */
+            box-shadow: inset 0 3px 6px rgba(0, 0, 0, 0.15), inset 0 -1px 0 rgba(255, 255, 255, 0.3) !important;
+            
+            transition: transform 0.05s ease, box-shadow 0.05s ease;
         }
 
-        /* Glass Inset Panel */
+        /* Glass Inset Panel (Title Cards, Description Box, Filename Box) */
         .glass-inset-panel {
-            background-color: rgba(0, 0, 0, 0.04);
-            box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.1), 0 1px 0 rgba(255, 255, 255, 0.2);
+            /* Default: Uplifted (Fused Outwards) */
+            background-color: rgba(255, 255, 255, 0.12);
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.4), 0 2px 4px rgba(0, 0, 0, 0.1);
             border-radius: 20px;
             border: none;
-            transition: all 0.15s ease;
+            transition: all 0.15s cubic-bezier(0.25, 0.46, 0.45, 0.94);
             -webkit-tap-highlight-color: transparent;
         }
 
@@ -159,13 +167,24 @@
             cursor: pointer;
         }
 
+        @media (hover: hover) {
+            .glass-inset-panel.interactive:hover {
+                transform: translateY(-1px);
+                background-color: rgba(255, 255, 255, 0.15);
+                box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.5), 0 4px 6px rgba(0, 0, 0, 0.12);
+            }
+        }
+
+        /* Clicked State: Fused Inwards */
         .glass-inset-panel.interactive.active-state {
-            transform: scale(0.96);
-            background-color: rgba(0, 0, 0, 0.1);
+            transform: scale(0.98);
+            background-color: rgba(0, 0, 0, 0.05);
+            /* Inner shadow top, White line bottom */
+            box-shadow: inset 0 3px 6px rgba(0, 0, 0, 0.15), inset 0 -1px 0 rgba(255, 255, 255, 0.3);
         }
 
         #description-text-container.interactive.active-state {
-            transform: scale(0.98);
+            transform: scale(0.99); /* Reduced scale for large box to prevent heavy shifting */
         }
 
         .fade-in-text {
@@ -500,7 +519,6 @@
                         container.style.flexDirection = 'column';
                         container.style.justifyContent = 'center';
                         
-                        // Modified: Added text-base sm:text-lg to make "Copied" bigger on desktop
                         container.innerHTML = `<span class="flex items-center justify-center gap-1 w-full font-bold text-black/80 fade-in-text text-base sm:text-lg">${icon('Check', 'h-5 w-5')} Copied</span>`;
                         
                         setTimeout(() => { 
@@ -536,7 +554,6 @@
 
                     setTimeout(() => {
                         p.classList.remove('text-fade-out');
-                        // Modified: Added text-base to make copied text bigger on mobile
                         p.innerHTML = `<span class="flex items-center justify-center gap-1 w-full fade-in-text text-base">${icon('Check', 'h-4 w-4')} Copied</span>`;
                         
                         setTimeout(() => { 
@@ -570,7 +587,6 @@
                 container.innerHTML = `
                     <div id="file-drop-area" class="w-full h-full flex flex-col items-center justify-center text-center cursor-pointer pb-4">
                         <div class="mb-4">${icon('Upload', 'h-12 w-12')}</div>
-                        <!-- Modified: Added sm:text-xl to make text bigger on desktop -->
                         <p class="text-lg sm:text-xl font-bold text-black">Upload Your Video File Here</p>
                         <button class="cta-button mt-6 px-6 py-4 font-bold text-lg pointer-events-none">Select File</button>
                         <input type="file" id="file-upload-input" class="hidden" accept="video/*" onchange="handleFileChange(event)" onclick="event.stopPropagation()"/>
@@ -598,7 +614,6 @@
                                 </p>
                             </div>
                         </div>
-                        <!-- Modified: Added text-base sm:text-lg to make Analysis Complete text bigger on desktop -->
                         <div class="relative inline-flex items-center justify-center mb-2 font-bold left-[5.3px] text-base sm:text-lg">
                             <div class="absolute right-full top-1/2 -translate-y-1/2 pr-2 flex items-center">
                                 ${!isProcessed ? icon('Loader', 'h-5 w-5') : icon('Check', 'h-5 w-5')}
