@@ -549,7 +549,8 @@
         const generateViralContent = () => { 
             if (!file) return;
             const fullVideoName = currentFileName.replace(/\.[^/.]+$/, "");
-            let displayVideoName = fullVideoName.length > 20 ? fullVideoName.substring(0, 20) + "..." : fullVideoName;
+            // FIXED: Increased limit to 55 to prevent aggressive truncation of filenames in the UI
+            let displayVideoName = fullVideoName.length > 55 ? fullVideoName.substring(0, 55) + "..." : fullVideoName;
             const getTemplates = (vName) => ({
                 titles: [
                     [`🔥 ULTIMATE ${vName} Guide! #fanplusfollow`, `📈 ${vName}: How We Went VIRAL! #fanplusfollow`, `🤯 This ${vName} Hack is Insane! #fanplusfollow`],
@@ -678,7 +679,8 @@
                         // REPLACEMENT: Use a flex container that fills the card completely
                         // This removes any paragraph margin/line-clamp issues that cause clipping
                         // FIXED: Reverted text size to text-[17px], added pb-1 back, and switched to leading-snug to ensure it fits and baseline isn't cut
-                        card.innerHTML = `<div class="w-full h-full flex items-center justify-center fade-in-text"><span class="flex items-center gap-2 font-bold text-black/80 text-[17px] leading-snug pb-1">${icon('Check', 'h-5 w-5')} Copied</span></div>`;
+                        // FIXED: Removed pb-1 and used leading-normal for perfect centering without clipping
+                        card.innerHTML = `<div class="w-full h-full flex items-center justify-center fade-in-text"><span class="flex items-center gap-2 font-bold text-black/80 text-[17px] leading-normal">${icon('Check', 'h-5 w-5')} Copied</span></div>`;
                         
                         setTimeout(() => { 
                             const div = card.querySelector('div');
