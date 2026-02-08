@@ -131,8 +131,8 @@
         .cta-button {
             /* Default: Slightly lighter background for "uplifted" look */
             background-color: rgba(255, 255, 255, 0.12);
-            /* White highlight above (inset), STRONGER Shadow below (drop) */
-            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.4), 0 4px 6px rgba(0, 0, 0, 0.1);
+            /* White highlight above (inset), Shadow below (drop) */
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.4), 0 2px 4px rgba(0, 0, 0, 0.1);
             
             color: #000000; 
             transition: transform 0.1s cubic-bezier(0.25, 0.46, 0.45, 0.94), background-color 0.2s ease, box-shadow 0.2s ease;
@@ -157,7 +157,7 @@
             .cta-button:hover {
                 transform: translateY(-1px) translateZ(0); /* Maintain translateZ on hover */
                 background-color: rgba(255, 255, 255, 0.2);
-                box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.5), 0 6px 10px rgba(0, 0, 0, 0.12);
+                box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.5), 0 4px 6px rgba(0, 0, 0, 0.12);
             }
         }
         
@@ -174,9 +174,9 @@
 
         /* Glass Inset Panel (Title Cards, Description Box, Filename Box) */
         .glass-inset-panel {
-            /* Default: Uplifted (Fused Outwards) - Stronger shadow restored */
+            /* Default: Uplifted (Fused Outwards) */
             background-color: rgba(255, 255, 255, 0.12);
-            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.4), 0 4px 6px rgba(0, 0, 0, 0.1);
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.4), 0 2px 4px rgba(0, 0, 0, 0.1);
             border-radius: 20px;
             border: none;
             transition: all 0.15s cubic-bezier(0.25, 0.46, 0.45, 0.94);
@@ -199,7 +199,7 @@
             .glass-inset-panel.interactive:hover {
                 transform: translateY(-1px) translateZ(0);
                 background-color: rgba(255, 255, 255, 0.15);
-                box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.5), 0 6px 10px rgba(0, 0, 0, 0.12);
+                box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.5), 0 4px 6px rgba(0, 0, 0, 0.12);
             }
         }
 
@@ -431,11 +431,8 @@
             setTimeout(() => {
                 element.classList.remove(activeClass);
                 
-                // CRITICAL FIX: Only apply sticky hover fix (disabling pointer events) on touch devices
-                // On desktop (MacBook), we want immediate return to hover state
-                const isDesktop = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
-
-                if (element && !isDesktop) {
+                // CRITICAL FIX: Temporarily disable pointer events to force-clear sticky :hover states on touch devices
+                if (element) {
                     const originalPointerEvents = element.style.pointerEvents;
                     element.style.pointerEvents = 'none'; 
                     
@@ -450,11 +447,6 @@
                     setTimeout(() => {
                         element.style.pointerEvents = originalPointerEvents;
                     }, 350);
-                } else if (element) {
-                    // On desktop, just remove focus but keep pointer events for immediate hover state
-                    if (typeof element.blur === 'function') {
-                        element.blur();
-                    }
                 }
 
                 setTimeout(() => {
@@ -636,30 +628,30 @@
                     if (done) done();
                 }
             } else {
-                // FIXED: Target the Title Card DIV directly to replace content completely
                 const card = document.getElementById(`title-card-${index}`);
                 const originalText = titles[index];
-                
                 if (card) {
                     card.style.transition = 'none';
                     const p = card.querySelector('p');
-                    if(p) p.classList.add('text-fade-out');
+                    p.classList.add('text-fade-out');
 
                     setTimeout(() => {
-                        // REPLACEMENT: Use a flex container that fills the card completely
-                        // This removes any paragraph margin/line-clamp issues that cause clipping
-                        card.innerHTML = `<div class="w-full h-full flex items-center justify-center fade-in-text"><span class="flex items-center gap-2 font-bold text-black/80 text-[17px]">${icon('Check', 'h-5 w-5')} Copied</span></div>`;
+                        p.classList.remove('text-fade-out');
+                        // Modified: Added text-base to make copied text bigger on mobile
+                        p.innerHTML = `<span class="flex items-center justify-center gap-1 w-full fade-in-text text-base">${icon('Check', 'h-4 w-4')} Copied</span>`;
                         
                         setTimeout(() => { 
-                            const div = card.querySelector('div');
-                            if (div) {
-                                div.classList.remove('fade-in-text');
-                                div.classList.add('text-fade-out');
+                            const span = p.querySelector('span');
+                            if (span) {
+                                span.classList.remove('fade-in-text');
+                                span.classList.add('text-fade-out');
                             }
 
                             setTimeout(() => {
-                                // RESTORE: Put the original P tag back exactly as it was
-                                card.innerHTML = `<p class="text-sm sm:text-base font-bold text-black/90 fade-in-text text-center line-clamp-4">${originalText}</p>`;
+                                p.textContent = originalText;
+                                p.classList.remove('text-fade-out');
+                                void p.offsetWidth; 
+                                p.classList.add('fade-in-text');
                                 card.style.transition = ''; 
                                 if (done) done(); 
                             }, 200);
