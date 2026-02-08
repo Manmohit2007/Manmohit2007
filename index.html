@@ -586,8 +586,8 @@
                         container.style.flexDirection = 'column';
                         container.style.justifyContent = 'center';
                         
-                        // Modified: Increased size from text-base to text-lg (approx +2pt) on mobile, and sm:text-xl on desktop
-                        container.innerHTML = `<span class="flex items-center justify-center gap-1 w-full font-bold text-black/80 fade-in-text text-lg sm:text-xl">${icon('Check', 'h-5 w-5')} Copied</span>`;
+                        // Modified: Added text-base sm:text-lg to make "Copied" bigger on desktop
+                        container.innerHTML = `<span class="flex items-center justify-center gap-1 w-full font-bold text-black/80 fade-in-text text-base sm:text-lg">${icon('Check', 'h-5 w-5')} Copied</span>`;
                         
                         setTimeout(() => { 
                             const span = container.querySelector('span');
