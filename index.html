@@ -125,14 +125,18 @@
             border: 1px solid rgba(255, 255, 255, 0.5);
             border-radius: 36px;
             transform: translateZ(0);
+            /* ADDED: Fix for edge jitter */
+            -webkit-backface-visibility: hidden;
+            backface-visibility: hidden;
         }
 
         /* --- CTA BUTTONS --- */
         .cta-button {
             /* Default: Slightly lighter background for "uplifted" look */
             background-color: rgba(255, 255, 255, 0.12);
-            /* White highlight above (inset), Shadow below (drop) */
-            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.4), 0 2px 4px rgba(0, 0, 0, 0.1);
+            /* UPDATED: Fused Upwards Look */
+            /* Stronger Top White Inset + Stronger Bottom Black Drop Shadow */
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.55), 0 6px 14px rgba(0, 0, 0, 0.25);
             
             color: #000000; 
             transition: transform 0.1s cubic-bezier(0.25, 0.46, 0.45, 0.94), background-color 0.2s ease, box-shadow 0.2s ease;
@@ -148,16 +152,20 @@
             appearance: none;
             overflow: hidden;
             transform: translateZ(0); /* Force GPU layer to prevent background leakage */
-            -webkit-mask-image: -webkit-radial-gradient(white, black); /* Strict border-radius enforcement for WebKit */
+            
+            /* ADDED: Fix for "Black Leaks" (Removed mask-image, added backface-visibility) */
+            -webkit-backface-visibility: hidden;
+            backface-visibility: hidden;
         }
 
         /* CRITICAL FIX: Only apply hover effects on devices with a fine pointer (mouse) */
         /* This prevents the "white" sticky hover state on touch devices */
         @media (hover: hover) and (pointer: fine) {
             .cta-button:hover {
-                transform: translateY(-1px) translateZ(0); /* Maintain translateZ on hover */
+                transform: translateY(-2px) translateZ(0); /* Lift slightly more */
                 background-color: rgba(255, 255, 255, 0.2);
-                box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.5), 0 4px 6px rgba(0, 0, 0, 0.12);
+                /* Hover: Even stronger shadow to simulate lifting */
+                box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.65), 0 8px 18px rgba(0, 0, 0, 0.28);
             }
         }
         
@@ -166,7 +174,7 @@
             transform: scale(0.96) translateY(1px) translateZ(0) !important; 
             background-color: rgba(0, 0, 0, 0.05) !important;
             
-            /* Active: Shadow above (inner top), White line below (inner bottom) -> Fused Inwards */
+            /* Active (Pressed): Shadow above (inner top), White line below (inner bottom) -> Fused Inwards */
             box-shadow: inset 0 3px 6px rgba(0, 0, 0, 0.15), inset 0 -1px 0 rgba(255, 255, 255, 0.3) !important;
             
             transition: transform 0.05s ease, box-shadow 0.05s ease;
@@ -176,7 +184,9 @@
         .glass-inset-panel {
             /* Default: Uplifted (Fused Outwards) */
             background-color: rgba(255, 255, 255, 0.12);
-            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.4), 0 2px 4px rgba(0, 0, 0, 0.1);
+            /* UPDATED: Fused Upwards Look */
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.55), 0 6px 14px rgba(0, 0, 0, 0.25);
+            
             border-radius: 20px;
             border: none;
             transition: all 0.15s cubic-bezier(0.25, 0.46, 0.45, 0.94);
@@ -187,7 +197,10 @@
             appearance: none;
             overflow: hidden;
             transform: translateZ(0);
-            -webkit-mask-image: -webkit-radial-gradient(white, black);
+            
+            /* ADDED: Fix for "Black Leaks" (Removed mask-image, added backface-visibility) */
+            -webkit-backface-visibility: hidden;
+            backface-visibility: hidden;
         }
 
         .glass-inset-panel.interactive {
@@ -197,9 +210,9 @@
         /* CRITICAL FIX: Only apply hover effects on devices with a fine pointer (mouse) */
         @media (hover: hover) and (pointer: fine) {
             .glass-inset-panel.interactive:hover {
-                transform: translateY(-1px) translateZ(0);
+                transform: translateY(-2px) translateZ(0);
                 background-color: rgba(255, 255, 255, 0.15);
-                box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.5), 0 4px 6px rgba(0, 0, 0, 0.12);
+                box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.65), 0 8px 18px rgba(0, 0, 0, 0.28);
             }
         }
 
@@ -431,8 +444,11 @@
             setTimeout(() => {
                 element.classList.remove(activeClass);
                 
-                // CRITICAL FIX: Temporarily disable pointer events to force-clear sticky :hover states on touch devices
-                if (element) {
+                // CRITICAL FIX: Only apply sticky hover fix (disabling pointer events) on touch devices
+                // On desktop (MacBook), we want immediate return to hover state
+                const isDesktop = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+
+                if (element && !isDesktop) {
                     const originalPointerEvents = element.style.pointerEvents;
                     element.style.pointerEvents = 'none'; 
                     
@@ -447,6 +463,11 @@
                     setTimeout(() => {
                         element.style.pointerEvents = originalPointerEvents;
                     }, 350);
+                } else if (element) {
+                    // On desktop, just remove focus but keep pointer events for immediate hover state
+                    if (typeof element.blur === 'function') {
+                        element.blur();
+                    }
                 }
 
                 setTimeout(() => {
@@ -628,30 +649,30 @@
                     if (done) done();
                 }
             } else {
+                // FIXED: Target the Title Card DIV directly to replace content completely
                 const card = document.getElementById(`title-card-${index}`);
                 const originalText = titles[index];
+                
                 if (card) {
                     card.style.transition = 'none';
                     const p = card.querySelector('p');
-                    p.classList.add('text-fade-out');
+                    if(p) p.classList.add('text-fade-out');
 
                     setTimeout(() => {
-                        p.classList.remove('text-fade-out');
-                        // Modified: Added text-base to make copied text bigger on mobile
-                        p.innerHTML = `<span class="flex items-center justify-center gap-1 w-full fade-in-text text-base">${icon('Check', 'h-4 w-4')} Copied</span>`;
+                        // REPLACEMENT: Use a flex container that fills the card completely
+                        // This removes any paragraph margin/line-clamp issues that cause clipping
+                        card.innerHTML = `<div class="w-full h-full flex items-center justify-center fade-in-text"><span class="flex items-center gap-2 font-bold text-black/80 text-[17px]">${icon('Check', 'h-5 w-5')} Copied</span></div>`;
                         
                         setTimeout(() => { 
-                            const span = p.querySelector('span');
-                            if (span) {
-                                span.classList.remove('fade-in-text');
-                                span.classList.add('text-fade-out');
+                            const div = card.querySelector('div');
+                            if (div) {
+                                div.classList.remove('fade-in-text');
+                                div.classList.add('text-fade-out');
                             }
 
                             setTimeout(() => {
-                                p.textContent = originalText;
-                                p.classList.remove('text-fade-out');
-                                void p.offsetWidth; 
-                                p.classList.add('fade-in-text');
+                                // RESTORE: Put the original P tag back exactly as it was
+                                card.innerHTML = `<p class="text-sm sm:text-base font-bold text-black/90 fade-in-text text-center line-clamp-4">${originalText}</p>`;
                                 card.style.transition = ''; 
                                 if (done) done(); 
                             }, 200);
@@ -727,8 +748,10 @@
         const updateTitlesContent = () => {
             const grid = document.getElementById('titles-grid-container');
             if (!grid) return;
+            // FIXED: Changed p-4 to p-3 to reduce padding on mobile
+            // FIXED: Increased h-32 to h-36 to give more vertical space for text, preventing clipping
             grid.innerHTML = titles.map((title, index) => `
-                <div id="title-card-${index}" class="glass-inset-panel interactive p-4 flex flex-col justify-center h-32 sm:h-40" onclick="handleCopyClick(this, '${titlesFull[index].replace(/'/g, "\\'")}', ${index})">
+                <div id="title-card-${index}" class="glass-inset-panel interactive p-3 sm:p-4 flex flex-col justify-center h-36 sm:h-40" onclick="handleCopyClick(this, '${titlesFull[index].replace(/'/g, "\\'")}', ${index})">
                     <p class="text-sm sm:text-base font-bold text-black/90 fade-in-text text-center line-clamp-4">${title}</p>
                 </div>`).join('');
         };
