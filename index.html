@@ -645,8 +645,11 @@
 
                     setTimeout(() => {
                         p.classList.remove('text-fade-out');
+                        // Fix: Temporarily remove line-clamp to prevent text clipping of "Copied"
+                        p.classList.remove('line-clamp-4');
                         // Modified: Changed text-lg (18px) to text-[17px] per request
-                        p.innerHTML = `<span class="flex items-center justify-center gap-1 w-full fade-in-text text-[17px]">${icon('Check', 'h-5 w-5')} Copied</span>`;
+                        // Added px-2 to provide horizontal breathing room and prevent edge clipping
+                        p.innerHTML = `<span class="flex items-center justify-center gap-1.5 w-full fade-in-text text-[17px] px-2">${icon('Check', 'h-5 w-5')} Copied</span>`;
                         
                         setTimeout(() => { 
                             const span = p.querySelector('span');
@@ -658,6 +661,8 @@
                             setTimeout(() => {
                                 p.textContent = originalText;
                                 p.classList.remove('text-fade-out');
+                                // Fix: Restore line-clamp
+                                p.classList.add('line-clamp-4');
                                 void p.offsetWidth; 
                                 p.classList.add('fade-in-text');
                                 card.style.transition = ''; 
