@@ -141,7 +141,7 @@
         .cta-button {
             /* Default: Slightly lighter background for "uplifted" look */
             background-color: rgba(255, 255, 255, 0.12);
-            /* UPDATED: Increased White Line to 0.5 alpha (matches glass border) */
+            /* MAINTAINED: Balanced Shadow */
             box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.5), 0 4px 8px rgba(0, 0, 0, 0.15);
             
             color: #000000; 
@@ -162,14 +162,14 @@
             overflow: hidden;
             transform: translateZ(0); /* Force GPU layer to prevent background leakage */
             
-            /* ADDED: Fix for "Squared Cutout" on iPad (Strictly forces radius clipping) */
-            -webkit-mask-image: -webkit-radial-gradient(white, black);
-            
             /* ADDED: Fix for "Black Leaks" */
             -webkit-backface-visibility: hidden;
             backface-visibility: hidden;
             -webkit-background-clip: padding-box;
             background-clip: padding-box;
+            
+            /* ADDED: Fix for "Squared Cutout" on iPad (Strictly forces radius clipping) */
+            -webkit-mask-image: -webkit-radial-gradient(white, black);
         }
 
         /* CRITICAL FIX: Only apply hover effects on devices with a fine pointer (mouse) */
@@ -198,7 +198,7 @@
         .glass-inset-panel {
             /* Default: Uplifted (Fused Outwards) */
             background-color: rgba(255, 255, 255, 0.12);
-            /* UPDATED: Increased White Line to 0.5 alpha (matches glass border) */
+            /* MAINTAINED: Balanced Shadow */
             box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.5), 0 4px 8px rgba(0, 0, 0, 0.15);
             
             border-radius: 20px;
@@ -350,6 +350,7 @@
     </div>
 
     <script>
+        // ... (Strict Zoom Prevention, Asset Preloading, initApp, animation helpers are same as above) ...
         // --- STRICT ZOOM PREVENTION (Cross-Platform) ---
         
         // 1. Prevent standard iOS/Safari gesture zoom
@@ -684,8 +685,9 @@
                         // REPLACEMENT: Use a flex container that fills the card completely
                         // This removes any paragraph margin/line-clamp issues that cause clipping
                         // FIXED: Replaced span with DIV to properly contain block properties.
-                        // FIXED: Used text-[17px] and leading-[1.6] to prevent ascender clipping (the 'C' issue).
-                        card.innerHTML = `<div class="w-full h-full flex items-center justify-center fade-in-text"><div class="flex items-center gap-2 font-bold text-black/80 text-[17px] leading-[1.6]">${icon('Check', 'h-5 w-5')} Copied</div></div>`;
+                        // FIXED: Used text-[17px] and leading-[1.6] + py-2 to prevent ascender clipping (the 'C' issue).
+                        // ADDED: overflow-visible to the outer div as a safeguard.
+                        card.innerHTML = `<div class="w-full h-full flex items-center justify-center fade-in-text overflow-visible"><div class="flex items-center gap-2 font-bold text-black/80 text-[17px] leading-relaxed py-2">${icon('Check', 'h-5 w-5')} Copied</div></div>`;
                         
                         setTimeout(() => { 
                             const div = card.querySelector('div');
