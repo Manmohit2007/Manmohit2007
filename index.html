@@ -51,10 +51,10 @@
         /* --- STIFF STATIC BACKGROUND --- */
         #fixed-background {
             position: fixed;
-            top: 0; left: 0; 
-            width: 100vw; 
-            height: 100vh;
-            height: 100lvh; 
+            top: 0; left: 0; right: 0; bottom: 0;
+            width: 100%; 
+            height: 100%;
+            height: 100lvh; /* Uses Largest Viewport Height to ignore mobile URL bar resizing */
             min-height: 100%;
             z-index: -1; 
             background-image: url('background.png');
@@ -64,6 +64,12 @@
             opacity: 0; 
             transition: opacity 0.5s ease-out;
             pointer-events: none;
+            
+            /* Hardware acceleration to prevent jitter/repainting during zoom */
+            transform: translateZ(0);
+            -webkit-transform: translateZ(0);
+            will-change: transform;
+            backface-visibility: hidden;
         }
 
         @media (min-width: 768px) {
@@ -134,7 +140,9 @@
             -webkit-tap-highlight-color: transparent;
         }
 
-        @media (hover: hover) {
+        /* CRITICAL FIX: Only apply hover effects on devices with a fine pointer (mouse) */
+        /* This prevents the "white" sticky hover state on touch devices */
+        @media (hover: hover) and (pointer: fine) {
             .cta-button:hover {
                 transform: translateY(-1px);
                 background-color: rgba(255, 255, 255, 0.2);
@@ -167,7 +175,8 @@
             cursor: pointer;
         }
 
-        @media (hover: hover) {
+        /* CRITICAL FIX: Only apply hover effects on devices with a fine pointer (mouse) */
+        @media (hover: hover) and (pointer: fine) {
             .glass-inset-panel.interactive:hover {
                 transform: translateY(-1px);
                 background-color: rgba(255, 255, 255, 0.15);
@@ -181,6 +190,11 @@
             background-color: rgba(0, 0, 0, 0.05);
             /* Inner shadow top, White line bottom */
             box-shadow: inset 0 3px 6px rgba(0, 0, 0, 0.15), inset 0 -1px 0 rgba(255, 255, 255, 0.3);
+        }
+        
+        /* Ensure focus doesn't inadvertently trigger hover-like visual states */
+        .cta-button:focus, .glass-inset-panel.interactive:focus {
+            outline: none;
         }
 
         #description-text-container.interactive.active-state {
@@ -230,7 +244,8 @@
     <div id="fixed-background"></div>
     <div class="max-w-4xl mx-auto">
         <div class="mb-8 sm:mb-12">
-            <header id="app-header" class="glass-card fluid-transition px-3 py-3 sm:px-6 sm:py-5 flex flex-row items-center justify-between pre-load-hidden">
+            <!-- Adjusted sm:py-5 to sm:py-3 for a slightly smaller height on desktop -->
+            <header id="app-header" class="glass-card fluid-transition px-3 py-3 sm:px-6 sm:py-3 flex flex-row items-center justify-between pre-load-hidden">
                 <div class="flex items-center space-x-2 sm:space-x-4">
                     <div class="w-[57px] h-[57px] sm:w-[84px] sm:h-[84px] flex-shrink-0 relative left-[5.3px] sm:left-[5.3px]">
                         <img src="https://manmohit2007.github.io/Manmohit2007/brand_logo.png?v=10" alt="Logo" class="w-full h-full object-contain filter drop-shadow-sm">
@@ -369,7 +384,6 @@
                 element.classList.remove(activeClass);
                 
                 // CRITICAL FIX: Temporarily disable pointer events to force-clear sticky :hover states on touch devices
-                // This makes the browser re-evaluate interactions and drops the hover state
                 if (element) {
                     const originalPointerEvents = element.style.pointerEvents;
                     element.style.pointerEvents = 'none'; 
@@ -377,11 +391,14 @@
                     if (typeof element.blur === 'function') {
                         element.blur();
                     }
+                    
+                    // Force browser reflow to clear any stuck states
+                    void element.offsetHeight;
 
                     // Restore interaction capability after a short delay
                     setTimeout(() => {
                         element.style.pointerEvents = originalPointerEvents;
-                    }, 300);
+                    }, 350);
                 }
 
                 setTimeout(() => {
