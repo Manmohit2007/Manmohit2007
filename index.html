@@ -661,9 +661,8 @@
                     setTimeout(() => {
                         // REPLACEMENT: Use a flex container that fills the card completely
                         // This removes any paragraph margin/line-clamp issues that cause clipping
-                        // FIXED: Changed text size to responsive (text-lg sm:text-xl) to fix desktop clipping of fixed pixel text
-                        // ADDED: pb-1 to ensure baseline doesn't get cut
-                        card.innerHTML = `<div class="w-full h-full flex items-center justify-center fade-in-text"><span class="flex items-center gap-2 font-bold text-black/80 text-lg sm:text-xl pb-1 leading-normal">${icon('Check', 'h-5 w-5')} Copied</span></div>`;
+                        // FIXED: Reverted text size to text-[17px] as requested, keeping pb-1 to ensure baseline doesn't get cut
+                        card.innerHTML = `<div class="w-full h-full flex items-center justify-center fade-in-text"><span class="flex items-center gap-2 font-bold text-black/80 text-[17px] pb-1 leading-normal">${icon('Check', 'h-5 w-5')} Copied</span></div>`;
                         
                         setTimeout(() => { 
                             const div = card.querySelector('div');
