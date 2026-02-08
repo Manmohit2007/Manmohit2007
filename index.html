@@ -96,7 +96,7 @@
 
         .fluid-transition {
             transition: all 400ms cubic-bezier(0.25, 0.46, 0.45, 0.94);
-            /* REMOVED: will-change to prevent layer promotion artifacts (black leaks) during resize */
+            will-change: transform, box-shadow, filter, background-color, color, opacity; 
         }
 
         /* Entry Animation */
@@ -122,70 +122,43 @@
             -webkit-backdrop-filter: blur(24px) saturate(110%);
             backdrop-filter: blur(24px) saturate(110%); 
             box-shadow: inset 0 0 40px rgba(255, 255, 255, 0.4), 0 25px 50px rgba(0, 0, 0, 0.05);
-            /* This border is 0.5 opacity. We now match the buttons to this. */
             border: 1px solid rgba(255, 255, 255, 0.5);
             border-radius: 36px;
             transform: translateZ(0);
-            
-            /* ADDED: overflow: hidden to clip background leaks at corners */
-            overflow: hidden;
-
-            /* ADDED: Fix for black leaks/jitter on main cards too */
-            -webkit-backface-visibility: hidden;
-            backface-visibility: hidden;
-            -webkit-background-clip: padding-box;
-            background-clip: padding-box;
         }
 
         /* --- CTA BUTTONS --- */
         .cta-button {
             /* Default: Slightly lighter background for "uplifted" look */
             background-color: rgba(255, 255, 255, 0.12);
-            /* UPDATED: Increased White Line to 0.5 alpha (matches glass border) */
-            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.5), 0 4px 8px rgba(0, 0, 0, 0.15);
+            /* White highlight above (inset), Shadow below (drop) */
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.4), 0 2px 4px rgba(0, 0, 0, 0.1);
             
             color: #000000; 
             transition: transform 0.1s cubic-bezier(0.25, 0.46, 0.45, 0.94), background-color 0.2s ease, box-shadow 0.2s ease;
-            
-            /* FIXED: Replaced border: none with transparent border to prevent edge jitter/leaks */
-            border: 1px solid transparent;
-            
+            border: none;
             border-radius: 24px; 
             user-select: none;
             cursor: pointer;
             outline: none;
             -webkit-tap-highlight-color: transparent;
-
-            /* iOS Fixes for "Square Cutout" / Highlight artifacts */
-            -webkit-appearance: none;
-            appearance: none;
-            overflow: hidden;
-            transform: translateZ(0); /* Force GPU layer to prevent background leakage */
-            
-            /* ADDED: Fix for "Black Leaks" */
-            -webkit-backface-visibility: hidden;
-            backface-visibility: hidden;
-            -webkit-background-clip: padding-box;
-            background-clip: padding-box;
         }
 
         /* CRITICAL FIX: Only apply hover effects on devices with a fine pointer (mouse) */
         /* This prevents the "white" sticky hover state on touch devices */
         @media (hover: hover) and (pointer: fine) {
             .cta-button:hover {
-                transform: translateY(-2px) translateZ(0); /* Lift slightly more */
+                transform: translateY(-1px);
                 background-color: rgba(255, 255, 255, 0.2);
-                /* Hover: Increased White Line to 0.6 alpha */
-                box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.6), 0 6px 12px rgba(0, 0, 0, 0.2);
+                box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.5), 0 4px 6px rgba(0, 0, 0, 0.12);
             }
         }
         
         .cta-button.active-manual {
-            /* Maintain translateZ on active to prevent clipping pop-in */
-            transform: scale(0.96) translateY(1px) translateZ(0) !important; 
+            transform: scale(0.96) translateY(1px) !important; 
             background-color: rgba(0, 0, 0, 0.05) !important;
             
-            /* Active (Pressed): Shadow above (inner top), White line below (inner bottom) -> Fused Inwards */
+            /* Active: Shadow above (inner top), White line below (inner bottom) -> Fused Inwards */
             box-shadow: inset 0 3px 6px rgba(0, 0, 0, 0.15), inset 0 -1px 0 rgba(255, 255, 255, 0.3) !important;
             
             transition: transform 0.05s ease, box-shadow 0.05s ease;
@@ -195,28 +168,11 @@
         .glass-inset-panel {
             /* Default: Uplifted (Fused Outwards) */
             background-color: rgba(255, 255, 255, 0.12);
-            /* UPDATED: Increased White Line to 0.5 alpha (matches glass border) */
-            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.5), 0 4px 8px rgba(0, 0, 0, 0.15);
-            
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.4), 0 2px 4px rgba(0, 0, 0, 0.1);
             border-radius: 20px;
-            
-            /* FIXED: Replaced border: none with transparent border to prevent edge jitter/leaks */
-            border: 1px solid transparent;
-            
+            border: none;
             transition: all 0.15s cubic-bezier(0.25, 0.46, 0.45, 0.94);
             -webkit-tap-highlight-color: transparent;
-            
-            /* iOS Fixes */
-            -webkit-appearance: none;
-            appearance: none;
-            
-            /* REMOVED: transform: translateZ(0) to prevent text clipping (C-letter issue) */
-            /* transform: translateZ(0); */
-            
-            /* FIXED: Removed backface-visibility here to prevent text clipping (the 'C' issue) */
-            /* We rely on background-clip and border-transparent for leak prevention on these elements */
-            -webkit-background-clip: padding-box;
-            background-clip: padding-box;
         }
 
         .glass-inset-panel.interactive {
@@ -226,16 +182,15 @@
         /* CRITICAL FIX: Only apply hover effects on devices with a fine pointer (mouse) */
         @media (hover: hover) and (pointer: fine) {
             .glass-inset-panel.interactive:hover {
-                /* REMOVED: translateZ(0) to prevent text clipping during hover */
-                transform: translateY(-2px);
+                transform: translateY(-1px);
                 background-color: rgba(255, 255, 255, 0.15);
-                box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.6), 0 6px 12px rgba(0, 0, 0, 0.2);
+                box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.5), 0 4px 6px rgba(0, 0, 0, 0.12);
             }
         }
 
         /* Clicked State: Fused Inwards */
         .glass-inset-panel.interactive.active-state {
-            transform: scale(0.98); /* Removed translateZ here too for consistency, though less critical */
+            transform: scale(0.98);
             background-color: rgba(0, 0, 0, 0.05);
             /* Inner shadow top, White line bottom */
             box-shadow: inset 0 3px 6px rgba(0, 0, 0, 0.15), inset 0 -1px 0 rgba(255, 255, 255, 0.3);
@@ -461,11 +416,8 @@
             setTimeout(() => {
                 element.classList.remove(activeClass);
                 
-                // CRITICAL FIX: Only apply sticky hover fix (disabling pointer events) on touch devices
-                // On desktop (MacBook), we want immediate return to hover state
-                const isDesktop = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
-
-                if (element && !isDesktop) {
+                // CRITICAL FIX: Temporarily disable pointer events to force-clear sticky :hover states on touch devices
+                if (element) {
                     const originalPointerEvents = element.style.pointerEvents;
                     element.style.pointerEvents = 'none'; 
                     
@@ -480,11 +432,6 @@
                     setTimeout(() => {
                         element.style.pointerEvents = originalPointerEvents;
                     }, 350);
-                } else if (element) {
-                    // On desktop, just remove focus but keep pointer events for immediate hover state
-                    if (typeof element.blur === 'function') {
-                        element.blur();
-                    }
                 }
 
                 setTimeout(() => {
@@ -550,8 +497,7 @@
         const generateViralContent = () => { 
             if (!file) return;
             const fullVideoName = currentFileName.replace(/\.[^/.]+$/, "");
-            // FIXED: Increased limit to 55 to prevent aggressive truncation of filenames in the UI
-            let displayVideoName = fullVideoName.length > 55 ? fullVideoName.substring(0, 55) + "..." : fullVideoName;
+            let displayVideoName = fullVideoName.length > 20 ? fullVideoName.substring(0, 20) + "..." : fullVideoName;
             const getTemplates = (vName) => ({
                 titles: [
                     [`🔥 ULTIMATE ${vName} Guide! #fanplusfollow`, `📈 ${vName}: How We Went VIRAL! #fanplusfollow`, `🤯 This ${vName} Hack is Insane! #fanplusfollow`],
@@ -667,32 +613,30 @@
                     if (done) done();
                 }
             } else {
-                // FIXED: Target the Title Card DIV directly to replace content completely
                 const card = document.getElementById(`title-card-${index}`);
                 const originalText = titles[index];
-                
                 if (card) {
                     card.style.transition = 'none';
                     const p = card.querySelector('p');
-                    if(p) p.classList.add('text-fade-out');
+                    p.classList.add('text-fade-out');
 
                     setTimeout(() => {
-                        // REPLACEMENT: Use a flex container that fills the card completely
-                        // This removes any paragraph margin/line-clamp issues that cause clipping
-                        // FIXED: Reverted text size to text-[17px], added py-3 (more padding) to expand box, and used leading-relaxed.
-                        // CRITICAL FIX: Changed pl-1 to pl-3 and pr-2 to pr-4 to prevent "C" clipping on desktop
-                        card.innerHTML = `<div class="w-full h-full flex items-center justify-center fade-in-text"><span class="flex items-center gap-2 font-bold text-black/80 text-[17px] leading-relaxed py-3 pl-3 pr-4">${icon('Check', 'h-5 w-5')} Copied</span></div>`;
+                        p.classList.remove('text-fade-out');
+                        // Modified: Added text-base to make copied text bigger on mobile
+                        p.innerHTML = `<span class="flex items-center justify-center gap-1 w-full fade-in-text text-base">${icon('Check', 'h-4 w-4')} Copied</span>`;
                         
                         setTimeout(() => { 
-                            const div = card.querySelector('div');
-                            if (div) {
-                                div.classList.remove('fade-in-text');
-                                div.classList.add('text-fade-out');
+                            const span = p.querySelector('span');
+                            if (span) {
+                                span.classList.remove('fade-in-text');
+                                span.classList.add('text-fade-out');
                             }
 
                             setTimeout(() => {
-                                // RESTORE: Put the original P tag back exactly as it was
-                                card.innerHTML = `<p class="text-sm sm:text-base font-bold text-black/90 fade-in-text text-center line-clamp-4 leading-relaxed">${originalText}</p>`;
+                                p.textContent = originalText;
+                                p.classList.remove('text-fade-out');
+                                void p.offsetWidth; 
+                                p.classList.add('fade-in-text');
                                 card.style.transition = ''; 
                                 if (done) done(); 
                             }, 200);
@@ -742,12 +686,11 @@
                 
                 // Removed the previous dynamic onclick attachment since we now use inline handlers
             } else {
-                // ADDED: overflow-hidden to the glass-inset-panel container here specifically to prevent background leaking
                 container.innerHTML = `
                     <div class="flex flex-col items-center justify-center h-full w-full pt-4 sm:pt-10">
                         <div class="w-full mb-6 flex justify-center px-1">
                             <div 
-                                class="glass-inset-panel overflow-hidden inline-flex items-center justify-center px-4 py-3 sm:px-6 sm:py-4 max-w-full ${isProcessed ? 'interactive cursor-pointer' : ''}" 
+                                class="glass-inset-panel inline-flex items-center justify-center px-4 py-3 sm:px-6 sm:py-4 max-w-full ${isProcessed ? 'interactive cursor-pointer' : ''}" 
                                 ${isProcessed ? 'onclick="handleResetClick(this)"' : ''}
                             >
                                 <p class="font-bold text-black/80 truncate text-center gap-2 max-w-[60vw] sm:max-w-lg">
@@ -769,11 +712,9 @@
         const updateTitlesContent = () => {
             const grid = document.getElementById('titles-grid-container');
             if (!grid) return;
-            // FIXED: Changed p-4 to p-3 to reduce padding on mobile
-            // FIXED: Increased h-36 to sm:h-44 to give even more vertical space for text on desktop
             grid.innerHTML = titles.map((title, index) => `
-                <div id="title-card-${index}" class="glass-inset-panel interactive p-3 sm:p-4 flex flex-col justify-center h-36 sm:h-44" onclick="handleCopyClick(this, '${titlesFull[index].replace(/'/g, "\\'")}', ${index})">
-                    <p class="text-sm sm:text-base font-bold text-black/90 fade-in-text text-center line-clamp-4 leading-relaxed">${title}</p>
+                <div id="title-card-${index}" class="glass-inset-panel interactive p-4 flex flex-col justify-center h-32 sm:h-40" onclick="handleCopyClick(this, '${titlesFull[index].replace(/'/g, "\\'")}', ${index})">
+                    <p class="text-sm sm:text-base font-bold text-black/90 fade-in-text text-center line-clamp-4">${title}</p>
                 </div>`).join('');
         };
 
@@ -781,7 +722,6 @@
             const container = document.getElementById('description-text-container');
             if (container) {
                 container.setAttribute('onclick', `handleCopyClick(this, descriptionFull, 3)`);
-                // FIXED: Added overflow-hidden explicitly here since removed from global class
                 container.className = "glass-inset-panel p-4 interactive cursor-pointer h-[32rem] sm:h-[25rem] overflow-hidden";
                 container.innerHTML = `<div class="whitespace-pre-wrap break-words text-xs sm:text-sm font-bold text-black/90 fade-in-text text-left w-full font-sans leading-relaxed pointer-events-none">${description}</div>`;
             }
@@ -790,7 +730,6 @@
         const renderResults = () => {
             const container = document.getElementById('results-section');
             if (!isProcessed) { container.innerHTML = ''; return; }
-            // FIXED: Added overflow-hidden to the placeholder class string for consistency
             container.innerHTML = `
                 <div class="glass-card p-4 sm:p-6 rounded-[36px] mb-8 sm:mb-12">
                     <div class="flex justify-between items-center mb-6 gap-2">
