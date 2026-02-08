@@ -131,8 +131,8 @@
         .cta-button {
             /* Default: Slightly lighter background for "uplifted" look */
             background-color: rgba(255, 255, 255, 0.12);
-            /* White highlight above (inset), Shadow below (drop) */
-            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.4), 0 2px 4px rgba(0, 0, 0, 0.1);
+            /* White highlight above (inset), STRONGER Shadow below (drop) */
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.4), 0 4px 6px rgba(0, 0, 0, 0.1);
             
             color: #000000; 
             transition: transform 0.1s cubic-bezier(0.25, 0.46, 0.45, 0.94), background-color 0.2s ease, box-shadow 0.2s ease;
@@ -157,7 +157,7 @@
             .cta-button:hover {
                 transform: translateY(-1px) translateZ(0); /* Maintain translateZ on hover */
                 background-color: rgba(255, 255, 255, 0.2);
-                box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.5), 0 4px 6px rgba(0, 0, 0, 0.12);
+                box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.5), 0 6px 10px rgba(0, 0, 0, 0.12);
             }
         }
         
@@ -174,9 +174,9 @@
 
         /* Glass Inset Panel (Title Cards, Description Box, Filename Box) */
         .glass-inset-panel {
-            /* Default: Uplifted (Fused Outwards) */
+            /* Default: Uplifted (Fused Outwards) - Stronger shadow restored */
             background-color: rgba(255, 255, 255, 0.12);
-            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.4), 0 2px 4px rgba(0, 0, 0, 0.1);
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.4), 0 4px 6px rgba(0, 0, 0, 0.1);
             border-radius: 20px;
             border: none;
             transition: all 0.15s cubic-bezier(0.25, 0.46, 0.45, 0.94);
@@ -199,7 +199,7 @@
             .glass-inset-panel.interactive:hover {
                 transform: translateY(-1px) translateZ(0);
                 background-color: rgba(255, 255, 255, 0.15);
-                box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.5), 0 4px 6px rgba(0, 0, 0, 0.12);
+                box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.5), 0 6px 10px rgba(0, 0, 0, 0.12);
             }
         }
 
@@ -636,35 +636,30 @@
                     if (done) done();
                 }
             } else {
+                // FIXED: Target the Title Card DIV directly to replace content completely
                 const card = document.getElementById(`title-card-${index}`);
                 const originalText = titles[index];
+                
                 if (card) {
                     card.style.transition = 'none';
                     const p = card.querySelector('p');
-                    p.classList.add('text-fade-out');
+                    if(p) p.classList.add('text-fade-out');
 
                     setTimeout(() => {
-                        p.classList.remove('text-fade-out');
-                        // Fix: Temporarily remove line-clamp to prevent text clipping of "Copied"
-                        p.classList.remove('line-clamp-4');
-                        // Modified: Changed text-lg (18px) to text-[17px] per request
-                        // Added px-2 to provide horizontal breathing room and prevent edge clipping
-                        p.innerHTML = `<span class="flex items-center justify-center gap-1.5 w-full fade-in-text text-[17px] px-2">${icon('Check', 'h-5 w-5')} Copied</span>`;
+                        // REPLACEMENT: Use a flex container that fills the card completely
+                        // This removes any paragraph margin/line-clamp issues that cause clipping
+                        card.innerHTML = `<div class="w-full h-full flex items-center justify-center fade-in-text"><span class="flex items-center gap-2 font-bold text-black/80 text-[17px]">${icon('Check', 'h-5 w-5')} Copied</span></div>`;
                         
                         setTimeout(() => { 
-                            const span = p.querySelector('span');
-                            if (span) {
-                                span.classList.remove('fade-in-text');
-                                span.classList.add('text-fade-out');
+                            const div = card.querySelector('div');
+                            if (div) {
+                                div.classList.remove('fade-in-text');
+                                div.classList.add('text-fade-out');
                             }
 
                             setTimeout(() => {
-                                p.textContent = originalText;
-                                p.classList.remove('text-fade-out');
-                                // Fix: Restore line-clamp
-                                p.classList.add('line-clamp-4');
-                                void p.offsetWidth; 
-                                p.classList.add('fade-in-text');
+                                // RESTORE: Put the original P tag back exactly as it was
+                                card.innerHTML = `<p class="text-sm sm:text-base font-bold text-black/90 fade-in-text text-center line-clamp-4">${originalText}</p>`;
                                 card.style.transition = ''; 
                                 if (done) done(); 
                             }, 200);
