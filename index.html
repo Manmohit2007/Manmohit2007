@@ -24,7 +24,6 @@
         :root { 
             font-family: 'Inter', sans-serif; 
             box-sizing: border-box;
-            /* Force light mode text rendering (black) even on dark background */
             color-scheme: only light; 
             -webkit-tap-highlight-color: transparent;
         }
@@ -42,7 +41,7 @@
         body {
             background-color: transparent; 
             min-height: 100vh;
-            color: #000000; /* Black text as requested */
+            color: #000000;
             margin: 0;
             padding: 0;
             overscroll-behavior: none;
@@ -55,7 +54,7 @@
             top: 0; left: 0; right: 0; bottom: 0;
             width: 100vw; height: 100vh;
             z-index: -1; 
-            /* Removed white overlay to allow dark aesthetic, kept image loader */
+            /* Kept image loader logic */
             background-image: url('background.png');
             background-size: cover;
             background-position: center;
@@ -108,22 +107,21 @@
 
         .pre-load-hidden { opacity: 0; }
 
-        /* Glass Card - Updated to Dark Tint based on #131314 */
+        /* Glass Card - REVERTED TO PREVIOUS LIGHT STYLE */
         .glass-card {
-            /* Using 19, 19, 20 which is #131314 in RGB */
-            background-color: rgba(19, 19, 20, 0.2); 
+            background-color: rgba(255, 255, 255, 0.15);
             -webkit-backdrop-filter: blur(24px) saturate(110%);
             backdrop-filter: blur(24px) saturate(110%); 
-            box-shadow: inset 0 0 40px rgba(255, 255, 255, 0.05), 0 25px 50px rgba(0, 0, 0, 0.3);
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: inset 0 0 40px rgba(255, 255, 255, 0.4), 0 25px 50px rgba(0, 0, 0, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.5);
             border-radius: 36px;
             transform: translateZ(0);
         }
 
-        /* --- CTA BUTTONS --- */
+        /* --- CTA BUTTONS - REVERTED TO PREVIOUS STYLE --- */
         .cta-button {
-            background-color: rgba(255, 255, 255, 0.1); /* Slightly lighter for visibility on dark */
-            box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.08), 0 1px 0 rgba(255, 255, 255, 0.05);
+            background-color: rgba(0, 0, 0, 0.03);
+            box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.08), 0 1px 0 rgba(255, 255, 255, 0.2);
             color: #000000; 
             transition: transform 0.1s cubic-bezier(0.25, 0.46, 0.45, 0.94), background-color 0.2s ease;
             border: none;
@@ -137,20 +135,21 @@
         @media (hover: hover) {
             .cta-button:hover {
                 transform: translateY(-1px);
-                background-color: rgba(255, 255, 255, 0.15);
+                background-color: rgba(0, 0, 0, 0.05);
             }
         }
         
         .cta-button.active-manual {
             transform: scale(0.92) translateY(2px) !important; 
-            background-color: rgba(0, 0, 0, 0.2) !important;
+            background-color: rgba(0, 0, 0, 0.12) !important;
             box-shadow: inset 0 4px 10px rgba(0, 0, 0, 0.2);
             transition: transform 0.05s ease;
         }
 
+        /* Glass Inset Panel - REVERTED TO PREVIOUS STYLE */
         .glass-inset-panel {
-            background-color: rgba(19, 19, 20, 0.15); /* Dark tint */
-            box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.1), 0 1px 0 rgba(255, 255, 255, 0.05);
+            background-color: rgba(0, 0, 0, 0.04);
+            box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.1), 0 1px 0 rgba(255, 255, 255, 0.2);
             border-radius: 20px;
             border: none;
             transition: all 0.15s ease;
@@ -163,7 +162,7 @@
 
         .glass-inset-panel.interactive.active-state {
             transform: scale(0.96);
-            background-color: rgba(0, 0, 0, 0.2);
+            background-color: rgba(0, 0, 0, 0.1);
         }
 
         #description-text-container.interactive.active-state {
