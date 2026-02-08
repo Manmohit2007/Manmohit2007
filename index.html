@@ -125,10 +125,10 @@
 
         /* --- CTA BUTTONS --- */
         .cta-button {
-            /* Default: Fused Inwards (Recessed) */
-            background-color: rgba(0, 0, 0, 0.06); /* Darker, transparent black for the "hole" look */
-            /* Inner shadow at top (depth), Light edge at bottom (highlight) */
-            box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.15), inset 0 -1px 0 rgba(255, 255, 255, 0.3);
+            /* Default: Slightly lighter background for "uplifted" look */
+            background-color: rgba(255, 255, 255, 0.12);
+            /* White highlight above (inset), Shadow below (drop) */
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.4), 0 2px 4px rgba(0, 0, 0, 0.1);
             
             color: #000000; 
             transition: transform 0.1s cubic-bezier(0.25, 0.46, 0.45, 0.94), background-color 0.2s ease, box-shadow 0.2s ease;
@@ -140,36 +140,31 @@
             -webkit-tap-highlight-color: transparent;
         }
 
-        /* Hover state for desktop */
+        /* CRITICAL FIX: Only apply hover effects on devices with a fine pointer (mouse) */
+        /* This prevents the "white" sticky hover state on touch devices */
         @media (hover: hover) and (pointer: fine) {
             .cta-button:hover {
-                /* Slightly deeper recession on hover */
-                background-color: rgba(0, 0, 0, 0.1);
-                box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.2), inset 0 -1px 0 rgba(255, 255, 255, 0.3);
+                transform: translateY(-1px);
+                background-color: rgba(255, 255, 255, 0.2);
+                box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.5), 0 4px 6px rgba(0, 0, 0, 0.12);
             }
         }
         
         .cta-button.active-manual {
-            /* Active/Clicked: Fused Inwards EVEN MORE (Deep Recess) */
-            transform: scale(0.96) !important; 
-            background-color: rgba(0, 0, 0, 0.2) !important; /* Much darker background */
+            transform: scale(0.96) translateY(1px) !important; 
+            background-color: rgba(0, 0, 0, 0.05) !important;
             
-            /* Stronger, deeper inner shadow to simulate being pressed deep into the surface */
-            box-shadow: inset 0 4px 12px rgba(0, 0, 0, 0.3), inset 0 -1px 0 rgba(255, 255, 255, 0.1) !important;
+            /* Active: Shadow above (inner top), White line below (inner bottom) -> Fused Inwards */
+            box-shadow: inset 0 3px 6px rgba(0, 0, 0, 0.15), inset 0 -1px 0 rgba(255, 255, 255, 0.3) !important;
             
-            border: none !important;
-            outline: none !important;
-            transition: transform 0.05s ease, background-color 0.05s ease, box-shadow 0.05s ease;
+            transition: transform 0.05s ease, box-shadow 0.05s ease;
         }
 
         /* Glass Inset Panel (Title Cards, Description Box, Filename Box) */
-        /* UPDATED: To match the fused inwards style of buttons */
         .glass-inset-panel {
-            /* Default: Fused Inwards (Recessed) */
-            background-color: rgba(0, 0, 0, 0.06);
-            /* Inner shadow at top (depth), Light edge at bottom (highlight) */
-            box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.15), inset 0 -1px 0 rgba(255, 255, 255, 0.3);
-            
+            /* Default: Uplifted (Fused Outwards) */
+            background-color: rgba(255, 255, 255, 0.12);
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.4), 0 2px 4px rgba(0, 0, 0, 0.1);
             border-radius: 20px;
             border: none;
             transition: all 0.15s cubic-bezier(0.25, 0.46, 0.45, 0.94);
@@ -184,22 +179,17 @@
         @media (hover: hover) and (pointer: fine) {
             .glass-inset-panel.interactive:hover {
                 transform: translateY(-1px);
-                /* Slightly deeper recession on hover */
-                background-color: rgba(0, 0, 0, 0.1);
-                box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.2), inset 0 -1px 0 rgba(255, 255, 255, 0.3);
+                background-color: rgba(255, 255, 255, 0.15);
+                box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.5), 0 4px 6px rgba(0, 0, 0, 0.12);
             }
         }
 
-        /* Clicked State: Deep Recess (Matching Buttons) */
+        /* Clicked State: Fused Inwards */
         .glass-inset-panel.interactive.active-state {
             transform: scale(0.98);
-            background-color: rgba(0, 0, 0, 0.2) !important;
-            
-            /* Stronger, deeper inner shadow */
-            box-shadow: inset 0 4px 12px rgba(0, 0, 0, 0.3), inset 0 -1px 0 rgba(255, 255, 255, 0.1) !important;
-            
-            border: none !important;
-            outline: none !important;
+            background-color: rgba(0, 0, 0, 0.05);
+            /* Inner shadow top, White line bottom */
+            box-shadow: inset 0 3px 6px rgba(0, 0, 0, 0.15), inset 0 -1px 0 rgba(255, 255, 255, 0.3);
         }
         
         /* Ensure focus doesn't inadvertently trigger hover-like visual states */
@@ -711,14 +701,14 @@
                 <div class="glass-card p-4 sm:p-6 rounded-[36px] mb-8 sm:mb-12">
                     <div class="flex justify-between items-center mb-6 gap-2">
                         <h2 class="text-xl sm:text-3xl font-bold flex items-center gap-1 sm:gap-2"><img src="https://manmohit2007.github.io/Manmohit2007/like.png" class="header-icon"> <span class="relative -left-[9px]">Titles</span></h2>
-                        <button onclick="handleRegenerateTitlesClick(this)" class="cta-button text-xs sm:text-sm px-3 py-2 sm:px-4 sm:py-2 font-bold flex items-center shrink-0" style="border-radius: 15px;">${icon('RotateCcw', 'mr-1 sm:mr-2 h-3 w-3 sm:h-4 sm:w-4')} Regenerate</button>
+                        <button onclick="handleRegenerateTitlesClick(this)" class="cta-button text-xs sm:text-sm px-3 py-2 sm:px-4 sm:py-2 font-bold flex items-center shrink-0" style="border-radius: 14px;">${icon('RotateCcw', 'mr-1 sm:mr-2 h-3 w-3 sm:h-4 sm:w-4')} Regenerate</button>
                     </div>
                     <div id="titles-grid-container" class="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6"></div>
                 </div>
                 <div class="glass-card p-4 sm:p-6 rounded-[36px]">
                     <div class="flex justify-between items-center mb-4 gap-2">
                         <h2 class="text-xl sm:text-3xl font-bold flex items-center gap-1 sm:gap-2"><img src="https://manmohit2007.github.io/Manmohit2007/shorts.png" class="shorts-icon"> <span class="relative -left-[3px]">Description</span></h2>
-                        <button onclick="handleRegenerateDescriptionClick(this)" class="cta-button text-xs sm:text-sm px-3 py-2 sm:px-4 sm:py-2 font-bold flex items-center shrink-0" style="border-radius: 15px;">${icon('RotateCcw', 'mr-1 sm:mr-2 h-3 w-3 sm:h-4 sm:w-4')} Regenerate</button>
+                        <button onclick="handleRegenerateDescriptionClick(this)" class="cta-button text-xs sm:text-sm px-3 py-2 sm:px-4 sm:py-2 font-bold flex items-center shrink-0" style="border-radius: 14px;">${icon('RotateCcw', 'mr-1 sm:mr-2 h-3 w-3 sm:h-4 sm:w-4')} Regenerate</button>
                     </div>
                     <div id="description-text-container" class="glass-inset-panel p-4 interactive cursor-pointer h-[32rem] sm:h-[25rem] overflow-hidden"></div>
                 </div>`;
