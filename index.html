@@ -96,7 +96,7 @@
 
         .fluid-transition {
             transition: all 400ms cubic-bezier(0.25, 0.46, 0.45, 0.94);
-            will-change: transform, box-shadow, filter, background-color, color, opacity; 
+            /* REMOVED: will-change to prevent layer promotion artifacts (black leaks) during resize */
         }
 
         /* Entry Animation */
@@ -127,6 +127,9 @@
             border-radius: 36px;
             transform: translateZ(0);
             
+            /* ADDED: overflow: hidden to clip background leaks at corners */
+            overflow: hidden;
+
             /* ADDED: Fix for black leaks/jitter on main cards too */
             -webkit-backface-visibility: hidden;
             backface-visibility: hidden;
@@ -678,9 +681,8 @@
                     setTimeout(() => {
                         // REPLACEMENT: Use a flex container that fills the card completely
                         // This removes any paragraph margin/line-clamp issues that cause clipping
-                        // FIXED: Reverted text size to text-[17px], added pb-1 back, and switched to leading-snug to ensure it fits and baseline isn't cut
-                        // FIXED: Removed pb-1 and used leading-normal for perfect centering without clipping
-                        card.innerHTML = `<div class="w-full h-full flex items-center justify-center fade-in-text"><span class="flex items-center gap-2 font-bold text-black/80 text-[17px] leading-normal">${icon('Check', 'h-5 w-5')} Copied</span></div>`;
+                        // FIXED: Reverted text size to text-[17px], added py-2 back to expand box, and switched to leading-relaxed to ensure it fits and baseline isn't cut
+                        card.innerHTML = `<div class="w-full h-full flex items-center justify-center fade-in-text"><span class="flex items-center gap-2 font-bold text-black/80 text-[17px] leading-relaxed py-2 pl-1 pr-2">${icon('Check', 'h-5 w-5')} Copied</span></div>`;
                         
                         setTimeout(() => { 
                             const div = card.querySelector('div');
@@ -741,11 +743,12 @@
                 
                 // Removed the previous dynamic onclick attachment since we now use inline handlers
             } else {
+                // ADDED: overflow-hidden to the glass-inset-panel container here specifically to prevent background leaking
                 container.innerHTML = `
                     <div class="flex flex-col items-center justify-center h-full w-full pt-4 sm:pt-10">
                         <div class="w-full mb-6 flex justify-center px-1">
                             <div 
-                                class="glass-inset-panel inline-flex items-center justify-center px-4 py-3 sm:px-6 sm:py-4 max-w-full ${isProcessed ? 'interactive cursor-pointer' : ''}" 
+                                class="glass-inset-panel overflow-hidden inline-flex items-center justify-center px-4 py-3 sm:px-6 sm:py-4 max-w-full ${isProcessed ? 'interactive cursor-pointer' : ''}" 
                                 ${isProcessed ? 'onclick="handleResetClick(this)"' : ''}
                             >
                                 <p class="font-bold text-black/80 truncate text-center gap-2 max-w-[60vw] sm:max-w-lg">
