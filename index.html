@@ -138,8 +138,8 @@
         .cta-button {
             /* Default: Slightly lighter background for "uplifted" look */
             background-color: rgba(255, 255, 255, 0.12);
-            /* White highlight above (inset), Shadow below (drop) - UPDATED: Increased shadow Y and Opacity */
-            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.4), 0 4px 6px rgba(0, 0, 0, 0.15);
+            /* White highlight above (inset), Shadow below (drop) */
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.4), 0 2px 4px rgba(0, 0, 0, 0.1);
             
             color: #000000; 
             transition: transform 0.1s cubic-bezier(0.25, 0.46, 0.45, 0.94), background-color 0.2s ease, box-shadow 0.2s ease;
@@ -158,8 +158,7 @@
             .cta-button:hover {
                 transform: translateY(-1px);
                 background-color: rgba(255, 255, 255, 0.2);
-                /* UPDATED: Increased hover shadow to match new base intensity */
-                box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.5), 0 6px 10px rgba(0, 0, 0, 0.18);
+                box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.5), 0 4px 6px rgba(0, 0, 0, 0.12);
             }
         }
         
@@ -177,8 +176,7 @@
         .glass-inset-panel {
             /* Default: Uplifted (Fused Outwards) */
             background-color: rgba(255, 255, 255, 0.12);
-            /* UPDATED: Increased shadow Y and Opacity */
-            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.4), 0 4px 6px rgba(0, 0, 0, 0.15);
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.4), 0 2px 4px rgba(0, 0, 0, 0.1);
             border-radius: 20px;
             border: none;
             transition: all 0.15s cubic-bezier(0.25, 0.46, 0.45, 0.94);
@@ -195,8 +193,7 @@
             .glass-inset-panel.interactive:hover {
                 transform: translateY(-1px);
                 background-color: rgba(255, 255, 255, 0.15);
-                /* UPDATED: Increased hover shadow to match new base intensity */
-                box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.5), 0 6px 10px rgba(0, 0, 0, 0.18);
+                box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.5), 0 4px 6px rgba(0, 0, 0, 0.12);
             }
         }
 
