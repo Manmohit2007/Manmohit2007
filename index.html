@@ -665,23 +665,46 @@
 
         // New specific handler for the Select File button to fix touch responsiveness
         const handleSelectFileBtnClick = (event, btnElement) => {
-            event.stopPropagation(); // Prevent the container's click from firing
-            animateAndExecute(btnElement, (done) => {
-                document.getElementById('file-upload-input').click();
-                btnElement.blur(); // Remove focus to prevent sticky hover state on touch
-                done(); 
-            });
+            event.stopPropagation();
+            
+            // 1. Trigger Visual Animation (Non-blocking)
+            // We duplicate the logic of animateAndExecute slightly to avoid the blocking callback structure
+            // or just use it for visuals.
+            if (!isUIBusy) {
+                isUIBusy = true;
+                const activeClass = 'active-manual';
+                btnElement.classList.add(activeClass);
+                
+                setTimeout(() => {
+                    btnElement.classList.remove(activeClass);
+                    if (btnElement) btnElement.blur();
+                    isUIBusy = false;
+                }, 200);
+            }
+
+            // 2. Trigger File Dialog IMMEDIATELY (Critical for iOS)
+            // Do not put this inside a setTimeout
+            document.getElementById('file-upload-input').click();
         };
 
         // Handler for the drop area container
         const handleDropAreaClick = (event) => {
+            // Same logic for the container click
             const btn = document.querySelector('#file-drop-area .cta-button');
-            if (btn) {
-                animateAndExecute(btn, (done) => {
-                    document.getElementById('file-upload-input').click();
-                    done(); 
-                });
+            
+            // Visuals on the button
+            if (btn && !isUIBusy) {
+                isUIBusy = true;
+                const activeClass = 'active-manual';
+                btn.classList.add(activeClass);
+                setTimeout(() => {
+                    btn.classList.remove(activeClass);
+                    isUIBusy = false; 
+                }, 200);
             }
+
+            // Logic immediately
+            document.getElementById('file-upload-input').click();
         };
 
         const renderUploadSection = () => {
