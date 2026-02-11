@@ -29,17 +29,9 @@
         }
 
         html {
-            /* Gemini Dark Grey #131314 */
             background-color: #131314; 
             scroll-behavior: smooth;
-            
-            /* CRITICAL FIX: Removed height: 100% and overscroll-behavior constraints */
-            /* This ensures the document height grows with content, allowing scrolling */
             overflow-x: hidden;
-            
-            /* --- ZOOM RESTRICTION (CSS) --- */
-            /* touch-action: pan-x pan-y disables pinch-zoom and double-tap zoom */
-            /* while still allowing standard scrolling */
             touch-action: pan-x pan-y;
         }
 
@@ -53,13 +45,12 @@
             position: relative;
         }
 
-        /* --- STIFF STATIC BACKGROUND --- */
         #fixed-background {
             position: fixed;
             top: 0; left: 0; right: 0; bottom: 0;
             width: 100%; 
-            height: 100vh; /* Fallback */
-            height: 100lvh; /* Uses Largest Viewport Height to ignore mobile URL bar resizing */
+            height: 100vh;
+            height: 100lvh;
             z-index: -1; 
             background-image: url('background.png');
             background-size: cover;
@@ -68,13 +59,11 @@
             opacity: 0; 
             transition: opacity 0.5s ease-out;
             pointer-events: none;
-            
-            /* Hardware acceleration to prevent jitter/repainying during zoom */
             transform: translateZ(0);
             -webkit-transform: translateZ(0);
             will-change: transform;
             backface-visibility: hidden;
-            }
+        }
 
         @media (min-width: 768px) {
             #fixed-background {
@@ -82,7 +71,6 @@
             }
         }
 
-        /* Loading Screen */
         #initial-loader {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
@@ -99,7 +87,6 @@
             will-change: transform, box-shadow, filter, background-color, color, opacity; 
         }
 
-        /* Entry Animation */
         @keyframes spiral-entry {
             0% { opacity: 0; transform: perspective(1000px) scale(0.95) translateY(20px); filter: blur(10px); }
             100% { opacity: 1; transform: perspective(1000px) scale(1) translateY(0); filter: blur(0); }
@@ -116,7 +103,6 @@
 
         .pre-load-hidden { opacity: 0; }
 
-        /* Glass Card */
         .glass-card {
             background-color: rgba(255, 255, 255, 0.15);
             -webkit-backdrop-filter: blur(24px) saturate(110%);
@@ -124,23 +110,17 @@
             box-shadow: inset 0 0 40px rgba(255, 255, 255, 0.4), 0 25px 50px rgba(0, 0, 0, 0.05);
             border: 1px solid rgba(255, 255, 255, 0.5);
             border-radius: 36px;
-            
-            /* Stability Fixes (Jitter/Leak) */
-            transform: translateZ(0); /* Force hardware layer */
+            transform: translateZ(0);
             -webkit-transform: translateZ(0);
-            backface-visibility: hidden; /* Prevent flickering */
+            backface-visibility: hidden;
             -webkit-backface-visibility: hidden;
-            background-clip: padding-box; /* Prevent bg bleed under border */
-            overflow: hidden; /* Ensure content obeys border radius */
+            background-clip: padding-box;
+            overflow: hidden;
         }
 
-        /* --- CTA BUTTONS --- */
         .cta-button {
-            /* Default: Slightly lighter background for "uplifted" look */
             background-color: rgba(255, 255, 255, 0.12);
-            /* White highlight above (inset), Shadow below (drop) */
             box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.4), 0 2px 4px rgba(0, 0, 0, 0.1);
-            
             color: #000000; 
             transition: transform 0.1s cubic-bezier(0.25, 0.46, 0.45, 0.94), background-color 0.2s ease, box-shadow 0.2s ease;
             border: none;
@@ -149,11 +129,9 @@
             cursor: pointer;
             outline: none;
             -webkit-tap-highlight-color: transparent;
-            background-clip: padding-box; /* Clean borders */
+            background-clip: padding-box;
         }
 
-        /* CRITICAL FIX: Only apply hover effects on devices with a fine pointer (mouse) */
-        /* This prevents the "white" sticky hover state on touch devices */
         @media (hover: hover) and (pointer: fine) {
             .cta-button:hover {
                 transform: translateY(-1px);
@@ -165,30 +143,24 @@
         .cta-button.active-manual {
             transform: scale(0.96) translateY(1px) !important; 
             background-color: rgba(0, 0, 0, 0.05) !important;
-            
-            /* Active: Shadow above (inner top), White line below (inner bottom) -> Fused Inwards */
             box-shadow: inset 0 3px 6px rgba(0, 0, 0, 0.15), inset 0 -1px 0 rgba(255, 255, 255, 0.3) !important;
-            
             transition: transform 0.05s ease, box-shadow 0.05s ease;
         }
 
-        /* Glass Inset Panel (Title Cards, Description Box, Filename Box) */
         .glass-inset-panel {
-            /* Default: Uplifted (Fused Outwards) */
             background-color: rgba(255, 255, 255, 0.12);
             box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.4), 0 2px 4px rgba(0, 0, 0, 0.1);
             border-radius: 20px;
             border: none;
             transition: all 0.15s cubic-bezier(0.25, 0.46, 0.45, 0.94);
             -webkit-tap-highlight-color: transparent;
-            background-clip: padding-box; /* Clean borders */
+            background-clip: padding-box;
         }
 
         .glass-inset-panel.interactive {
             cursor: pointer;
         }
 
-        /* CRITICAL FIX: Only apply hover effects on devices with a fine pointer (mouse) */
         @media (hover: hover) and (pointer: fine) {
             .glass-inset-panel.interactive:hover {
                 transform: translateY(-1px);
@@ -197,21 +169,18 @@
             }
         }
 
-        /* Clicked State: Fused Inwards */
         .glass-inset-panel.interactive.active-state {
             transform: scale(0.98);
             background-color: rgba(0, 0, 0, 0.05);
-            /* Inner shadow top, White line bottom */
             box-shadow: inset 0 3px 6px rgba(0, 0, 0, 0.15), inset 0 -1px 0 rgba(255, 255, 255, 0.3);
         }
         
-        /* Ensure focus doesn't inadvertently trigger hover-like visual states */
         .cta-button:focus, .glass-inset-panel.interactive:focus {
             outline: none;
         }
 
         #description-text-container.interactive.active-state {
-            transform: scale(0.99); /* Reduced scale for large box to prevent heavy shifting */
+            transform: scale(0.99);
         }
 
         .fade-in-text {
@@ -228,15 +197,6 @@
             transition: opacity 0.2s ease, transform 0.2s ease !important;
         }
 
-        .no-scrollbar::-webkit-scrollbar {
-            display: none;
-        }
-        .no-scrollbar {
-            -ms-overflow-style: none;
-            scrollbar-width: none;
-        }
-
-        /* Icon Sizes */
         .header-icon { height: 3.8rem; width: 3.8rem; object-fit: contain; } 
         .share-icon { height: 3.2rem; width: 3.2rem; object-fit: contain; } 
         .shorts-icon { height: 3.5rem; width: 3.5rem; object-fit: contain; } 
@@ -257,7 +217,6 @@
     <div id="fixed-background"></div>
     <div class="max-w-4xl mx-auto">
         <div class="mb-8 sm:mb-12">
-            <!-- Adjusted sm:py-5 to sm:py-3 for a slightly smaller height on desktop -->
             <header id="app-header" class="glass-card fluid-transition px-3 py-3 sm:px-6 sm:py-3 flex flex-row items-center justify-between pre-load-hidden">
                 <div class="flex items-center space-x-2 sm:space-x-4">
                     <div class="w-[57px] h-[57px] sm:w-[84px] sm:h-[84px] flex-shrink-0 relative left-[5.3px] sm:left-[5.3px]">
@@ -287,13 +246,12 @@
             <div id="results-section"></div>
         </main>
         
-        <!-- Slightly increased sm:mt to sm:mt-4 to give a little more breathing room on desktop -->
         <div class="mt-6 sm:mt-4 w-full">
             <div id="promo-card" class="glass-card fluid-transition px-2 pb-4 pt-0 sm:px-3 sm:pb-8 sm:pt-1 max-w-4xl mx-auto pre-load-hidden"> 
                 <div class="px-1 pb-1">
                     <div class="flex flex-col items-center">
-                        <!-- Reduced top margin by increasing negative margin to -mt-8 and sm:-mt-12 -->
-                        <div class="w-80 sm:w-[28rem] mb-0 -mt-8 sm:-mt-12">
+                        <!-- Changed to -mt-11 on desktop (sm: breakpoint) -->
+                        <div class="w-80 sm:w-[28rem] mb-0 -mt-6 sm:-mt-11">
                             <img src="https://manmohit2007.github.io/Manmohit2007/banner.png" alt="Logo" class="w-full h-auto object-contain filter drop-shadow-md">
                         </div>
                         <h3 class="text-xl sm:text-3xl font-bold text-center text-black -mt-9 sm:-mt-14">Boost Your Reach Today</h3>
@@ -313,33 +271,11 @@
     </div>
 
     <script>
-        // --- STRICT ZOOM PREVENTION (Cross-Platform) ---
-        
-        // 1. Prevent standard iOS/Safari gesture zoom
-        document.addEventListener('gesturestart', function(e) { 
-            e.preventDefault(); 
-        });
-
-        // 2. Prevent pinch-zoom (Strictly check for multi-touch to allow single finger scrolling)
-        document.addEventListener('touchmove', function(e) { 
-            if (e.touches && e.touches.length > 1) {
-                e.preventDefault(); 
-            }
-        }, { passive: false });
-
-        // 3. Prevent Ctrl + Wheel zoom (Desktop Trackpad/Mouse)
-        document.addEventListener('wheel', function(e) { 
-            if(e.ctrlKey) { 
-                e.preventDefault(); 
-            }
-        }, { passive: false });
-
-        // 4. Prevent Keyboard Shortcuts (Ctrl/Cmd + '+', '-', '0', '=')
+        document.addEventListener('gesturestart', function(e) { e.preventDefault(); });
+        document.addEventListener('touchmove', function(e) { if (e.touches && e.touches.length > 1) { e.preventDefault(); } }, { passive: false });
+        document.addEventListener('wheel', function(e) { if(e.ctrlKey) { e.preventDefault(); } }, { passive: false });
         document.addEventListener('keydown', function(e) {
-            if((e.ctrlKey || e.metaKey) && 
-               (e.key === '+' || e.key === '-' || e.key === '=' || e.key === '0')) {
-                e.preventDefault();
-            }
+            if((e.ctrlKey || e.metaKey) && (e.key === '+' || e.key === '-' || e.key === '=' || e.key === '0')) { e.preventDefault(); }
         });
 
         let file = null;
@@ -354,7 +290,6 @@
         let currentTitleSetIndex = 0;
         let currentDescriptionIndex = 0;
 
-        // --- ASSET PRELOADING ---
         const ASSETS_TO_PRELOAD = [
             'https://manmohit2007.github.io/Manmohit2007/brand_logo.png?v=10',
             'https://manmohit2007.github.io/Manmohit2007/youtube.png',
@@ -368,119 +303,61 @@
 
         const preloadAssets = async () => {
             const promises = ASSETS_TO_PRELOAD.map(src => {
-                return new Promise((resolve, reject) => {
+                return new Promise((resolve) => {
                     const img = new Image();
                     img.src = src;
                     img.onload = resolve;
                     img.onerror = resolve; 
                 });
             });
-
-            try {
-                // Wait for all assets or a max timeout of 4 seconds (fallback)
-                await Promise.race([
-                    Promise.all(promises),
-                    new Promise(resolve => setTimeout(resolve, 4000))
-                ]);
-            } catch (e) {
-                console.warn("Asset preload warning:", e);
-            }
+            await Promise.race([Promise.all(promises), new Promise(resolve => setTimeout(resolve, 4000))]);
         };
 
         const initApp = async () => {
             await preloadAssets();
-            
-            // Hide Loader
             const loader = document.getElementById('initial-loader');
-            if (loader) {
-                loader.style.opacity = '0';
-                loader.style.visibility = 'hidden';
-            }
-
-            // Show Wallpaper
+            if (loader) { loader.style.opacity = '0'; loader.style.visibility = 'hidden'; }
             const bg = document.getElementById('fixed-background');
             if (bg) bg.style.opacity = '1';
-
-            // Trigger Entry Animations
             document.getElementById('app-header').classList.remove('pre-load-hidden');
             document.getElementById('app-header').classList.add('card-animate');
-            
             document.getElementById('upload-card').classList.remove('pre-load-hidden');
             document.getElementById('upload-card').classList.add('card-animate');
-            
             document.getElementById('promo-card').classList.remove('pre-load-hidden');
             document.getElementById('promo-card').classList.add('card-animate');
-
             updateUI(); 
         };
 
         const YOUTUBE_CHANNEL_LINK = "https://www.youtube.com/@fanplusfollow";
         const INSTAGRAM_LINK = "https://www.instagram.com/_manmohit_singh_/";
 
-        // --- ANIMATION HELPER ---
         const animateAndExecute = (element, action) => {
             if (isUIBusy) return; 
             isUIBusy = true;      
-            
             const activeClass = element.classList.contains('cta-button') ? 'active-manual' : 'active-state';
             element.classList.add(activeClass);
-            
             setTimeout(() => {
                 element.classList.remove(activeClass);
-                
-                // CRITICAL FIX: Only apply the sticky-hover clearing hack on TOUCH devices.
-                // On desktop (mouse), we want the hover state to persist immediately.
-                // We use media query to detect if input is primarily touch.
                 const isTouch = window.matchMedia('(hover: none), (pointer: coarse)').matches;
-                
                 if (isTouch && element) {
                     const originalPointerEvents = element.style.pointerEvents;
                     element.style.pointerEvents = 'none'; 
-                    
-                    if (typeof element.blur === 'function') {
-                        element.blur();
-                    }
-                    
-                    // Force browser reflow to clear any stuck states
+                    if (typeof element.blur === 'function') { element.blur(); }
                     void element.offsetHeight;
-
-                    // Restore interaction capability after a short delay
-                    setTimeout(() => {
-                        element.style.pointerEvents = originalPointerEvents;
-                    }, 350);
+                    setTimeout(() => { element.style.pointerEvents = originalPointerEvents; }, 350);
                 }
-
-                setTimeout(() => {
-                    action(() => { isUIBusy = false; }); 
-                }, 100); 
+                setTimeout(() => { action(() => { isUIBusy = false; }); }, 100); 
             }, 100); 
         };
 
         const handleExternalLink = (element, url) => {
-            animateAndExecute(element, (done) => { 
-                window.open(url, '_blank');
-                done(); 
-            });
+            animateAndExecute(element, (done) => { window.open(url, '_blank'); done(); });
         };
 
-        const handleRegenerateTitlesClick = (element) => {
-            animateAndExecute(element, (done) => regenerateTitles(done));
-        };
-
-        const handleRegenerateDescriptionClick = (element) => {
-            animateAndExecute(element, (done) => regenerateDescription(done));
-        };
-
-        const handleCopyClick = (element, text, index) => {
-            animateAndExecute(element, (done) => copyToClipboard(text, index, done));
-        };
-
-        const handleResetClick = (element) => {
-            animateAndExecute(element, (done) => { 
-                resetApp(); 
-                done(); 
-            });
-        };
+        const handleRegenerateTitlesClick = (element) => { animateAndExecute(element, (done) => regenerateTitles(done)); };
+        const handleRegenerateDescriptionClick = (element) => { animateAndExecute(element, (done) => regenerateDescription(done)); };
+        const handleCopyClick = (element, text, index) => { animateAndExecute(element, (done) => copyToClipboard(text, index, done)); };
+        const handleResetClick = (element) => { animateAndExecute(element, (done) => { resetApp(); done(); }); };
 
         const icon = (name, classes) => {
             const iconMap = {
@@ -524,13 +401,9 @@
                 ],
                 descriptions: [
                     `🚀 Unlock the full potential of ${vName} with this comprehensive guide! Whether you're a beginner or a pro, these insights will help you skyrocket your engagement.\n\n📌 IN THIS VIDEO:\n0:00 - Intro\n1:45 - Why ${vName} Matters\n4:20 - Step-by-Step Strategy\n8:15 - Secret Hack Revealed\n10:30 - Final Thoughts\n\n💡 JOIN THE CREATOR COMMUNITY:\nSubscribe here: ${YOUTUBE_CHANNEL_LINK}\nFollow on IG: ${INSTAGRAM_LINK}\n\n👇 QUESTION OF THE DAY:\nWhat's your biggest challenge with ${vName}? Let me know in the comments!\n\n#${vName.replace(/\s+/g, '')} #ContentStrategy #GrowthTips #FanPlusFollow`,
-                    
                     `😱 You won't believe how much ${vName} can change your channel! I tested this strategy for 30 days and the results were SHOCKING.\n\n🔥 WHAT TO EXPECT:\n- 🎥 Real results from this method\n- 📈 Actionable steps you can take today\n- 🤫 The secret to consistency\n\n✅ STAY CONNECTED:\n📸 Instagram: ${INSTAGRAM_LINK}\n📺 YouTube: ${YOUTUBE_CHANNEL_LINK}\n\n✨ If you enjoyed this video, please hit that LIKE button and SUBSCRIBE for more daily tips!\n\n#Viral #Trending #CreatorEconomy #${vName.replace(/\s+/g, '')}`,
-
                     `⚡ Want to master ${vName} in record time? This video breaks down exactly what you need to know to get results FAST.\n\nWe cover:\n✅ The basics of ${vName}\n✅ Advanced tips for maximum reach\n✅ Common pitfalls to avoid\n\nDon't forget to LIKE and SUBSCRIBE if you found this helpful! It supports the channel and helps us bring you more value.\n\n🔗 Follow for daily updates:\nIG: ${INSTAGRAM_LINK}\nYT: ${YOUTUBE_CHANNEL_LINK}\n\n#${vName.replace(/\s+/g, '')} #QuickTips #SocialMediaGrowth #FanPlusFollow`,
-
                     `🧠 Let's dive deep into the analytics behind ${vName}. Why does it work? How does the algorithm treat it? We're answering it all today.\n\n📊 KEY TAKEAWAYS:\n1. The "Hook" Strategy\n2. Retention Hacks\n3. Conversion Tactics\n\nJoin the #FanPlusFollow movement!\n👉 ${YOUTUBE_CHANNEL_LINK}\n👉 ${INSTAGRAM_LINK}\n\nComment "GROWTH" below if you watched until the end!\n\n#${vName.replace(/\s+/g, '')} #Analytics #YouTubeTips #InstagramTips`,
-
                     `📖 I tried ${vName} so you don't have to... here is what happened. The journey was unexpected, but the lessons are invaluable for any creator trying to grow right now.\n\nTimestamps:\n0:00 - The Experiment\n3:10 - The Struggle\n6:45 - The Breakthrough\n9:00 - The Results\n\nIf you're serious about growth, you need to see this.\n\n🌟 Support the Channel:\nSubscribe: ${YOUTUBE_CHANNEL_LINK}\nFollow: ${INSTAGRAM_LINK}\n\n#${vName.replace(/\s+/g, '')} #CaseStudy #CreatorJourney #FanPlusFollow`
                 ]
             });
@@ -543,10 +416,7 @@
         };
 
         const regenerateTitles = (done) => {
-            if (!file || isProcessing) {
-                if (done) done();
-                return;
-            }
+            if (!file || isProcessing) { if (done) done(); return; }
             const elements = document.querySelectorAll('#titles-grid-container .fade-in-text');
             elements.forEach(el => el.classList.add('text-fade-out'));
             setTimeout(() => {
@@ -558,10 +428,7 @@
         };
 
         const regenerateDescription = (done) => {
-            if (!file || isProcessing) {
-                if (done) done();
-                return;
-            }
+            if (!file || isProcessing) { if (done) done(); return; }
             const container = document.getElementById('description-text-container');
             const textEl = container ? container.querySelector('.fade-in-text') : null;
             if (textEl) textEl.classList.add('text-fade-out');
@@ -571,11 +438,6 @@
                 updateDescriptionContent(); 
                 if (done) done();
             }, 200);
-        };
-
-        const handleRegenerate = () => {
-            currentTitleSetIndex++; currentDescriptionIndex++;
-            generateViralContent(); updateTitlesContent(); updateDescriptionContent();
         };
 
         const copyToClipboard = (text, index, done) => {
@@ -592,42 +454,28 @@
                     container.style.transition = 'none';
                     const currentHeight = container.offsetHeight;
                     container.style.height = `${currentHeight}px`;
-
                     const contentDiv = container.querySelector('div');
-                    
                     if (contentDiv) contentDiv.classList.add('text-fade-out');
-
                     setTimeout(() => {
                         container.style.display = 'flex';
                         container.style.flexDirection = 'column';
                         container.style.justifyContent = 'center';
-                        
-                        // Modified: Increased mobile text size from text-base to text-lg
                         container.innerHTML = `<span class="flex items-center justify-center gap-1 w-full font-bold text-black/80 fade-in-text text-lg sm:text-lg">${icon('Check', 'h-5 w-5')} Copied</span>`;
-                        
                         setTimeout(() => { 
                             const span = container.querySelector('span');
-                            if (span) {
-                                span.classList.remove('fade-in-text');
-                                span.classList.add('text-fade-out');
-                            }
-                            
+                            if (span) { span.classList.remove('fade-in-text'); span.classList.add('text-fade-out'); }
                             setTimeout(() => {
                                 container.style.display = '';
                                 container.style.flexDirection = '';
                                 container.style.justifyContent = '';
                                 container.style.height = ''; 
                                 container.style.transition = ''; 
-                                
                                 container.innerHTML = `<div class="whitespace-pre-wrap break-words text-xs sm:text-sm font-bold text-black/90 fade-in-text text-left w-full font-sans leading-relaxed pointer-events-none">${description}</div>`;
-                                
                                 if (done) done(); 
                             }, 200); 
                         }, 800); 
                     }, 200); 
-                } else {
-                    if (done) done();
-                }
+                } else if (done) done();
             } else {
                 const card = document.getElementById(`title-card-${index}`);
                 const originalText = titles[index];
@@ -635,19 +483,12 @@
                     card.style.transition = 'none';
                     const p = card.querySelector('p');
                     p.classList.add('text-fade-out');
-
                     setTimeout(() => {
                         p.classList.remove('text-fade-out');
-                        // Modified: Added text-base to make copied text bigger on mobile
                         p.innerHTML = `<span class="flex items-center justify-center gap-1 w-full fade-in-text text-base">${icon('Check', 'h-4 w-4')} Copied</span>`;
-                        
                         setTimeout(() => { 
                             const span = p.querySelector('span');
-                            if (span) {
-                                span.classList.remove('fade-in-text');
-                                span.classList.add('text-fade-out');
-                            }
-
+                            if (span) { span.classList.remove('fade-in-text'); span.classList.add('text-fade-out'); }
                             setTimeout(() => {
                                 p.textContent = originalText;
                                 p.classList.remove('text-fade-out');
@@ -658,40 +499,29 @@
                             }, 200);
                         }, 800);
                     }, 200);
-                } else {
-                    if (done) done();
-                }
+                } else if (done) done();
             }
         };
 
         const resetApp = () => { file = null; currentFileName = ""; isProcessing = false; isProcessed = false; updateUI(); };
 
-        // New specific handler for the Select File button to fix touch responsiveness
         const handleSelectFileBtnClick = (event, btnElement) => {
-            event.stopPropagation(); // Prevent the container's click from firing
+            event.stopPropagation();
             animateAndExecute(btnElement, (done) => {
                 document.getElementById('file-upload-input').click();
-                btnElement.blur(); // Remove focus to prevent sticky hover state on touch
+                btnElement.blur();
                 done(); 
             });
         };
 
-        // Handler for the drop area container
         const handleDropAreaClick = (event) => {
             const btn = document.querySelector('#file-drop-area .cta-button');
-            if (btn) {
-                animateAndExecute(btn, (done) => {
-                    document.getElementById('file-upload-input').click();
-                    done(); 
-                });
-            }
+            if (btn) { animateAndExecute(btn, (done) => { document.getElementById('file-upload-input').click(); done(); }); }
         };
 
         const renderUploadSection = () => {
             const container = document.getElementById('upload-section-content');
             if (!file) {
-                // Modified: Added onclick handlers directly to button and div for better touch response
-                // Added pointer-events-none to text/icon so clicks fall through to the container cleanly
                 container.innerHTML = `
                     <div id="file-drop-area" class="w-full h-full flex flex-col items-center justify-center text-center cursor-pointer pb-4" onclick="handleDropAreaClick(event)">
                         <div class="mb-4 pointer-events-none">${icon('Upload', 'h-12 w-12')}</div>
@@ -699,26 +529,16 @@
                         <button class="cta-button mt-6 px-6 py-4 font-bold text-lg" onclick="handleSelectFileBtnClick(event, this)">Select File</button>
                         <input type="file" id="file-upload-input" class="hidden" accept="video/*" onchange="handleFileChange(event)" onclick="event.stopPropagation()"/>
                     </div>`;
-                
-                // Removed the previous dynamic onclick attachment since we now use inline handlers
             } else {
                 container.innerHTML = `
                     <div class="flex flex-col items-center justify-center h-full w-full pt-4 sm:pt-10">
                         <div class="w-full mb-6 flex justify-center px-1">
-                            <div 
-                                class="glass-inset-panel inline-flex items-center justify-center px-4 py-3 sm:px-6 sm:py-4 max-w-full ${isProcessed ? 'interactive cursor-pointer' : ''}" 
-                                ${isProcessed ? 'onclick="handleResetClick(this)"' : ''}
-                            >
-                                <p class="font-bold text-black/80 truncate text-center gap-2 max-w-[60vw] sm:max-w-lg">
-                                    ${currentFileName}
-                                </p>
+                            <div class="glass-inset-panel inline-flex items-center justify-center px-4 py-3 sm:px-6 sm:py-4 max-w-full ${isProcessed ? 'interactive cursor-pointer' : ''}" ${isProcessed ? 'onclick="handleResetClick(this)"' : ''}>
+                                <p class="font-bold text-black/80 truncate text-center gap-2 max-w-[60vw] sm:max-w-lg">${currentFileName}</p>
                             </div>
                         </div>
-                        <!-- Modified: Added text-base sm:text-lg to make Analysis Complete text bigger on desktop -->
                         <div class="relative inline-flex items-center justify-center mb-2 font-bold left-[5.3px] text-base sm:text-lg">
-                            <div class="absolute right-full top-1/2 -translate-y-1/2 pr-2 flex items-center">
-                                ${!isProcessed ? icon('Loader', 'h-5 w-5') : icon('Check', 'h-5 w-5')}
-                            </div>
+                            <div class="absolute right-full top-1/2 -translate-y-1/2 pr-2 flex items-center">${!isProcessed ? icon('Loader', 'h-5 w-5') : icon('Check', 'h-5 w-5')}</div>
                             <span class="opacity-80">${isProcessed ? 'Analysis Complete' : 'Analyzing Video...'}</span>
                         </div>
                     </div>`;
@@ -738,7 +558,6 @@
             const container = document.getElementById('description-text-container');
             if (container) {
                 container.setAttribute('onclick', `handleCopyClick(this, descriptionFull, 3)`);
-                container.className = "glass-inset-panel p-4 interactive cursor-pointer h-[32rem] sm:h-[25rem] overflow-hidden";
                 container.innerHTML = `<div class="whitespace-pre-wrap break-words text-xs sm:text-sm font-bold text-black/90 fade-in-text text-left w-full font-sans leading-relaxed pointer-events-none">${description}</div>`;
             }
         };
@@ -765,7 +584,6 @@
         };
 
         const updateUI = () => { renderUploadSection(); renderResults(); };
-        // initApp is now async and handles preloading
     </script>
 </body>
 </html>
