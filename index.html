@@ -29,6 +29,7 @@
         }
 
         html {
+            /* Gemini Dark Grey #131314 - Solid base prevents white edge bleeding during elastic scroll */
             background-color: #131314; 
             scroll-behavior: smooth;
             overflow-x: hidden;
@@ -45,12 +46,13 @@
             position: relative;
         }
 
+        /* --- STIFF STATIC BACKGROUND --- */
         #fixed-background {
             position: fixed;
             top: 0; left: 0; right: 0; bottom: 0;
             width: 100%; 
-            height: 100vh;
-            height: 100lvh;
+            height: 100vh; 
+            height: 100lvh; 
             z-index: -1; 
             background-image: url('background.png');
             background-size: cover;
@@ -59,9 +61,11 @@
             opacity: 0; 
             transition: opacity 0.5s ease-out;
             pointer-events: none;
-            transform: translateZ(0);
-            -webkit-transform: translateZ(0);
-            will-change: transform;
+            
+            /* Hardware acceleration to prevent jitter */
+            transform: translate3d(0,0,0);
+            -webkit-transform: translate3d(0,0,0);
+            will-change: opacity;
             backface-visibility: hidden;
         }
 
@@ -71,6 +75,7 @@
             }
         }
 
+        /* Loading Screen */
         #initial-loader {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
@@ -84,9 +89,10 @@
 
         .fluid-transition {
             transition: all 400ms cubic-bezier(0.25, 0.46, 0.45, 0.94);
-            will-change: transform, box-shadow, filter, background-color, color, opacity; 
+            will-change: transform, box-shadow, filter, opacity; 
         }
 
+        /* Entry Animation */
         @keyframes spiral-entry {
             0% { opacity: 0; transform: perspective(1000px) scale(0.95) translateY(20px); filter: blur(10px); }
             100% { opacity: 1; transform: perspective(1000px) scale(1) translateY(0); filter: blur(0); }
@@ -103,6 +109,7 @@
 
         .pre-load-hidden { opacity: 0; }
 
+        /* Glass Card - Enhanced to prevent color bleed */
         .glass-card {
             background-color: rgba(255, 255, 255, 0.15);
             -webkit-backdrop-filter: blur(24px) saturate(110%);
@@ -110,14 +117,17 @@
             box-shadow: inset 0 0 40px rgba(255, 255, 255, 0.4), 0 25px 50px rgba(0, 0, 0, 0.05);
             border: 1px solid rgba(255, 255, 255, 0.5);
             border-radius: 36px;
+            
+            /* Stability Fixes (Jitter/Leak/Bleed) */
             transform: translateZ(0);
             -webkit-transform: translateZ(0);
             backface-visibility: hidden;
             -webkit-backface-visibility: hidden;
-            background-clip: padding-box;
-            overflow: hidden;
+            background-clip: padding-box; /* Crucial: ensures background doesn't leak under borders */
+            overflow: hidden; 
         }
 
+        /* --- CTA BUTTONS --- */
         .cta-button {
             background-color: rgba(255, 255, 255, 0.12);
             box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.4), 0 2px 4px rgba(0, 0, 0, 0.1);
@@ -147,6 +157,7 @@
             transition: transform 0.05s ease, box-shadow 0.05s ease;
         }
 
+        /* Glass Inset Panel */
         .glass-inset-panel {
             background-color: rgba(255, 255, 255, 0.12);
             box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.4), 0 2px 4px rgba(0, 0, 0, 0.1);
@@ -175,14 +186,6 @@
             box-shadow: inset 0 3px 6px rgba(0, 0, 0, 0.15), inset 0 -1px 0 rgba(255, 255, 255, 0.3);
         }
         
-        .cta-button:focus, .glass-inset-panel.interactive:focus {
-            outline: none;
-        }
-
-        #description-text-container.interactive.active-state {
-            transform: scale(0.99);
-        }
-
         .fade-in-text {
             animation: fadeInText 0.4s cubic-bezier(0.4, 0, 0.2, 1) forwards;
         }
@@ -197,6 +200,7 @@
             transition: opacity 0.2s ease, transform 0.2s ease !important;
         }
 
+        /* Icon Sizes */
         .header-icon { height: 3.8rem; width: 3.8rem; object-fit: contain; } 
         .share-icon { height: 3.2rem; width: 3.2rem; object-fit: contain; } 
         .shorts-icon { height: 3.5rem; width: 3.5rem; object-fit: contain; } 
@@ -219,7 +223,7 @@
         <div class="mb-8 sm:mb-12">
             <header id="app-header" class="glass-card fluid-transition px-3 py-3 sm:px-6 sm:py-3 flex flex-row items-center justify-between pre-load-hidden">
                 <div class="flex items-center space-x-2 sm:space-x-4">
-                    <div class="w-[57px] h-[57px] sm:w-[84px] sm:h-[84px] flex-shrink-0 relative left-[5.3px] sm:left-[5.3px]">
+                    <div class="w-[57px] h-[57px] sm:w-[84px] sm:h-[84px] flex-shrink-0 relative left-[5.3px]">
                         <img src="https://manmohit2007.github.io/Manmohit2007/brand_logo.png?v=10" alt="Logo" class="w-full h-full object-contain filter drop-shadow-sm">
                     </div>
                     <div class="text-left min-w-0 relative left-[6px] sm:left-[5.3px]">
@@ -250,9 +254,8 @@
             <div id="promo-card" class="glass-card fluid-transition px-2 pb-4 pt-0 sm:px-3 sm:pb-8 sm:pt-1 max-w-4xl mx-auto pre-load-hidden"> 
                 <div class="px-1 pb-1">
                     <div class="flex flex-col items-center">
-                        <!-- Changed to -mt-11 on desktop (sm: breakpoint) -->
                         <div class="w-80 sm:w-[28rem] mb-0 -mt-6 sm:-mt-11">
-                            <img src="https://manmohit2007.github.io/Manmohit2007/banner.png" alt="Logo" class="w-full h-auto object-contain filter drop-shadow-md">
+                            <img src="https://manmohit2007.github.io/Manmohit2007/banner.png" alt="Banner" class="w-full h-auto object-contain filter drop-shadow-md">
                         </div>
                         <h3 class="text-xl sm:text-3xl font-bold text-center text-black -mt-9 sm:-mt-14">Boost Your Reach Today</h3>
                         <p class="text-black mt-1 text-center max-w-md text-xs sm:text-sm font-bold opacity-80 leading-tight">Join the community for exclusive growth insights.</p>
@@ -271,24 +274,16 @@
     </div>
 
     <script>
-        document.addEventListener('gesturestart', function(e) { e.preventDefault(); });
-        document.addEventListener('touchmove', function(e) { if (e.touches && e.touches.length > 1) { e.preventDefault(); } }, { passive: false });
-        document.addEventListener('wheel', function(e) { if(e.ctrlKey) { e.preventDefault(); } }, { passive: false });
-        document.addEventListener('keydown', function(e) {
-            if((e.ctrlKey || e.metaKey) && (e.key === '+' || e.key === '-' || e.key === '=' || e.key === '0')) { e.preventDefault(); }
+        // --- STRICT ZOOM PREVENTION ---
+        document.addEventListener('gesturestart', (e) => e.preventDefault());
+        document.addEventListener('touchmove', (e) => { if (e.touches && e.touches.length > 1) e.preventDefault(); }, { passive: false });
+        document.addEventListener('wheel', (e) => { if(e.ctrlKey) e.preventDefault(); }, { passive: false });
+        document.addEventListener('keydown', (e) => {
+            if((e.ctrlKey || e.metaKey) && ['+', '-', '0', '='].includes(e.key)) e.preventDefault();
         });
 
-        let file = null;
-        let currentFileName = ""; 
-        let isProcessing = false;
-        let isProcessed = false;
-        let isUIBusy = false; 
-        let titles = [];
-        let description = "";
-        let titlesFull = [];
-        let descriptionFull = "";
-        let currentTitleSetIndex = 0;
-        let currentDescriptionIndex = 0;
+        let file = null, currentFileName = "", isProcessing = false, isProcessed = false, isUIBusy = false; 
+        let titles = [], description = "", titlesFull = [], descriptionFull = "", currentTitleSetIndex = 0, currentDescriptionIndex = 0;
 
         const ASSETS_TO_PRELOAD = [
             'https://manmohit2007.github.io/Manmohit2007/brand_logo.png?v=10',
@@ -302,29 +297,25 @@
         ];
 
         const preloadAssets = async () => {
-            const promises = ASSETS_TO_PRELOAD.map(src => {
-                return new Promise((resolve) => {
-                    const img = new Image();
-                    img.src = src;
-                    img.onload = resolve;
-                    img.onerror = resolve; 
-                });
-            });
-            await Promise.race([Promise.all(promises), new Promise(resolve => setTimeout(resolve, 4000))]);
+            const promises = ASSETS_TO_PRELOAD.map(src => new Promise(resolve => {
+                const img = new Image();
+                img.src = src;
+                img.onload = resolve;
+                img.onerror = resolve;
+            }));
+            await Promise.race([Promise.all(promises), new Promise(resolve => setTimeout(resolve, 3000))]);
         };
 
         const initApp = async () => {
             await preloadAssets();
-            const loader = document.getElementById('initial-loader');
-            if (loader) { loader.style.opacity = '0'; loader.style.visibility = 'hidden'; }
-            const bg = document.getElementById('fixed-background');
-            if (bg) bg.style.opacity = '1';
-            document.getElementById('app-header').classList.remove('pre-load-hidden');
-            document.getElementById('app-header').classList.add('card-animate');
-            document.getElementById('upload-card').classList.remove('pre-load-hidden');
-            document.getElementById('upload-card').classList.add('card-animate');
-            document.getElementById('promo-card').classList.remove('pre-load-hidden');
-            document.getElementById('promo-card').classList.add('card-animate');
+            document.getElementById('initial-loader').style.opacity = '0';
+            setTimeout(() => document.getElementById('initial-loader').style.visibility = 'hidden', 400);
+            document.getElementById('fixed-background').style.opacity = '1';
+            ['app-header', 'upload-card', 'promo-card'].forEach(id => {
+                const el = document.getElementById(id);
+                el.classList.remove('pre-load-hidden');
+                el.classList.add('card-animate');
+            });
             updateUI(); 
         };
 
@@ -336,28 +327,26 @@
             isUIBusy = true;      
             const activeClass = element.classList.contains('cta-button') ? 'active-manual' : 'active-state';
             element.classList.add(activeClass);
+            
             setTimeout(() => {
                 element.classList.remove(activeClass);
                 const isTouch = window.matchMedia('(hover: none), (pointer: coarse)').matches;
                 if (isTouch && element) {
                     const originalPointerEvents = element.style.pointerEvents;
                     element.style.pointerEvents = 'none'; 
-                    if (typeof element.blur === 'function') { element.blur(); }
+                    if (typeof element.blur === 'function') element.blur();
                     void element.offsetHeight;
-                    setTimeout(() => { element.style.pointerEvents = originalPointerEvents; }, 350);
+                    setTimeout(() => element.style.pointerEvents = originalPointerEvents, 350);
                 }
-                setTimeout(() => { action(() => { isUIBusy = false; }); }, 100); 
+                setTimeout(() => action(() => isUIBusy = false), 100); 
             }, 100); 
         };
 
-        const handleExternalLink = (element, url) => {
-            animateAndExecute(element, (done) => { window.open(url, '_blank'); done(); });
-        };
-
-        const handleRegenerateTitlesClick = (element) => { animateAndExecute(element, (done) => regenerateTitles(done)); };
-        const handleRegenerateDescriptionClick = (element) => { animateAndExecute(element, (done) => regenerateDescription(done)); };
-        const handleCopyClick = (element, text, index) => { animateAndExecute(element, (done) => copyToClipboard(text, index, done)); };
-        const handleResetClick = (element) => { animateAndExecute(element, (done) => { resetApp(); done(); }); };
+        const handleExternalLink = (el, url) => animateAndExecute(el, (done) => { window.open(url, '_blank'); done(); });
+        const handleRegenerateTitlesClick = (el) => animateAndExecute(el, (done) => regenerateTitles(done));
+        const handleRegenerateDescriptionClick = (el) => animateAndExecute(el, (done) => regenerateDescription(done));
+        const handleCopyClick = (el, text, idx) => animateAndExecute(el, (done) => copyToClipboard(text, idx, done));
+        const handleResetClick = (el) => animateAndExecute(el, (done) => { resetApp(); done(); });
 
         const icon = (name, classes) => {
             const iconMap = {
@@ -370,164 +359,110 @@
             return iconMap[name] || '';
         };
 
-        const handleFileChange = (event) => {
-            const selectedFile = event.target.files?.[0];
-            if (selectedFile && selectedFile.type.startsWith("video/")) {
-                file = selectedFile;
-                currentFileName = file.name; 
-                processFile();
+        const handleFileChange = (e) => {
+            const f = e.target.files?.[0];
+            if (f && f.type.startsWith("video/")) {
+                file = f; currentFileName = f.name; 
+                isProcessing = true; isProcessed = false; updateUI(); 
+                setTimeout(() => { generateViralContent(); isProcessing = false; isProcessed = true; updateUI(); }, 1800);
             }
-        };
-
-        const processFile = () => {
-            isProcessing = true; isProcessed = false; updateUI(); 
-            setTimeout(() => {
-                generateViralContent(); 
-                isProcessing = false; isProcessed = true; updateUI(); 
-            }, 1800);
         };
 
         const generateViralContent = () => { 
             if (!file) return;
             const fullVideoName = currentFileName.replace(/\.[^/.]+$/, "");
-            let displayVideoName = fullVideoName.length > 20 ? fullVideoName.substring(0, 20) + "..." : fullVideoName;
-            const getTemplates = (vName) => ({
+            let vName = fullVideoName.length > 20 ? fullVideoName.substring(0, 20) + "..." : fullVideoName;
+            const getTemplates = (n) => ({
                 titles: [
-                    [`🔥 ULTIMATE ${vName} Guide! #fanplusfollow`, `📈 ${vName}: How We Went VIRAL! #fanplusfollow`, `🤯 This ${vName} Hack is Insane! #fanplusfollow`],
-                    [`🚀 ${vName} HACK: More Views! #fanplusfollow`, `💡 One ${vName} Tip That Works... #fanplusfollow`, `🚫 Stop Making Bad ${vName} Videos! #fanplusfollow`],
-                    [`🤫 The ${vName} Secret Nobody Tells You... #fanplusfollow`, `⚠️ Don't Upload ${vName} Until You Watch This! #fanplusfollow`, `🚀 From 0 to 10k Views with ${vName} #fanplusfollow`],
-                    [`💎 ${vName} Masterclass: Pro Secrets Revealed #fanplusfollow`, `⚡ Fast Track Your Growth: ${vName} Explained #fanplusfollow`, `🧠 Psychology of ${vName}: Why It Works #fanplusfollow`],
-                    [`💥 Break the Algorithm with ${vName}! #fanplusfollow`, `🛑 The BIGGEST ${vName} Mistake Creators Make #fanplusfollow`, `✨ Perfect ${vName} Tutorial in 5 Minutes #fanplusfollow`]
+                    [`🔥 ULTIMATE ${n} Guide! #fanplusfollow`, `📈 ${n}: How We Went VIRAL! #fanplusfollow`, `🤯 This ${n} Hack is Insane! #fanplusfollow`],
+                    [`🚀 ${n} HACK: More Views! #fanplusfollow`, `💡 One ${n} Tip That Works... #fanplusfollow`, `🚫 Stop Making Bad ${n} Videos! #fanplusfollow`],
+                    [`🤫 The ${n} Secret Nobody Tells You... #fanplusfollow`, `⚠️ Don't Upload ${n} Until You Watch This! #fanplusfollow`, `🚀 From 0 to 10k Views with ${n} #fanplusfollow`],
+                    [`💎 ${n} Masterclass: Pro Secrets Revealed #fanplusfollow`, `⚡ Fast Track Your Growth: ${n} Explained #fanplusfollow`, `🧠 Psychology of ${n}: Why It Works #fanplusfollow`],
+                    [`💥 Break the Algorithm with ${n}! #fanplusfollow`, `🛑 The BIGGEST ${n} Mistake Creators Make #fanplusfollow`, `✨ Perfect ${n} Tutorial in 5 Minutes #fanplusfollow`]
                 ],
                 descriptions: [
-                    `🚀 Unlock the full potential of ${vName} with this comprehensive guide! Whether you're a beginner or a pro, these insights will help you skyrocket your engagement.\n\n📌 IN THIS VIDEO:\n0:00 - Intro\n1:45 - Why ${vName} Matters\n4:20 - Step-by-Step Strategy\n8:15 - Secret Hack Revealed\n10:30 - Final Thoughts\n\n💡 JOIN THE CREATOR COMMUNITY:\nSubscribe here: ${YOUTUBE_CHANNEL_LINK}\nFollow on IG: ${INSTAGRAM_LINK}\n\n👇 QUESTION OF THE DAY:\nWhat's your biggest challenge with ${vName}? Let me know in the comments!\n\n#${vName.replace(/\s+/g, '')} #ContentStrategy #GrowthTips #FanPlusFollow`,
-                    `😱 You won't believe how much ${vName} can change your channel! I tested this strategy for 30 days and the results were SHOCKING.\n\n🔥 WHAT TO EXPECT:\n- 🎥 Real results from this method\n- 📈 Actionable steps you can take today\n- 🤫 The secret to consistency\n\n✅ STAY CONNECTED:\n📸 Instagram: ${INSTAGRAM_LINK}\n📺 YouTube: ${YOUTUBE_CHANNEL_LINK}\n\n✨ If you enjoyed this video, please hit that LIKE button and SUBSCRIBE for more daily tips!\n\n#Viral #Trending #CreatorEconomy #${vName.replace(/\s+/g, '')}`,
-                    `⚡ Want to master ${vName} in record time? This video breaks down exactly what you need to know to get results FAST.\n\nWe cover:\n✅ The basics of ${vName}\n✅ Advanced tips for maximum reach\n✅ Common pitfalls to avoid\n\nDon't forget to LIKE and SUBSCRIBE if you found this helpful! It supports the channel and helps us bring you more value.\n\n🔗 Follow for daily updates:\nIG: ${INSTAGRAM_LINK}\nYT: ${YOUTUBE_CHANNEL_LINK}\n\n#${vName.replace(/\s+/g, '')} #QuickTips #SocialMediaGrowth #FanPlusFollow`,
-                    `🧠 Let's dive deep into the analytics behind ${vName}. Why does it work? How does the algorithm treat it? We're answering it all today.\n\n📊 KEY TAKEAWAYS:\n1. The "Hook" Strategy\n2. Retention Hacks\n3. Conversion Tactics\n\nJoin the #FanPlusFollow movement!\n👉 ${YOUTUBE_CHANNEL_LINK}\n👉 ${INSTAGRAM_LINK}\n\nComment "GROWTH" below if you watched until the end!\n\n#${vName.replace(/\s+/g, '')} #Analytics #YouTubeTips #InstagramTips`,
-                    `📖 I tried ${vName} so you don't have to... here is what happened. The journey was unexpected, but the lessons are invaluable for any creator trying to grow right now.\n\nTimestamps:\n0:00 - The Experiment\n3:10 - The Struggle\n6:45 - The Breakthrough\n9:00 - The Results\n\nIf you're serious about growth, you need to see this.\n\n🌟 Support the Channel:\nSubscribe: ${YOUTUBE_CHANNEL_LINK}\nFollow: ${INSTAGRAM_LINK}\n\n#${vName.replace(/\s+/g, '')} #CaseStudy #CreatorJourney #FanPlusFollow`
+                    `🚀 Unlock the full potential of ${n}! Join the community for exclusive insights.\n\nSubscribe here: ${YOUTUBE_CHANNEL_LINK}\nFollow on IG: ${INSTAGRAM_LINK}\n\n#${n.replace(/\s+/g, '')} #FanPlusFollow`,
+                    `😱 SHOCKING results with this ${n} strategy. Subscribe for daily growth tips!\n\nIG: ${INSTAGRAM_LINK}\nYT: ${YOUTUBE_CHANNEL_LINK}\n\n#Viral #${n.replace(/\s+/g, '')}`,
+                    `⚡ Master ${n} in record time. Watch now!\n\nFollow for updates:\nIG: ${INSTAGRAM_LINK}\nYT: ${YOUTUBE_CHANNEL_LINK}\n\n#Growth #FanPlusFollow`,
+                    `🧠 Deep dive into ${n} analytics. Why it works.\n\n👉 ${YOUTUBE_CHANNEL_LINK}\n👉 ${INSTAGRAM_LINK}\n\n#Strategy #CreatorEconomy`,
+                    `📖 I tried ${n} so you don't have to. Here are the results.\n\nSupport:\nYT: ${YOUTUBE_CHANNEL_LINK}\nIG: ${INSTAGRAM_LINK}\n\n#Experiment #GrowthTips`
                 ]
             });
-            const displayTemplates = getTemplates(displayVideoName);
-            const fullTemplates = getTemplates(fullVideoName);
-            titles = displayTemplates.titles[currentTitleSetIndex % displayTemplates.titles.length];
-            description = displayTemplates.descriptions[currentDescriptionIndex % displayTemplates.descriptions.length];
-            titlesFull = fullTemplates.titles[currentTitleSetIndex % fullTemplates.titles.length];
-            descriptionFull = fullTemplates.descriptions[currentDescriptionIndex % fullTemplates.descriptions.length];
+            const dTmp = getTemplates(vName), fTmp = getTemplates(fullVideoName);
+            titles = dTmp.titles[currentTitleSetIndex % dTmp.titles.length];
+            description = dTmp.descriptions[currentDescriptionIndex % dTmp.descriptions.length];
+            titlesFull = fTmp.titles[currentTitleSetIndex % fTmp.titles.length];
+            descriptionFull = fTmp.descriptions[currentDescriptionIndex % fTmp.descriptions.length];
         };
 
         const regenerateTitles = (done) => {
-            if (!file || isProcessing) { if (done) done(); return; }
-            const elements = document.querySelectorAll('#titles-grid-container .fade-in-text');
-            elements.forEach(el => el.classList.add('text-fade-out'));
-            setTimeout(() => {
-                currentTitleSetIndex++;
-                generateViralContent(); 
-                updateTitlesContent(); 
-                if (done) done();
-            }, 200);
+            document.querySelectorAll('#titles-grid-container .fade-in-text').forEach(el => el.classList.add('text-fade-out'));
+            setTimeout(() => { currentTitleSetIndex++; generateViralContent(); updateTitlesContent(); if (done) done(); }, 200);
         };
 
         const regenerateDescription = (done) => {
-            if (!file || isProcessing) { if (done) done(); return; }
-            const container = document.getElementById('description-text-container');
-            const textEl = container ? container.querySelector('.fade-in-text') : null;
-            if (textEl) textEl.classList.add('text-fade-out');
-            setTimeout(() => {
-                currentDescriptionIndex++;
-                generateViralContent(); 
-                updateDescriptionContent(); 
-                if (done) done();
-            }, 200);
+            const el = document.querySelector('#description-text-container .fade-in-text');
+            if (el) el.classList.add('text-fade-out');
+            setTimeout(() => { currentDescriptionIndex++; generateViralContent(); updateDescriptionContent(); if (done) done(); }, 200);
         };
 
-        const copyToClipboard = (text, index, done) => {
-            const tempElement = document.createElement('textarea');
-            tempElement.value = text;
-            document.body.appendChild(tempElement);
-            tempElement.select();
-            document.execCommand('copy');
-            document.body.removeChild(tempElement);
+        const copyToClipboard = (text, idx, done) => {
+            const ta = document.createElement('textarea');
+            ta.value = text; document.body.appendChild(ta); ta.select(); document.execCommand('copy'); document.body.removeChild(ta);
 
-            if (index === 3) {
+            if (idx === 3) {
                 const container = document.getElementById('description-text-container');
-                if (container) {
-                    container.style.transition = 'none';
-                    const currentHeight = container.offsetHeight;
-                    container.style.height = `${currentHeight}px`;
-                    const contentDiv = container.querySelector('div');
-                    if (contentDiv) contentDiv.classList.add('text-fade-out');
-                    setTimeout(() => {
-                        container.style.display = 'flex';
-                        container.style.flexDirection = 'column';
-                        container.style.justifyContent = 'center';
-                        container.innerHTML = `<span class="flex items-center justify-center gap-1 w-full font-bold text-black/80 fade-in-text text-lg sm:text-lg">${icon('Check', 'h-5 w-5')} Copied</span>`;
-                        setTimeout(() => { 
-                            const span = container.querySelector('span');
-                            if (span) { span.classList.remove('fade-in-text'); span.classList.add('text-fade-out'); }
-                            setTimeout(() => {
-                                container.style.display = '';
-                                container.style.flexDirection = '';
-                                container.style.justifyContent = '';
-                                container.style.height = ''; 
-                                container.style.transition = ''; 
-                                container.innerHTML = `<div class="whitespace-pre-wrap break-words text-xs sm:text-sm font-bold text-black/90 fade-in-text text-left w-full font-sans leading-relaxed pointer-events-none">${description}</div>`;
-                                if (done) done(); 
-                            }, 200); 
-                        }, 800); 
-                    }, 200); 
-                } else if (done) done();
+                if (!container) return;
+                const h = container.offsetHeight;
+                container.style.height = `${h}px`;
+                container.querySelector('div')?.classList.add('text-fade-out');
+                setTimeout(() => {
+                    container.innerHTML = `<span class="flex items-center justify-center gap-1 w-full font-bold text-black/80 fade-in-text text-lg">${icon('Check', 'h-5 w-5')} Copied</span>`;
+                    setTimeout(() => { 
+                        container.querySelector('span')?.classList.add('text-fade-out');
+                        setTimeout(() => {
+                            container.style.height = ''; 
+                            container.innerHTML = `<div class="whitespace-pre-wrap break-words text-xs sm:text-sm font-bold text-black/90 fade-in-text text-left w-full font-sans leading-relaxed pointer-events-none">${description}</div>`;
+                            if (done) done(); 
+                        }, 200); 
+                    }, 800); 
+                }, 200); 
             } else {
-                const card = document.getElementById(`title-card-${index}`);
-                const originalText = titles[index];
-                if (card) {
-                    card.style.transition = 'none';
-                    const p = card.querySelector('p');
-                    p.classList.add('text-fade-out');
-                    setTimeout(() => {
-                        p.classList.remove('text-fade-out');
-                        p.innerHTML = `<span class="flex items-center justify-center gap-1 w-full fade-in-text text-base">${icon('Check', 'h-4 w-4')} Copied</span>`;
-                        setTimeout(() => { 
-                            const span = p.querySelector('span');
-                            if (span) { span.classList.remove('fade-in-text'); span.classList.add('text-fade-out'); }
-                            setTimeout(() => {
-                                p.textContent = originalText;
-                                p.classList.remove('text-fade-out');
-                                void p.offsetWidth; 
-                                p.classList.add('fade-in-text');
-                                card.style.transition = ''; 
-                                if (done) done(); 
-                            }, 200);
-                        }, 800);
-                    }, 200);
-                } else if (done) done();
+                const card = document.getElementById(`title-card-${idx}`);
+                const p = card?.querySelector('p');
+                if (!p) return;
+                p.classList.add('text-fade-out');
+                setTimeout(() => {
+                    p.innerHTML = `<span class="flex items-center justify-center gap-1 w-full fade-in-text text-base">${icon('Check', 'h-4 w-4')} Copied</span>`;
+                    setTimeout(() => { 
+                        p.querySelector('span')?.classList.add('text-fade-out');
+                        setTimeout(() => {
+                            p.textContent = titles[idx];
+                            p.classList.remove('text-fade-out');
+                            void p.offsetWidth; p.classList.add('fade-in-text');
+                            if (done) done(); 
+                        }, 200);
+                    }, 800);
+                }, 200);
             }
         };
 
-        const resetApp = () => { file = null; currentFileName = ""; isProcessing = false; isProcessed = false; updateUI(); };
+        const resetApp = () => { file = null; updateUI(); };
 
-        const handleSelectFileBtnClick = (event, btnElement) => {
-            event.stopPropagation();
-            animateAndExecute(btnElement, (done) => {
-                document.getElementById('file-upload-input').click();
-                btnElement.blur();
-                done(); 
-            });
-        };
-
-        const handleDropAreaClick = (event) => {
-            const btn = document.querySelector('#file-drop-area .cta-button');
-            if (btn) { animateAndExecute(btn, (done) => { document.getElementById('file-upload-input').click(); done(); }); }
+        const handleSelectFileBtnClick = (e, btn) => {
+            e.stopPropagation();
+            animateAndExecute(btn, (done) => { document.getElementById('file-upload-input').click(); done(); });
         };
 
         const renderUploadSection = () => {
             const container = document.getElementById('upload-section-content');
             if (!file) {
                 container.innerHTML = `
-                    <div id="file-drop-area" class="w-full h-full flex flex-col items-center justify-center text-center cursor-pointer pb-4" onclick="handleDropAreaClick(event)">
+                    <div id="file-drop-area" class="w-full h-full flex flex-col items-center justify-center text-center cursor-pointer pb-4" onclick="handleSelectFileBtnClick(event, this.querySelector('.cta-button'))">
                         <div class="mb-4 pointer-events-none">${icon('Upload', 'h-12 w-12')}</div>
                         <p class="text-lg sm:text-xl font-bold text-black pointer-events-none">Upload Your Video File Here</p>
                         <button class="cta-button mt-6 px-6 py-4 font-bold text-lg" onclick="handleSelectFileBtnClick(event, this)">Select File</button>
-                        <input type="file" id="file-upload-input" class="hidden" accept="video/*" onchange="handleFileChange(event)" onclick="event.stopPropagation()"/>
+                        <input type="file" id="file-upload-input" class="hidden" accept="video/*" onchange="handleFileChange(event)"/>
                     </div>`;
             } else {
                 container.innerHTML = `
@@ -538,7 +473,9 @@
                             </div>
                         </div>
                         <div class="relative inline-flex items-center justify-center mb-2 font-bold left-[5.3px] text-base sm:text-lg">
-                            <div class="absolute right-full top-1/2 -translate-y-1/2 pr-2 flex items-center">${!isProcessed ? icon('Loader', 'h-5 w-5') : icon('Check', 'h-5 w-5')}</div>
+                            <div class="absolute right-full top-1/2 -translate-y-1/2 pr-2 flex items-center">
+                                ${!isProcessed ? icon('Loader', 'h-5 w-5') : icon('Check', 'h-5 w-5')}
+                            </div>
                             <span class="opacity-80">${isProcessed ? 'Analysis Complete' : 'Analyzing Video...'}</span>
                         </div>
                     </div>`;
@@ -546,20 +483,17 @@
         };
 
         const updateTitlesContent = () => {
-            const grid = document.getElementById('titles-grid-container');
-            if (!grid) return;
-            grid.innerHTML = titles.map((title, index) => `
-                <div id="title-card-${index}" class="glass-inset-panel interactive p-4 flex flex-col justify-center h-32 sm:h-40" onclick="handleCopyClick(this, '${titlesFull[index].replace(/'/g, "\\'")}', ${index})">
-                    <p class="text-sm sm:text-base font-bold text-black/90 fade-in-text text-center line-clamp-4">${title}</p>
+            const g = document.getElementById('titles-grid-container'); if (!g) return;
+            g.innerHTML = titles.map((t, i) => `
+                <div id="title-card-${i}" class="glass-inset-panel interactive p-4 flex flex-col justify-center h-32 sm:h-40" onclick="handleCopyClick(this, '${titlesFull[i].replace(/'/g, "\\'")}', ${i})">
+                    <p class="text-sm sm:text-base font-bold text-black/90 fade-in-text text-center line-clamp-4">${t}</p>
                 </div>`).join('');
         };
 
         const updateDescriptionContent = () => {
-            const container = document.getElementById('description-text-container');
-            if (container) {
-                container.setAttribute('onclick', `handleCopyClick(this, descriptionFull, 3)`);
-                container.innerHTML = `<div class="whitespace-pre-wrap break-words text-xs sm:text-sm font-bold text-black/90 fade-in-text text-left w-full font-sans leading-relaxed pointer-events-none">${description}</div>`;
-            }
+            const c = document.getElementById('description-text-container'); if (!c) return;
+            c.onclick = () => handleCopyClick(c, descriptionFull, 3);
+            c.innerHTML = `<div class="whitespace-pre-wrap break-words text-xs sm:text-sm font-bold text-black/90 fade-in-text text-left w-full font-sans leading-relaxed pointer-events-none">${description}</div>`;
         };
 
         const renderResults = () => {
