@@ -29,7 +29,8 @@
         }
 
         html {
-            /* Gemini Dark Grey #131314 - Solid base prevents white edge bleeding during elastic scroll */
+            /* TOPPER BLEED FIX: Set a solid base color matching the darkest part of your background */
+            /* This prevents the "white line" at the top of the browser on MacBook/Safari */
             background-color: #131314; 
             scroll-behavior: smooth;
             overflow-x: hidden;
@@ -44,6 +45,8 @@
             padding: 0;
             cursor: pointer;
             position: relative;
+            /* Extra top padding to ensure the blur doesn't fight with the browser chrome */
+            padding-top: env(safe-area-inset-top, 20px);
         }
 
         /* --- STIFF STATIC BACKGROUND --- */
@@ -109,7 +112,7 @@
 
         .pre-load-hidden { opacity: 0; }
 
-        /* Glass Card - Enhanced to prevent color bleed */
+        /* Glass Card - Enhanced for macOS Retina Stability */
         .glass-card {
             background-color: rgba(255, 255, 255, 0.15);
             -webkit-backdrop-filter: blur(24px) saturate(110%);
@@ -118,12 +121,11 @@
             border: 1px solid rgba(255, 255, 255, 0.5);
             border-radius: 36px;
             
-            /* Stability Fixes (Jitter/Leak/Bleed) */
+            /* MACBOOK BLEED FIXES */
             transform: translateZ(0);
             -webkit-transform: translateZ(0);
             backface-visibility: hidden;
-            -webkit-backface-visibility: hidden;
-            background-clip: padding-box; /* Crucial: ensures background doesn't leak under borders */
+            background-clip: padding-box; /* Prevents background from creeping out under borders */
             overflow: hidden; 
         }
 
@@ -154,7 +156,6 @@
             transform: scale(0.96) translateY(1px) !important; 
             background-color: rgba(0, 0, 0, 0.05) !important;
             box-shadow: inset 0 3px 6px rgba(0, 0, 0, 0.15), inset 0 -1px 0 rgba(255, 255, 255, 0.3) !important;
-            transition: transform 0.05s ease, box-shadow 0.05s ease;
         }
 
         /* Glass Inset Panel */
@@ -274,13 +275,11 @@
     </div>
 
     <script>
-        // --- STRICT ZOOM PREVENTION ---
+        // Zoom prevention
         document.addEventListener('gesturestart', (e) => e.preventDefault());
         document.addEventListener('touchmove', (e) => { if (e.touches && e.touches.length > 1) e.preventDefault(); }, { passive: false });
         document.addEventListener('wheel', (e) => { if(e.ctrlKey) e.preventDefault(); }, { passive: false });
-        document.addEventListener('keydown', (e) => {
-            if((e.ctrlKey || e.metaKey) && ['+', '-', '0', '='].includes(e.key)) e.preventDefault();
-        });
+        document.addEventListener('keydown', (e) => { if((e.ctrlKey || e.metaKey) && ['+', '-', '0', '='].includes(e.key)) e.preventDefault(); });
 
         let file = null, currentFileName = "", isProcessing = false, isProcessed = false, isUIBusy = false; 
         let titles = [], description = "", titlesFull = [], descriptionFull = "", currentTitleSetIndex = 0, currentDescriptionIndex = 0;
@@ -323,20 +322,17 @@
         const INSTAGRAM_LINK = "https://www.instagram.com/_manmohit_singh_/";
 
         const animateAndExecute = (element, action) => {
-            if (isUIBusy) return; 
-            isUIBusy = true;      
+            if (isUIBusy) return; isUIBusy = true;      
             const activeClass = element.classList.contains('cta-button') ? 'active-manual' : 'active-state';
             element.classList.add(activeClass);
-            
             setTimeout(() => {
                 element.classList.remove(activeClass);
                 const isTouch = window.matchMedia('(hover: none), (pointer: coarse)').matches;
                 if (isTouch && element) {
-                    const originalPointerEvents = element.style.pointerEvents;
+                    const original = element.style.pointerEvents;
                     element.style.pointerEvents = 'none'; 
                     if (typeof element.blur === 'function') element.blur();
-                    void element.offsetHeight;
-                    setTimeout(() => element.style.pointerEvents = originalPointerEvents, 350);
+                    setTimeout(() => element.style.pointerEvents = original, 350);
                 }
                 setTimeout(() => action(() => isUIBusy = false), 100); 
             }, 100); 
@@ -351,7 +347,6 @@
         const icon = (name, classes) => {
             const iconMap = {
                 'Upload': `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="${classes}"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" x2="12" y1="3" y2="15"/></svg>`,
-                'Copy': `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="${classes}"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>`,
                 'Check': `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="${classes}"><polyline points="20 6 9 17 4 12"/></svg>`,
                 'RotateCcw': `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="${classes}"><path d="M3 2v6h6"/><path d="M3 13a9 9 0 1 0 3-7.7L3 8"/></svg>`,
                 'Loader': `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="animate-spin ${classes}"><path d="M12 2v4"/><path d="M12 18v4"/><path d="M4.93 4.93l2.83 2.83"/><path d="M16.24 16.24l2.83 2.83"/><path d="M2 12h4"/><path d="M18 12h4"/><path d="M4.93 19.07l2.83-2.83"/><path d="M16.24 7.76l2.83-2.83"/></svg>`
@@ -375,17 +370,11 @@
             const getTemplates = (n) => ({
                 titles: [
                     [`🔥 ULTIMATE ${n} Guide! #fanplusfollow`, `📈 ${n}: How We Went VIRAL! #fanplusfollow`, `🤯 This ${n} Hack is Insane! #fanplusfollow`],
-                    [`🚀 ${n} HACK: More Views! #fanplusfollow`, `💡 One ${n} Tip That Works... #fanplusfollow`, `🚫 Stop Making Bad ${n} Videos! #fanplusfollow`],
-                    [`🤫 The ${n} Secret Nobody Tells You... #fanplusfollow`, `⚠️ Don't Upload ${n} Until You Watch This! #fanplusfollow`, `🚀 From 0 to 10k Views with ${n} #fanplusfollow`],
-                    [`💎 ${n} Masterclass: Pro Secrets Revealed #fanplusfollow`, `⚡ Fast Track Your Growth: ${n} Explained #fanplusfollow`, `🧠 Psychology of ${n}: Why It Works #fanplusfollow`],
-                    [`💥 Break the Algorithm with ${n}! #fanplusfollow`, `🛑 The BIGGEST ${n} Mistake Creators Make #fanplusfollow`, `✨ Perfect ${n} Tutorial in 5 Minutes #fanplusfollow`]
+                    [`🚀 ${n} HACK: More Views! #fanplusfollow`, `💡 One ${n} Tip That Works... #fanplusfollow`, `🚫 Stop Making Bad ${n} Videos! #fanplusfollow`]
                 ],
                 descriptions: [
-                    `🚀 Unlock the full potential of ${n}! Join the community for exclusive insights.\n\nSubscribe here: ${YOUTUBE_CHANNEL_LINK}\nFollow on IG: ${INSTAGRAM_LINK}\n\n#${n.replace(/\s+/g, '')} #FanPlusFollow`,
-                    `😱 SHOCKING results with this ${n} strategy. Subscribe for daily growth tips!\n\nIG: ${INSTAGRAM_LINK}\nYT: ${YOUTUBE_CHANNEL_LINK}\n\n#Viral #${n.replace(/\s+/g, '')}`,
-                    `⚡ Master ${n} in record time. Watch now!\n\nFollow for updates:\nIG: ${INSTAGRAM_LINK}\nYT: ${YOUTUBE_CHANNEL_LINK}\n\n#Growth #FanPlusFollow`,
-                    `🧠 Deep dive into ${n} analytics. Why it works.\n\n👉 ${YOUTUBE_CHANNEL_LINK}\n👉 ${INSTAGRAM_LINK}\n\n#Strategy #CreatorEconomy`,
-                    `📖 I tried ${n} so you don't have to. Here are the results.\n\nSupport:\nYT: ${YOUTUBE_CHANNEL_LINK}\nIG: ${INSTAGRAM_LINK}\n\n#Experiment #GrowthTips`
+                    `🚀 Unlock the full potential of ${n}! Join the community for exclusive insights.\n\nSubscribe: ${YOUTUBE_CHANNEL_LINK}\nFollow: ${INSTAGRAM_LINK}\n\n#${n.replace(/\s+/g, '')} #FanPlusFollow`,
+                    `😱 SHOCKING results with this ${n} strategy. Subscribe for daily tips!\n\nIG: ${INSTAGRAM_LINK}\nYT: ${YOUTUBE_CHANNEL_LINK}\n\n#Viral #${n.replace(/\s+/g, '')}`
                 ]
             });
             const dTmp = getTemplates(vName), fTmp = getTemplates(fullVideoName);
@@ -409,27 +398,22 @@
         const copyToClipboard = (text, idx, done) => {
             const ta = document.createElement('textarea');
             ta.value = text; document.body.appendChild(ta); ta.select(); document.execCommand('copy'); document.body.removeChild(ta);
-
             if (idx === 3) {
                 const container = document.getElementById('description-text-container');
                 if (!container) return;
-                const h = container.offsetHeight;
-                container.style.height = `${h}px`;
                 container.querySelector('div')?.classList.add('text-fade-out');
                 setTimeout(() => {
                     container.innerHTML = `<span class="flex items-center justify-center gap-1 w-full font-bold text-black/80 fade-in-text text-lg">${icon('Check', 'h-5 w-5')} Copied</span>`;
                     setTimeout(() => { 
                         container.querySelector('span')?.classList.add('text-fade-out');
                         setTimeout(() => {
-                            container.style.height = ''; 
                             container.innerHTML = `<div class="whitespace-pre-wrap break-words text-xs sm:text-sm font-bold text-black/90 fade-in-text text-left w-full font-sans leading-relaxed pointer-events-none">${description}</div>`;
                             if (done) done(); 
                         }, 200); 
                     }, 800); 
                 }, 200); 
             } else {
-                const card = document.getElementById(`title-card-${idx}`);
-                const p = card?.querySelector('p');
+                const p = document.getElementById(`title-card-${idx}`)?.querySelector('p');
                 if (!p) return;
                 p.classList.add('text-fade-out');
                 setTimeout(() => {
@@ -473,9 +457,7 @@
                             </div>
                         </div>
                         <div class="relative inline-flex items-center justify-center mb-2 font-bold left-[5.3px] text-base sm:text-lg">
-                            <div class="absolute right-full top-1/2 -translate-y-1/2 pr-2 flex items-center">
-                                ${!isProcessed ? icon('Loader', 'h-5 w-5') : icon('Check', 'h-5 w-5')}
-                            </div>
+                            <div class="absolute right-full top-1/2 -translate-y-1/2 pr-2 flex items-center">${!isProcessed ? icon('Loader', 'h-5 w-5') : icon('Check', 'h-5 w-5')}</div>
                             <span class="opacity-80">${isProcessed ? 'Analysis Complete' : 'Analyzing Video...'}</span>
                         </div>
                     </div>`;
@@ -503,14 +485,14 @@
                 <div class="glass-card p-4 sm:p-6 rounded-[36px] mb-8 sm:mb-12">
                     <div class="flex justify-between items-center mb-6 gap-2">
                         <h2 class="text-xl sm:text-3xl font-bold flex items-center gap-1 sm:gap-2"><img src="https://manmohit2007.github.io/Manmohit2007/like.png" class="header-icon"> <span class="relative -left-[9px]">Titles</span></h2>
-                        <button onclick="handleRegenerateTitlesClick(this)" class="cta-button text-xs sm:text-sm px-3 py-2 sm:px-4 sm:py-2 font-bold flex items-center shrink-0" style="border-radius: 14px;">${icon('RotateCcw', 'mr-1 sm:mr-2 h-3 w-3 sm:h-4 sm:w-4')} Regenerate</button>
+                        <button onclick="handleRegenerateTitlesClick(this)" class="cta-button text-xs sm:text-sm px-3 py-2 sm:px-4 sm:py-2 font-bold flex items-center shrink-0" style="border-radius: 14px;">${icon('RotateCcw', 'mr-1 h-3 w-3 sm:h-4 sm:w-4')} Regenerate</button>
                     </div>
                     <div id="titles-grid-container" class="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6"></div>
                 </div>
                 <div class="glass-card p-4 sm:p-6 rounded-[36px]">
                     <div class="flex justify-between items-center mb-4 gap-2">
                         <h2 class="text-xl sm:text-3xl font-bold flex items-center gap-1 sm:gap-2"><img src="https://manmohit2007.github.io/Manmohit2007/shorts.png" class="shorts-icon"> <span class="relative -left-[3px]">Description</span></h2>
-                        <button onclick="handleRegenerateDescriptionClick(this)" class="cta-button text-xs sm:text-sm px-3 py-2 sm:px-4 sm:py-2 font-bold flex items-center shrink-0" style="border-radius: 14px;">${icon('RotateCcw', 'mr-1 sm:mr-2 h-3 w-3 sm:h-4 sm:w-4')} Regenerate</button>
+                        <button onclick="handleRegenerateDescriptionClick(this)" class="cta-button text-xs sm:text-sm px-3 py-2 sm:px-4 sm:py-2 font-bold flex items-center shrink-0" style="border-radius: 14px;">${icon('RotateCcw', 'mr-1 h-3 w-3 sm:h-4 sm:w-4')} Regenerate</button>
                     </div>
                     <div id="description-text-container" class="glass-inset-panel p-4 interactive cursor-pointer h-[32rem] sm:h-[25rem] overflow-hidden"></div>
                 </div>`;
