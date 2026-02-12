@@ -48,6 +48,7 @@
             min-height: 100vh;
             color: #000000;
             margin: 0;
+            padding: 0;
             cursor: pointer;
             position: relative;
         }
@@ -73,7 +74,7 @@
             -webkit-transform: translateZ(0);
             will-change: transform;
             backface-visibility: hidden;
-            }
+        }
 
         @media (min-width: 768px) {
             #fixed-background {
@@ -247,7 +248,7 @@
         }
     </style>
 </head>
-<body class="p-4 md:p-12 md:pt-14" onload="initApp()" ontouchstart="">
+<body class="p-4 md:p-8" onload="initApp()" ontouchstart="">
     
     <div id="initial-loader">
         <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="animate-spin opacity-50"><path d="M12 2v4"/><path d="M12 18v4"/><path d="M4.93 4.93l2.83 2.83"/><path d="M16.24 16.24l2.83 2.83"/><path d="M2 12h4"/><path d="M18 12h4"/><path d="M4.93 19.07l2.83-2.83"/><path d="M16.24 7.76l2.83-2.83"/></svg>
@@ -285,21 +286,16 @@
             </div>
             <div id="results-section"></div>
         </main>
-        
-        <!-- Slightly increased sm:mt to sm:mt-4 to give a little more breathing room on desktop -->
-        <div class="mt-6 sm:mt-4 w-full">
+        <div class="mt-6 sm:mt-12 w-full">
             <div id="promo-card" class="glass-card fluid-transition px-2 pb-4 pt-0 sm:px-3 sm:pb-8 sm:pt-1 max-w-4xl mx-auto pre-load-hidden"> 
                 <div class="px-1 pb-1">
                     <div class="flex flex-col items-center">
-                        <!-- UPDATED: Changed mobile margin from -mt-7 to -mt-6 as requested -->
-                        <div class="w-80 sm:w-[28rem] mb-0 -mt-6 sm:-mt-11">
+                        <div class="w-72 sm:w-96 mb-0 -mt-5 sm:-mt-8">
                             <img src="https://manmohit2007.github.io/Manmohit2007/banner.png" alt="Logo" class="w-full h-auto object-contain filter drop-shadow-md">
                         </div>
-                        <!-- Preserved mobile margin -mt-10 -->
-                        <h3 class="text-xl sm:text-3xl font-bold text-center text-black -mt-10 sm:-mt-14">Boost Your Reach Today</h3>
+                        <h3 class="text-xl sm:text-3xl font-bold text-center text-black -mt-9 sm:-mt-10">Boost Your Reach Today</h3>
                         <p class="text-black mt-1 text-center max-w-md text-xs sm:text-sm font-bold opacity-80 leading-tight">Join the community for exclusive growth insights.</p>
-                        <!-- Preserved mobile margin mt-5 -->
-                        <div class="mt-5 sm:mt-6 flex flex-row w-full max-w-md sm:max-w-lg justify-center gap-[18px] sm:gap-[30.6px] px-2 sm:px-0">
+                        <div class="mt-3 sm:mt-6 flex flex-row w-full max-w-md sm:max-w-lg justify-center gap-[18px] sm:gap-[30.6px] px-2 sm:px-0">
                           <button class="cta-button flex-1 sm:flex-none sm:w-40 px-4 py-4 font-bold flex items-center justify-center text-lg sm:text-lg" onclick="handleExternalLink(this, 'https://www.youtube.com/@fanplusfollow')">
                             Subscribe
                           </button>
