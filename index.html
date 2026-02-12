@@ -691,17 +691,16 @@
         const renderUploadSection = () => {
             const container = document.getElementById('upload-section-content');
             if (!file) {
-                // Modified: Added onclick handlers directly to button and div for better touch response
-                // Added pointer-events-none to text/icon so clicks fall through to the container cleanly
+                // Modified: Wrapped icon and text in a div and added -top-[2px] for mobile (0 for sm and up)
                 container.innerHTML = `
                     <div id="file-drop-area" class="w-full h-full flex flex-col items-center justify-center text-center cursor-pointer pb-4" onclick="handleDropAreaClick(event)">
-                        <div class="mb-4 pointer-events-none">${icon('Upload', 'h-12 w-12')}</div>
-                        <p class="text-lg sm:text-xl font-bold text-black pointer-events-none">Upload Your Video File Here</p>
+                        <div class="pointer-events-none relative -top-[2px] sm:top-0 flex flex-col items-center w-full">
+                            <div class="mb-4 flex justify-center">${icon('Upload', 'h-12 w-12')}</div>
+                            <p class="text-lg sm:text-xl font-bold text-black">Upload Your Video File Here</p>
+                        </div>
                         <button class="cta-button mt-6 px-6 py-4 font-bold text-lg" onclick="handleSelectFileBtnClick(event, this)">Select File</button>
                         <input type="file" id="file-upload-input" class="hidden" accept="video/*" onchange="handleFileChange(event)" onclick="event.stopPropagation()"/>
                     </div>`;
-                
-                // Removed the previous dynamic onclick attachment since we now use inline handlers
             } else {
                 container.innerHTML = `
                     <div class="flex flex-col items-center justify-center h-full w-full pt-4 sm:pt-10">
