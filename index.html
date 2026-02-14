@@ -95,7 +95,7 @@
 
         .fluid-transition {
             transition: all 400ms cubic-bezier(0.25, 0.46, 0.45, 0.94);
-            /* Removed will-change to prevent memory dumping on tab switch causing render glitches */ 
+            will-change: transform, box-shadow, filter, background-color, color, opacity; 
         }
 
         /* Entry Animation */
@@ -117,7 +117,7 @@
 
         /* Glass Card */
         .glass-card {
-            background-color: rgba(255, 255, 255, 0.25);
+            background-color: rgba(255, 255, 255, 0.15);
             -webkit-backdrop-filter: blur(24px) saturate(110%);
             backdrop-filter: blur(24px) saturate(110%); 
             box-shadow: inset 0 0 40px rgba(255, 255, 255, 0.4), 0 25px 50px rgba(0, 0, 0, 0.05);
@@ -125,7 +125,6 @@
             border-radius: 36px;
             
             /* Stability Fixes (Jitter/Leak) */
-            isolation: isolate;
             transform: translateZ(0); /* Force hardware layer */
             -webkit-transform: translateZ(0);
             backface-visibility: hidden; /* Prevent flickering */
@@ -342,18 +341,6 @@
                (e.key === '+' || e.key === '-' || e.key === '=' || e.key === '0')) {
                 e.preventDefault();
             }
-        });
-
-        // --- FIX FOR GLASS ARTIFACTS ON TAB SWITCH ---
-        document.addEventListener("visibilitychange", () => {
-             if (document.visibilityState === "visible") {
-                // Force a subtle repaint of the body to wake up the graphics engine
-                // ensuring backdrop-filters are re-applied correctly
-                document.body.style.opacity = '0.99';
-                setTimeout(() => {
-                    document.body.style.opacity = '1';
-                }, 50);
-             }
         });
 
         let file = null;
