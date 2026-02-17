@@ -98,6 +98,23 @@
             will-change: transform, box-shadow, filter, background-color, color, opacity; 
         }
 
+        /* Entry Animation */
+        @keyframes spiral-entry {
+            0% { opacity: 0; transform: perspective(1000px) scale(0.95) translateY(20px); filter: blur(10px); }
+            100% { opacity: 1; transform: perspective(1000px) scale(1) translateY(0); filter: blur(0); }
+        }
+        
+        .card-animate {
+            animation: spiral-entry 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            opacity: 0; 
+        }
+        
+        #app-header.card-animate { animation-delay: 0.1s; }
+        #upload-card.card-animate { animation-delay: 0.2s; } 
+        #promo-card.card-animate { animation-delay: 0.3s; }
+
+        .pre-load-hidden { opacity: 0; }
+
         /* Glass Card */
         .glass-card {
             background-color: rgba(255, 255, 255, 0.15);
@@ -240,7 +257,7 @@
     <div class="max-w-4xl mx-auto">
         <div class="mb-8 sm:mb-12">
             <!-- Adjusted sm:py-5 to sm:py-3 for a slightly smaller height on desktop -->
-            <header id="app-header" class="glass-card fluid-transition px-3 py-3 sm:px-6 sm:py-3 flex flex-row items-center justify-between">
+            <header id="app-header" class="glass-card fluid-transition px-3 py-3 sm:px-6 sm:py-3 flex flex-row items-center justify-between pre-load-hidden">
                 <div class="flex items-center space-x-2 sm:space-x-4">
                     <div class="w-[57px] h-[57px] sm:w-[84px] sm:h-[84px] flex-shrink-0 relative left-[5.3px] sm:left-[5.3px]">
                         <img src="https://manmohit2007.github.io/Manmohit2007/brand_logo.png?v=10" alt="Logo" class="w-full h-full object-contain filter drop-shadow-sm">
@@ -257,7 +274,7 @@
             </header>
         </div>
         <main>
-            <div id="upload-card" class="glass-card fluid-transition p-6 rounded-[36px] mb-8 sm:mb-12">
+            <div id="upload-card" class="glass-card fluid-transition p-6 rounded-[36px] mb-8 sm:mb-12 pre-load-hidden">
                 <div class="mb-4">
                     <h2 class="text-xl sm:text-3xl font-bold flex items-center gap-1 sm:gap-2 text-black">
                         <img src="https://manmohit2007.github.io/Manmohit2007/share.png" alt="Share" class="share-icon">
@@ -271,7 +288,7 @@
         
         <!-- Slightly increased sm:mt to sm:mt-4 to give a little more breathing room on desktop -->
         <div class="mt-6 sm:mt-4 w-full">
-            <div id="promo-card" class="glass-card fluid-transition px-2 pb-4 pt-0 sm:px-3 sm:pb-8 sm:pt-1 max-w-4xl mx-auto"> 
+            <div id="promo-card" class="glass-card fluid-transition px-2 pb-4 pt-0 sm:px-3 sm:pb-8 sm:pt-1 max-w-4xl mx-auto pre-load-hidden"> 
                 <div class="px-1 pb-1">
                     <div class="flex flex-col items-center">
                         <!-- UPDATED: Changed mobile margin from -mt-7 to -mt-6 as requested -->
@@ -384,6 +401,16 @@
             // Show Wallpaper
             const bg = document.getElementById('fixed-background');
             if (bg) bg.style.opacity = '1';
+
+            // Trigger Entry Animations
+            document.getElementById('app-header').classList.remove('pre-load-hidden');
+            document.getElementById('app-header').classList.add('card-animate');
+            
+            document.getElementById('upload-card').classList.remove('pre-load-hidden');
+            document.getElementById('upload-card').classList.add('card-animate');
+            
+            document.getElementById('promo-card').classList.remove('pre-load-hidden');
+            document.getElementById('promo-card').classList.add('card-animate');
 
             updateUI(); 
         };
