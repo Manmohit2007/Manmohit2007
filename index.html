@@ -65,13 +65,13 @@
             background-position: center center;
             background-repeat: no-repeat;
             opacity: 0; 
-            transition: opacity 0.8s ease-out; /* Slower, smoother background entry */
+            transition: opacity 0.5s ease-out;
             pointer-events: none;
             
             /* Hardware acceleration to prevent jitter/repainting during zoom */
             transform: translateZ(0);
             -webkit-transform: translateZ(0);
-            will-change: opacity, transform;
+            will-change: transform;
             backface-visibility: hidden;
             }
 
@@ -90,37 +90,28 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            transition: opacity 0.5s ease-out, visibility 0.5s;
-            will-change: opacity;
+            transition: opacity 0.4s ease-out, visibility 0.4s;
         }
 
-        /* OPTIMIZED: Replaced 'all' with specific properties to reduce paint cost */
         .fluid-transition {
-            transition: transform 400ms cubic-bezier(0.25, 0.46, 0.45, 0.94), 
-                        box-shadow 400ms cubic-bezier(0.25, 0.46, 0.45, 0.94),
-                        background-color 400ms ease,
-                        opacity 400ms ease;
-            will-change: transform, opacity; 
+            transition: all 400ms cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            will-change: transform, box-shadow, filter, background-color, color, opacity; 
         }
 
         /* Entry Animation */
-        /* Smoother curve, slightly less blur for performance */
         @keyframes spiral-entry {
-            0% { opacity: 0; transform: perspective(1000px) scale(0.96) translateY(15px); filter: blur(4px); }
+            0% { opacity: 0; transform: perspective(1000px) scale(0.95) translateY(20px); filter: blur(10px); }
             100% { opacity: 1; transform: perspective(1000px) scale(1) translateY(0); filter: blur(0); }
         }
         
         .card-animate {
-            animation: spiral-entry 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            animation: spiral-entry 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
             opacity: 0; 
-            /* Ensure GPU layer is created before animation starts */
-            transform: translateZ(0);
-            will-change: transform, opacity, filter;
         }
         
-        #app-header.card-animate { animation-delay: 0.05s; }
-        #upload-card.card-animate { animation-delay: 0.15s; } 
-        #promo-card.card-animate { animation-delay: 0.25s; }
+        #app-header.card-animate { animation-delay: 0.1s; }
+        #upload-card.card-animate { animation-delay: 0.2s; } 
+        #promo-card.card-animate { animation-delay: 0.3s; }
 
         .pre-load-hidden { opacity: 0; }
 
@@ -381,13 +372,8 @@
                 return new Promise((resolve, reject) => {
                     const img = new Image();
                     img.src = src;
-                    // Use decode() if available for smoother painting
-                    if (img.decode) {
-                        img.decode().then(resolve).catch(resolve);
-                    } else {
-                        img.onload = resolve;
-                        img.onerror = resolve; 
-                    }
+                    img.onload = resolve;
+                    img.onerror = resolve; 
                 });
             });
 
@@ -405,40 +391,26 @@
         const initApp = async () => {
             await preloadAssets();
             
-            // 1. Show Wallpaper first (fades in slowly)
-            const bg = document.getElementById('fixed-background');
-            if (bg) bg.style.opacity = '1';
-
-            // 2. Hide Loader smoothly
+            // Hide Loader
             const loader = document.getElementById('initial-loader');
             if (loader) {
                 loader.style.opacity = '0';
-                
-                // 3. Trigger Entry Animations AFTER loader starts fading
-                // Delaying slightly allows the browser to compose the fade-out before starting the heavy spiral animation
-                setTimeout(() => {
-                    // Remove loader from DOM flow when fade is done
-                    setTimeout(() => { loader.style.visibility = 'hidden'; }, 500);
-
-                    // Trigger Cards
-                    document.getElementById('app-header').classList.remove('pre-load-hidden');
-                    document.getElementById('app-header').classList.add('card-animate');
-                    
-                    document.getElementById('upload-card').classList.remove('pre-load-hidden');
-                    document.getElementById('upload-card').classList.add('card-animate');
-                    
-                    document.getElementById('promo-card').classList.remove('pre-load-hidden');
-                    document.getElementById('promo-card').classList.add('card-animate');
-                }, 150); 
-            } else {
-                // Fallback if no loader found
-                 document.getElementById('app-header').classList.remove('pre-load-hidden');
-                 document.getElementById('app-header').classList.add('card-animate');
-                 document.getElementById('upload-card').classList.remove('pre-load-hidden');
-                 document.getElementById('upload-card').classList.add('card-animate');
-                 document.getElementById('promo-card').classList.remove('pre-load-hidden');
-                 document.getElementById('promo-card').classList.add('card-animate');
+                loader.style.visibility = 'hidden';
             }
+
+            // Show Wallpaper
+            const bg = document.getElementById('fixed-background');
+            if (bg) bg.style.opacity = '1';
+
+            // Trigger Entry Animations
+            document.getElementById('app-header').classList.remove('pre-load-hidden');
+            document.getElementById('app-header').classList.add('card-animate');
+            
+            document.getElementById('upload-card').classList.remove('pre-load-hidden');
+            document.getElementById('upload-card').classList.add('card-animate');
+            
+            document.getElementById('promo-card').classList.remove('pre-load-hidden');
+            document.getElementById('promo-card').classList.add('card-animate');
 
             updateUI(); 
         };
