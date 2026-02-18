@@ -281,8 +281,7 @@
                         <span class="relative -top-[2px] -left-[2px]">Upload Video</span>
                     </h2>
                 </div>
-                <!-- CRITICAL FIX: Changed mobile height to h-[12.5rem] to match content size exactly without increase -->
-                <div class="p-1 h-[12.5rem] sm:h-[15rem] flex flex-col justify-center" id="upload-section-content"></div>
+                <div class="p-1 min-h-[10rem] sm:min-h-[14rem]" id="upload-section-content"></div>
             </div>
             <div id="results-section"></div>
         </main>
@@ -705,8 +704,7 @@
                 // Removed the previous dynamic onclick attachment since we now use inline handlers
             } else {
                 container.innerHTML = `
-                    <!-- UPDATED: Changed -translate-y-2 to -translate-y-3 to shift everything up by 12 points total -->
-                    <div class="flex flex-col items-center justify-center h-full w-full -translate-y-3">
+                    <div class="flex flex-col items-center justify-center h-full w-full pt-4 sm:pt-10">
                         <div class="w-full mb-6 flex justify-center px-1">
                             <div 
                                 class="glass-inset-panel inline-flex items-center justify-center px-4 py-3 sm:px-6 sm:py-4 max-w-full ${isProcessed ? 'interactive cursor-pointer' : ''}" 
@@ -717,9 +715,12 @@
                                 </p>
                             </div>
                         </div>
-                        <div class="flex items-center justify-center gap-2 mb-2 font-bold text-base sm:text-lg opacity-80">
-                            ${!isProcessed ? icon('Loader', 'h-5 w-5') : icon('Check', 'h-5 w-5')}
-                            <span>${isProcessed ? 'Analysis Complete' : 'Analyzing Video...'}</span>
+                        <!-- Modified: Added text-base sm:text-lg to make Analysis Complete text bigger on desktop -->
+                        <div class="relative inline-flex items-center justify-center mb-2 font-bold left-[5.3px] text-base sm:text-lg">
+                            <div class="absolute right-full top-1/2 -translate-y-1/2 pr-2 flex items-center">
+                                ${!isProcessed ? icon('Loader', 'h-5 w-5') : icon('Check', 'h-5 w-5')}
+                            </div>
+                            <span class="opacity-80">${isProcessed ? 'Analysis Complete' : 'Analyzing Video...'}</span>
                         </div>
                     </div>`;
             }
@@ -748,7 +749,7 @@
             if (!isProcessed) { container.innerHTML = ''; return; }
             container.innerHTML = `
                 <div class="glass-card p-4 sm:p-6 rounded-[36px] mb-8 sm:mb-12">
-                    <div class="flex justify-between items-center mb-6 gap-2">
+                    <div class="flex justify-between items-center mb-4 gap-2">
                         <h2 class="text-xl sm:text-3xl font-bold flex items-center gap-1 sm:gap-2"><img src="https://manmohit2007.github.io/Manmohit2007/like.png" class="header-icon"> <span class="relative -left-[9px]">Titles</span></h2>
                         <button onclick="handleRegenerateTitlesClick(this)" class="cta-button text-xs sm:text-sm px-3 py-2 sm:px-4 sm:py-2 font-bold flex items-center shrink-0" style="border-radius: 14px;">${icon('RotateCcw', 'mr-1 sm:mr-2 h-3 w-3 sm:h-4 sm:w-4')} Regenerate</button>
                     </div>
