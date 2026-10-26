@@ -4,11 +4,11 @@
     <!-- ============================================== -->
     <!-- FAVICON & BRANDING -->
     <!-- ============================================== -->
-    <link rel="icon" href="https://manmohit2007.github.io/Manmohit2007/brand_logo.png?v=10">
-    <link rel="icon" type="image/png" sizes="32x32" href="https://manmohit2007.github.io/Manmohit2007/brand_logo.png?v=10">
-    <link rel="icon" type="image/png" sizes="192x192" href="https://manmohit2007.github.io/Manmohit2007/brand_logo.png?v=10">
-    <link rel="apple-touch-icon" sizes="180x180" href="https://manmohit2007.github.io/Manmohit2007/brand_logo.png?v=10">
-    <link rel="shortcut icon" href="https://manmohit2007.github.io/Manmohit2007/brand_logo.png?v=10">
+    <link rel="icon" href="brand_logo.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="brand_logo.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="brand_logo.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="brand_logo.png">
+    <link rel="shortcut icon" href="brand_logo.png">
 
     <!-- Standard Meta Tags -->
     <meta charset="UTF-8">
@@ -16,6 +16,11 @@
     <meta name="color-scheme" content="only light">
     <title>FanPlusFollow</title>
     <meta name="description" content="Tools for Content Creators. Boost your reach with advanced insights.">
+    <meta name="theme-color" content="#131314">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel="manifest" href="manifest.webmanifest">
 
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
@@ -260,7 +265,7 @@
             <header id="app-header" class="glass-card fluid-transition px-3 py-3 sm:px-6 sm:py-3 flex flex-row items-center justify-between pre-load-hidden">
                 <div class="flex items-center space-x-2 sm:space-x-4">
                     <div class="w-[57px] h-[57px] sm:w-[84px] sm:h-[84px] flex-shrink-0 relative left-[5.3px] sm:left-[5.3px]">
-                        <img src="https://manmohit2007.github.io/Manmohit2007/brand_logo.png?v=10" alt="Logo" class="w-full h-full object-contain filter drop-shadow-sm">
+                        <img src="brand_logo.png" alt="Logo" class="w-full h-full object-contain filter drop-shadow-sm">
                     </div>
                     <div class="text-left min-w-0 relative left-[6px] sm:left-[5.3px]">
                         <h1 class="text-xl sm:text-3xl font-bold text-black leading-tight truncate">FanPlusFollow</h1>
@@ -268,7 +273,7 @@
                 </div>
                 <div class="flex-shrink-0 ml-1">
                     <div class="w-[77px] h-[77px] sm:w-[121px] sm:h-[121px] relative right-[5.3px] sm:right-0">
-                        <img src="https://manmohit2007.github.io/Manmohit2007/youtube.png" alt="YouTube" class="w-full h-full object-contain">
+                        <img src="youtube.png" alt="YouTube" class="w-full h-full object-contain">
                     </div>
                 </div>
             </header>
@@ -277,7 +282,7 @@
             <div id="upload-card" class="glass-card fluid-transition p-6 rounded-[36px] mb-8 sm:mb-12 pre-load-hidden">
                 <div class="mb-4">
                     <h2 class="text-xl sm:text-3xl font-bold flex items-center gap-1 sm:gap-2 text-black">
-                        <img src="https://manmohit2007.github.io/Manmohit2007/share.png" alt="Share" class="share-icon">
+                        <img src="share.png" alt="Share" class="share-icon">
                         <span class="relative -top-[2px] -left-[2px]">Upload Video</span>
                     </h2>
                 </div>
@@ -293,7 +298,7 @@
                     <div class="flex flex-col items-center">
                         <!-- UPDATED: Changed mobile margin from -mt-7 to -mt-6 as requested -->
                         <div class="w-80 sm:w-[27rem] mb-0 -mt-6 sm:-mt-11">
-                            <img src="https://manmohit2007.github.io/Manmohit2007/banner.png" alt="Logo" class="w-full h-auto object-contain filter drop-shadow-md">
+                            <img src="banner.png" alt="Logo" class="w-full h-auto object-contain filter drop-shadow-md">
                         </div>
                         <!-- Preserved mobile margin -mt-10 -->
                         <h3 class="text-xl sm:text-3xl font-bold text-center text-black -mt-10 sm:-mt-14">Boost Your Reach Today</h3>
@@ -357,12 +362,12 @@
 
         // --- ASSET PRELOADING ---
         const ASSETS_TO_PRELOAD = [
-            'https://manmohit2007.github.io/Manmohit2007/brand_logo.png?v=10',
-            'https://manmohit2007.github.io/Manmohit2007/youtube.png',
-            'https://manmohit2007.github.io/Manmohit2007/share.png',
-            'https://manmohit2007.github.io/Manmohit2007/banner.png',
-            'https://manmohit2007.github.io/Manmohit2007/like.png',
-            'https://manmohit2007.github.io/Manmohit2007/shorts.png',
+            'brand_logo.png',
+            'youtube.png',
+            'share.png',
+            'banner.png',
+            'like.png',
+            'shorts.png',
             'background.png',
             'landscape.png'
         ];
@@ -750,14 +755,14 @@
             container.innerHTML = `
                 <div class="glass-card p-4 sm:p-6 rounded-[36px] mb-8 sm:mb-12">
                     <div class="flex justify-between items-center mb-4 gap-2">
-                        <h2 class="text-xl sm:text-3xl font-bold flex items-center gap-1 sm:gap-2"><img src="https://manmohit2007.github.io/Manmohit2007/like.png" class="header-icon"> <span class="relative -left-[9px]">Titles</span></h2>
+                        <h2 class="text-xl sm:text-3xl font-bold flex items-center gap-1 sm:gap-2"><img src="like.png" class="header-icon"> <span class="relative -left-[9px]">Titles</span></h2>
                         <button onclick="handleRegenerateTitlesClick(this)" class="cta-button text-xs sm:text-sm px-3 py-2 sm:px-4 sm:py-2 font-bold flex items-center shrink-0" style="border-radius: 14px;">${icon('RotateCcw', 'mr-1 sm:mr-2 h-3 w-3 sm:h-4 sm:w-4')} Regenerate</button>
                     </div>
                     <div id="titles-grid-container" class="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6"></div>
                 </div>
                 <div class="glass-card p-4 sm:p-6 rounded-[36px] mb-8 sm:mb-12">
                     <div class="flex justify-between items-center mb-4 gap-2">
-                        <h2 class="text-xl sm:text-3xl font-bold flex items-center gap-1 sm:gap-2"><img src="https://manmohit2007.github.io/Manmohit2007/shorts.png" class="shorts-icon"> <span class="relative -left-[3px]">Description</span></h2>
+                        <h2 class="text-xl sm:text-3xl font-bold flex items-center gap-1 sm:gap-2"><img src="shorts.png" class="shorts-icon"> <span class="relative -left-[3px]">Description</span></h2>
                         <button onclick="handleRegenerateDescriptionClick(this)" class="cta-button text-xs sm:text-sm px-3 py-2 sm:px-4 sm:py-2 font-bold flex items-center shrink-0" style="border-radius: 14px;">${icon('RotateCcw', 'mr-1 sm:mr-2 h-3 w-3 sm:h-4 sm:w-4')} Regenerate</button>
                     </div>
                     <div id="description-text-container" class="glass-inset-panel p-4 interactive cursor-pointer h-[32rem] sm:h-[25rem] overflow-hidden"></div>
@@ -767,6 +772,12 @@
 
         const updateUI = () => { renderUploadSection(); renderResults(); };
         // initApp is now async and handles preloading
+        // Register the PWA service worker so the app shell and local artwork remain available offline.
+        if ("serviceWorker" in navigator) {
+            window.addEventListener("load", () => {
+                navigator.serviceWorker.register("./sw.js").catch(err => console.warn("Service worker registration failed:", err));
+            });
+        }
     </script>
 </body>
 </html>
